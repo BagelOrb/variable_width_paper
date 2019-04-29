@@ -20,6 +20,7 @@
 # *.ps
 # *.eps
 # *.pdf
+0_main.pdf
 
 ## Generated if empty string is given at "Please type another file name for output:"
 .pdf
@@ -218,6 +219,7 @@ TSWLatexianTemp*
 # WinEdt
 *.bak
 *.sav
+*.kdev*
 
 # Texpad
 .texpadtmp
