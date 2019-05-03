@@ -86,15 +86,15 @@
     % \usepackage[draft]{todonotes}   % notes showed
     \usepackage{color,soul} % caps, highlight (\hl)
 
-%    \newcommand{\todo}[1]{\hl{#1}}
+    \newcommand{\todo}[1]{\hl{#1}}
     
-%	\newcommand{\temp}[1]{\textcolor[rgb]{0, 0, 0.2}{#1}}
-%	\newcommand{\tim}[1]{\temp{\todo{[Tim: #1]}}}
-%	\newcommand{\jun}[1]{\temp{\todo{[Jun: #1]}}}
-%	\newcommand{\charlie}[1]{\textcolor[rgb]{0, 0.2, 0}{\todo{[Charlie: #1]}}}
-%	\newcommand{\toberemoved}[1]{\textcolor[rgb]{0.9, 0, 0.2}{\st{#1}}}
-%	\newcommand{\inserttext}[1]{\textcolor[rgb]{0, 0.7, 0}{\hl{#1}}}
-%	\newcommand{\replacewith}[2]{\toberemoved{#1}\inserttext{#2}}
+	\newcommand{\temp}[1]{\textcolor[rgb]{0, 0, 0.2}{#1}}
+	\newcommand{\tim}[1]{\temp{\todo{[Tim: #1]}}}
+	\newcommand{\jun}[1]{\temp{\todo{[Jun: #1]}}}
+	\newcommand{\charlie}[1]{\textcolor[rgb]{0, 0.2, 0}{\todo{[Charlie: #1]}}}
+	\newcommand{\toberemoved}[1]{\textcolor[rgb]{0.9, 0, 0.2}{\st{#1}}}
+	\newcommand{\inserttext}[1]{\textcolor[rgb]{0, 0.7, 0}{\hl{#1}}}
+	\newcommand{\replacewith}[2]{\toberemoved{#1}\inserttext{#2}}
 
     \newcommand{\changed}[1]{#1}
     %\newcommand{\changed}[1]{\hl{#1}}
@@ -184,9 +184,9 @@ keyword
 
 
 
-% \temp{Table of contents just for reviewing purposes
-% \tableofcontents
-% }
+ \temp{%Table of contents just for reviewing purposes
+ \tableofcontents
+ }
 
 \input{1_intro}
 
