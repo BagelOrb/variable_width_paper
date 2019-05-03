@@ -42,6 +42,14 @@ These could be printed from polygon and return to polygon over same segment with
 \end{enumerate}
 
 
+For an explanation of the terms used, see \cref{legend}.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{sources/method/legend_double_wedge_example.pdf}
+\caption{Explanation of terms.}
+\label{legend}
+\end{figure}
+
 
 
 
@@ -126,11 +134,11 @@ So we mark the part of the parabola as to-be-transformed for which $x \in [-d / 
 
 \paragraph{point-point segments}
 For a segment gerenated by points $(0,0)$ and $(0,d)$, the MAT segment is given by $y=\frac12 d$.
-For a given $x$ the distance $D$ to the outline vertices is given by $D = \sqrt{x^2 + \frac12 d}$.
-The ratio between MAT distance $D$ and Euclidean distance $\abs x$ is determined by $\frac{\partial D}{\partial x} / \frac{\partial \abs x}{x} = \abs \frac{x}{\sqrt{x^2 + d/2}}$
+For a given $x$ the distance $D$ to the outline vertices is given by $D = \sqrt{x^2 + (\frac12 d)^2}$.
+The ratio between MAT distance $D$ and Euclidean distance $\abs x$ is determined by $\frac{\partial D}{\partial x} / \frac{\partial \abs x}{x} = \abs \frac{2x}{ \sqrt{4x^2 + d^2}}$
 So the Euclidean distance is more than twice the MAT distance then $\abs \frac{\partial D}{\partial x}  < \frac12$, 
 %Wolfram Alpha:
-so $\abs x < \frac{\sqrt{d}}{\sqrt{6}} \approx 0.408 d$.
+so $\abs x < \frac{d}{2\sqrt{3}} \approx 0.289 d$.
 So we mark the part of the straight MAT segment as to-be-transformed for which $x \in [-\frac{\sqrt{d}}{\sqrt{6}}, \frac{\sqrt{d}}{\sqrt{6}}]$.
 \hl{But that is very weird in combination with the rule that the ends of marked segments should always be rounded! Isn't it?!}
 
