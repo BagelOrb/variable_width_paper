@@ -36,3 +36,12 @@ For materials where $\tau_1 \to 0$ (i.e. $c \to -\infty)$ the translucency is to
 The optimal $\tau_1$ depends on the size and geometry of the model as well as the texture colors.
 See \url{https://www.photonics.com/Articles/Accurate_Transmission_Measurements_of_Translucent/a32297} on measurement of transmittance.
 Also see \url{https://www.plasticsnet.com/doc/article-how-to-measure-translucent-materials-0001}
+
+
+\hl{The ambient illuminance can be better approximated using existing algorithms.
+We can render the object lit from within and bake the illumination into a separate texture channel.
+That channel can then serve as input to our program.}
+
+
+Performing offsets can sometimes produce self-intersections.
+We therefore export the outer and inner shell and perform a boolean difference operation using existing tools (Blender).
