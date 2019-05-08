@@ -308,14 +308,19 @@ Otherwise the algorithm isn't stable w.r.t. extra vertices in the outline.
 \end{subfigure}
 \begin{subfigure}{0.45\columnwidth}
 \includegraphics[width=\columnwidth]{sources/method/finger_angles_2.jpg}
+\caption{Wrong rib angle, not orthogonal to outline}
 \end{subfigure}
-\caption{Figner angles should always be orthogonal to the outlines}
+\caption{Finger angles should always be orthogonal to the outlines}
 \label{finger_angles}
 \end{figure}
 
+\begin{wrapfigure}[5]{r}{0.2\linewidth}
+\begin{center}
+\includegraphics[width=\linewidth]{sources/method/min_angle_of_introduced_bones.pdf}
+\end{center}
+\end{wrapfigure}
 
-
-
+Because the ribs are always orthogonal to the outline segments, the angle $\alpha$ between the spine and ribs is within the range $\SI{60}{\degree} < \alpha < \SI{90}{\degree}$.
 
 
 \subsection{6. transform MAT distance field}
