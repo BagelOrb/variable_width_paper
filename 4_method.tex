@@ -1,9 +1,9 @@
 \section{Method}
-The general idea is to generate the medial axis transform and round the distance measures to integer multiples of the nominal bead width,
+The general idea is to generate the medial axis transform and round the distance measures,
+such that an exact integer beads will fit the polygon there
 so that there is never a gap region left over in the middle of the polygon.
 
-We round to ingteger multiples of half the nozzle width so as to allow single-bead segments.
-These could be printed from polygon and return to polygon over same segment without extruding
+We round to integer multiples of half the nozzle width so as to allow single-bead segments, rather than only having polygonal insets.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{sources/method/rounded_vs_unrounded.pdf}
@@ -27,12 +27,12 @@ These could be printed from polygon and return to polygon over same segment with
 \end{figure}
 
 
-\subsection{Overview}
+\subsection{Method Overview}
 \begin{enumerate}
 \item compute medial axis transform (MAT)
 \item find places `of high curvature' in the medial axis and mark those regions
 \item transform the MAT distance measures in the marked regions to enable fitting an integer multiple beads.
-		This transformation uses trasnition regions to smoothly transition from $n$ into $n+1$ insets.
+		This transformation uses transition regions to smoothly transition from $n$ into $n+1$ insets.
 \item introduce extra `joints' on the medial axis in order to discretize the transformed distance measure
 \item connect these new joints to the outline with new `bones' (In the standard MAT manner)
 \item (optional) transform MAT distance fields along all bones, while keeping the endpoint dist measures fixed. (Deviate from evenly distributed linear space in order to have outer outlines closer to the nominal bead width and only change the innermost couple of toolpaths.)
@@ -166,6 +166,36 @@ So we mark the part of the straight MAT segment as to-be-transformed for which $
 
 
 
+\subsection{}
+\hl{This section needs to change and the changes will impact other sections as well.}
+We need to change the method overview.
+The transition placement needs to depend on the MAT distance transform function described below.
+
+We need a good function from a given (MAT) distance $d$ to a number of beads and their widths.
+The function needs to be able to deal with a range which is considerably shorter than $[r_-, 2r_-]$, even so short as to accomodate just $[w_*,w_*]$ only.
+The function needs to be such that we never overshoot the MAT distance, because that would affect the dimensional accuracy.
+Any distance left over which cannot be filled given the range $[r_-,r_+]$ should be placed on the inside near the MAT.
+
+\hl{we should work in terms of $w_*$ instead of $r_*$ because the beads should always have the same radius in both directions!}
+
+The function should be stable:
+\begin{itemize}
+\item between a location with MAT distance of $\frac12 nw_*$ and $\frac12 (n+1)w_*$ (for integer $n$) there is only one transition to a different number of beads
+\item the bead widths increase monotonically with the MAT distance in between transitions to a different number of beads
+\item the bead widths change gradually in between transitions to a different number of beads
+\end{itemize}
+
+The basics of the function are as such:
+\begin{itemize}
+\item we compute $m = \frac12 \lfloor 2 d / w_* \rfloor$
+\item we decide whether to use $n = m$ or $n = m+\frac12$ beads
+\item we reduce the discrepancy between $d$ and $nw_*$ by dividing as much as possible of the difference over the beads
+\end{itemize}
+
+We prefer a homogenous line width, so that tweaking the printing parameters for that line width and estimating the object properties becomes more simple.
+We can decide on a preference scheme which decides on how many bead widths to alter in a case-by-case manner:
+We could say dividing a left-over space $<r_*$ over 3 beads is better than dividing it over 2 beads without specifying an exact loss function on each possible bead size (which would require a lot of experiments to establish).
+
 
 
 
@@ -175,11 +205,18 @@ So we mark the part of the straight MAT segment as to-be-transformed for which $
 \begin{figure}
 \centering
 \includegraphics[width=.6\columnwidth]{sources/method/rounded_dist_measures.jpg}
-\caption{Distance measure rounding}
+\caption{MAT distance measures at existing joints can be non-integer multiples of bead width.}
 \label{rounded_dist_measures}
 \end{figure}
 
 See \cref{rounded_dist_measures}.
+
+In this section we describe how we transform the MAT distance values into a measure of tick quantity.
+First we divide all MAT distance measures by the preferred bead radius $r_*$ to get an initial tick quantity measure.
+In the simple case the preferred width is in the middle of the range of possible bead widths
+These initial tick quantity measures are then transformed so that they are integer values at a lot of places.
+
+
 
 In a narrow wedge region (a.k.a. a cusp) we have to transfer from $n$ to $n-1$ beads; this transition requires a distance.
 See \cref{single_bead_strategy_overview}.
@@ -187,7 +224,7 @@ The transition is such that the innermost toolpath makes a \SI{45}{\degree} angl
 The length of the transition along the medial axis depends on the angles involved.
 See \cref{transition_length}.
 \begin{equation}
-t = d_0 (\sin \alpha + \cos \alpha)
+t = r_0 (\sin \alpha + \cos \alpha)
 \end{equation}
 
 \begin{figure}[H]
@@ -197,7 +234,25 @@ t = d_0 (\sin \alpha + \cos \alpha)
 \label{transition_length}
 \end{figure}
 
-\hl{We need a formulation of the MAT distance stranform which defines the MAT distance for any position even if it's not possible to define where the middle of the transition would end up.}
+The position of the transition is somehwre in between whole tick values.
+The relative position in between the whole tick values relates to the relative position of the preferred line width within the range of possible widths.
+For a distance $d$ in between a location on the medial axis with a MAT distance of $nr_*$ and one with $(n+1)r_*$ the transition should be positioned around $d - d\frac{r_* - r_-}{r_+ - r_-}$ from the former location.
+See \cref{transition_location}.
+However, where should the transition be placed precisely? Should the middle of the transition be at that location, or do we again take a relative position of the transition to be at that location?
+For extremal values of $r_*$ the transition could overlap with the whole ticks if we simple place the middle of the transition at the specified location.
+We therefore place the same ratio of the transition is before the specified location.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.9\columnwidth]{sources/method/ticking.pdf}
+\includegraphics[width=.5\columnwidth]{sources/method/transition_location_precise.pdf}
+\caption{Mapping of different lengths to a ticking. Transition location on a line-line segment is to the right of the middle because the preferred line width is to the left of the middle in the range.}
+\label{transition_location}
+\end{figure}
+
+
+\hl{We would like to have a formulation of the MAT distance stransform which defines the MAT distance for any position even if it's not possible to define where the middle of the transition would end up.}
+In terms of dMAT/dEuclidean?
 
 The transition needs to be robust against extra fingers in the MAT.
 How do we compute the vertex location of an inset on a finger which crosses a transitioning area?
@@ -217,12 +272,12 @@ The extra fingers (blue) cause a negligible difference in the inset path (compar
 \subsubsection{Ends of markings}
 There are multiple ways in which a sequence of bones starting from the outline polygon can be said to end.
 \begin{enumerate}
-\item The last node in the sequence is a root node
+\item The last node in the sequence is a local maximum
 \item The last node in the sequence is not connected to a marked segment
 \end{enumerate}
 
-The MAT distance measure of a root node of the medial axis should always be rounded;
-i.e. where the MAT distance measure is a local maximum it should be rounded.
+The tick quantity measure should be rounded
+where the MAT distance measure is a local maximum: when all directly connected nodes have a lower MAT distance measure.
 See bottom of \cref{rounded_vs_unrounded}.
 
 
@@ -292,7 +347,7 @@ However, the method for introducing joints on the marked regions may differ from
 
 
 
-\subsection{5. Add bones for introduced joints}
+\subsection{5. Add ribs for introduced joints}
 \textcolor{gray}{
 \paragraph{Angle of fingers introduced on the skeleton}
 \Cref{finger_angles}
