@@ -41,7 +41,7 @@ We round to integer multiples of half the nozzle width so as to allow single-bea
 \item connect all even locations to form the extent of the toolpaths, which defines the variable width of the segments.
 \end{enumerate}
 
-
+\subsection{Terminology}
 For an explanation of the terms used, see \cref{legend}.
 
 \begin{figure}
@@ -74,10 +74,21 @@ Based on the straight skeleton naming, I would like to introduce a new consisten
 \end{itemize}
 
 
+\subsubsection{In related literature}
 
+``Because of its shape, the medial axis of a figure is also called the skeleton or the symmetric axis of the figure.
+Associated with the medial axis is a radius function $R$, which defines for each point on the axis its distance to the boundary of the object.''
+\cite{lee1982medial}
 
+\cite{Moesen2011} provides a thorough overview of all MAT algorithms.
+\cite{Moesen2011} calls $R$ the `feature radius': ``In every point $p \in P$, and thus also in points on the MA, thethe feature radius $\text{rad}(p)$ of $p$ can be defined as the Euclidean distance to the closest point on the boundary of $P$.''
 
-
+\cite{kao1998optimal}
+\begin{figure}[H]
+\centering
+\includegraphics[width=.9\columnwidth]{sources/method/distance_based_angles.pdf}
+\caption{MAT explanation by Kao et al.}
+\end{figure}
 
 \subsection{1. Compute MAT}
 
