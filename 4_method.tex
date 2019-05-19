@@ -20,7 +20,7 @@ We round to integer multiples of half the nozzle width so as to allow single-bea
 \end{subfigure}
 \begin{subfigure}{0.45\columnwidth}
 \includegraphics[width=\columnwidth]{sources/method/single_bead_strategy_order.jpg}
-\caption{Travel order}
+\caption{Travel order}s
 \end{subfigure}
 \caption{We can do single-bead segments. Blue is travel move.}
 \label{single_bead_strategy}
@@ -31,15 +31,20 @@ We round to integer multiples of half the nozzle width so as to allow single-bea
 \begin{enumerate}
 \item compute medial axis transform (MAT)
 \item find places `of high curvature' in the medial axis and mark those regions
-\item transform the MAT distance measures in the marked regions to enable fitting an integer multiple beads.
+\item transform the $R$ distance measures in the marked regions to enable fitting an integer multiple beads.
 		This transformation uses transition regions to smoothly transition from $n$ into $n+1$ insets.
 \item introduce extra `joints' on the medial axis in order to discretize the transformed distance measure
 \item connect these new joints to the outline with new `bones' (In the standard MAT manner)
-\item (optional) transform MAT distance fields along all bones, while keeping the endpoint dist measures fixed. (Deviate from evenly distributed linear space in order to have outer outlines closer to the nominal bead width and only change the innermost couple of toolpaths.)
+\item (optional) transform $R$ fields along all bones, while keeping the endpoint bead measures fixed. (Deviate from evenly distributed linear space in order to have outer outlines closer to the nominal bead width and only change the innermost couple of toolpaths.)
 \item define locations everywhere on the bones of the medial axis at integer MAT distances
 \item connect all locations with odd distance measure to form the inset toolpaths
 \item connect all even locations to form the extent of the toolpaths, which defines the variable width of the segments.
 \end{enumerate}
+
+\hl{Idea: generate only outer 3 walls, except in marked regions where the distance $R < 5 \win$, so as to prevent jagged infill lines.}
+\Cref{wedge_and_infill}
+
+\hl{Filter beading number in order to prevent regions with a lot of back and forth transitions.}
 
 \subsection{Terminology}
 For an explanation of the terms used, see \cref{legend}.
@@ -106,14 +111,34 @@ Associated with the medial axis is a radius function $R$, which defines for each
 \label{medial_axis_vs_straight_skeleton}
 \end{figure}
 
+The medial axis is commonly defined either as the set of points with more than one closest point on the boundary or as the set of quench sites of a fire started at the outline polygon growing inward.
+A novel way of conceptualizing the medial axis is as an efficient data structure to store a distance field.
+The medial axis is the set of all points where the derivative of the distance field is discontinuous.
+
+By introducing extra bones to the MAT, we can approximate insets from the medial axis by connecting points on the segments of the MAT using linear segments.
+
+We introduce the Grounded Medial Axis Transform.
+We dscretize the segments of the MAT where $R$ changes non-linearly (point-line parabolas and point-point bisectors) into short segments
+and connect the introduced vertices to the two closest locations on the outline.
+This allows us to directly generate accurate insets from the GMAT.
+
+Note that by altering the outline by an infinitesimal change the straight skeleton of the polygon can be made to coincide with the GMAT.
+
+We call any graph a GMAT if it contains the MAT and its segments are within the outline and the nodes have an accurate distance measure $R$ and the distance $R$ changes approximately linearly between two connected nodes.
+The GMAT allows for extra segments.
+
+We can generate an inset with rounded corners at distance $d$ by interpolating the $R$ at GMAT nodes and connecting the interpolated points.
+Similarly one could compute an unmitered inset by connecting interpolated points along the straight skeleton.
+
 
 \paragraph{Medial axis rather than Straight Skeleton}
 See \cref{medial_axis_vs_straight_skeleton}.
 Medial axis handles concave corners differently:
 instead of generating the bisector, it will generate a parabolic arc in between the vertex and another line segment of the outline polygon.
 
-Medial axis is stable against small perturbations in the input polygon!
+\st{Medial axis is stable against small perturbations in the input polygon!}
 Concave corners are handled irrespective of how many vertices are in a corner.
+\hl{(The medial axis is not stable in that whole new bones can be introduced just by adding a small bump in the outline.)}
 
 
 $\to$ approximate parabolas for simpler processing!
@@ -125,17 +150,17 @@ this does introduce a lot of extra bones, though.
 
 
 
-\subsection{2. High curvature marking}
-\label{sec:transitioning_cutoff}
+\subsection{2. Significance measure}\label{sec:significance_measure}
 \Cref{rounded_dist_measures}
 We mark bones as to-be-transformed based on the angle between the two edges of the polygon for which this bone is the bisector.
-We generalize this concept of angle to parabola sections and to MAT sections generated by two outline verts.
+Equivalently we can look at the angle $\alpha$ between a skeletal point and the two closest points on the outline.
+(Same definition as \cite{attali1996modeling}.)
+A computationally efficient way to compute the same can be obtained by looking at the ratio between $R$ and Euclidean distance.
 
-\paragraph{line-line-segments}
+\paragraph{line-line bones}
 When the angle between two outline segments is small, the naive method will produce long triangular gaps.
-We can measure the angle between two outline segments which generate a MAT segment by looking at the angle where the lines going through those segments (would) meet.
 Equivalently we can compare the Euclidean distance between two vertices with the difference in distance measure;
-if the Euclidean distance is larger than twice the distance measure difference, the angle between the segments is less than {\SI{60}{\degree}}.
+if $ |v_1 - v_0| > 2 | R(v_1) - R(v_0) |$ then $\alpha > \SI{120}{\degree}$.
 
 \begin{figure}[H]
 \centering
@@ -155,7 +180,8 @@ The Euclidean distance between two MAT vertices can never be less than the diffe
 
 
 
-\paragraph{line-point segments}
+\paragraph{line-point bones}
+\hl{reformulate in terms of $\alpha$}
 For a parabola MAT segment generated by point $(0,d)$ and an outline segment lying on the x-axis, the parabola is given by $y = \frac{1}{2d} x^2 + \frac12 d$.
 The angle between the outline segments is twice the angle between the MAT segment and an outline segment.
 The angle between the MAT parabola and the x-axis is the inverse tangent of the derivative of this formula: $\tan^{-1} \left( \abs x / d \right)$.
@@ -166,52 +192,119 @@ i.e. when $\abs x < d / \sqrt{3}$.
 So we mark the part of the parabola as to-be-transformed for which $x \in [-d / \sqrt{3}, d / \sqrt{3}]$.
 
 
-\paragraph{point-point segments}
-For a segment gerenated by points $(0,0)$ and $(0,d)$, the MAT segment is given by $y=\frac12 d$.
-For a given $x$ the distance $D$ to the outline vertices is given by $D = \sqrt{x^2 + (\frac12 d)^2}$.
-The ratio between MAT distance $D$ and Euclidean distance $\abs x$ is determined by $\frac{\partial D}{\partial x} / \frac{\partial \abs x}{x} = \abs \frac{2x}{ \sqrt{4x^2 + d^2}}$
-So the Euclidean distance is more than twice the MAT distance then $\abs \frac{\partial D}{\partial x}  < \frac12$, 
-%Wolfram Alpha:
-so $\abs x < \frac{d}{2\sqrt{3}} \approx 0.289 d$.
-So we mark the part of the straight MAT segment as to-be-transformed for which $x \in [-\frac{\sqrt{d}}{\sqrt{6}}, \frac{\sqrt{d}}{\sqrt{6}}]$.
+\paragraph{point-point bones}
+For a segment gerenated by points $(0,0)$ and $(0,d)$, the angle $\alpha > \SI{120}{\degree}$ when $\abs(x) < \frac12 d \tan \SI{30}{\degree} $,
+so we mark the part of the straight MAT segment as to-be-transformed for which $x \in [-d \sqrt{3}/6, d \sqrt{3}/6]$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.3\columnwidth]{sources/method/end_of_markings_point_point.pdf}
+\caption{End-of-markings for the segment(s) generated by two outline verts.}
+\label{end_of_markings_point_point}
+\end{figure}
 
 
 
-\subsection{}
+
+
+
+
+\subsection{Beading strategy}
 \hl{This section needs to change and the changes will impact other sections as well.}
 We need to change the method overview.
 The transition placement needs to depend on the MAT distance transform function described below.
 
-We need a good function from a given (MAT) distance $d$ to a number of beads and their widths.
-The function needs to be able to deal with a range which is considerably shorter than $[r_-, 2r_-]$, even so short as to accomodate just $[w_*,w_*]$ only.
-The function needs to be such that we never overshoot the MAT distance, because that would affect the dimensional accuracy.
-Any distance left over which cannot be filled given the range $[r_-,r_+]$ should be placed on the inside near the MAT.
+We need a function $W$ from a given radial distance $R(v)$ to a number of beads and their widths.
+These widths depend on the following parameters:
+\begin{description}
+\item[$\wmin$] the minimum possible bead width
+\item[$\wmax$] the maximum possible bead width
+\item[$\wout$] the preferred bead width of the outer inset
+\item[$\win$] the preferred bead width of the other insets
+\end{description}
 
-\hl{we should work in terms of $w_*$ instead of $r_*$ because the beads should always have the same radius in both directions!}
+The function $W$ needs to be able to deal with a range which is considerably shorter than $[\wmin, 2\wmin]$, even so short as to accomodate just $[\win,\win]$ only.
+The function needs to be such that we never overshoot the radial distance $R(v)$, because that would affect the dimensional accuracy.
+Any distance left over which cannot be filled given the range $[\wmin, \wmax]$ should be placed on the inside near the MAT.
 
-The function should be stable:
+We define $W(d)$ as a sequence of bead widths.
+The length of that sequence is $b(d)$.
+For example: with $\win = \SI{0.4}{\milli\meter}$ we could have $b(1.05) = 2.5$ and $W(1.05) = (0.4, 0.4, 0.5)$.
+The last number is the innermost bead width if there is a singleton bead along the medial axis; only half of that bead spans along a radial distance.
+
+The function $b$ should adhere to several criteria:
 \begin{itemize}
-\item between a location with MAT distance of $\frac12 nw_*$ and $\frac12 (n+1)w_*$ (for integer $n$) there is only one transition to a different number of beads
-\item the bead widths increase monotonically with the MAT distance in between transitions to a different number of beads
-\item the bead widths change gradually in between transitions to a different number of beads
+\item $b \left( \frac12 n\win \right) = \frac12 n$ for integer $n$
+\item $b$ is monotonic
+%the item below follows from the two above
+% \item between a location with radial distance $R(v) \in [\frac12 n\win, \frac12 (n+1)\win]$ (for integer $n$) there is only one transition to a different number of beads
+\item $ 0 \leq b(d) \leq d / w_\text{min} $
+\item the width $W(c, d)_n$ of each bead $n$ increases monotonically and gradually in regions with constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
 \end{itemize}
 
-The basics of the function are as such:
+For our method we also require the inverse $b^{-1}(n)$ which gives the smallest $d$ for which $b(d) = n$.
+
+For our application we define a $W$ adhereing to the following aditional constraints in order of priority:
 \begin{itemize}
-\item we compute $m = \frac12 \lfloor 2 d / w_* \rfloor$
-\item we decide whether to use $n = m$ or $n = m+\frac12$ beads
-\item we reduce the discrepancy between $d$ and $nw_*$ by dividing as much as possible of the difference over the beads
+\item Minimize unfilled area
+\item Try to get the outer bead width $W_1$ as close as possible to $\wout$
+\item Have the rest of the $W_n$ the same width
+\item at transition regions decide between $n$ and $n+1$ beads using the Loss fuction scheme below
+\item From a $d$ for which $b(d) = 3$ we don't consider fractional $b(d)$ anymore; we don't allow singleton beads along the medial axis
 \end{itemize}
 
-We prefer a homogenous line width, so that tweaking the printing parameters for that line width and estimating the object properties becomes more simple.
-We can decide on a preference scheme which decides on how many bead widths to alter in a case-by-case manner:
-We could say dividing a left-over space $<r_*$ over 3 beads is better than dividing it over 2 beads without specifying an exact loss function on each possible bead size (which would require a lot of experiments to establish).
+\iffalse
+\begin{align}
+W(d)_1 = 
+  \begin{cases} 
+%  \infty & \text{if } w < w_\text{min} \\
+   \wout & \text{if } d \geq \wout + \wmin \\
+   w - \wmin  & \text{if } 2\wmin  \leq d < \wout + \wmin
+  \end{cases}
+\end{align}
+\fi
+
+%\subsubsection{Optimal beading strategy}
+%We could decide on a beading strategy based on some loss function $L$ defined on each line width.
+
+\begin{align}
+L(w_1) &= 
+  \begin{cases} 
+%  \infty & \text{if } w < w_\text{min} \\
+   (w - \wout) / (\wmax - \wout) & \text{if } w > \wout\\
+   (\wout - w) / (\wout - \wmin)       & \text{otherwise}
+  \end{cases}
+  \\
+L(w_n) &= 
+  \begin{cases} 
+%  \infty & \text{if } w < w_\text{min} \\
+   (w - \win) / (\wmax - \win) & \text{if } w > \win\\
+   (\win - w) / (\win - \wmin)       & \text{otherwise}
+  \end{cases}
+\\
+L(W(d)) &= \sum_{n=1}^{n=\lceil f(d) \rceil} L( W(d)_n )
+\end{align}
+
+
+Together these prioritized constraints uniquely define a single $W$, depending on $\wmin, \wmax, \wout,\win$.
+An example is given in \cref{transition_location}.
+
+\begin{figure*}
+\centering
+\includegraphics[width=.9\textwidth]{sources/method/ticking_v2.pdf}
+\includegraphics[width=.25\textwidth]{sources/method/transition_location_precise.pdf}
+\caption{Mapping of different lengths to a ticking. Transition location on a line-line segment is to the right of the middle because the preferred line width is to the left of the middle in the range.}
+\label{transition_location}
+\end{figure*}
 
 
 
 
 
-\subsection{3. MAT distance transformation}
+
+
+
+\subsection{Transitioning}
 
 \begin{figure}
 \centering
@@ -222,16 +315,15 @@ We could say dividing a left-over space $<r_*$ over 3 beads is better than divid
 
 See \cref{rounded_dist_measures}.
 
-In this section we describe how we transform the MAT distance values into a measure of tick quantity.
-First we divide all MAT distance measures by the preferred bead radius $r_*$ to get an initial tick quantity measure.
-In the simple case the preferred width is in the middle of the range of possible bead widths
-These initial tick quantity measures are then transformed so that they are integer values at a lot of places.
-
-
+In order to apply the beading strategy to the MAT, we need a way to smoothly transition to a different number of beads around locations where the 3D model has a changing radius.
+The transition will be placed so as to overlap the locations of $b^{-1}(n)$.
+We assign each node $v$ of the medial axis a value $b^*$ which is initially based on $b(R(v))$, but it is modified in order to account for transitioning zones.
+On the one side of the transition we will have $b^*(v_0)=\frac12 n$ and on the other side we will have $b^*(v_1)=\frac12 n + \frac12$.
+For all locations on the MAT in between we linearly interpolate the $b^*$ values, so that we can later interpolate the bead widths $W$ linearly as well.
 
 In a narrow wedge region (a.k.a. a cusp) we have to transfer from $n$ to $n-1$ beads; this transition requires a distance.
 See \cref{single_bead_strategy_overview}.
-The transition is such that the innermost toolpath makes a \SI{45}{\degree} angle with the medial axis.
+The transition will be such that the innermost toolpath makes a \SI{45}{\degree} angle with the medial axis.
 The length of the transition along the medial axis depends on the angles involved.
 See \cref{transition_length}.
 \begin{equation}
@@ -252,14 +344,6 @@ See \cref{transition_location}.
 However, where should the transition be placed precisely? Should the middle of the transition be at that location, or do we again take a relative position of the transition to be at that location?
 For extremal values of $r_*$ the transition could overlap with the whole ticks if we simple place the middle of the transition at the specified location.
 We therefore place the same ratio of the transition is before the specified location.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.9\columnwidth]{sources/method/ticking.pdf}
-\includegraphics[width=.5\columnwidth]{sources/method/transition_location_precise.pdf}
-\caption{Mapping of different lengths to a ticking. Transition location on a line-line segment is to the right of the middle because the preferred line width is to the left of the middle in the range.}
-\label{transition_location}
-\end{figure}
 
 
 \hl{We would like to have a formulation of the MAT distance stransform which defines the MAT distance for any position even if it's not possible to define where the middle of the transition would end up.}
@@ -469,7 +553,20 @@ We could also do it for non-marked areas, but that would result in a small singl
 : Cut up in 1 single bead connecting two polys and 1 normal single bead only connected to one poly
 
 
+Where to put the middle of the toolpath, based on the middle of the line, the line width and the processing order?
 
+
+Idea: generate only outer 3 walls, except in marked regions where the distance $R < 5 \win$, so as to prevent jagged infill lines.
+Don't generate transitions when $R > 5\win$ or something?
+Only do this in skin regions?
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.99\columnwidth]{sources/method/wedge_and_infill.pdf}
+\caption{Use single and double wall lines in regions where the infill would be too thin.}
+\label{wedge_and_infill}
+\end{figure}
 
 
 
@@ -478,7 +575,7 @@ Below in \cref{parabola_switch_to_less_lines} you can see the different techniqu
 The problem this paper is trying to solve is the large gap in M0.
 M1, M2 and M3 use vertices at specific locations and use altered distance measures for those points; these methods are not stable to adding more bones to the skeleton.
 M4 and M5 define distance measures in any location (based on \cref{distance_rounding_transition}) which makes them stable.
-M5 avoids jagged lines by only applying the MAT distance remapping up to a cutoff point discussed in \cref{sec:transitioning_cutoff}.
+M5 avoids jagged lines by only applying the MAT distance remapping up to a cutoff point discussed in \cref{sec:significance_measure}.
 
 
 \begin{figure*}
