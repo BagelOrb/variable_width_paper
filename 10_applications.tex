@@ -1,4 +1,30 @@
 \section{Applications}
+
+\subsection{2D Lithophane}
+A user sets the minimum thickness  $n$ and maximum thickness $m$.
+Based on the material parameter transmittance $t$ as percentage of light after 1mm (more) thickness,
+we calculate the thickness $h$ at each location based on the luminance $I$ there:
+\begin{align}
+p &= \frac{1}{\log_2 t}
+\\
+b &= 2^{(m-n)/p}
+\\
+h &= n + p \log_2 ( b + (1-b) I )
+\end{align}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.75\columnwidth]{sources/litho/luminance_to_thickness.pdf}
+\caption{Mapping luminance to height for 2D lithophanes.}
+\label{luminance_to_thickness}
+\end{figure}
+
+
+
+
+
+
 \subsection{3D Lithophane}
 ``The illuminance $E_\text{p}$ lux at a location $d$ metres from a point source of intensity $I$ candela is given by the cosine law of illumination,
 $E_\text{p} = I \cos \theta / d^2$.''\cite{snow2001plant}
