@@ -377,13 +377,15 @@ See bottom of \cref{rounded_vs_unrounded}.
 
 See \cref{rounded_dist_measures}.
 
-In order to apply the beading strategy to the MAT, we need a way to smoothly transition to a different number of beads around locations where the 3D model has a changing radius.
+In order to prevent discontinuities in the toolpaths around locations $p$ where $\exists n : R(p) = b^{-1}(n)$ (see \cref{transition_location}), we need a way to smoothly transition to a different number of beads around locations where the 3D model has a changing radius.
 The transition will be placed so as to overlap the locations of $b^{-1}(n)$.
-We assign each node $v$ of the medial axis a value $b^*$ which is initially based on $b(R(v))$, but it is modified in order to account for transitioning zones.
+
 On the one side of the transition we will have $b^*(v_0)=\frac12 n$ and on the other side we will have $b^*(v_1)=\frac12 n + \frac12$.
 For all locations on the MAT in between we linearly interpolate the $b^*$ values, so that we can later interpolate the bead widths $W$ linearly as well.
 
-In a narrow wedge region (a.k.a. a cusp) we have to transfer from $n$ to $n-1$ beads; this transition requires a distance.
+
+
+In a narrow wedge region (a.k.a. a cusp) we have to transfer from $n$ to $n+\nicefrac12$ beads; this transition requires a distance.
 See \cref{single_bead_strategy_overview}.
 The transition will be such that the innermost toolpath makes a \SI{45}{\degree} angle with the medial axis.
 The length of the transition along the medial axis depends on the angles involved.
@@ -399,24 +401,27 @@ t = r_0 (\sin \alpha + \cos \alpha)
 \label{transition_length}
 \end{figure}
 
-The position of the transition is somehwre in between whole tick values.
-The relative position in between the whole tick values relates to the relative position of the preferred line width within the range of possible widths.
-For a distance $d$ in between a location on the medial axis with a MAT distance of $nr_*$ and one with $(n+1)r_*$ the transition should be positioned around $d - d\frac{r_* - r_-}{r_+ - r_-}$ from the former location.
-See \cref{transition_location}.
-However, where should the transition be placed precisely? Should the middle of the transition be at that location, or do we again take a relative position of the transition to be at that location?
-For extremal values of $r_*$ the transition could overlap with the whole ticks if we simple place the middle of the transition at the specified location.
-We therefore place the same ratio of the transition is before the specified location.
+The position of a transition should be at a location $p$ where $\exists n : R(p) = b^{-1}(n)$.
+However, given the fact that a transition is a region rather than a point, which part of the transition should be ceneterd at $p$?
+For a transition from $n$ to $n+\frac12$ beads, we place a fraction of the transition length toward the end with lower $R$ proportional to it's positioning within the region of non-prefered widths:
+$ (b^{-1}(n+\frac12) - p(n) ) / (p(n + \frac12) - p(n))$
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=.5\columnwidth]{sources/method/transition_location_precise.pdf}
+\caption{Transition placement. The anchor position within the transition length is proportional to the transition location within the range between two distances with prefered length. \hl{outdated functions and variables!}}
+\label{transition_length}
+\end{figure}
 
-\hl{We would like to have a formulation of the MAT distance stransform which defines the MAT distance for any position even if it's not possible to define where the middle of the transition would end up.}
-In terms of dMAT/dEuclidean?
+\hl{How to deal with non-marked regions shorter than the transition length?}
+
 
 The transition needs to be robust against extra fingers in the MAT.
 How do we compute the vertex location of an inset on a finger which crosses a transitioning area?
 By interpolating the MAT distance between the two ends of the transition, we obtain a stable method for determining the vertex locations of insets.
 See \cref{distance_rounding_transition}.
 The extra fingers (blue) cause a negligible difference in the inset path (compare the black dashed pat hwith the red dashed path).
-\hl{Does this hold for any angled wedge? How about point-line segments or point-point segments?}
+\hl{What does it look like for point-line segments or point-point segments?}
 
 \begin{figure}[H]
 \centering
@@ -427,18 +432,6 @@ The extra fingers (blue) cause a negligible difference in the inset path (compar
 
 
 \subsubsection{Ends of markings}
-There are multiple ways in which a sequence of bones starting from the outline polygon can be said to end.
-\begin{enumerate}
-\item The last node in the sequence is a local maximum
-\item The last node in the sequence is not connected to a marked segment
-\end{enumerate}
-
-The tick quantity measure should be rounded
-where the MAT distance measure is a local maximum: when all directly connected nodes have a lower MAT distance measure.
-See bottom of \cref{rounded_vs_unrounded}.
-
-
-
 For vertices at the end of a sequence of marked MAT segments we need to take care of transitions.
 If a transition is overlapping the end of the sequence, then either end of the transition would fall beyond the area where transitions should occur.
 How should we deal with thse?
