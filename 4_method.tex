@@ -469,10 +469,10 @@ the connecting segment is always larger in Euclidean distance than the differenc
 
 
 
+\subsection{Add ribs for introduced joints}
 
-
-\subsection{4. Introduce joints at key MAT dists}
-At the locations where the distance measure changes.
+\subsubsection{Introduce joints at transition ends}
+At the locations $v$ of prefered width, i.e. when $R(v) = p(b(R(v)))$.
 We discretize the distance measure field piecewise linear.
 In \cref{distance_rounding_transition} we have one piece at MAT dist $0.0$ from bar $0$ to bar $2.5$, than a piece increasing from MAT dist $0.0$ to $1.0$ from bar $2.5$ to $7.5$ etc.
 
@@ -484,21 +484,14 @@ We could introduce bones implicitly.
 Instead of changing the straight skeleton and introducing bones,
 we can simply introduce new vertices on the polygon and generate a new straight skeleton.
 
-\textcolor{gray}{
+\old{
 One could think that this means that the method for introducing joints in the original medial axis should be the same method as used for introducing joints on the newly added fingers connected to the joints introduced in the first step!
 }
 However, the method for introducing joints on the marked regions may differ from the method for introducing joints on the non-marked regions!
 
 
-
-
-
-
-
-
-
-\subsection{5. Add ribs for introduced joints}
-\textcolor{gray}{
+\subsubsection{Connect introduced joints to outline}
+\old{
 \paragraph{Angle of fingers introduced on the skeleton}
 \Cref{finger_angles}
 Cannot be optimized.
@@ -528,9 +521,24 @@ Otherwise the algorithm isn't stable w.r.t. extra vertices in the outline.
 Because the ribs are always orthogonal to the outline segments, the angle $\alpha$ between the spine and ribs is within the range $\SI{60}{\degree} < \alpha < \SI{90}{\degree}$.
 
 
-\subsection{6. transform MAT distance field}
-Before generating the locations we can specify a way to space the integer values non-uniformly along a segment.
-We can choose to have bead widths closer to the nominal bead width near lower MAT dists and do the uniform layout only in the upper region of the segment.
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Location spacing}
+\hl{Change terminology: location $\to$ junction?}
+
+Now that we have the skeleton set up, we determine the locations along the bones where the vertices of the toolpath polygons should be.
+For marked regions / significant regions we have already inroduced joints around the transitions which serve as those locations.
+For non-marked regions / unsignificant regions we can simply apply the beading strategy in order to find the toolpath verts.
+
 
 This needs to be stable against small perturbations in the outline polygon.
 See \cref{heterogeneous_joint_generation}.
@@ -546,15 +554,23 @@ Based on the MAT distance there we place ticks along the non-marked bones.
 
 
 
+\subsection{Alternative spacing}
+Applying a beading strategy to the skeleton might not be trivial.
+The trivial approach explained above introduces slight deviations from the beading strategy at intermediate locations in a quad.
+When the widths are always the same this doesn't happen, but with widths changing throughout a quad this can pose a slight problem.
+
+In the end this problem comes down to the fact that the medial axis is the location of quench sites when performing homogeneous insets.
+Changing the bones for the chosen beading strategy is impossible, because the new skeleton would then induce a new beading strategy.
+While this process could converge, it would spend too much computation time for only a small benefit.
+
+In the following we assume an even spacing, i.e. $\win = \wout$.
 
 
-\subsection{7. Location spacing}
-\textcolor{gray}{
 One could think we should not space the joints evenly along the bones, but make the spacing depend on the angles involved.
 We could check the intersection point of the lines of two polygon segments and radially project lines with the same angular spacing.
 However, the angular spacing for two patches connected to a single bone would be different, so the paths wouldn't connect!
 \hl{Does that mean the angle of the bones should ideally be updated?}
-}
+
 
 \begin{figure}[H]
 \centering
@@ -588,9 +604,28 @@ See \cref{medial_axis_parabolas}
 
 
 
+\subsection{Toolpath extraction}
+\paragraph{Processing order}
+\hl{How do we process the graph?}
+\begin{itemize}
+\item walk along polygons and for each vert walk down the graph up to the desired depth
+\item process nodes in depth first order
+\item process nodes in $R$ sorted order
+\end{itemize}
+
+We would require either a mapping from locations or bones to toolpath segments, which we can use to efficiently connect paths together.
+
+Or we process all segments in order of the polygon, but then we need to track which polygons have been processed.
+
+If we don't process both sides of the gMAT at the same time then we should record certain calculations such as the transition locations and maye also the parabola sample points.
+
+\hl{Is there or should there be a specific ordering on the bones connected to a joint?}
+A joint can have multiple parents.
+We could order the bones cyclically, irrespective of whether they are going `up' or `down'.
 
 
-\subsection{8. Connect locations into toolpaths}
+
+
 \paragraph{Single bead segments}
 \Cref{single_bead_strategy}
 We round to ingteger multiples of half the nozzle width so as to allow single-bead segments.
