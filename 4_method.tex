@@ -26,7 +26,7 @@ We round to integer multiples of half the nozzle width so as to allow single-bea
 \label{single_bead_strategy}
 \end{figure}
 
-
+\old{
 \subsection{Method Overview}
 \begin{enumerate}
 \item compute medial axis transform (MAT)
@@ -40,6 +40,7 @@ We round to integer multiples of half the nozzle width so as to allow single-bea
 \item connect all locations with odd distance measure to form the inset toolpaths
 \item connect all even locations to form the extent of the toolpaths, which defines the variable width of the segments.
 \end{enumerate}
+}
 
 \hl{Idea: generate only outer 3 walls, except in marked regions where the distance $R < 5 \win$, so as to prevent jagged infill lines.}
 \Cref{wedge_and_infill}
@@ -74,7 +75,6 @@ Based on the straight skeleton naming, I would like to introduce a new consisten
 \item any medial axis segment: bone
 \item bone introduced to the medial axis: rib
 \item medial axis vert: joint
-\item introduced medial axis vert: ligament?
 \item location of an insets along a bone: tick? locus?
 \end{itemize}
 
