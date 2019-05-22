@@ -26,21 +26,17 @@ We round to integer multiples of half the nozzle width so as to allow single-bea
 \label{single_bead_strategy}
 \end{figure}
 
-\old{
 \subsection{Method Overview}
 \begin{enumerate}
-\item compute medial axis transform (MAT)
-\item find places `of high curvature' in the medial axis and mark those regions
-\item transform the $R$ distance measures in the marked regions to enable fitting an integer multiple beads.
-		This transformation uses transition regions to smoothly transition from $n$ into $n+1$ insets.
-\item introduce extra `joints' on the medial axis in order to discretize the transformed distance measure
-\item connect these new joints to the outline with new `bones' (In the standard MAT manner)
-\item (optional) transform $R$ fields along all bones, while keeping the endpoint bead measures fixed. (Deviate from evenly distributed linear space in order to have outer outlines closer to the nominal bead width and only change the innermost couple of toolpaths.)
-\item define locations everywhere on the bones of the medial axis at integer MAT distances
-\item connect all locations with odd distance measure to form the inset toolpaths
-\item connect all even locations to form the extent of the toolpaths, which defines the variable width of the segments.
+\item Determine the beading strategy: the optimal number of beads and their widths in order to cover a given distance with those beads.
+\item Compute the medial axis transform (MAT)
+\item Discretize the MAT and add extra segments such that the gMAT divides a polygon in quads
+\item Mark significant high curvature portions of the gMAT
+\item Introduce bones on marked regions where we transition to a different number of beads
+\item Add ticks on non-marked regions according to the beading strategy.
+\item Connect ticks and transition nodes into toolpaths.
 \end{enumerate}
-}
+
 
 \hl{Idea: generate only outer 3 walls, except in marked regions where the distance $R < 5 \win$, so as to prevent jagged infill lines.}
 \Cref{wedge_and_infill}
@@ -221,7 +217,7 @@ Associated with the medial axis is a radius function $R$, which defines for each
 \caption{MAT explanation by Kao et al.}
 \end{figure}
 
-\subsection{Compute MAT}
+
 
 \begin{figure}
 % from /home/t.kuipers/Documents/PhD/Variable_Width_project/pathplanning preliminaries/straight_skeleton_vs_medial_axis.svg
@@ -499,8 +495,6 @@ the connecting segment is always larger in Euclidean distance than the differenc
 
 
 
-\subsection{Add ribs for introduced joints}
-
 \subsubsection{Introduce joints at transition ends}
 At the locations $v$ of prefered width, i.e. when $R(v) = p(b(R(v)))$.
 We discretize the distance measure field piecewise linear.
@@ -562,7 +556,7 @@ Because the ribs are always orthogonal to the outline segments, the angle $\alph
 
 
 
-\subsection{Location spacing}
+\subsection{Tick placement}
 \hl{Change terminology: location $\to$ junction?}
 
 Now that we have the skeleton set up, we determine the locations along the bones where the vertices of the toolpath polygons should be.
@@ -584,7 +578,7 @@ Based on the MAT distance $R$ there we place ticks along the non-marked bones fo
 
 
 
-\subsection{Alternative spacing}
+\subsection{Spacing problems}
 Applying a beading strategy to the skeleton might not be trivial.
 The trivial approach explained above introduces slight deviations from the beading strategy at intermediate locations in a quad.
 When the widths are always the same this doesn't happen, but with widths changing throughout a quad this can pose a slight problem.
