@@ -258,9 +258,7 @@ so we mark the part of the straight MAT segment as to-be-transformed for which $
 
 
 \subsection{Beading strategy}
-\hl{This section needs to change and the changes will impact other sections as well.}
-We need to change the method overview.
-The transition placement needs to depend on the MAT distance transform function described below.
+The next step is to determine how we will fill a given distance between the outline and a significant/marked MAT segment with a whole number of beads. We want to fit an exact whole number of beads in order to prevent a gap being generated.
 
 We need a function $W$ from a given radial distance $R(v)$ to a number of beads and their widths.
 These widths depend on the following parameters:
@@ -298,7 +296,8 @@ For our application we define a $W$ adhereing to the following aditional constra
 \item Try to get the outer bead width $W_1$ as close as possible to $\wout$
 \item Have the rest of the $W_n$ the same width
 \item at transition regions decide between $n$ and $n+1$ beads using the Loss fuction scheme below
-\item From a $d$ for which $b(d) = 3$ we don't consider fractional $b(d)$ anymore; we don't allow singleton beads along the medial axis
+\item From a $d$ for which $b(d) = 3$ we don't consider fractional $b(d)$ anymore; we don't allow singleton beads along the medial axis.
+\hl{Perhaps we should disallow this because that would require a different transition length}
 \end{itemize}
 
 \iffalse
@@ -330,25 +329,40 @@ L(w_n) &=
    (\win - w) / (\win - \wmin)       & \text{otherwise}
   \end{cases}
 \\
-L(W(d)) &= \sum_{n=1}^{n=\lceil f(d) \rceil} L( W(d)_n )
+L(W(d)) &= \left(b(d) - \lfloor b(d) \rfloor \right) L \left( W(d)_{\lceil b(d) \rceil} \right)  +  \sum_{n=1}^{n=\lfloor b(d) \rfloor} L( W(d)_n )
 \end{align}
 
-
+(Singular beads are counted only half.)
 Together these prioritized constraints uniquely define a single $W$, depending on $\wmin, \wmax, \wout,\win$.
 An example is given in \cref{transition_location}.
 
 \begin{figure*}
 \centering
 \includegraphics[width=.9\textwidth]{sources/method/ticking_v2.pdf}
-\includegraphics[width=.25\textwidth]{sources/method/transition_location_precise.pdf}
 \caption{Mapping of different lengths to a ticking. Transition location on a line-line segment is to the right of the middle because the preferred line width is to the left of the middle in the range.}
 \label{transition_location}
 \end{figure*}
 
+We introduce a function which produces the $d$ at which all widths are prefered: 
+\begin{align}
+p(n) =
+  \begin{cases} 
+   \frac12 \wout & \text{if } n = \frac12 \\
+    \wout + (n - 1) \win       & \text{otherwise}
+  \end{cases}
+\end{align}
+We call a distance $d$ `prefered' when $d = p(b(d))$
 
 
+\subsubsection{MAT distance transform}
+In order to apply the beading strategy to the MAT
+we assign each node $v$ of the medial axis a bead quantity $B^*$ which is initially based on $b(R(v))$, but it is modified in order to prevent discontinuities and remaining gaps.
 
+\hl{How should we define $B^*$? Currently it is always the rounded measure, but it needs to be unrounded in non-marked areas and it needs to support fractional numbers around transitions!}
 
+The bead quantity measure $B^*$ measure should be rounded
+where the MAT distance measure $R$ is a local maximum: when all directly connected nodes have a lower MAT distance measure.
+See bottom of \cref{rounded_vs_unrounded}.
 
 
 
