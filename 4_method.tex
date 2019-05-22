@@ -543,9 +543,9 @@ For non-marked regions / unsignificant regions we can simply apply the beading s
 This needs to be stable against small perturbations in the outline polygon.
 See \cref{heterogeneous_joint_generation}.
 For any sequence on non-marked bones from the outline polygon inward we define the stable end point as the first vertex which is connected to a marked medial axis segment.
-Based on the MAT distance there we place ticks along the non-marked bones.
+Based on the MAT distance $R$ there we place ticks along the non-marked bones following the beading strategy.
 
-\begin{figure}[H]
+\begin{figure}
 \includegraphics[width=\columnwidth]{sources/method/heterogeneous_joint_generation.pdf}
 \caption{Toolpaths employing dist rounding vs without.}
 \label{heterogeneous_joint_generation}
@@ -563,16 +563,31 @@ In the end this problem comes down to the fact that the medial axis is the locat
 Changing the bones for the chosen beading strategy is impossible, because the new skeleton would then induce a new beading strategy.
 While this process could converge, it would spend too much computation time for only a small benefit.
 
-In the following we assume an even spacing, i.e. $\win = \wout$.
+
+(In this subsection we assume an even spacing beading strategy, i.e. $\win = \wout$.)
 
 
+A related problem is that that applying the beading strategy to highly skewed quads would not be stable to the addition of extra bones.
+See \cref{quad_instability}.
+\hl{We should introduce bones in such a case!}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.5\columnwidth]{sources/method/quad_instability.pdf}
+\caption{The addition of the extra bone (orange) causes a significant change from the dark red path to the green path.}
+\label{quad_instability}
+\end{figure}
+
+
+
+See \cref{angular_based_spacing}.
 One could think we should not space the joints evenly along the bones, but make the spacing depend on the angles involved.
 We could check the intersection point of the lines of two polygon segments and radially project lines with the same angular spacing.
 However, the angular spacing for two patches connected to a single bone would be different, so the paths wouldn't connect!
 \hl{Does that mean the angle of the bones should ideally be updated?}
 
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=.5\columnwidth]{sources/method/angular_based_spacing.pdf}
 \caption{Angular based spacing isn't feasible. The bottom medial axis bone has different spacing based on the two patches. The radially evenly spaced lines are drawn in cyan for the interaction between the bottom outline segment with the top segment and in purple for the interaction between the second bottom segment with  the top segment.}
@@ -585,7 +600,7 @@ Subdividing bones introduced for parabolas evenly leads to even spacing along th
 while a derived formula seems to produce even spacing in a different sense:
 See \cref{medial_axis_parabolas}
 
-\begin{figure}[H]
+\begin{figure}
 \begin{subfigure}{0.9\columnwidth}
 \includegraphics[width=\columnwidth]{sources/method/medial_axis_even_spacing.jpg}
 \caption{Parabola transformed to straight skeleton and offsets using even spacing along bones.}
