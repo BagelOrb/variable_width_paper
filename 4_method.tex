@@ -528,25 +528,74 @@ Based on the MAT distance $R$ there we place ticks along the non-marked bones fo
 
 
 
-\subsubsection{Processing order}
-\hl{How do we process the graph?}
-\begin{itemize}
-\item walk along polygons and for each vert walk down the graph up to the desired depth
-\item process nodes in depth first order
-\item process nodes in $R$ sorted order
-\end{itemize}
+\subsubsection{Toolpath extraction algorithm}
+After the beading strategy has been applied we have a beading associated with each significant node as well as each node with locally optimal $R$.
+In order to determine the tick locations of quads which don't contain any such node, we propagate the beading information down.
+We therefore sort all quads on their highest $R$-value and process the high $R$ quads first.
+The beading information is then passed down along the bones of the quad to lower $R$ nodes if those nodes don't already have a beading associated.
 
-We would require either a mapping from locations or bones to toolpath segments, which we can use to efficiently connect paths together.
+See \cref{alg_beading_propagation}.
 
-Or we process all segments in order of the polygon, but then we need to track which polygons have been processed.
+\begin{algorithm}
+\caption{Beading propagation}
+\label{alg_beading_propagation}
+\begin{algorithmic}
+\State quads.sortOn(getHighestR())
+\ForAll{$q \in$ quads}
+	\State $v_\text{max} = q$.getHighestR()
+	\State beading = retrieveBeading($v_\text{max}$)
+	\If {$\neg$ retrieveBeading($v_\text{max}$.next())}
+		\State storeBeading($v_\text{max}$.next(), beading)
+	\EndIf
+	\If {$\neg$ retrieveBeading($v_\text{max}$.prev())}
+		\State storeBeading($v_\text{max}$.prev(), beading)
+	\EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 
-If we don't process both sides of the gMAT at the same time then we should record certain calculations such as the transition locations and maye also the parabola sample points.
 
-\hl{Is there or should there be a specific ordering on the bones connected to a joint?}
-A joint can have multiple parents.
-We could order the bones cyclically, irrespective of whether they are going `up' or `down'.
+We can then process all bones in arbitrary order and generate the ticks along those bones.
+See \cref{alg_tick_generation}.
+
+\begin{algorithm}
+\caption{Tick generation}
+\label{alg_tick_generation}
+\lstset{language=C++}
+\begin{lstlisting}[frame=single]
+Point a = edge->to->p;
+Point b = edge->from->p;
+Point ab = b - a;
+
+int start_R = edge->to->data.distance_to_boundary; // higher R
+int end_R = edge->from->data.distance_to_boundary; // lower R
+assert(end_R <= start_R);
+
+int junction_idx;
+// compute starting junction_idx for this segment
+for (junction_idx = (beading->toolpath_locations.size() - 1) / 2; junction_idx >= 0 && junction_idx < beading->toolpath_locations.size(); junction_idx--)
+{
+  int bead_R = beading->toolpath_locations[junction_idx];
+  if (bead_R <= start_R)
+    break; // junction coinciding with start node is used in this function call
+}
+
+for (; junction_idx >= 0 && junction_idx < coord_t(beading->toolpath_locations.size()); junction_idx--)
+{
+  int bead_R = beading->toolpath_locations[junction_idx];
+  assert(bead_R > 0);
+  if (bead_R < end_R)
+    break; // junction coinciding with a node is handled by the next segment
+  
+  Point junction(a + ab * (bead_R - start_R) / (end_R - start_R));
+  ticks.emplace_back(junction, beading->bead_widths[junction_idx], junction_idx);
+}
+\end{lstlisting}
+\end{algorithm}
 
 
+We then generate bead segments for each quad by connecting together the ticks of the same index.
+If the amount of ticks on both sides of the quad is not the same then this quad is in a transition and we leave one tick unconnected.
 
 
 \paragraph{Printing order}
