@@ -696,25 +696,6 @@ In order to realize the reduction we remove a section from the extrusion bead up
 
 
 
-\subsection{Overview}
-Below in \cref{parabola_switch_to_less_lines} you can see the different technique preliminaries thought out.
-The problem this paper is trying to solve is the large gap in M0.
-M1, M2 and M3 use vertices at specific locations and use altered distance measures for those points; these methods are not stable to adding more bones to the skeleton.
-M4 and M5 define distance measures in any location (based on \cref{distance_rounding_transition}) which makes them stable.
-M5 avoids jagged lines by only applying the MAT distance remapping up to a cutoff point discussed in \cref{sec:significance_measure}.
-
-
-\begin{figure*}
-\includegraphics[width=\textwidth]{sources/method/parabola_switch_to_less_lines.pdf}
-\caption{Different preliminary variants of the proposed algorithm on a parabola segment.}
-\label{parabola_switch_to_less_lines}
-\end{figure*}
-
-
-
-
-
-
 
 
 
