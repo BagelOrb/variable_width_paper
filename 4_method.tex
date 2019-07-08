@@ -651,29 +651,40 @@ We could order the bones cyclically, irrespective of whether they are going `up'
 
 
 
-\paragraph{Single bead segments}
-\Cref{single_bead_strategy}
-We round to ingteger multiples of half the nozzle width so as to allow single-bead segments.
-These could be printed from polygon and return to polygon over same segment without extruding.
+\paragraph{Printing order}
+The order in which beads are printed has influence on the quality and dimensional accuracy of a print.
+If the inner beads are printed first then small inaccuracies in the deposition process propagate outward and the final outline of the print layer will be less accurate.
+However, if the second bead is printed before the outer bead then the outer bead has more material to adhere to, which lessens the overhang constraints.
+We therefore choose to print the inner beads first starting from the second bead and at the very end print the outermost bead.
+
+
+When all extrusion segments are generated, we combine them into semi-continuous polyline toolpaths.
+These polylines generally form closed polygons, but at significant regions of the VQ the toolpaths consist of single bead polyline toolpaths.
 See \cref{single_bead_strategy}.
-
-We only introduce single bead segments along marked areas of the medial axis.
-We could also do it for non-marked areas, but that would result in a small single bead segment at \emph{every} corner.
-
-
-\hl{How to deal with single beads connecting two polys?}
-: Print 1st poly $\to$ print single bead $\to$ print 2nd poly $\to$ travel over single bead $\to$ print 1st poly
-
-\hl{How to deal with three-way intersection single beads?}
-: Cut up in 1 single bead connecting two polys and 1 normal single bead only connected to one poly
+These single bead polylines can connect to polygonal toolpaths and they can also meet each other at 3-way junctions.
+We determine the printing order for all segments of a given bead index by minimizing the travel distance using a greedy path order optimizer.
+\todo{[implementation needed!]}
 
 
-Where to put the middle of the toolpath, based on the middle of the line, the line width and the processing order?
+In general the toolpath location should be centered on the middle of the bead.
+However, when the bead width is smaller than the nozzle size we might want to offset the toolpath toward a previously printed bead.
+That way the previously printed bead occludes part of the hole in the nozzle such that the unoccluded hole is as wide as the required bead width.
+The printing order and the toolpath positioning of the beading strategy are therefore interrelated.
+
+Around 3-way junctions we need to prevent overextrusion.
+We need to reduce the extrusion amount after the first time we pass an intersection: commonly known as \emph{ghosting}.
+See \cref{ghosting}.
+In order to realize the reduction we remove a section from the extrusion bead up to a distance equal to the feature radius from the junction.
 
 
-Idea: generate only outer 3 walls, except in marked regions where the distance $R < 5 \win$, so as to prevent jagged infill lines.
-Don't generate transitions when $R > 5\win$ or something?
-Only do this in skin regions?
+\begin{figure}
+\centering
+\includegraphics[width=.99\columnwidth]{sources/method/ghosting.pdf}
+\caption{Ghosting prevents over-extrusion at junctions.}
+\label{ghosting}
+\end{figure}
+
+
 
 
 \begin{figure}[H]
