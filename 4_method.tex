@@ -196,19 +196,27 @@ We call a distance $d$ `prefered' when $d = p(b(d))$
 
 
 
-\subsection{Medial Axis}
+\subsection{Skeletonization}
 In order to apply the beading strategy to an arbitrary outline polygon we look at the skeleton of the polygon.
 There are several possible skeletonal structures we could consider.
 
 
-\subsubsection{In related literature}
+\subsubsection{Background}
+The medial axis is defined by the locations where the inscribed circle meets the boundary in at least two locations. \todo{[citation needed]}
+See \cref{MAT_explanation}.
 
 ``Because of its shape, the medial axis of a figure is also called the skeleton or the symmetric axis of the figure.
 Associated with the medial axis is a radius function $R$, which defines for each point on the axis its distance to the boundary of the object.''
 \cite{lee1982medial}
 
+The medial axis along with the feature radius combine into a complete feature decsriptor, called the medial axis transform (MAT).
+The MAT can unambiguously recreate the exact input shape. \todo{[citation needed]}
+
 \cite{Moesen2011} provides a thorough overview of all MAT algorithms.
-\cite{Moesen2011} calls $R$ the `feature radius': ``In every point $p \in P$, and thus also in points on the MA, thethe feature radius $\text{rad}(p)$ of $p$ can be defined as the Euclidean distance to the closest point on the boundary of $P$.''
+\cite{Moesen2011} calls $R$ the `feature radius': ``In every point $p \in P$, and thus also in points on the MA, the feature radius $\text{rad}(p)$ of $p$ can be defined as the Euclidean distance to the closest point on the boundary of $P$.''
+
+The medial axis of a polygonal shape is a subset of the voronoi diagram generated on the line segments of the shape. \todo{[citation needed]}
+
 
 \begin{figure}
 \centering
