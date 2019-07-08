@@ -324,13 +324,16 @@ See \cref{voronoi_MAT}.
 
 
 
+\subsection{Beading}
+We assign a beading to each significant node (and each local optimum).
 
-
-\subsection{Significance measure}\label{sec:significance_measure}
+\subsubsection{Significance measure}\label{sec:significance_measure}
 \Cref{rounded_dist_measures}
 We mark bones as to-be-transformed based on the angle between the two edges of the polygon for which this bone is the bisector.
 Equivalently we can look at the \emph{bisector angle} $\alpha$ between a skeletal point and the two closest points on the outline.
 (Same definition as \cite{attali1996modeling}.)
+
+Contrary to common techniques we will \emph{keep} the insignificant regions of the skeleton.
 
 \paragraph{line-line bones}
 When the angle between two outline segments is small, the naive method will produce long triangular gaps.
@@ -392,7 +395,7 @@ so we mark the part of the straight MAT segment as to-be-transformed for which $
 
 
 
-\subsubsection{MAT distance transform}
+\paragraph{MAT distance transform}
 In order to apply the beading strategy to the MAT
 we assign each node $v$ of the medial axis a bead quantity $B^*$ which is initially based on $b(R(v))$, but it is modified in order to prevent discontinuities and remaining gaps.
 
@@ -404,7 +407,7 @@ See bottom of \cref{rounded_vs_unrounded}.
 
 
 
-\subsection{Transitioning}
+\subsubsection{Transitioning}
 
 \begin{figure}
 \centering
@@ -566,9 +569,9 @@ Because the ribs are always orthogonal to the outline segments, the angle $\alph
 
 
 
+\subsection{Toolpath extraction}
 
-
-\subsection{Tick placement}
+\subsubsection{Tick placement}
 \hl{Change terminology: location $\to$ junction?}
 
 Now that we have the skeleton set up, we determine the locations along the bones where the vertices of the toolpath polygons should be.
@@ -590,7 +593,7 @@ Based on the MAT distance $R$ there we place ticks along the non-marked bones fo
 
 
 
-\subsection{Spacing problems}
+\subsubsection{Spacing problems}
 Applying a beading strategy to the skeleton might not be trivial.
 The trivial approach explained above introduces slight deviations from the beading strategy at intermediate locations in a quad.
 When the widths are always the same this doesn't happen, but with widths changing throughout a quad this can pose a slight problem.
@@ -655,8 +658,7 @@ See \cref{medial_axis_parabolas}
 
 
 
-\subsection{Toolpath extraction}
-\paragraph{Processing order}
+\subsubsection{Processing order}
 \hl{How do we process the graph?}
 \begin{itemize}
 \item walk along polygons and for each vert walk down the graph up to the desired depth
