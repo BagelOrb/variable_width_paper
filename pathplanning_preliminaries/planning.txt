@@ -1,0 +1,105 @@
+-----
+-- Goal / problem statement
+-----
+
+- Why would we need full filling of areas?
+ * visible top layers
+   > visual prototypes are not so important
+ * lithophanes???
+   > important for showing heterogeneity
+ * thin walls
+   > important for Cura, maybe not to other slicers
+ * accurate physical properties
+   > quite important according to Peter Brier
+
+- Find out which of these are most important for desktop FDM
+- What are the usecases of FDM and in which ratio are people generally employing those usecases?
+  > nobody knows
+
+
+-----
+-- Related work
+-----
+
+- What do other slicers do?
+ > generate test model
+ > find out who has access to all kinds of slicers
+
+
+- Look up plane filling toolpath generation literature
+ - medial axis literature
+ - straight skeleton literature ?
+
+- Look into CNC toolpath generation literature
+
+
+
+
+
+-----
+-- Method
+-----
+
+- Look into literature on Motorcycle graphs
+- and Straight skeletons
+
+- Look for python / C++ implementations
+
+
+
+- What should be the printing order? inner > outter or outter > inner?
+
+
+- Where to place jumps to a different number of integer polygons?
+
+- Should we allow for single extrusion lines (polylines rather than polygons)
+
+
+
+-----
+-- Tests / calibration
+-----
+
+
+- Viability of variable line width on itself
+* on UM3 / S5
+* on direct drive printers
+  > Paul Kuiper
+
+TK: "If even direct drive systems need to adjust the toolpaths because variable line width has its limits than why use direct drive?"
+"If we have to compensate by software anyway, is the software compensation not good enough to also work for Bowden extruders?"
+
+
+- Viability of variable line width when printed next to existing lines.
+* on UM3 / S5
+* on direct drive printers
+
+
+- How to realize variable line width
+* speed compensation
+* linear advance for extrusion flow modification
+
+
+
+- Transparency of printed lithophanes
+* different widths
+* different surface angles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

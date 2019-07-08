@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="significance measure.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="7.9195959"
+     inkscape:cx="452.20002"
+     inkscape:cy="634.41152"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4485" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="opacity:1;fill:none;fill-opacity:0.10697674;stroke:#000000;stroke-width:0.35277778;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.81395347"
+       d="m 99.483332,125.60292 v -2.11667"
+       id="path4489"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:0.10697674;stroke:#000000;stroke-width:0.35277778;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.81395347"
+       d="M 93.133332,129.83625 H 105.83333"
+       id="path4491"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:0.10697674;stroke:#ff0000;stroke-width:0.35277778;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.81395347"
+       d="m 99.483332,127.71958 c 2.116668,0 3.174998,-1.05833 4.233338,-2.11666 1.05833,-1.05834 3.175,-4.23334 4.23333,-6.35"
+       id="path4493"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.70555556px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="100.0125"
+       y="132.48209"
+       id="text4497"><tspan
+         sodipodi:role="line"
+         id="tspan4495"
+         x="100.0125"
+         y="132.48209"
+         style="stroke-width:0.26458332">R = x^2/2d + d/2</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="133.36403"
+         style="stroke-width:0.26458332"
+         id="tspan4499">dR/dx = x/d</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="134.24597"
+         style="stroke-width:0.26458332"
+         id="tspan4503">dD/dx = 1/cos(atan(dy/dx))</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="135.12791"
+         style="stroke-width:0.26458332"
+         id="tspan4507">= sqrt((dy/dx)^2 + 1)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="136.00986"
+         style="stroke-width:0.26458332"
+         id="tspan4509">= sqrt((x/d)^2 + 1)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="136.89182"
+         style="stroke-width:0.26458332"
+         id="tspan4511">dR/dD = x/d / sqrt((x/d)^2 + 1)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="137.77376"
+         style="stroke-width:0.26458332"
+         id="tspan4513">dR/dD = 1/2 iff x = d/sqrt(3)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="138.6557"
+         style="stroke-width:0.26458332"
+         id="tspan4515">iff x = d sqrt(3)/3</tspan></text>
+    <path
+       inkscape:connector-curvature="0"
+       id="path4517"
+       d="m 124.88334,125.60292 v -2.11667"
+       style="opacity:1;fill:none;fill-opacity:0.10697674;stroke:#000000;stroke-width:0.35277778;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.81395347" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:0.10697674;stroke:#000000;stroke-width:0.35277778;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.81395347"
+       d="m 124.88334,131.95296 v -2.11667"
+       id="path4519"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:0.10697674;stroke:#ff0000;stroke-width:0.35277778;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.81395347"
+       d="m 118.53333,127.71958 h 12.7"
+       id="path4521"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:0.70555556px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="122.76666"
+       y="134.06958"
+       id="text4525"><tspan
+         sodipodi:role="line"
+         id="tspan4523"
+         x="122.76666"
+         y="134.06958"
+         style="stroke-width:0.26458332">y = d/2</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="134.95152"
+         style="stroke-width:0.26458332"
+         id="tspan4527">R = sqrt(y^2 + x^2)</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="135.83347"
+         style="stroke-width:0.26458332"
+         id="tspan4529"> = sqrt((d/2)^2 + x^2)</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="136.71541"
+         style="stroke-width:0.26458332"
+         id="tspan4531">dR/dx = 2x / sqrt( d^2 + 4x^2 )</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="137.59735"
+         style="stroke-width:0.26458332"
+         id="tspan4533">dD/dx = 1</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="138.47931"
+         style="stroke-width:0.26458332"
+         id="tspan4535">dR/dD = 2x / sqrt( d^2 + 4x^2 )</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="139.36125"
+         style="stroke-width:0.26458332"
+         id="tspan4537">dR/dD = 1/2 iff x = d/2sqrt(3)</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="140.24319"
+         style="stroke-width:0.26458332"
+         id="tspan4539">iff x = d sqrt(3) / 6 </tspan></text>
+  </g>
+</svg>
