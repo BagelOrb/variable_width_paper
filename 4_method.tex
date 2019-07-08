@@ -242,24 +242,6 @@ The medial axis of a polygonal shape is a subset of the voronoi diagram generate
 \end{figure}
 
 
-\subsubsection{Medial axis rather than Straight Skeleton}
-See \cref{medial_axis_vs_straight_skeleton}.
-Medial axis handles concave corners differently:
-instead of generating the bisector, it will generate a parabolic arc in between the vertex and another line segment of the outline polygon.
-
-\st{Medial axis is stable against small perturbations in the input polygon!}
-Concave corners are handled irrespective of how many vertices are in a corner.
-\hl{(The medial axis is not stable in that whole new bones can be introduced just by adding a small bump in the outline.)}
-
-
-$\to$ approximate parabolas for simpler processing!
-A straight skeleton can be made to coincide with the medial axis by changing concave corners into an infinitesimal circle arc;
-this does introduce a lot of extra bones, though.
-
-
-The bones of the medial axis which are not directly connected to the outline segment the area in as much sub-areas as the part has polygons.
-
-
 \begin{figure}
 \begin{subfigure}{0.24\columnwidth}
 \includegraphics[width=\columnwidth]{sources/method/MAT_example.pdf}
