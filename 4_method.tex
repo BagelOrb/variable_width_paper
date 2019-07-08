@@ -501,44 +501,6 @@ One could think that this means that the method for introducing joints in the or
 However, the method for introducing joints on the marked regions may differ from the method for introducing joints on the non-marked regions!
 
 
-\subsubsection{Connect introduced joints to outline}
-\old{
-\paragraph{Angle of fingers introduced on the skeleton}
-\Cref{finger_angles}
-Cannot be optimized.
-Always has to be orthogonal to the polygon segment.
-Otherwise the algorithm isn't stable w.r.t. extra vertices in the outline.
-}
-\begin{figure}[H]
-\begin{subfigure}{0.45\columnwidth}
-\includegraphics[width=\columnwidth]{sources/method/finger_angles.jpg}
-\caption{Stability against extra vertices}
-\label{finger_angles_stability}
-\end{subfigure}
-\begin{subfigure}{0.45\columnwidth}
-\includegraphics[width=\columnwidth]{sources/method/finger_angles_2.jpg}
-\caption{Wrong rib angle, not orthogonal to outline}
-\end{subfigure}
-\caption{Finger angles should always be orthogonal to the outlines}
-\label{finger_angles}
-\end{figure}
-
-\begin{wrapfigure}[5]{r}{0.2\linewidth}
-\begin{center}
-\includegraphics[width=\linewidth]{sources/method/min_angle_of_introduced_bones.pdf}
-\end{center}
-\end{wrapfigure}
-
-Because the ribs are always orthogonal to the outline segments, the angle $\alpha$ between the spine and ribs is within the range $\SI{60}{\degree} < \alpha < \SI{90}{\degree}$.
-
-
-
-
-
-
-
-
-
 
 
 \subsection{Toolpath extraction}
