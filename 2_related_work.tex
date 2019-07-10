@@ -1,5 +1,19 @@
 \section{Related Work}
-Adjusted MAT structure for only printing the outer wall, rest area to be filled using normal infill. \cite{Moesen2011}
+
+\subsection{Toolpath strategies}
+
+\todo{Find reference on patchwise Zig-Zag toolpathing strategy.}
+
+Combining concentric toolpaths into continuous extrusion spirals. \cite{Held2009}
+
+Defining a continuous extrusion Zig-Zag toolpath. \cite{Jin2017}
+
+\subsection{Space filling toolpaths}
+\todo{find other literature which tries to minimize underfilling and overfilling which is not based on a skeletonization.}
+
+
+\subsection{Medial axis based toolpaths}
+Adjusted Medial Axis Transform (MAT) structure for only printing the outer wall, rest area to be filled using normal infill. \cite{Moesen2011}
 \Cref{moessen}
 Problem: small grey areas which are too small for the second wall lines.
 
@@ -31,6 +45,10 @@ Using variable width lines to fit a precise amount of lines using the MAT.
 \label{ding}
 \end{figure}
 
-\todo{find other literature which tries to minimize underfilling and overfilling which is not based on a skeletonization.}
+\subsection{Variable extrusion width}
 
-\todo{Discuss Zig-Zag toolpathing strategy?}
+Changing extrusion rate and temperature to match a given velocity. \cite{Ertay2018}
+
+Changing velocity in order to change extrusion rate.
+Shortly discussed in \cite{Kuipers2018}.
+\todo{find another reference}
