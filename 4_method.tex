@@ -277,41 +277,24 @@ The MAT can unambiguously recreate the input shape exactly. \todo{[citation need
 \end{figure}
 
 
-
 \begin{figure}
-% from /home/t.kuipers/Documents/PhD/Variable_Width_project/pathplanning preliminaries/straight_skeleton_vs_medial_axis.svg
-\begin{subfigure}{0.45\columnwidth}
-\includegraphics[width=\columnwidth]{sources/method/example_straight_skeleton.pdf}
-\caption{Straight skeleton}
-\end{subfigure}
-\begin{subfigure}{0.45\columnwidth}
-\includegraphics[width=\columnwidth]{sources/method/example_medial_axis.pdf}
-\caption{Medial axis}
-\end{subfigure}
-\caption{Example polygon middle analysis thingies. Difference is colored.}
-\label{medial_axis_vs_straight_skeleton}
-\end{figure}
-
-
-\begin{figure}
-\begin{subfigure}{0.24\columnwidth}
+\begin{subfigure}{0.3\columnwidth}
 \includegraphics[width=\columnwidth]{sources/method/MAT_example.pdf}
 \caption{MAT}
 \end{subfigure}
-\begin{subfigure}{0.24\columnwidth}
+\begin{subfigure}{0.3\columnwidth}
 \includegraphics[width=\columnwidth]{sources/method/Voronoi_example.pdf}
-\caption{Voronoi}
+\caption{Limited VD}
 \end{subfigure}
-\begin{subfigure}{0.24\columnwidth}
+\begin{subfigure}{0.3\columnwidth}
 \includegraphics[width=\columnwidth]{sources/method/gMAT_example.pdf}
-\caption{gMAT}
+\caption{VQ}
 \end{subfigure}
-\begin{subfigure}{0.24\columnwidth}
-\includegraphics[width=\columnwidth]{sources/method/gMAT_example_labeling.pdf}
-\caption{Quads}
-\end{subfigure}
-\caption{Grounded medial axis transform. Dark red are linear segments,  bright red are parabolic segments with high curvature, parabola segments with low curvature are purple. The labelings of areas show that the gMAT divides the area into quads and triangles and that the medial axis divides the area into sub-areas for each outline polygon.}
-\label{gmat}
+\caption{
+Relation between the medial axis, the limited Voronoi Diagram and the Voronoi quadrangulation: MAT $\subset$ Limited VD $\subset$ VQ.
+Significant parts of the skeleton are visualized in shades of red, insignificant regions in grey and blue.
+}
+\label{skeletonization_comparison}
 \end{figure}
 
 
@@ -323,6 +306,7 @@ We can then obtain the medial axis by further reducing the Voronoi bones connect
 
 However, instead of removing bones from the Voronoi diagram we will introduce more bones such that the skeleton discretizes the boundary shape into quads within which the $R$ can be interpolated linearly.
 We call the resulting skeletonization the \emph{Voronoi Quadrangulation} (VQ).
+See \cref{skeletonization_comparison}.
 The VQ greatly simplifies the processing required downstream in our framework.
 
 In order to generate the VQ, we start by generating a normal Voronoi Diagram and remove all segments which lie outside of the boundary shape.
@@ -339,14 +323,6 @@ Furthermore, we can linearly interpolate the distance field of a quad $p_0v_0v_1
 For a point $a \in p_0v_0$ and a point $b \in p_1v_1$ for which $R(a) = R(b)$ we have that all points in the line segment $ab$ have the same feature radius $R$.
 
 
-\begin{figure}
-\centering
-\includegraphics[width=.8\columnwidth]{sources/method/voronoi_MAT.png}
-\caption{From \citeauthor{lee1982medial} \cite{lee1982medial}}
-\label{voronoi_MAT}
-\end{figure}
-
-
 
 \subsection{Beading}
 We assign a bead count to each node in the skeleton which is connected to a bone which is in `the center' of the shape
@@ -355,7 +331,6 @@ Around regions where the bead count changes we introduce transition regions.
 
 
 \subsubsection{Significance measure}\label{sec:significance_measure}
-\Cref{rounded_dist_measures}
 Places where the naive concentric toolpathing strategy would create large underfilling and overfilling areas are locations which intuitively look like `the center' of the shape.
 This can be formalized by looking at the significance measure knows as the \emph{bisector angle}.
 The bisector angle $\alpha$ is the angle $\widehat{p_ovp_1}$ between a location $v$ on a bone of the skeleton and its two supporting polygon points $p_0$ and $p_1$. \cite{attali1996modeling}
@@ -422,16 +397,6 @@ See \cref{rounded_vs_unrounded}.
 
 
 \subsubsection{Transitioning}
-
-\begin{figure}
-\centering
-\includegraphics[width=.6\columnwidth]{sources/method/rounded_dist_measures.jpg}
-\caption{MAT distance measures at existing joints can be non-integer multiples of bead width.}
-\label{rounded_dist_measures}
-\end{figure}
-
-See \cref{rounded_dist_measures}.
-
 In order to prevent discontinuities in the toolpaths around locations $p$ where $\exists n : R(p) = b^{-1}(n)$ (see \cref{transition_location}), we need a way to smoothly transition to a different number of beads around locations where the 3D model has a changing radius.
 The transition will be placed so as to overlap the locations of $b^{-1}(n)$.
 
