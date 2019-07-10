@@ -27,14 +27,16 @@ We round to integer multiples of half the nozzle width so as to allow single-bea
 \end{figure}
 
 \subsection{Method Overview}
+The global idea is that we locally decide on the number of beads everywhere in the input shape, then apply a beading strategy to determine the widths of the beads and then generate the toolpath locations and widths from this.
+We decide on a bead count at locations which lie in the middle of the shape in some sense to be defined.
+The beading strategy then gives us the beading widths and locations in between those center locations and the outline.
+These beadings are then used to generate the toolpath junctions, which are connected together to form the extrusion toolpaths with varying width.
+
 \begin{enumerate}
-\item Determine the beading strategy: the optimal number of beads and their widths in order to cover a given distance with those beads.
-\item Compute the medial axis transform (MAT)
-\item Discretize the MAT and add extra segments such that the gMAT divides a polygon in quads
-\item Mark significant high curvature portions of the gMAT
-\item Introduce bones on marked regions where we transition to a different number of beads
-\item Add ticks on non-marked regions according to the beading strategy.
-\item Connect ticks and transition nodes into toolpaths.
+\item Compute a skeletonization of the outline shape based on the Voronoi diagram.
+\item Use a significance measure to mark portions of the skeleton which lie in the center.
+\item Determine the bead count values in the marked regions and handle transitions in bead count values.
+\item Generate ticks along non-marked bones of the skeleton and connect the ticks together to extract the toolpaths.
 \end{enumerate}
 
 
