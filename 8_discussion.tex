@@ -1,0 +1,21 @@
+\section{Discussion}
+
+\subsection{Theoretical analysis}
+In this paper the significance measure is not used heuristically, as it is sometimes used in other literature.
+The significance measure is an exact measure of the relative size of gaps when using the naive toolpathing method.
+\todo{[figure showing wedges, naive toolpaths and gaps]}
+Note also that contrary to some literature we don't remove bones from the skeleton, but leave it intact.
+The final skeleton is still an exact and full feature descriptor.
+In that sense our framework provides an exact solution space.
+
+Note also that our method is robust against small perturbations in the input shape.
+Although the skeleton might acquire extra bones, the significant portions of the skeleton remain similar and the output toolpaths change infinitesimally.
+
+Our framework is also local.
+The toolpathing around some section of the input polygons is independent of far away regions of the polygon.
+This means the toolpathing is stable against large perturbations of the input shape in far away regions
+and it also allows for some parallelism during the computation of the toolpaths.
+
+
+\subsection{Comparison of different beading strategies}
+\todo{Discussion of finding of Validation section}
