@@ -111,17 +111,18 @@ For our method we require the inverse $b^{-1}(n)$ which gives the smallest $d$ f
 
 The following restrictions hold:
 \begin{itemize}
-\item $b(d) \geq 0, W(n,d) > 0, L(n, d) \geq 0$
+\item $b(d) \geq 0, W(n,d) > 0, L(n, d) \geq 0, t \geq 0$
 \item $120\degree < \alpha_{\text{max}} \leq 180\degree$
 \item $W$ is symetric: $W(n, d)_i = W(n, d)_{n-i-1}$
 \item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
-\item $b^{-1}(n) < p(n) < b^{-1}(n + 1)$
+\item $p$ is within the range of optimal: $b^{-1}(n) < p(n) < b^{-1}(n + 1)$
 %\item $b \left( p(n) \right) = n$ % follows from the above!
-\item $b(d)$ is monotonic: $ b(d) \leq b(d + \epsilon)$
-\item the width $W(c, d)_n$ of each bead $n$ increases monotonically and gradually in regions with constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
+\item $b$ is monotonic: $ b(d) \leq b(d + \epsilon)$
+\item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
+\item $t$ is viable: $\forall i \in \mathbb{N} : t < \left( p(i + 1) - p(i) \right) /{2 \cos \alpha_\text{max}}$
 \end{itemize}
 
-The angle requirement ansures that there is never a 3-way junction of significant bones.
+The angle requirement ensures that there is never a 3-way junction of significant bones.
 
 By applying the beading strategy to a skeleton location $v$ and a predetermined bead count $n$ we get a beading, which is defined as the following set:
 $$
