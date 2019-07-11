@@ -1,5 +1,5 @@
 \section{Method}
-The general idea is to generate the medial axis transform and round the distance measures,
+The general idea is similar to generating the medial axis transform and round the distance measures,
 such that an exact integer beads will fit the polygon there
 so that there is never a gap region left over in the middle of the polygon.
 
@@ -35,12 +35,12 @@ These beadings are then used to generate the toolpath junctions, which are conne
 \begin{enumerate}
 \item Compute a skeletonization of the outline shape based on the Voronoi diagram.
 \item Use a significance measure to mark portions of the skeleton which lie in the center.
-\item Determine the bead count values in the marked regions and handle transitions to different bead count values.
-\item Generate ticks along non-marked bones of the skeleton and connect the ticks together to extract the toolpaths.
+\item Determine the bead count values in the significant regions and handle transitions to different bead count values.
+\item Generate ticks along insignificant bones of the skeleton and connect the ticks together to extract the toolpaths.
 \end{enumerate}
 
 
-\hl{Idea: generate only outer 3 walls, except in marked regions where the distance $R < 5 \win$, so as to prevent jagged infill lines.}
+\hl{Idea: generate only outer 3 walls, except in significant regions where the distance $R < 5 \win$, so as to prevent jagged infill lines.}
 \Cref{wedge_and_infill}
 
 \hl{Filter beading number in order to prevent regions with a lot of back and forth transitions.}
@@ -59,21 +59,17 @@ For an explanation of the terms used, see \cref{legend}.
 \hl{We need consistent terminology and symbols which adhere to standards in literature.}
 The following synonym groups are used here which are not yet checked with existing literature':
 \begin{itemize}
-\item bones, medial axis segments, arms, fingers, ribs
-\item joints, ticks, medial axis vertices, locations
-\item MAT distance measure
+\item bones, skeleton segment
+\item joints, ticks, vertices, locations
+\item feature radius $R$, $\nicefrac12$ total distance $d$
 \end{itemize}
 
 
 Based on the straight skeleton naming, I would like to introduce a new consistent terminology:
 \begin{itemize}
-\item marked medial axis segment: vertebra
-\item marked medial axis: spine
-\item non-marked medial axis segment: arm
-\item any medial axis segment: bone
-\item bone introduced to the medial axis: rib
-\item medial axis vert: joint
-\item location of an insets along a bone: tick? locus?
+\item any skeleton segment: bone
+\item skeleton vert: joint
+\item location of an insets along a bone: tick
 \end{itemize}
 
 
@@ -272,16 +268,19 @@ However, because we have discretized such segments, we can approximate the locat
 \begin{figure}
 \centering
 \includegraphics[width=.9\columnwidth]{sources/method/distance_based_angles.pdf}
-\caption{Distance based angle estimation. By comparing the euclidean distance between two vertices with the distance measure of the MAT we can skip comparing the angles between the outline segments.}
+\caption{
+Distance based angle estimation.
+By comparing the Euclidean distance between two vertices with the feature radius $R$ we can skip comparing the angles between the outline segments.
+}
 \label{distance_based_angles}
 \end{figure}
 
-The Euclidean distance between two MAT vertices can never be less than the difference in the MAT distance measure between the vertices: \cref{distance_ratio_limit}.
+The Euclidean distance between two skeletal vertices can never be less than the difference in the feature radius $R$ measure between the vertices: \cref{distance_ratio_limit}.
 
 \begin{figure}
 \centering
 \includegraphics[width=.3\columnwidth]{sources/method/distance_ratio_limit.pdf}
-\caption{Minimal Euclidean distance for a given difference in MAT distance measure.}
+\caption{Minimal Euclidean distance for a given difference in feature radius $R$.}
 \label{distance_ratio_limit}
 \end{figure}
 
@@ -290,7 +289,7 @@ while the corners of a triangle can only add up to \SI{180}{\degree}.
 \todo{TODO: make figure which clearly shows this!}
 This results in the fact that we will never have 3-way intersections of non-closed extrusion toolpaths.
 (Simple case) If 2 edges of the VQ meet then 3 outline segments are involved; lines through those segments form a triangle which cannot have more than two angles less than \SI{60}{\degree}.
-However, what if we connect two marked segments using a small non-marked segment?
+However, what if we connect two significant segments using a small insignificant segment?
 There is a distance limit based on \cref{distance_ratio_limit}:
 the connecting segment is always larger in Euclidean distance than the difference in feature radius $R$.
 
@@ -357,7 +356,7 @@ The anchor position within the transition length is proportional to the transiti
 \begin{figure}
 \centering
 \includegraphics[width=.9\columnwidth]{sources/method/distance_rounding_transition.pdf}
-\caption{MAT distance remapping.}
+\caption{Feature radius remapping.}
 \label{distance_rounding_transition}
 \end{figure}
 
@@ -402,21 +401,30 @@ For nodes $v_x$ in between $v_0$ and $v$ we interpolate $v_x.B^*$ again linearly
 
 
 
+
+
+
+
+
+
+
+
+
 \subsection{Toolpath extraction}
 \label{section_toolpath_extraction}
 
 \subsubsection{Tick placement}
 \hl{Change terminology: location $\to$ junction?}
 
-Now that we have the skeleton set up, we determine the locations along the bones where the vertices of the toolpath polygons should be.
-For marked regions / significant regions we have already inroduced joints around the transitions which serve as those locations.
-For non-marked regions / unsignificant regions we can simply apply the beading strategy in order to find the toolpath verts.
+Now that we have the skeleton set up, we determine the locations along the bones where the vertices of the toolpath polygons should be: the \emph{ticks}.
+For significant regions we have already inroduced joints around the transitions which serve as those locations.
+For insignificant regions we can simply apply the beading strategy in order to find the toolpath verts.
 
 
 This needs to be stable against small perturbations in the outline polygon.
 See \cref{heterogeneous_joint_generation}.
-For any sequence on non-marked bones from the outline polygon inward we define the stable end point as the first vertex which is connected to a marked medial axis segment.
-Based on the MAT distance $R$ there we place ticks along the non-marked bones following the beading strategy.
+For any sequence on insignificant bones from the outline polygon inward we define the stable end point as the first vertex which is connected to a significant VQ segment.
+Based on the feature radius $R$ there we place ticks along the insignificant bones following the beading strategy.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{sources/method/heterogeneous_joint_generation.pdf}
