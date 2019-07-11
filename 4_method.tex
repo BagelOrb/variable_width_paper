@@ -289,6 +289,10 @@ Any node in the skeleton can have at most two significant bones connected to it,
 while the corners of a triangle can only add up to \SI{180}{\degree}.
 \todo{TODO: make figure which clearly shows this!}
 This results in the fact that we will never have 3-way intersections of non-closed extrusion toolpaths.
+(Simple case) If 2 edges of the VQ meet then 3 outline segments are involved; lines through those segments form a triangle which cannot have more than two angles less than \SI{60}{\degree}.
+However, what if we connect two marked segments using a small non-marked segment?
+There is a distance limit based on \cref{distance_ratio_limit}:
+the connecting segment is always larger in Euclidean distance than the difference in feature radius $R$.
 
 
 
@@ -358,66 +362,48 @@ The anchor position within the transition length is proportional to the transiti
 \end{figure}
 
 
-\subsubsection{Ends of markings}
-For vertices at the end of a sequence of marked MAT segments we need to take care of transitions.
-If a transition is overlapping the end of the sequence, then either end of the transition would fall beyond the area where transitions should occur.
-How should we deal with thse?
-\begin{itemize}
-\item We need to keep the transition tick on the marked side, because we need to switch to a different number of ticks somewhere.
-Moreover, leaving out the whole transition around end-of-markings would violate the stability principle.
-\item The end-of-marking itself will retain its interpolated MAT distance as described above.
-\item The transition tick on the non-marked side of discarded.
-This means that there will also be no single bead segment leading up to the transition, which coincides with how we deal with non-marked areas.
-See \cref{single_bead_strategy}.
-\end{itemize}
-This method of dealing with end-of-markings can result in gaps slightly larger than usual.
-See \cref{change_to_marked}.
+\subsubsection{Transitioning to insignificance}
+In significant regions of the VQ we employ the approach of applying the optimal bead counts and employing transitioning, while in insignificant regions the beading is only governed by the beading of locations with locally optimal feature radius.
+Significant bones always form chains and don't branch out because of the angle constraint on $\alpha_\text{max}$.
+At the end of such chain $v$ we may need to transition from the former approach to the latter.
+This only happens when the feature radius continues increasing: if $\exists v_n \in v.\text{neighborhood}: R(v) < R(v_n) \land | R(v) - R(v_n) | / |v - v_n| >  \sin(\alpha_\text{max} / 2)$ then the bead count assigned by the significant region doesn't fit with a beading which would follow from a local optimum at $v_n$ or some farther node.
+See \cref{transition_to_insignificance_problem}.
+
+
+\todo{Applying the bead count and determining the beading with the associated widths $W$ and locations $L$ is only handled in the next section, so perhaps we should introduce the beading propagation before the section on transitioning.}
+See \cref{alg_beading_propagation}.
 
 \begin{figure}
-\begin{subfigure}{0.45\columnwidth}
-\includegraphics[width=\columnwidth]{sources/method/change_to_marked.pdf}
-\caption{before end of markings}
-\end{subfigure}
-\begin{subfigure}{0.45\columnwidth}
-\includegraphics[width=\columnwidth]{sources/method/change_to_marked_2.pdf}
-\caption{after end of markings}
-\end{subfigure}
-\caption{Transition near end of markings. The gap depends on the positioning of the middle of the transition (dotted lines) with respect to the end of the marked areas.}
-\label{change_to_marked}
+\centering
+\includegraphics[width=.5\columnwidth]{sources/method/transition_to_insignificance_problem.pdf}
+\caption{
+Problems at significance boundary regions highlighted with red ovals.
+The beading approach from the significant region (blue) results in toolpaths (black) which don't line up with the approach following from the beading which results from the bead count at the center bottom.
+}
+\label{transition_to_insignificance_problem}
 \end{figure}
 
 
-It impossible for three marked edges to come together.
-(Simple case) If 2 edges of the MAT meet then 3 outline segments are involved; lines through those segments form a triangle which cannot have more than two angles less than \SI{60}{\degree}.
-However, what if we connect two marked segments using a small non-marked segment?
-There is a distance limit based on \cref{distance_ratio_limit}:
-the connecting segment is always larger in Euclidean distance than the difference in MAT distance.
+The transition length of these transitions to insignificance is determined by the fractional difference in bead count between the two beadings:
+if $v.B^* < n$ then $t = t(n) . (R(v) - v.L_n)$
+otherwise $t = t(n) . (1 - (R(v) - v.L_n))$,
+where $n = \argmax_i v.L_i < R(v)$.
+At a distance $t$ from $v$ along significant bones we introduce an new node $v_0$ for the end of the transition and again we connect it to the outline as per the VQ requirements.
 
 
+We modify $v.B^*$ such that it coincides with the beading propagated to $v$ from some farther local optimum or another significant region.
+(This propagation is explained in \cref{section_toolpath_extraction}.)
+We assign $v.B^* = n + 1 - \epsilon$, so that the transition switches from the significant beading to the beading of the insignificant approach entirely.
+For nodes $v_x$ in between $v_0$ and $v$ we interpolate $v_x.B^*$ again linearly based on the Euclidean distance along the bones in between $v$ and $v_0$.
 
-
-\subsubsection{Introduce joints at transition ends}
-At the locations $v$ of preferred width, i.e. when $R(v) = p(b(R(v)))$.
-We discretize the distance measure field piecewise linear.
-In \cref{distance_rounding_transition} we have one piece at MAT dist $0.0$ from bar $0$ to bar $2.5$, than a piece increasing from MAT dist $0.0$ to $1.0$ from bar $2.5$ to $7.5$ etc.
-
-At the end of a marked section we round the MAT distance measure to the nearest integer and introduce a joint there and connect it to the outline using a new finger.
-At those places we round the distance measure without applying transitioning, because the end of the transition would lie beyond the marked region.
- 
-\paragraph{Note}
-We could introduce bones implicitly.
-Instead of changing the straight skeleton and introducing bones,
-we can simply introduce new vertices on the polygon and generate a new straight skeleton.
-
-\old{
-One could think that this means that the method for introducing joints in the original medial axis should be the same method as used for introducing joints on the newly added fingers connected to the joints introduced in the first step!
-}
-However, the method for introducing joints on the marked regions may differ from the method for introducing joints on the non-marked regions!
-
+\todo{TODO: implement this! }
+\todo{Compute beading propagation after initial $B^*$ assignment, but before transitioning}
+\todo{Explain beading propagation before transitioning}
 
 
 
 \subsection{Toolpath extraction}
+\label{section_toolpath_extraction}
 
 \subsubsection{Tick placement}
 \hl{Change terminology: location $\to$ junction?}
