@@ -35,7 +35,7 @@ These beadings are then used to generate the toolpath junctions, which are conne
 \begin{enumerate}
 \item Compute a skeletonization of the outline shape based on the Voronoi diagram.
 \item Use a significance measure to mark portions of the skeleton which lie in the center.
-\item Determine the bead count values in the marked regions and handle transitions in bead count values.
+\item Determine the bead count values in the marked regions and handle transitions to different bead count values.
 \item Generate ticks along non-marked bones of the skeleton and connect the ticks together to extract the toolpaths.
 \end{enumerate}
 
@@ -94,19 +94,19 @@ We consider only half of the polygon, because our beading strategy should be sym
 
 We define a beading strategy as the following set:
 $$
-\left\{ b(d), p(n), W(n, d), L(n, d), t, \alpha_{\text{max}} \right\}
+\left\{ b(d), p(n), W(n, d), L(n, d), t(n), \alpha_{\text{max}} \right\}
 $$
 where
 $b(d)$ gives the optimal bead count to cover a total distance of $d$,
 $p(n)$ gives the optimal total distance of a given bead count $n$,
 $W(n, d)$ gives the sequence of bead widths to cover a distance $d$ using $n$ beads,
 $L(n, d)$ gives the sequence of toolpath positions as distances from the outline to cover a distance $d$ using $n$ beads,
-$t$ is the length of transitions within which we switch to a different number of beads
+$t(n)$ is the length of the transition region to switch from $n$ to $n+1$ beads
 and
 $\alpha_{\text{max}}$ is the limit bisector angle of the significance measure.
 
 
-We call a distance $d$ `prefered' when $d = p(b(d))$
+We call a distance $d$ `preferred' when $d = p(b(d))$
 For our method we require the inverse $b^{-1}(n)$ which gives the smallest $d$ for which $b(d) = n$.
 
 The following restrictions hold:
@@ -119,7 +119,7 @@ The following restrictions hold:
 %\item $b \left( p(n) \right) = n$ % follows from the above!
 \item $b$ is monotonic: $ b(d) \leq b(d + \epsilon)$
 \item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
-\item $t$ is viable: $\forall i \in \mathbb{N} : t < \left( p(i + 1) - p(i) \right) /{2 \cos \alpha_\text{max}}$
+\item $t$ is viable: $t(n) < \left( p(n + 1) - p(n) \right) /{2 \cos \alpha_\text{max}}$
 \end{itemize}
 
 The angle requirement ensures that there is never a 3-way junction of significant bones.
