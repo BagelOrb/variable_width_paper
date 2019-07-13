@@ -306,6 +306,12 @@ We also assign a bead count $v.B^*=b(R(v))$ to all nodes $v$ which are local max
 This prevents the single overfill or underfill region in non-significant regions.
 See \cref{rounded_vs_unrounded}.
 
+If a local maximum gets an odd bead count this would result in a single dot bead toolpath with zero length.
+This not only forms an exception we would need to account for when extracting toolpath segments,
+it also results in a toolpath which is difficult to manufacture.
+Instead we prevent odd bead counts by either increasing or decresing the bead count based on the prefered widths of those bead counts:
+if $v.B^* \% 2 = 1$ then $v.B^* := \argmin_n |p(n) - R(v)|$.
+
 
 
 \subsubsection{Transitioning}
