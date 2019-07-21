@@ -240,7 +240,7 @@ Around regions where the bead count changes we introduce transition regions.
 \subsubsection{Significance measure}\label{sec:significance_measure}
 Places where the naive concentric toolpathing strategy would create large underfilling and overfilling areas are locations which intuitively look like `the center' of the shape.
 This can be formalized by looking at the significance measure knows as the \emph{bisector angle}.
-The bisector angle $\alpha$ is the angle $\widehat{p_ovp_1}$ between a location $v$ on a bone of the skeleton and its two supporting polygon points $p_0$ and $p_1$. \cite{attali1996modeling}
+The bisector angle $\alpha$ is the angle $\angle{p_ovp_1}$ between a location $v$ on a bone of the skeleton and its two supporting polygon points $p_0$ and $p_1$. \cite{attali1996modeling}
 For a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$, which corresponds to overfill areas and underfill areas the size of $\nicefrac12 w^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using a naive strategy of constant bead width $w$.
 See \cref{naive_overfill_underfill}.
 The bisector angle is therefore an exact measure of the amount of overfill and underfill.
