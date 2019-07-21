@@ -14,7 +14,7 @@
    viewBox="0 0 210 297"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.1 r15371"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="significance measure.svg">
   <defs
      id="defs2" />
@@ -25,16 +25,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.9195959"
-     inkscape:cx="452.20002"
-     inkscape:cy="634.41152"
+     inkscape:zoom="5.6"
+     inkscape:cx="491.20377"
+     inkscape:cy="599.02951"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
-     showgrid="true"
+     showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-height="1025"
+     inkscape:window-x="1920"
+     inkscape:window-y="27"
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -106,17 +106,132 @@
          x="100.0125"
          y="136.89182"
          style="stroke-width:0.26458332"
-         id="tspan4511">dR/dD = x/d / sqrt((x/d)^2 + 1)</tspan><tspan
+         id="tspan842" /><tspan
          sodipodi:role="line"
          x="100.0125"
          y="137.77376"
          style="stroke-width:0.26458332"
-         id="tspan4513">dR/dD = 1/2 iff x = d/sqrt(3)</tspan><tspan
+         id="tspan850">dD/dx = sqrt(dy^2 + dx^2) / dx</tspan><tspan
          sodipodi:role="line"
          x="100.0125"
          y="138.6557"
          style="stroke-width:0.26458332"
-         id="tspan4515">iff x = d sqrt(3)/3</tspan></text>
+         id="tspan856">= sqrt((dy/dx *dx)^2 + dx^2) / dx</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="139.53764"
+         style="stroke-width:0.26458332"
+         id="tspan862">= sqrt((x/d *dx)^2 + dx^2) / dx</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="140.41959"
+         style="stroke-width:0.26458332"
+         id="tspan868">= sqrt(x^2 / d^2 * dx^2 + dx^2) / dx</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="141.30153"
+         style="stroke-width:0.26458332"
+         id="tspan874">= sqrt(dx^2 * (x^2 / d^2 + 1)) / dx</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="142.18347"
+         style="stroke-width:0.26458332"
+         id="tspan878">= sqrt(x^2 / d^2 + 1)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="143.06541"
+         style="stroke-width:0.26458332"
+         id="tspan880">= sqrt((x/d)^2 + 1)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="143.94736"
+         style="stroke-width:0.26458332"
+         id="tspan4511" /><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="144.82932"
+         style="stroke-width:0.26458332"
+         id="tspan886">dR/dD = x/d / sqrt((x/d)^2 + 1)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="145.71126"
+         style="stroke-width:0.26458332"
+         id="tspan896">= x/ (d * sqrt((x/d)^2 + 1))</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="146.5932"
+         style="stroke-width:0.26458332"
+         id="tspan900">= x/ sqrt(d^2 * ((x/d)^2 + 1))</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="147.47514"
+         style="stroke-width:0.26458332"
+         id="tspan902">= x/ sqrt(x^2 + d^2)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="148.35709"
+         style="stroke-width:0.26458332"
+         id="tspan4513" /><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="149.23903"
+         style="stroke-width:0.26458332"
+         id="tspan921" /><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="150.12097"
+         style="stroke-width:0.26458332"
+         id="tspan923">dR/dD = 1/2 iff x = d/sqrt(3)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="151.00291"
+         style="stroke-width:0.26458332"
+         id="tspan927">iff x = d sqrt(3)/3</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="151.88486"
+         style="stroke-width:0.26458332"
+         id="tspan929" /><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="152.76682"
+         style="stroke-width:0.26458332"
+         id="tspan906">x/ sqrt(x^2 + d^2) = cos(a<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan937">S</tspan> / 2)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="153.64876"
+         style="stroke-width:0.26458332"
+         id="tspan910">when</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="154.5307"
+         style="stroke-width:0.26458332"
+         id="tspan935">x = d cos(a<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan973">S</tspan>/2)/sqrt(1 - cos^2(a<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan971">S</tspan>/2))</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="155.41264"
+         style="stroke-width:0.26458332"
+         id="tspan943">x = d tan((180* - a<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan945">S</tspan>)/2)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="156.29459"
+         style="stroke-width:0.26458332"
+         id="tspan979">x = d / tan(a<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan981">S</tspan> / 2)</tspan><tspan
+         sodipodi:role="line"
+         x="100.0125"
+         y="157.17653"
+         style="stroke-width:0.26458332"
+         id="tspan4515" /></text>
     <path
        inkscape:connector-curvature="0"
        id="path4517"
@@ -172,11 +287,66 @@
          x="122.76666"
          y="139.36125"
          style="stroke-width:0.26458332"
-         id="tspan4537">dR/dD = 1/2 iff x = d/2sqrt(3)</tspan><tspan
+         id="tspan4537"></tspan><tspan
          sodipodi:role="line"
          x="122.76666"
          y="140.24319"
          style="stroke-width:0.26458332"
-         id="tspan4539">iff x = d sqrt(3) / 6 </tspan></text>
+         id="tspan947"></tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="141.12514"
+         style="stroke-width:0.26458332"
+         id="tspan949">dR/dD = 1/2 iff x = d/2sqrt(3)</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="142.00708"
+         style="stroke-width:0.26458332"
+         id="tspan4539">iff x = d sqrt(3) / 6 </tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="142.88902"
+         style="stroke-width:0.26458332"
+         id="tspan951" /><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="143.77097"
+         style="stroke-width:0.26458332"
+         id="tspan953" /><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="144.65291"
+         style="stroke-width:0.26458332"
+         id="tspan955">2x / sqrt( d^2 + 4x^2 ) = cos(a<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan957">S</tspan>/2)</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="145.53485"
+         style="stroke-width:0.26458332"
+         id="tspan959">when</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="146.41681"
+         style="stroke-width:0.26458332"
+         id="tspan961">x = d cos(a<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan967">S</tspan>/2)/(2 sqrt(1 - cos^2(a<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan965">S</tspan>/2)))</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="147.29875"
+         style="stroke-width:0.26458332"
+         id="tspan963">x = d / (2 tan(a<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan969">S</tspan>/2))</tspan><tspan
+         sodipodi:role="line"
+         x="122.76666"
+         y="148.18069"
+         style="stroke-width:0.26458332"
+         id="tspan975">x = d tan((180* - a<tspan
+   style="font-size:64.99999762%;baseline-shift:sub"
+   id="tspan977">S</tspan>)/2) / 2</tspan></text>
   </g>
 </svg>
