@@ -1,28 +1,17 @@
 \section{Method}
-The general idea is similar to generating the medial axis transform and round the distance measures,
-such that an exact integer beads will fit the polygon there
-so that there is never a gap region left over in the middle of the polygon.
+When performing the naive method of offsetting the outline inward with constant width paths the overfill and underfill problems arise in the center.
+Constant widths inward steps might not resolve to the arbitrary width of the outline shape.
+Our method therefore decides on the number of beads everywhere first and then determines the widths of the beads.
+We decide on a bead count at locations which lie in centeral positions of the shape in some sense to be defined below and apply an optimal distribution of widths from the centeral regions outward.
 
-We round to integer multiples of half the nozzle width so as to allow single-bead segments, rather than only having polygonal insets.
-
-\begin{figure}
-\includegraphics[width=\columnwidth]{sources/method/rounded_vs_unrounded.pdf}
-\caption{Toolpaths employing dist rounding vs without.}
-\label{rounded_vs_unrounded}
-\end{figure}
-
-
-\subsection{Method Overview}
-The global idea is that we locally decide on the number of beads everywhere in the input shape, then apply a beading strategy to determine the widths of the beads and then generate the toolpath locations and widths from this.
-We decide on a bead count at locations which lie in centeral positions of the shape in some sense to be defined below.
-The beading strategy then gives us the beading widths and locations in between those center locations and the outline.
-These beadings are then used to generate the toolpath junctions, which are connected together to form the extrusion toolpaths with varying width.
+What constitutes an optimal distribution is governed by a beading strategy.
+Our framework allows for different beading strategies which can optimize for different criteria.
 
 \begin{enumerate}
-\item Compute a skeletonization of the outline shape based on the Voronoi diagram.
-\item Use a significance measure to mark portions of the skeleton which lie in the center.
+\item Compute a skeleton of the outline shape based on the Voronoi diagram.
+\item Use a significance measure to mark regions of the skeleton which are central.
 \item Determine the bead count values in the marked regions and handle transitions to different bead count values.
-\item Generate junctions along unmarked bones of the skeleton and connect the junctions together to form the toolpaths.
+\item Generate junctions along unmarked bones of the skeleton and connect the junctions together to form the extrusion beads.
 \end{enumerate}
 
 
