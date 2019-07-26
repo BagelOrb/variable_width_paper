@@ -14,51 +14,16 @@ We round to integer multiples of half the nozzle width so as to allow single-bea
 
 \subsection{Method Overview}
 The global idea is that we locally decide on the number of beads everywhere in the input shape, then apply a beading strategy to determine the widths of the beads and then generate the toolpath locations and widths from this.
-We decide on a bead count at locations which lie in the middle of the shape in some sense to be defined.
+We decide on a bead count at locations which lie in centeral positions of the shape in some sense to be defined below.
 The beading strategy then gives us the beading widths and locations in between those center locations and the outline.
 These beadings are then used to generate the toolpath junctions, which are connected together to form the extrusion toolpaths with varying width.
 
 \begin{enumerate}
 \item Compute a skeletonization of the outline shape based on the Voronoi diagram.
 \item Use a significance measure to mark portions of the skeleton which lie in the center.
-\item Determine the bead count values in the significant regions and handle transitions to different bead count values.
-\item Generate ticks along insignificant bones of the skeleton and connect the ticks together to extract the toolpaths.
+\item Determine the bead count values in the marked regions and handle transitions to different bead count values.
+\item Generate ticks along non-marked bones of the skeleton and connect the ticks together to form the toolpaths.
 \end{enumerate}
-
-
-\hl{Idea: generate only outer 3 walls, except in significant regions where the distance $R < 5 \win$, so as to prevent jagged infill lines.}
-\Cref{wedge_and_infill}
-
-\hl{Filter beading number in order to prevent regions with a lot of back and forth transitions.}
-
-\subsection{Terminology}
-For an explanation of the terms used, see \cref{legend}.
-
-\begin{figure}
-\includegraphics[width=\columnwidth]{sources/method/terminology.pdf}
-\caption{Explanation of terms.}
-\label{legend}
-\end{figure}
-
-
-
-\hl{We need consistent terminology and symbols which adhere to standards in literature.}
-The following synonym groups are used here which are not yet checked with existing literature':
-\begin{itemize}
-\item bones, skeleton segment
-\item joints, ticks, vertices, locations
-\item feature radius $R$, $\nicefrac12$ total distance $d$
-\end{itemize}
-
-
-Based on the straight skeleton naming, I would like to introduce a new consistent terminology:
-\begin{itemize}
-\item any skeleton segment: bone
-\item skeleton vert: joint
-\item location of an insets along a bone: tick
-\end{itemize}
-
-
 
 
 
