@@ -22,7 +22,7 @@ These beadings are then used to generate the toolpath junctions, which are conne
 \item Compute a skeletonization of the outline shape based on the Voronoi diagram.
 \item Use a significance measure to mark portions of the skeleton which lie in the center.
 \item Determine the bead count values in the marked regions and handle transitions to different bead count values.
-\item Generate ticks along non-marked bones of the skeleton and connect the ticks together to form the toolpaths.
+\item Generate junctions along non-marked bones of the skeleton and connect the junctions together to form the toolpaths.
 \end{enumerate}
 
 
@@ -407,10 +407,9 @@ $l_i$ is the distance of the toolpath location of bead $i$ from the outline.
 
 
 
-\subsubsection{Tick placement}
-\hl{Change terminology: location $\to$ junction?}
+\subsubsection{Junction placement}
 
-Now that we have the skeleton set up, we determine the locations along the bones where the vertices of the toolpath polygons should be: the \emph{ticks}.
+Now that we have the skeleton set up, we determine the locations along the bones where the vertices of the toolpath polygons should be: the \emph{junctions}.
 For significant regions we have already inroduced joints around the transitions which serve as those locations.
 For insignificant regions we can simply apply the beading strategy in order to find the toolpath verts.
 
@@ -418,7 +417,7 @@ For insignificant regions we can simply apply the beading strategy in order to f
 This needs to be stable against small perturbations in the outline polygon.
 See \cref{heterogeneous_joint_generation}.
 For any sequence on insignificant bones from the outline polygon inward we define the stable end point as the first vertex which is connected to a significant VQ segment.
-Based on the feature radius $R$ there we place ticks along the insignificant bones following the beading strategy.
+Based on the feature radius $R$ there we place junctions along the insignificant bones following the beading strategy.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{sources/method/heterogeneous_joint_generation.pdf}
@@ -432,7 +431,7 @@ Based on the feature radius $R$ there we place ticks along the insignificant bon
 
 \subsubsection{Toolpath extraction algorithm}
 After the beading strategy has been applied we have a beading associated with each significant node as well as each node with locally optimal $R$.
-In order to determine the tick locations of quads which don't contain any such node, we propagate the beading information down.
+In order to determine the junction locations of quads which don't contain any such node, we propagate the beading information down.
 We therefore sort all quads on their highest $R$-value and process the high $R$ quads first.
 The beading information is then passed down along the bones of the quad to lower $R$ nodes if those nodes don't already have a beading associated.
 
@@ -457,12 +456,12 @@ See \cref{alg_beading_propagation}.
 \end{algorithm}
 
 
-We can then process all bones in arbitrary order and generate the ticks along those bones.
-See \cref{alg_tick_generation}.
+We can then process all bones in arbitrary order and generate the junctions along those bones.
+See \cref{alg_junction_generation}.
 
 \begin{algorithm}
-\caption{Tick generation}
-\label{alg_tick_generation}
+\caption{Junction generation}
+\label{alg_junction_generation}
 \lstset{language=C++}
 \begin{lstlisting}[frame=single]
 Point a = edge->to->p;
@@ -490,14 +489,14 @@ for (; junction_idx >= 0 && junction_idx < coord_t(beading->toolpath_locations.s
     break; // junction coinciding with a node is handled by the next segment
   
   Point junction(a + ab * (bead_R - start_R) / (end_R - start_R));
-  ticks.emplace_back(junction, beading->bead_widths[junction_idx], junction_idx);
+  junctions.emplace_back(junction, beading->bead_widths[junction_idx], junction_idx);
 }
 \end{lstlisting}
 \end{algorithm}
 
 
-We then generate bead segments for each quad by connecting together the ticks of the same index.
-If the amount of ticks on both sides of the quad is not the same then this quad is in a transition and we leave one tick unconnected.
+We then generate bead segments for each quad by connecting together the junctions of the same index.
+If the amount of junctions on both sides of the quad is not the same then this quad is in a transition and we leave one junction unconnected.
 
 
 \paragraph{Printing order}
