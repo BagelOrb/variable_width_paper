@@ -207,24 +207,30 @@ For parabolas we introduce extra points in the discretization at the two bounds 
 and for bones with vertex-vertex support we introduce discretization points at the two bounds where $| x | = \nicefrac12 d  / \tan(\alpha_\text{max} / 2)$.
 This ensures that the discretization doesn't alter the extent and existence of significant regions.
 
-\begin{figure}
-\centering
-\includegraphics[width=.9\columnwidth]{sources/method/distance_based_angles.pdf}
-\caption{
-Distance based angle estimation.
-By comparing the Euclidean distance between two vertices with the feature radius $R$ we can skip comparing the angles between the outline segments.
-}
+\begin{figure} \centering
+\begin{subfigure}{0.45\columnwidth} \centering
+\includegraphics[height=.7\columnwidth]{sources/method/distance_based_angles.pdf}
+\caption{Significance}
 \label{distance_based_angles}
+\end{subfigure}
+\begin{subfigure}{0.45\columnwidth} \centering
+\includegraphics[height=.7\columnwidth]{sources/method/distance_ratio_limit.pdf}
+\caption{Distance}
+\label{distance_ratio_limit}
+\end{subfigure}
+\caption{
+Properties of feature radius $R$.
+Part of outline shape in thick black,
+skeleton in red,
+inscribed circle in gray,
+radii in dashed lines.
+The significance measure can be simplified using $\alpha = 2 \gamma = 2 \cos^{-1} \Delta R / |v_1 - v_0|$.
+The distance $|v_1 - v_0| > \Delta R$ because otherwise the feature radius would not be one of an inscribed circle.
+}
 \end{figure}
 
 The Euclidean distance between two skeletal vertices can never be less than the difference in the feature radius $R$ measure between the vertices: \cref{distance_ratio_limit}.
 
-\begin{figure}
-\centering
-\includegraphics[width=.3\columnwidth]{sources/method/distance_ratio_limit.pdf}
-\caption{Minimal Euclidean distance for a given difference in feature radius $R$.}
-\label{distance_ratio_limit}
-\end{figure}
 
 Any node in the skeleton can have at most two significant bones connected to it, because we have limited $\alpha_\text{max} > 120\degree$,
 while the corners of a triangle can only add up to \SI{180}{\degree}.
