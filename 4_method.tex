@@ -8,7 +8,7 @@ What constitutes an optimal distribution is governed by a beading strategy.
 Our framework allows for different beading strategies which can optimize for different criteria.
 
 \begin{enumerate}
-\item Compute a skeleton of the outline shape based on the Voronoi diagram.
+\item Compute a skeleton of the outline shape.
 \item Use a significance measure to mark regions of the skeleton which are central.
 \item Determine the bead count values in the marked regions and handle transitions to different bead count values.
 \item Generate junctions along unmarked bones of the skeleton and connect the junctions together to form the extrusion beads.
@@ -38,15 +38,18 @@ Our framework allows for different beading strategies which can optimize for dif
 
 
 
-\subsection{Skeletonization}
-In order to apply the beading strategy to an arbitrary outline polygon we look at the skeleton of the polygon.
-There are several possible skeletonal structures we could consider.
+\subsection{Shape decomposition}
+The shape decomposition we employ on the outline shape of a layer is based on the medial axis.
+We then further decompose the shape into simple fragments, so that we can easily process the shape using piecewise linear approximations.
 
 
-\subsubsection{Background}
+
+\subsubsection{Medial axis transform}
 One of the most commonly used skeletonizations of a shape is the medial axis.
 The medial axis is defined by the locations where the inscribed circle meets the boundary in at least two locations. \todo{[citation needed]}
+We call the set of closest points on the outline polygon $P$ of a point $v$ on the skeleton its \emph{support}: $\text{sup}(v) = \argmin_{x\in P} |x - v|$.
 See \cref{MAT_explanation}.
+The resulting skeleton consists of straight segments and parabolic segments connected to each other at \emph{branch nodes}.
 
 ``Because of its shape, the medial axis of a figure is also called the skeleton or the symmetric axis of the figure.
 Associated with the medial axis is a radius function $R$, which defines for each point on the axis its distance to the boundary of the object.''
@@ -71,36 +74,33 @@ The MAT can unambiguously recreate the input shape exactly. \todo{[citation need
 \includegraphics[width=\columnwidth]{sources/method/MAT_VD_VQ.pdf}
 \caption{
 Skeletonization of an outline shape (black).
-Relation between the medial axis (red), the limited Voronoi Diagram (red and green) and the Voronoi Quadrangulation (red, green and gray): MAT $\subset$ Limited VD $\subset$ VQ.
+Relation between the medial axis (red), the limited Voronoi Diagram (red and green) and the Skeletal Trapezoidation (red, green and gray): MAT $\subset$ Limited VD $\subset$ ST.
 }
 \label{skeletonization_comparison}
 \end{figure}
 
 
 
-\subsubsection{Voronoi Quadrangulation}
-\todo{The Voronoi Quadrangulation has already been described in} \cite{Ding2016a}. Section 2.4 Domain Decomposition.
-
-The medial axis of a polygonal shape can be obtained from the Voronoi Diagram (VD) generated on the line segments and vertices of the shape. \cite{lee1982medial}
-First we throw away all locations in the Voronoi diagram which fall outside the boundary shape.
-We can then obtain the medial axis by further reducing the Voronoi bones connected to a concave corner in the boundary shape.
-
-However, instead of removing bones from the Voronoi diagram we will introduce more bones such that the skeleton discretizes the boundary shape into quads within which the $R$ can be interpolated linearly.
-We call the resulting skeletonization the \emph{Voronoi Quadrangulation} (VQ).
+\subsubsection{Skeletal trapezoidation}
+We employ a shape decomposition proposed by \citeauthor{Ding2016a} which starts from the medial axis and further decomposes the outline shape into simple fragments. \cite{Ding2016a}
+Each of the regions demarcated by the skeleton is further decomposed by adding radial bones from each node $v$ to its support $\text{sup}(v)$.
+The resulting skeleton decomposes the outline shape into trapezoids and triangles.
+We will therefore call this shape decomposition the \emph{Skeletal Trapezoidation} (ST).
+(The concept of a trapezoidation conventionally allows for the degenerate case where a trapezoid resolves into a triangle. \cite{chazelle1984,fournier1984})
 See \cref{skeletonization_comparison}.
-The VQ greatly simplifies the processing required downstream in our framework.
 
-In order to generate the VQ, we start by generating a normal Voronoi Diagram and remove all segments which lie outside of the boundary shape.
-We then introduce bones such that each node in the VQ is directly connected to the outline via a single bone:
-each node in the VQ is connected to the closest points on the boundary (its \emph{support}).
-As such the VQ divides the polygon in quads consisting of 1 outline segment and 3 bones, one of which is not directly connected to the outline.
-However some of these quads are triangles, as can be seen in \cref{discretization}.
 
-We then also discretize parabolic bones and bones generated by two concave outline vertices into approximately equidistant segments.
+The medial axis of a polygonal shape can be obtained from the Voronoi Diagram (VD) generated on the line segments and vertices of the shape, by throwing away all segments of the VD falling outside of the outline shape and throwing away the bones connected to concave vertices in the outline shape. \cite{lee1982medial}
+However, the concave vertices are precisely in the support of the nodes to which those bones connect.
+This means we can efficiently compute the ST from the VD by removing all segments which lie outside the outline shape and add radial bones to the nodes from there.
+See \cref{skeletonization_comparison}.
+
+
+We then also discretize parabolic segments and segments generated by two concave outline vertices into approximately equidistant segments.
 See \cref{discretization}.
-That way we can approximate the feature radius $R$ in between two nodes $v_0$ and $v_1$ in the VQ by interpolating linearly between $R(v_0)$ and $R(v_1)$.
-Furthermore, we can linearly interpolate the distance field of a quad $p_0v_0v_1p_1$ (where $p_0$ and $p_1$ lie on the outline shape):
-For a point $a \in p_0v_0$ and a point $b \in p_1v_1$ for which $R(a) = R(b)$ we have that all points in the line segment $ab$ have the same feature radius $R$.
+That way we can approximate the feature radius $R$ in between the two nodes $v_0$ and $v_1$ of a bone in the ST by interpolating linearly between $R(v_0)$ and $R(v_1)$.
+If we then map those feature radii into Z coordinates, we obtain a 3D model which intuitively shows how our decomposition captures the distance field of the outline shape: \cref{mat_3d}.
+
 
 \begin{figure}
 \centering
@@ -113,13 +113,23 @@ For a point $a \in p_0v_0$ and a point $b \in p_1v_1$ for which $R(a) = R(b)$ we
 %\caption{Transitioning}
 %\end{subfigure}
 \caption{
-Voronoi quadrangulation domain decomposition.
+Skeletal trapezoidation domain decomposition.
 Medial axis (red and blue) is augmented with (gray) edges connecting each node to its nearest support points in the outline shape.
 Parabolic medial axis segments are discretized and likewise for segments generated by two concave outline vertices, because the feature radius (black text in microns) doesn't increase linearly along those segments.
 The blue segments are significant according to $\alpha_\text{max} = 135\degree$.
 }
 \label{discretization}
 \end{figure}
+
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{sources/method/mat_3d_blender_render.png}
+\caption{
+Visualization of the distance field function as captured by the skeletal trapezoidation.
+}
+\label{mat_3d}
+\end{figure}
+
 
 
 
@@ -184,7 +194,7 @@ Any node in the skeleton can have at most two significant bones connected to it,
 while the corners of a triangle can only add up to \SI{180}{\degree}.
 \todo{TODO: make figure which clearly shows this!}
 This results in the fact that we will never have 3-way intersections of non-closed extrusion toolpaths.
-(Simple case) If 2 edges of the VQ meet then 3 outline segments are involved; lines through those segments form a triangle which cannot have more than two angles less than \SI{60}{\degree}.
+(Simple case) If 2 edges of the ST meet then 3 outline segments are involved; lines through those segments form a triangle which cannot have more than two angles less than \SI{60}{\degree}.
 However, what if we connect two significant segments using a small insignificant segment?
 There is a distance limit based on \cref{distance_ratio_limit}:
 the connecting segment is always larger in Euclidean distance than the difference in feature radius $R$.
@@ -195,8 +205,8 @@ the connecting segment is always larger in Euclidean distance than the differenc
 A node in the graph can have at most two significant edges.
 For a node in the VD $v$ with a support of three points on the outline polygon $p_1, p_2, p_3$, the bisector angles $\angle{p_1vp_2} + \angle{p_2vp_3} + \angle{p_3vp_1} = 360\degree$, so if two angles are more than $\alpha_\text{max} > 120\degree$ the third one needs to be smaller than $360\degree - 2\alpha_\text{max} < 120\degree$ and therefore nonsignificant.
 % However, because of some filtering operations this property does not neccesarily hold for the markings.
-The extra edges added to the VD to form the VQ can never be significant because their bisector angle is \SI{0}{\degree} by definition,
-so the nodes of the VQ also have at most two significant edges.
+The extra edges added to the VD to form the ST can never be significant because their bisector angle is \SI{0}{\degree} by definition,
+so the nodes of the ST also have at most two significant edges.
 
 A saddle point is always marked.
 When going from one local maximum to another we must pass through a significant region.
@@ -235,7 +245,7 @@ so if $\angle p_1 v p_2 < 120\degree$ then $\angle p_2 v p_3 < 60\degree$ and is
 
 
 \subsubsection{Bead counts}
-In order to apply the beading strategy to the VQ
+In order to apply the beading strategy to the ST
 we assign each marked node $v$ of the skeleton a bead count $v.B^*$ which is initialized to $b(R(v))$, but it is modified in order to prevent discontinuities and remaining gaps.
 
 We also assign a bead count $v.B^*=b(R(v))$ to all nodes $v$ which are local maxima, i.e. the $v$ for which $\forall v_\text{n} \in v.\text{neighborhood} : R(v) > R(v_\text{n})$. 
@@ -249,7 +259,7 @@ See \cref{rounded_vs_unrounded}.
 In order to prevent discontinuities in the toolpaths around locations where the bead count changes, we need a way to smoothly transition to a different number of beads around locations where the 3D model has a changing radius.
 See \cref{transitions}.
 The transition will be placed anchored on each location $v$ where $R(v) = \nicefrac12 b^{-1}(n+1)$ for any lower bead count $n$.
-At the start $v_0$ and end $v_1$ of the transition we introduce a new node in the skeleton and connect it to the outline as per the VQ requirement.
+At the start $v_0$ and end $v_1$ of the transition we introduce a new node in the skeleton and connect it to the outline as per the ST requirement.
 We then assign $v_0.B^* = n$ and $v_1.B^* = n + 1$.
 If there is any node $v_x$ in between $v_0$ and $v_1$ we assign it a fractional bead count by linear interpolation: $v_x.B^* = n + D(v_0, v_x)/t(n)$, where $D(.)$ is the Euclidean distance measured along the marked bone(s).
 See \cref{distance_rounding_transition}.
@@ -299,7 +309,7 @@ The anchor position within the transition length is proportional to the transiti
 
 
 \subsubsection{Beading conflicts}
-In marked regions of the VQ we employ the approach of applying the optimal bead counts and employing transitioning, while in unmarked regions the beading is only governed by the beading of locations with locally optimal feature radius.
+In marked regions of the ST we employ the approach of applying the optimal bead counts and employing transitioning, while in unmarked regions the beading is only governed by the beading of locations with locally optimal feature radius.
 Marked bones always form chains and don't branch out because of the angle constraint on $\alpha_\text{max}$. \todo{Not true anymore}
 At the end of such chain $v$ we may need to transition from the former approach to the latter.
 This only happens when the feature radius continues increasing: if $\exists v_n \in v.\text{neighborhood}: R(v) < R(v_n) \land | R(v) - R(v_n) | / |v - v_n| >  \cos(\alpha_\text{max} / 2)$ then the bead count assigned by the marked region doesn't fit with a beading which would follow from a local optimum at $v_n$ or some farther node.
@@ -324,7 +334,7 @@ The transition length of these transitions to unmarked regions is determined by 
 if $v.B^* < n$ then $t = t(n) . (R(v) - v.L_n)$
 otherwise $t = t(n) . (1 - (R(v) - v.L_n))$,
 where $n = \argmax_i v.L_i < R(v)$.
-At a distance $t$ from $v$ along marked bones we introduce an new node $v_0$ for the end of the transition and again we connect it to the outline as per the VQ requirements.
+At a distance $t$ from $v$ along marked bones we introduce an new node $v_0$ for the end of the transition and again we connect it to the outline as per the ST requirements.
 
 
 We modify $v.B^*$ such that it coincides with the beading propagated to $v$ from some farther local optimum or another marked region.
@@ -410,7 +420,7 @@ For unmarked regions we can simply apply the beading strategy in order to find t
 
 This needs to be stable against small perturbations in the outline polygon.
 See \cref{heterogeneous_joint_generation}.
-For any sequence on unmarked bones from the outline polygon inward we define the stable end point as the first vertex which is connected to a marked VQ segment.
+For any sequence on unmarked bones from the outline polygon inward we define the stable end point as the first vertex which is connected to a marked ST segment.
 Based on the feature radius $R$ there we place junctions along the unmarked bones following the beading strategy.
 
 \begin{figure}
@@ -425,9 +435,9 @@ Based on the feature radius $R$ there we place junctions along the unmarked bone
 
 \subsubsection{Toolpath extraction algorithm}
 After the beading strategy has been applied we have a beading associated with each marked node as well as each node with locally optimal $R$.
-In order to determine the junction locations of quads which don't contain any such node, we propagate the beading information down.
-We therefore sort all quads on their highest $R$-value and process the high $R$ quads first.
-The beading information is then passed down along the bones of the quad to lower $R$ nodes if those nodes don't already have a beading associated.
+In order to determine the junction locations of trapezoids which don't contain any such node, we propagate the beading information down.
+We therefore sort all trapezoids on their highest $R$-value and process the high $R$ trapezoids first.
+The beading information is then passed down along the bones of the trapezoid to lower $R$ nodes if those nodes don't already have a beading associated.
 
 See \cref{alg_beading_propagation}.
 
@@ -435,8 +445,8 @@ See \cref{alg_beading_propagation}.
 \caption{Beading propagation}
 \label{alg_beading_propagation}
 \begin{algorithmic}
-\State quads.sortOn(getHighestR())
-\ForAll{$q \in$ quads}
+\State trapezoids.sortOn(getHighestR())
+\ForAll{$q \in$ trapezoids}
 	\State $v_\text{max} = q$.getHighestR()
 	\State beading = retrieveBeading($v_\text{max}$)
 	\If {$\neg$ retrieveBeading($v_\text{max}$.next())}
@@ -489,8 +499,8 @@ for (; junction_idx >= 0 && junction_idx < coord_t(beading->toolpath_locations.s
 \end{algorithm}
 
 
-We then generate bead segments for each quad by connecting together the junctions of the same index.
-If the amount of junctions on both sides of the quad is not the same then this quad is in a transition and we leave one junction unconnected.
+We then generate bead segments for each trapezoid by connecting together the junctions of the same index.
+If the amount of junctions on both sides of the trapezoid is not the same then this trapezoid is in a transition and we leave one junction unconnected.
 
 
 \paragraph{Printing order}
@@ -516,7 +526,7 @@ We therefore choose to print the inner beads first starting from the second bead
 \end{figure}
 
 When all extrusion segments are generated, we combine them into semi-continuous polyline toolpaths.
-These polylines generally form closed polygons, but at marked regions of the VQ the toolpaths consist of single bead polyline toolpaths.
+These polylines generally form closed polygons, but at marked regions of the ST the toolpaths consist of single bead polyline toolpaths.
 See \cref{single_bead_strategy}.
 These single bead polylines can connect to polygonal toolpaths and they can also meet each other at 3-way junctions.
 We determine the printing order for all segments of a given bead index by minimizing the travel distance using a greedy path order optimizer.
