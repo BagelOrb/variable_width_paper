@@ -39,44 +39,87 @@ Our framework allows for different beading strategies which can optimize for dif
 
 
 \subsection{Shape decomposition}
-The shape decomposition we employ on the outline shape of a layer is based on the medial axis.
-We then further decompose the shape into simple fragments, so that we can easily process the shape using piecewise linear approximations.
+The shape decomposition we employ on the outline shape of a layer is based on a common skeletonization of the polygonal outline shape: the medial axis.
+Starting from the medial axis we further decompose the shape into simple fragments, so that we can easily process the shape using piecewise linear approximations.
 
 
 
 \subsubsection{Medial axis transform}
 One of the most commonly used skeletonizations of a shape is the medial axis.
-The medial axis is defined by the locations where the inscribed circle meets the boundary in at least two locations. \todo{[citation needed]}
+The medial axis is defined by the locations where the inscribed circle meets the boundary in at least two locations. \cite{blum1967transformation}
 We call the set of closest points on the outline polygon $P$ of a point $v$ on the skeleton its \emph{support}: $\text{sup}(v) = \argmin_{x\in P} |x - v|$.
+The resulting skeleton consists of straight segments and parabolic segments which form a graph.
+See \cref{MAT_explanation_circles}.
+
+Alternatively the medial axis can be defined as the locations where the union of cones on the boundary shape is disctoninuous,
+or it can be defined as the locations where wavefront propagating from the outline shape make sharp corners. \cite{blum1967transformation}
+This last interpretation is especially relevant because the naive toolpath generation method consists precisely in equidistant wavefronts from the outline.
+The medial axis can therefore be seen as the space within which contour following toolpaths are generated.
 See \cref{MAT_explanation}.
-The resulting skeleton consists of straight segments and parabolic segments connected to each other at \emph{branch nodes}.
 
-``Because of its shape, the medial axis of a figure is also called the skeleton or the symmetric axis of the figure.
-Associated with the medial axis is a radius function $R$, which defines for each point on the axis its distance to the boundary of the object.''
-\cite{lee1982medial}
+%``Because of its shape, the medial axis of a figure is also called the skeleton or the symmetric axis of the figure.'' \cite{lee1982medial} 
+``Associated with the medial axis is a radius function $R$, which defines for each point on the axis its distance to the boundary of the object.'' \cite{lee1982medial}
+The medial axis along with the feature radius values along the skeleton combine into a complete shape descriptor, called the medial axis transform (MAT).
+Feature radius and node locations of segments will be used below to analyse the shape locally.
 
-The medial axis along with the feature radius combine into a complete feature decsriptor, called the medial axis transform (MAT).
-The MAT can unambiguously recreate the input shape exactly. \todo{[citation needed]}
-
-\cite{Moesen2011} provides a thorough overview of all MAT algorithms.
-\cite{Moesen2011} calls $R$ the `feature radius': ``In every point $p \in P$, and thus also in points on the MA, the feature radius $\text{rad}(p)$ of $p$ can be defined as the Euclidean distance to the closest point on the boundary of $P$.''
+%\cite{Moesen2011} provides a thorough overview of all MAT algorithms.
+%\cite{Moesen2011} calls $R$ the `feature radius': ``In every point $p \in P$, and thus also in points on the MA, the feature radius $\text{rad}(p)$ of $p$ can be defined as the Euclidean distance to the closest point on the boundary of $P$.''
 
 
 \begin{figure}
 \centering
-\includegraphics[width=.9\columnwidth]{sources/intro/medial_axis_Kao.png}
-\caption{MAT explanation by \citeauthor{kao1998optimal}}
+\begin{subfigure}{0.3\columnwidth}
+\centering
+\includegraphics[height=1.5\columnwidth]{sources/method/MAT_explanation_circles.pdf}
+\caption{Circles}
+\label{MAT_explanation_circles}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+\centering
+\includegraphics[height=1.5\columnwidth]{sources/method/MAT_explanation_wavefronts.pdf}
+\caption{Wavefronts}
+\end{subfigure}
+\begin{subfigure}{0.3\columnwidth}
+\centering
+\includegraphics[height=1.5\columnwidth]{sources/method/MAT_explanation_cones.pdf}
+\caption{Cones}
+\end{subfigure}
+\caption{
+Medial axis representations.
+The medial axis can be defined in terms of the the number of support points of the inscribed circles,
+as the pinch sites in wavefronts
+or as ridges in a volume defined by the union of cones.
+}
 \label{MAT_explanation}
 \end{figure}
 
 
 \begin{figure}
+\begin{subfigure}{0.3\columnwidth}
+\centering
+\includegraphics[height=1.5\columnwidth]{sources/method/MAT_explanation_shape_decomposition.pdf}
+\caption{Simple case}
+\label{shape_decomposition_simple}
+\end{subfigure}
+\begin{subfigure}{0.65\columnwidth}
 \includegraphics[width=\columnwidth]{sources/method/MAT_VD_VQ.pdf}
+\caption{Complex case employing discretization}
+\label{shape_decomp_complex}
+\end{subfigure}
 \caption{
 Skeletonization of an outline shape (black).
 Relation between the medial axis (red), the limited Voronoi Diagram (red and green) and the Skeletal Trapezoidation (red, green and gray): MAT $\subset$ Limited VD $\subset$ ST.
 }
 \label{skeletonization_comparison}
+\end{figure}
+
+
+\begin{figure} \centering
+\includegraphics[width=.75\columnwidth]{sources/method/mat_3d_blender_render.png}
+\caption{
+Visualization of the distance field function as captured by the skeletal trapezoidation.
+}
+\label{mat_3d}
 \end{figure}
 
 
@@ -87,7 +130,7 @@ Each of the regions demarcated by the skeleton is further decomposed by adding r
 The resulting skeleton decomposes the outline shape into trapezoids and triangles.
 We will therefore call this shape decomposition the \emph{Skeletal Trapezoidation} (ST).
 (The concept of a trapezoidation conventionally allows for the degenerate case where a trapezoid resolves into a triangle. \cite{chazelle1984,fournier1984})
-See \cref{skeletonization_comparison}.
+See \cref{shape_decomposition_simple}.
 
 
 The medial axis of a polygonal shape can be obtained from the Voronoi Diagram (VD) generated on the line segments and vertices of the shape, by throwing away all segments of the VD falling outside of the outline shape and throwing away the bones connected to concave vertices in the outline shape. \cite{lee1982medial}
@@ -97,9 +140,9 @@ See \cref{skeletonization_comparison}.
 
 
 We then also discretize parabolic segments and segments generated by two concave outline vertices into approximately equidistant segments.
-See \cref{discretization}.
+See \cref{discretization} and \cref{shape_decomp_complex}.
 That way we can approximate the feature radius $R$ in between the two nodes $v_0$ and $v_1$ of a bone in the ST by interpolating linearly between $R(v_0)$ and $R(v_1)$.
-If we then map those feature radii into Z coordinates, we obtain a 3D model which intuitively shows how our decomposition captures the distance field of the outline shape: \cref{mat_3d}.
+This makes the skeleton capture a discrete approximation of the radius function which can then be used to create a triangulated 3D model of the conical represenatation of the medial axis; see \cref{mat_3d}.
 
 
 \begin{figure}
@@ -122,13 +165,6 @@ The blue segments are significant according to $\alpha_\text{max} = 135\degree$.
 \end{figure}
 
 
-\begin{figure}
-\includegraphics[width=\columnwidth]{sources/method/mat_3d_blender_render.png}
-\caption{
-Visualization of the distance field function as captured by the skeletal trapezoidation.
-}
-\label{mat_3d}
-\end{figure}
 
 
 
