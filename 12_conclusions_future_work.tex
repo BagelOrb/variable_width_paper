@@ -1,5 +1,14 @@
 \section{Conclusion and future work}
-conclusion: reiterate abstract
+
+\begin{itemize}
+\item Accurate filling using few/small overfill and underfill areas
+\item Which allows for accurate reproduction of thin parts and variable thickness microstructures.
+\item Our framework is able to emulate several previously proposed methods
+\item Our framework allows for deposition width control which reduces the amount of extrusion paths with wildly different width compared to previous methods
+\item Our framework allows for limiting the stretch on the outer toolpath in order to reduce any adverse affect of variable extrusion width on dimensional accuracy.
+\item The computation times are approximately 3 times as fast as the state of the art method for naive toolpath generation employing constant width
+\item (depending on what we do in the validation chapter) The produced parts employing our method are more stiff compared to other methods.
+\end{itemize}
 
 
 
@@ -7,4 +16,6 @@ conclusion: reiterate abstract
 Use Voronoi Quadrangulation to generate quad dominant meshings for FEM.
 
 Generate thicker bead widths near sharp corners in order to mimic limitations in the extrusion process.
+Allow for adjusting the toolpath widths to local part curvature.
 
+Allow for information sharing between the layers.
