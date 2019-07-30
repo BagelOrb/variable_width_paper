@@ -173,6 +173,9 @@ The blue segments are significant according to $\alpha_\text{max} = 135\degree$.
 We assign a bead count to each node in the skeleton which is in `the center' of the shape in a sense to be defined below.
 Around regions where the bead count changes we introduce transition regions, so that we can smoothly change between regions with different bead count.
 
+We mark a node of the skeleton as central if its feature radius is larger than that of all of the neighboring nodes in the skeletal graph.
+We also mark whole bones as being central if they are significant according to a common significance measure.
+
 
 \subsubsection{Significance measure}\label{sec:significance_measure}
 Places where the naive concentric toolpathing strategy would create large underfill and overfill areas are locations which intuitively look like `the center' of the shape.
@@ -294,16 +297,30 @@ so if $\angle p_1 v p_2 < 120\degree$ then $\angle p_2 v p_3 < 60\degree$ and is
 
 
 
+\subsubsection{Marking filtering}
+Using the significance measure and the local maximum feature radius condition we initialize all marked bones and nodes.
+We then filter out high frequency changes in the marking in order to ensure smooth output toolpaths. 
+We perform filtering on the unmarked regions, so that the properties of significant regions mentioned above remain valid.
+From each marked node $v_0$ with an upward unmarked bone attached we walk along the upward edges (which cannot branch because of \cref{single_upward_edge}).
+If the total length traversed until we reach another marked node $v_1$ is shorter than some filter distance $d_\text{max}^\text{unmarked}$, we mark all bones encountered as being central.
+
+
+
+
+
 \subsubsection{Bead counts}
-In order to apply the beading strategy to the ST
-we assign each marked node $v$ of the skeleton a bead count $v.B^*$ which is initialized to $b(R(v))$, but it is modified in order to prevent discontinuities and remaining gaps.
+In order to apply a beading strategy to the ST we first assign bead counts to the central regions and then decide on how to apply those bead counts outward.
+In order to decide on an initial bead count, we require a function mapping a feature diameter to a bead count: $b: \mathbb{R} \to \mathbb{N}$.
+(The feature diameter is twice the radius.)
+We might choose different functions for $b$ depending on the beading strategy used.
 
-We also assign a bead count $v.B^*=b(R(v))$ to all nodes $v$ which are local maxima, i.e. the $v$ for which $\forall v_\text{n} \in v.\text{neighborhood} : R(v) > R(v_\text{n})$. 
-This prevents the single overfill or underfill region in unmarked regions.
-See \cref{rounded_vs_unrounded}.
+We first assign each marked node $v$ of the skeleton an initial bead count $B^*_v \leftarrow b(2R(v))$, but it is modified in order to prevent high frequency changes in bead count and it is changed in order to account for smooth transitions in bead count.
+We also filter unmarked regions where the bead count remains constant.
+\todo{Explaining why would have to refer forward to section about interpolating beadings}
+From each marked node $v_0$ with an upward unmarked bone attached we walk along the upward edges (which cannot branch because of \cref{single_upward_edge}) until we hit another marked node $v_1$.
+If the upper node has the same bead count we mark all bones and nodes $v$ in between, and set the bead count $B^*_{v_0} = B^*_v = B^*_{v_1}$.
 
-
-
+\todo{TODO: figure of basic bead counts left, middle with transition mids, right with transition ends.}
 
 \subsubsection{Transitioning}
 In order to prevent discontinuities in the toolpaths around locations where the bead count changes, we need a way to smoothly transition to a different number of beads around locations where the 3D model has a changing radius.
@@ -430,6 +447,7 @@ $t(n)$ is the length of the transition region to switch from $n$ to $n+1$ beads
 and
 $\alpha_{\text{max}}$ is the limit bisector angle of the significance measure.
 
+\todo{TODO: Replace `distance' with `diameter'.}
 
 We call a distance $d$ `preferred' when $d = p(b(d))$
 For our method we require the inverse $b^{-1}(n)$ which gives the smallest $d$ for which $b(d) = n$.
