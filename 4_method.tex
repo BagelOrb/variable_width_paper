@@ -233,8 +233,11 @@ The distance $|v_1 - v_0| > \Delta R$ because otherwise the feature radius would
 
 
 \subsubsection{Properties of significant regions}
-The Euclidean distance between two skeletal vertices can never be less than the difference in the feature radius $R$ measure between the vertices: see \cref{distance_ratio_limit}.
+%\begin{lemma} \label{min_euclidean_distance} >> this paragraph contains two lemmas and a concluding remark!
+The Euclidean distance between two skeletal vertices can never be less than the difference in the feature radius $R$ measure between the vertices.
+See \cref{distance_ratio_limit}.
 The condition $|v - p| = \Delta R$ is true exactly for those sekeletal bones between a node $v$ and an outline location $p$ added by the trapezoidation, which means that the trapezoidation never introduces marked bones, so we can perform the trapezoidation after marking.
+
 
 \iffalse
 % This fact is not used anymore, because we change the marking such that it doesn't hold for marked edges any more.
@@ -245,13 +248,20 @@ The extra edges added to the VD to form the ST can never be significant because 
 so the nodes of the ST also have at most two significant edges.
 \fi
 
+\begin{lemma}\label{saddle_points_are_marked}
 A saddle point is always marked, i.e.\
-when traversing the skeletal graph from one locally maximum $R$ to another we must pass through a significant region.
+when traversing the skeletal graph from one locally maximal $R$ to another we must pass through a significant region.
+\end{lemma}
+\begin{proof}
 You will either go through the marked region of a discretized parabola or of a segment with two polygonal vertices as support.
 This means that the feature radius function in between marked regions is always monotonic.
 This means that when propagating beadings downward from marked regions they can never conflict in the middle - they will always conflict at either marked region.
+\end{proof}
 
+\begin{lemma}\label{single_upward_edge}
 From any node in the graph which is not a saddle point there is at most a single edge going upward.
+\end{lemma}
+\begin{proof}
 Any branch point $v$ in the MAT coincides with the circumcircle of its support $p_1, p_2, p_3$.
 If $v$ lies within $\triangle p_1 p_2 p_3$ it is a local maximum and otherwise we will show it has exactly one upward edge.
 If $v$ lies outside of $\triangle p_1 p_2 p_3$ then those support points lie within a \SI{180}{\degree} range from $v$
@@ -261,6 +271,7 @@ See \cref{branch_upward_edge_property}.
 %See VoronoiQuadrangulation::filterUnmarkedRegions
 Bones added because of the trapezoidation always go down to $R=0$, so these don't change the property that each node has at most a single upward edge.
 This means that walking up the graph from a marked region to a local maximum follows a single path without branching.
+\end{proof}
 
 \begin{figure}
 \centering
