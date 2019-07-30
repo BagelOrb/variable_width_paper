@@ -376,10 +376,10 @@ The anchor position within the transition length is proportional to the transiti
 
 
 \subsubsection{Beading conflicts}
-In marked regions of the ST we employ the approach of applying the optimal bead counts and employing transitioning, while in unmarked regions the beading is only governed by the beading of locations with locally optimal feature radius.
+In marked regions of the ST we employ the approach of applying the optimal bead counts and employing transitioning, while in unmarked regions the beading is only governed by the beading of locations with locally maximal feature radius.
 Marked bones always form chains and don't branch out because of the angle constraint on $\alpha_\text{max}$. \todo{Not true anymore}
 At the end of such chain $v$ we may need to transition from the former approach to the latter.
-This only happens when the feature radius continues increasing: if $\exists v_n \in v.\text{neighborhood}: R(v) < R(v_n) \land | R(v) - R(v_n) | / |v - v_n| >  \cos(\alpha_\text{max} / 2)$ then the bead count assigned by the marked region doesn't fit with a beading which would follow from a local optimum at $v_n$ or some farther node.
+This only happens when the feature radius continues increasing: if $\exists v_n \in v.\text{neighborhood}: R(v) < R(v_n) \land | R(v) - R(v_n) | / |v - v_n| >  \cos(\alpha_\text{max} / 2)$ then the bead count assigned by the marked region doesn't fit with a beading which would follow from a local maximum at $v_n$ or some farther node.
 See \cref{beading_conflict_problem}.
 
 
@@ -404,7 +404,7 @@ where $n = \argmax_i v.L_i < R(v)$.
 At a distance $t$ from $v$ along marked bones we introduce an new node $v_0$ for the end of the transition and again we connect it to the outline as per the ST requirements.
 
 
-We modify $v.B^*$ such that it coincides with the beading propagated to $v$ from some farther local optimum or another marked region.
+We modify $v.B^*$ such that it coincides with the beading propagated to $v$ from some farther local maximum or another marked region.
 (This propagation is explained in \cref{section_toolpath_extraction}.)
 We assign $v.B^* = n + 1 - \epsilon$, so that the transition switches from the marked beading to the beading of the unmarked approach entirely.
 For nodes $v_x$ in between $v_0$ and $v$ we interpolate $v_x.B^*$ again linearly based on the Euclidean distance along the bones in between $v$ and $v_0$.
@@ -502,7 +502,7 @@ Based on the feature radius $R$ there we place junctions along the unmarked bone
 
 
 \subsubsection{Toolpath extraction algorithm}
-After the beading strategy has been applied we have a beading associated with each marked node as well as each node with locally optimal $R$.
+After the beading strategy has been applied we have a beading associated with each marked node as well as each node with locally maximal $R$.
 In order to determine the junction locations of trapezoids which don't contain any such node, we propagate the beading information down.
 We therefore sort all trapezoids on their highest $R$-value and process the high $R$ trapezoids first.
 The beading information is then passed down along the bones of the trapezoid to lower $R$ nodes if those nodes don't already have a beading associated.
