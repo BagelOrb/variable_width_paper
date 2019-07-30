@@ -234,7 +234,7 @@ The distance $|v_1 - v_0| > \Delta R$ because otherwise the feature radius would
 
 \subsubsection{Properties of significant regions}
 The Euclidean distance between two skeletal vertices can never be less than the difference in the feature radius $R$ measure between the vertices: see \cref{distance_ratio_limit}.
-The distance $|v - p| = \Delta R$ exactly for those sekeletal bones between a node $v$ and an outline location $p$ added by the trapezoidation, which means that the trapezoidation never introduces marked bones, so we can perform the trapezoidation after marking.
+The condition $|v - p| = \Delta R$ is true exactly for those sekeletal bones between a node $v$ and an outline location $p$ added by the trapezoidation, which means that the trapezoidation never introduces marked bones, so we can perform the trapezoidation after marking.
 
 \iffalse
 % This fact is not used anymore, because we change the marking such that it doesn't hold for marked edges any more.
@@ -259,12 +259,13 @@ and one point lies in the middle, say $\angle p_1 + \angle p_2 = \angle p_3$.
 Then a circle with radius $R(v) + \epsilon$ around $w$ such that $|v-w| < 2 \epsilon$ can only touch $p_1$ and $p_3$.
 See \cref{branch_upward_edge_property}.
 %See VoronoiQuadrangulation::filterUnmarkedRegions
+Bones added because of the trapezoidation always go down to $R=0$, so these don't change the property that each node has at most a single upward edge.
 This means that walking up the graph from a marked region to a local maximum follows a single path without branching.
 
 \begin{figure}
 \centering
 \includegraphics[width=.4\columnwidth]{sources/method/branch_upward_edge_property.pdf}
-\caption{The radial distance can only increase along one edge around a branch point in the VD.}
+\caption{The radial distance can only increase along one edge around a branch point in the medial axis.}
 \label{branch_upward_edge_property}
 \end{figure}
 
