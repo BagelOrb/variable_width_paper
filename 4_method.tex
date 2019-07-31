@@ -97,7 +97,8 @@ or as ridges in a volume defined by the union of cones.
 \begin{figure}
 \begin{subfigure}{0.3\columnwidth}
 \centering
-\includegraphics[height=1.5\columnwidth]{sources/method/MAT_explanation_shape_decomposition.pdf}
+%\includegraphics[height=1.5\columnwidth]{sources/method/MAT_explanation_shape_decomposition.pdf}
+\includegraphics[height=1.5\columnwidth]{sources/method/half_edge_datastructure.pdf}
 \caption{Simple case}
 \label{shape_decomposition_simple}
 \end{subfigure}
@@ -130,6 +131,7 @@ Each of the regions demarcated by the skeleton is further decomposed by adding r
 The resulting skeleton decomposes the outline shape into trapezoids and triangles.
 We will therefore call this shape decomposition the \emph{Skeletal Trapezoidation} (ST).
 (The concept of a trapezoidation conventionally allows for the degenerate case where a trapezoid resolves into a triangle. \cite{chazelle1984,fournier1984})
+We repesent such a skeleton in a standard half-edge datastructure.
 See \cref{shape_decomposition_simple}.
 
 
