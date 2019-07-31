@@ -321,10 +321,9 @@ We might choose different functions for $b$ depending on the beading strategy us
 We first assign each marked node $v$ of the skeleton an initial bead count $B^*_v \leftarrow b(2R(v))$, but it is modified in order to prevent high frequency changes in bead count and it is changed in order to account for smooth transitions in bead count.
 See \cref{beading_transitioning_filtering__bead_count}.
 
-We also filter unmarked regions where the bead count remains constant.
+We also filter unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
 From each marked node $v_0$ with an upward unmarked bone attached we walk along the upward edges (which cannot branch because of \cref{single_upward_edge}) until we hit another marked node $v_1$.
-If the upper node has the same bead count we mark all bones and nodes $v$ in between, and set the bead count $B^*_{v_0} = B^*_v = B^*_{v_1}$.
-\todo{Explaining why would have to refer forward to section about interpolating beadings}
+If the upper node has the same bead count $B^*_{v_0} = B^*_{v_1}$ we mark all bones and nodes $v$ in between, and set the bead count $B^*_v \leftarrow B^*_{v_0}$.
 
 
 \begin{figure*}
@@ -367,21 +366,46 @@ The symmetry in the result shows that transitioning is robust against small pert
 \subsubsection{Transitioning}
 In order to prevent discontinuities in the toolpaths around locations where the bead count changes, we need a way to smoothly transition to a different number of beads around locations where the 3D model has a changing radius.
 See \cref{transitions}.
-The transition will be placed anchored on each location $v$ where $R(v) = \nicefrac12 b^{-1}(n+1)$ for any lower bead count $n$.
-At the start $v_0$ and end $v_1$ of the transition we introduce a new node in the skeleton and connect it to the outline as per the ST requirement.
-We then assign $v_0.B^* = n$ and $v_1.B^* = n + 1$.
-If there is any node $v_x$ in between $v_0$ and $v_1$ we assign it a fractional bead count by linear interpolation: $v_x.B^* = n + D(v_0, v_x)/t(n)$, where $D(.)$ is the Euclidean distance measured along the marked bone(s).
-See \cref{distance_rounding_transition}.
+The length along the marked region of a transition from bead count $n$ to $n+1$ is determined by some function $t(n)$.
+Because transitions in bead count only occurs in locations where the prefered bead count $b$ changes, we introduce $b^{-1}(n) := \argmax_d b(d) = n$.
+
+For each marked bone between $v_0$ and $v_1$ with $v_0.B^* \neq v_1.B*$ we introduce transitions.
+A transition from bead count $n$ to $n+1$ will be placed anchored on each location $v_x$ where $R(v_x) = b^{-1}(n)$.
+We can compute the location of the anchor simply as
+$$v_x = v_0 + (v_1 - v_0) (b^{-1}(n) - R(v_0)) / (R(v_1) - R(v_0))$$
+for each $n$ such that $v_0.B^*<n<v_1.B^*$.
+See \cref{beading_transitioning_filtering__transition_mids}.
+
+A transition with length $t(n)$ will be placed somewhere covering the anchor position.
+We determine the distance between the anchor $v$ and the lower transition end $v_0$ proportial to the positioning of the transition relative to the preferred distances: 
+$$d_-^\text{transition}(v) =  t(n) (b^{-1}(n) - p(n) ) / (p(n+1) - p(n))$$
+See \cref{transition_placement}.
+For the other end we have $d_+^\text{transition}(v) = t(n) - d_-^\text{transition}(v)$.
+That way the transitions never overlap locations with preferred bead count.
+
+In order to prevent frequent oscillations in the bead count, we filter locally maximal or minimal bead count regions.
+For each edge which contains a transition anchor we walk along the marked regions until we encounter another anchor.
+If the other anchor is a transition in the opposite direction and the traversed distance is within some limit $d_\text{max}^\text{transition}$ we remove the transitions and set the bead counts at all nodes in the filtered region to the surrounding bead counts.
+If we hit the end of a marked region and the traversed distance is less than the corresponding part $d_\pm^\text{transition}(v)$ of the transition length $t(n)$ we dissolve the bead count region in the same manner.
+See \cref{beading_transitioning_filtering__filtered}.
 
 
+In order to generate the lower and upper end point of the transitions we walk downward and upward along the marked regions from each anchor position $v$ until we have traversed the coresponding distance of $d_\pm^\text{transition}(v)$.
+If there is any node $v_x$ in between $v$ and $v_0$ or $v_1$ we assign it a fractional bead count by linear interpolation: $v_x.B^* = n + D(v_0, v_x)/t(n)$, where $D(.)$ is the cumulative distance measured along the marked bone(s).
+See \cref{beading_transitioning_filtering__transition_ends}.
 
-\begin{figure*}
+Finally we perform the graph update by introducing nodes at the transition ends and introducing radial bones from these new nodes to the outline as per the trapezoidation requirement.
+See \cref{beading_transitioning_filtering__transitions_applied}.
+
+
+\begin{figure}
 \centering
-\begin{subfigure}{0.9\textwidth}
+\setlength{\figwidth}{\columnwidth}
+\begin{subfigure}{0.9\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/wedge_distributed_generated__no_transitions.pdf}
 \caption{Without transitioning}
 \end{subfigure}
-\begin{subfigure}{0.9\textwidth}
+\begin{subfigure}{0.9\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/wedge_distributed_generated.pdf}
 \caption{Transitioning}
 \end{subfigure}
@@ -389,13 +413,7 @@ See \cref{distance_rounding_transition}.
 Discontinuities around regions where the bead count changes are prevented by transition regions (highlighted in cyan).
 }
 \label{transitions}
-\end{figure*}
-
-We determined above that $v_0$ and $v_1$ should be placed around $v$, but their exact position has yet to be specified.
-While the Euclidean distance between them is $t(n-1)$, the distance between $v_0$ and the anchor point $v$ is yet to be specified.
-We determine the distance between the anchor and the transition start $v_0$ proportial to the positioning of the transition relative to the preferred distances: $D(v_0, v) =  t(n) (b^{-1}(n+1) - p(n) ) / (p(n+1) - p(n))$.
-That way the transitions never override the preferred beading.
-See \cref{transition_placement}.
+\end{figure}
 
 
 \begin{figure}
@@ -409,15 +427,9 @@ The anchor position within the transition length is proportional to the transiti
 \end{figure}
 
 
-\begin{figure}
-\centering
-\includegraphics[width=.9\columnwidth]{sources/method/distance_rounding_transition.pdf}
-\caption{Feature radius remapping.}
-\label{distance_rounding_transition}
-\end{figure}
 
 
-\subsubsection{Beading conflicts}
+\subsubsection{Beading conflicts}\label{section_beading_conflicts}
 In marked regions of the ST we employ the approach of applying the optimal bead counts and employing transitioning, while in unmarked regions the beading is only governed by the beading of locations with locally maximal feature radius.
 Marked bones always form chains and don't branch out because of the angle constraint on $\alpha_\text{max}$. \todo{Not true anymore}
 At the end of such chain $v$ we may need to transition from the former approach to the latter.
