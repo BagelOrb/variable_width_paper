@@ -436,7 +436,11 @@ The anchor position within the transition length is proportional to the transiti
 
 \subsection{Toolpath extraction}
 \label{section_toolpath_extraction}
-
+Now that we have decided on the bead counts in the central marked regions, we can apply those bead counts outward along the unmarked bones of the skeleton in order to define the locations of the toolpath junctions.
+Because there is a plethora ways to cover a distance $d$ with $n$ beads, the placement of junctions depends on the chosen beading strategy.
+The beading strategy is used to generate the radial distances at which the junctions are placed for each node: the \emph{beading}.
+That beading information is then propagated along the unmarked bones of the skeleton, so that we can generate the junctions on each unmarked bone.
+The junctions are then connected together per trapezoid in order to form the final toolpaths.
 
 
 \subsection{Beading strategy}
@@ -488,6 +492,11 @@ end
 $l_i$ is the distance of the toolpath location of bead $i$ from the outline.
 
 
+
+
+\paragraph{Beading interpolation}
+Skeletal nodes which are in the middle of a transition have obtained a fractional bead count, but the functions defined in the beading strategy are only defined on natural numbers.
+The fractional part of the bead count is used to interpolate between two beadings defined on the fractional bead count rounded up and down.
 
 
 
