@@ -429,51 +429,6 @@ The anchor position within the transition length is proportional to the transiti
 
 
 
-\subsubsection{Beading conflicts}\label{section_beading_conflicts}
-In marked regions of the ST we employ the approach of applying the optimal bead counts and employing transitioning, while in unmarked regions the beading is only governed by the beading of locations with locally maximal feature radius.
-Marked bones always form chains and don't branch out because of the angle constraint on $\alpha_\text{max}$. \todo{Not true anymore}
-At the end of such chain $v$ we may need to transition from the former approach to the latter.
-This only happens when the feature radius continues increasing: if $\exists v_n \in v.\text{neighborhood}: R(v) < R(v_n) \land | R(v) - R(v_n) | / |v - v_n| >  \cos(\alpha_\text{max} / 2)$ then the bead count assigned by the marked region doesn't fit with a beading which would follow from a local maximum at $v_n$ or some farther node.
-See \cref{beading_conflict_problem}.
-
-
-\todo{Applying the bead count and determining the beading with the associated widths $W$ and locations $L$ is only handled in the next section, so perhaps we should introduce the beading propagation before the section on transitioning.}
-See \cref{alg_beading_propagation}.
-
-\begin{figure}
-\centering
-\includegraphics[width=.5\columnwidth]{sources/method/transition_to_insignificance_problem.pdf}
-\caption{
-Problems at the boundary of marked regions highlighted with red ovals.
-The beading approach from the marked region (blue) results in toolpaths (black) which don't line up with the approach following from the beading which results from the bead count at the local maximum in the bottom center.
-}
-\label{beading_conflict_problem}
-\end{figure}
-
-
-The transition length of these transitions to unmarked regions is determined by the fractional difference in bead count between the two beadings:
-if $v.B^* < n$ then $t = t(n) . (R(v) - v.L_n)$
-otherwise $t = t(n) . (1 - (R(v) - v.L_n))$,
-where $n = \argmax_i v.L_i < R(v)$.
-At a distance $t$ from $v$ along marked bones we introduce an new node $v_0$ for the end of the transition and again we connect it to the outline as per the ST requirements.
-
-
-We modify $v.B^*$ such that it coincides with the beading propagated to $v$ from some farther local maximum or another marked region.
-(This propagation is explained in \cref{section_toolpath_extraction}.)
-We assign $v.B^* = n + 1 - \epsilon$, so that the transition switches from the marked beading to the beading of the unmarked approach entirely.
-For nodes $v_x$ in between $v_0$ and $v$ we interpolate $v_x.B^*$ again linearly based on the Euclidean distance along the bones in between $v$ and $v_0$.
-
-\todo{TODO: implement this! }
-\todo{Compute beading propagation after initial $B^*$ assignment, but before transitioning}
-\todo{Explain beading propagation before transitioning}
-
-
-
-
-
-
-
-
 
 
 
@@ -530,6 +485,51 @@ $d = 2 R(v)$ is the total distance associated with $v$,
 $w_i$ is the bead width of the bead with index $i$
 end
 $l_i$ is the distance of the toolpath location of bead $i$ from the outline.
+
+
+
+
+
+
+\subsubsection{Beading conflicts}\label{section_beading_conflicts}
+In marked regions of the ST we employ the approach of applying the optimal bead counts and employing transitioning, while in unmarked regions the beading is only governed by the beading of locations with locally maximal feature radius.
+Marked bones always form chains and don't branch out because of the angle constraint on $\alpha_\text{max}$. \todo{Not true anymore}
+At the end of such chain $v$ we may need to transition from the former approach to the latter.
+This only happens when the feature radius continues increasing: if $\exists v_n \in v.\text{neighborhood}: R(v) < R(v_n) \land | R(v) - R(v_n) | / |v - v_n| >  \cos(\alpha_\text{max} / 2)$ then the bead count assigned by the marked region doesn't fit with a beading which would follow from a local maximum at $v_n$ or some farther node.
+See \cref{beading_conflict_problem}.
+
+
+\todo{Applying the bead count and determining the beading with the associated widths $W$ and locations $L$ is only handled in the next section, so perhaps we should introduce the beading propagation before the section on transitioning.}
+See \cref{alg_beading_propagation}.
+
+\begin{figure}
+\centering
+\includegraphics[width=.5\columnwidth]{sources/method/transition_to_insignificance_problem.pdf}
+\caption{
+Problems at the boundary of marked regions highlighted with red ovals.
+The beading approach from the marked region (blue) results in toolpaths (black) which don't line up with the approach following from the beading which results from the bead count at the local maximum in the bottom center.
+}
+\label{beading_conflict_problem}
+\end{figure}
+
+
+The transition length of these transitions to unmarked regions is determined by the fractional difference in bead count between the two beadings:
+if $v.B^* < n$ then $t = t(n) . (R(v) - v.L_n)$
+otherwise $t = t(n) . (1 - (R(v) - v.L_n))$,
+where $n = \argmax_i v.L_i < R(v)$.
+At a distance $t$ from $v$ along marked bones we introduce an new node $v_0$ for the end of the transition and again we connect it to the outline as per the ST requirements.
+
+
+We modify $v.B^*$ such that it coincides with the beading propagated to $v$ from some farther local maximum or another marked region.
+(This propagation is explained in \cref{section_toolpath_extraction}.)
+We assign $v.B^* = n + 1 - \epsilon$, so that the transition switches from the marked beading to the beading of the unmarked approach entirely.
+For nodes $v_x$ in between $v_0$ and $v$ we interpolate $v_x.B^*$ again linearly based on the Euclidean distance along the bones in between $v$ and $v_0$.
+
+\todo{Compute beading propagation after initial $B^*$ assignment, but before transitioning}
+\todo{Explain beading propagation before transitioning}
+
+
+
 
 
 
