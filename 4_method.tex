@@ -329,36 +329,36 @@ If the upper node has the same bead count we mark all bones and nodes $v$ in bet
 
 \begin{figure*}
 \centering
-\setlength{\figwidth}{\textwidth}
-\begin{subfigure}{0.19\figwidth}
+\setlength{\figwidth}{0.15\textwidth}
+\begin{subfigure}{\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/beading_transitioning_filtering__bead_count.pdf}
 \caption{Initial bead counts}\label{beading_transitioning_filtering__bead_count}
 \end{subfigure}
-\begin{subfigure}{0.19\figwidth}
+\begin{subfigure}{\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/beading_transitioning_filtering__transition_mids.pdf}
 \caption{Transition anchors}\label{beading_transitioning_filtering__transition_mids}
 \end{subfigure}
-\begin{subfigure}{0.19\figwidth}
+\begin{subfigure}{\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/beading_transitioning_filtering__filtered.pdf}
 \caption{Filtered anchors}\label{beading_transitioning_filtering__filtered}
 \end{subfigure}
-\begin{subfigure}{0.19\figwidth}
+\begin{subfigure}{\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/beading_transitioning_filtering__transition_ends.pdf}
 \caption{Transition ends}\label{beading_transitioning_filtering__transition_ends}
 \end{subfigure}
-\begin{subfigure}{0.19\figwidth}
+\begin{subfigure}{\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/beading_transitioning_filtering__transitions_applied.pdf}
 \caption{Radial bones}\label{beading_transitioning_filtering__transitions_applied}
 \end{subfigure}
 \caption{
 Applying bead counts and transitioning on a shape showing the difference between a simple skeleton (top) and a mirrored version with small perturbations in the outline (bottom).
 Outline in black, medial axis edges in red, radial edges in grey.
-First we initialize the bead counts (black) in the marked regions (blue).
-We then extract the anchor locations (purple) of the transitions to a different bead count should be.
-We then filter out regions of constant bead count.
-We then calculate the end locations (magenta, pink) of the transitions and modify the bead count at nodes in between to fractional values.
-Finally we introduce nodes at the ends and introduce radial edges (purple) as per the trapezoidation constraint.
-Transitioning is robust against small pertuirbations in the outline shape.
+\subref{beading_transitioning_filtering__bead_count} First we initialize the bead counts (black) in the marked regions (blue).
+\subref{beading_transitioning_filtering__transition_mids} We then extract the anchor locations (purple) of the transitions to a different bead count should be.
+\subref{beading_transitioning_filtering__filtered}We then filter out regions of constant bead count.
+\subref{beading_transitioning_filtering__transition_ends} We then calculate the end locations (magenta, pink) of the transitions and modify the bead count at nodes in between to fractional values.
+\subref{beading_transitioning_filtering__transitions_applied} Finally we introduce nodes at the ends and introduce radial edges (purple) as per the trapezoidation constraint.
+The symmetry in the result shows that transitioning is robust against small perturbations in the outline shape.
 }
 \label{beading_transitioning_filtering}
 \end{figure*}
