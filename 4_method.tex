@@ -323,7 +323,7 @@ See \cref{beading_transitioning_filtering__bead_count}.
 
 We also filter unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
 From each marked node $v_0$ with an upward unmarked bone attached we walk along the upward edges (which cannot branch because of \cref{single_upward_edge}) until we hit another marked node $v_1$.
-If the upper node has the same bead count $B^*_{v_0} = B^*_{v_1}$ we mark all bones and nodes $v$ in between, and set the bead count $B^*_v \leftarrow B^*_{v_0}$.
+If the upper node has the same bead count $B^*_{v_1} = B^*_{v_0}$ we mark all bones and nodes $v$ in between, and set the bead count $B^*_v \leftarrow B^*_{v_0}$.
 
 
 \begin{figure*}
@@ -372,16 +372,17 @@ Because transitions in bead count only occurs in locations where the prefered be
 For each marked bone between $v_0$ and $v_1$ with $v_0.B^* \neq v_1.B*$ we introduce transitions.
 A transition from bead count $n$ to $n+1$ will be placed anchored on each location $v_x$ where $R(v_x) = b^{-1}(n)$.
 We can compute the location of the anchor simply as
-$$v_x = v_0 + (v_1 - v_0) (b^{-1}(n) - R(v_0)) / (R(v_1) - R(v_0))$$
+$$v_x = v_0 + (v_1 - v_0) \frac{ b^{-1}(n) - R(v_0) }{ R(v_1) - R(v_0) }$$
 for each $n$ such that $v_0.B^*<n<v_1.B^*$.
 See \cref{beading_transitioning_filtering__transition_mids}.
 
 A transition with length $t(n)$ will be placed somewhere covering the anchor position.
 We determine the distance between the anchor $v$ and the lower transition end $v_0$ proportial to the positioning of the transition relative to the preferred distances: 
-$$d_-^\text{transition}(v) =  t(n) (b^{-1}(n) - p(n) ) / (p(n+1) - p(n))$$
+$$d_-^\text{transition}(v) =  t(n) \frac{ b^{-1}(n) - p(n) }{ p(n+1) - p(n) }$$
 %See \cref{transition_placement}.
 For the other end we have $d_+^\text{transition}(v) = t(n) - d_-^\text{transition}(v)$.
 That way the transitions never overlap locations with preferred bead count.
+\todo{TODO: introduce $p$ first!}
 
 In order to prevent frequent oscillations in the bead count, we filter locally maximal or minimal bead count regions.
 For each edge which contains a transition anchor we walk along the marked regions until we encounter another anchor.
