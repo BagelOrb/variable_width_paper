@@ -1,5 +1,12 @@
 \section{Validation}
 
+We use a transition anchor position of
+%$$t_-(n) =  t(n) \frac{ b^{-1}(n) - p(n) }{p(n+1) - p(n) }$$
+%$$t_-(n) =  t(n) \frac{ b^{-1}(n) - 0.4n }{0.4(n+1) - 0.4n }$$
+%$$t_-(n) =  t(n) \frac{ b^{-1}(n) - 0.4n }{0.4}$$
+$$t_0(n) =  t(n) \left( b^{-1}(n) / 0.4  - n \right)$$
+This should ensure that the transitions never overlap with the locations $v$ where $2 R(v) = 0.4n$ for $n \in \mathbb{N}$, since \SI{0.4}{\milli\meter} is the prefered bead width for a similar nozzle size.
+
 
 \subsection{Strategies}
 We can emulate a variety of toolpath generation strategies by applying various beading strategies to our framework.

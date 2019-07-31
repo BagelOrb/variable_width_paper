@@ -377,21 +377,16 @@ for each $n$ such that $v_0.B^*<n<v_1.B^*$.
 See \cref{beading_transitioning_filtering__transition_mids}.
 
 A transition with length $t(n)$ will be placed somewhere covering the anchor position.
-We determine the distance between the anchor $v$ and the lower transition end $v_0$ proportial to the positioning of the transition relative to the preferred distances: 
-$$d_-^\text{transition}(v) =  t(n) \frac{ b^{-1}(n) - p(n) }{ p(n+1) - p(n) }$$
-%See \cref{transition_placement}.
-For the other end we have $d_+^\text{transition}(v) = t(n) - d_-^\text{transition}(v)$.
-That way the transitions never overlap locations with preferred bead count.
-\todo{TODO: introduce $p$ first!}
+We require an additional function to be specified by the beading strategy: $t_0(n)$ determines the distance between the lower end of a transition from bead count $n$ to $n+1$ and the anchor point - as measured along the marked bones of the skeleton.
+From that we calculate $t_1(n) = t(n) - t_0(n)$ for the distance from the anchor to the upper end of the transition.
 
 In order to prevent frequent oscillations in the bead count, we filter locally maximal or minimal bead count regions.
 For each edge which contains a transition anchor we walk along the marked regions until we encounter another anchor.
 If the other anchor is a transition in the opposite direction and the traversed distance is within some limit $d_\text{max}^\text{transition}$ we remove the transitions and set the bead counts at all nodes in the filtered region to the surrounding bead counts.
-If we hit the end of a marked region and the traversed distance is less than the corresponding part $d_\pm^\text{transition}(v)$ of the transition length $t(n)$ we dissolve the bead count region in the same manner.
+If we hit the end of a marked region and the traversed distance from the anchor point is less than the distance $t_{0}(n)$ or $t_{1}(n)$ to the transition end we dissolve the bead count region in the same manner.
 See \cref{beading_transitioning_filtering__filtered}.
 
-
-In order to generate the lower and upper end point of the transitions we walk downward and upward along the marked regions from each anchor position $v$ until we have traversed the coresponding distance of $d_\pm^\text{transition}(v)$.
+In order to generate the lower and upper end point of the transitions we walk downward and upward along the marked regions from each anchor position $v$ until we have traversed the coresponding distance of $t_{0}(n)$ or $t_{1}(n)$.
 If there is any node $v_x$ in between $v$ and $v_0$ or $v_1$ we assign it a fractional bead count by linear interpolation: $v_x.B^* = n + D(v_0, v_x)/t(n)$, where $D(.)$ is the cumulative distance measured along the marked bone(s).
 See \cref{beading_transitioning_filtering__transition_ends}.
 
@@ -450,20 +445,19 @@ We consider only half of the polygon, because our beading strategy should be sym
 
 We define a beading strategy as the following set:
 $$
-\left\{ b(d), p(n), W(n, d), L(n, d), t(n), \alpha_{\text{max}} \right\}
+\left\{ b(d), W(n, d), L(n, d), t(n), t_0(n), \alpha_{\text{max}} \right\}
 $$
 where
 $b(d)$ gives the optimal bead count to cover a total distance of $d$,
-$p(n)$ gives the optimal total distance of a given bead count $n$,
 $W(n, d)$ gives the sequence of bead widths to cover a distance $d$ using $n$ beads,
 $L(n, d)$ gives the sequence of toolpath positions as distances from the outline to cover a distance $d$ using $n$ beads,
-$t(n)$ is the length of the transition region to switch from $n$ to $n+1$ beads
+$t(n)$ is the length of the transition region to switch from $n$ to $n+1$ beads,
+$t_0(n)$ is the length of between the lower end and the anchor point of the transition from $n$ to $n+1$ beads
 and
 $\alpha_{\text{max}}$ is the limit bisector angle of the significance measure.
 
 \todo{TODO: Replace `distance' with `diameter'.}
 
-We call a distance $d$ `preferred' when $d = p(b(d))$
 For our method we require the inverse $b^{-1}(n) := \argmax_d b(d) = n$.
 
 The following restrictions hold:
@@ -472,11 +466,9 @@ The following restrictions hold:
 \item $120\degree < \alpha_{\text{max}} \leq 180\degree$
 \item $W$ is symetric: $W(n, d)_i = W(n, d)_{n-i-1}$
 \item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
-\item $p$ is within the range of optimal: $b^{-1}(n - 1) < p(n) < b^{-1}(n)$
-%\item $b \left( p(n) \right) = n$ % follows from the above!
 \item $b$ is monotonic: $ b(d) \leq b(d + \epsilon)$
 \item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
-\item $t$ is viable: $t(n) < \left( p(n + 1) - p(n) \right) /{2 \cos \alpha_\text{max}}$
+\item $t$ is viable:  \todo{TODO: verify this.} \\ $t_1(n) + t_0(n+1) < \left( b^{-1}(n + 1) - b^{-1}(n) \right) /{2 \cos \alpha_\text{max}}$
 \end{itemize}
 
 The angle requirement ensures that there is never a 3-way junction of significant bones. \todo{not true anymore}
