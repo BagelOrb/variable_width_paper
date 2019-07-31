@@ -504,7 +504,7 @@ $\alpha_{\text{max}}$ is the limit bisector angle of the significance measure.
 \todo{TODO: Replace `distance' with `diameter'.}
 
 We call a distance $d$ `preferred' when $d = p(b(d))$
-For our method we require the inverse $b^{-1}(n)$ which gives the smallest $d$ for which $b(d) = n$.
+For our method we require the inverse $b^{-1}(n) := \argmax_d b(d) = n$.
 
 The following restrictions hold:
 \begin{itemize}
@@ -512,7 +512,7 @@ The following restrictions hold:
 \item $120\degree < \alpha_{\text{max}} \leq 180\degree$
 \item $W$ is symetric: $W(n, d)_i = W(n, d)_{n-i-1}$
 \item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
-\item $p$ is within the range of optimal: $b^{-1}(n) < p(n) < b^{-1}(n + 1)$
+\item $p$ is within the range of optimal: $b^{-1}(n - 1) < p(n) < b^{-1}(n)$
 %\item $b \left( p(n) \right) = n$ % follows from the above!
 \item $b$ is monotonic: $ b(d) \leq b(d + \epsilon)$
 \item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
