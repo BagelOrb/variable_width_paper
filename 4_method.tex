@@ -303,6 +303,7 @@ so if $\angle p_1 v p_2 < 120\degree$ then $\angle p_2 v p_3 < 60\degree$ and is
 Using the significance measure and the local maximum feature radius condition we initialize all marked bones and nodes.
 We then filter out high frequency changes in the marking in order to ensure smooth output toolpaths. 
 We perform filtering on the unmarked regions, so that the properties of significant regions mentioned above remain valid.
+Because of \cref{saddle_points_are_marked} we only have to consider paths between marked regions which are monotonically in/decreasing in feature radius.
 From each marked node $v_0$ with an upward unmarked bone attached we walk along the upward edges (which cannot branch because of \cref{single_upward_edge}).
 If the total length traversed until we reach another marked node $v_1$ is shorter than some filter distance $d_\text{max}^\text{unmarked}$, we mark all bones encountered as being central.
 
@@ -319,8 +320,8 @@ We might choose different functions for $b$ depending on the beading strategy us
 We first assign each marked node $v$ of the skeleton an initial bead count $B^*_v \leftarrow b(2R(v))$, but it is modified in order to prevent high frequency changes in bead count and it is changed in order to account for smooth transitions in bead count.
 We also filter unmarked regions where the bead count remains constant.
 \todo{Explaining why would have to refer forward to section about interpolating beadings}
-From each marked node $v_0$ with an upward unmarked bone attached we walk along the upward edges (which cannot branch because of \cref{single_upward_edge}) until we hit another marked node $v_1$.
-If the upper node has the same bead count we mark all bones and nodes $v$ in between, and set the bead count $B^*_{v_0} = B^*_v = B^*_{v_1}$.
+From each marked node $v_0$ with an upward unmarked bone attached we walk along the upward edges until we hit another marked node $v_1$.
+In case $B^*_{v_0} = B^*_{v_1}$ we mark all bones and nodes $v_x$ in between, and set the bead count $B^*_{v_x} \leftarrow B^*_{v_0}$.
 
 \todo{TODO: figure of basic bead counts left, middle with transition mids, right with transition ends.}
 
