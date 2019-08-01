@@ -1,4 +1,11 @@
 \section{Validation}
+We use the following constants:
+\begin{align}
+d_\text{max}^\text{transition} &= \SI{1}{\milli\meter} \\
+d^\text{discretization} &= \SI{0.2}{\milli\meter} \\
+t_\text{beading} &= \SI{0.4}{\milli\meter} \\
+d_\text{max}^\text{intersection} &= \SI{75}{\percent}
+\end{align}
 
 We use a transition anchor position of
 %$$t_-(n) =  t(n) \frac{ b^{-1}(n) - p(n) }{p(n+1) - p(n) }$$
@@ -7,28 +14,99 @@ We use a transition anchor position of
 $$t_0(n) =  t(n) \left( b^{-1}(n) / 0.4  - n \right)$$
 This should ensure that the transitions never overlap with the locations $v$ where $2 R(v) = 0.4n$ for $n \in \mathbb{N}$, since \SI{0.4}{\milli\meter} is the prefered bead width for a similar nozzle size.
 
-$$d_\text{max}^\text{transition} = \SI{1}{\milli\meter}$$
-$$d^\text{discretization} = \SI{0.2}{\milli\meter}$$
-$$t_\text{beading} = \SI{0.4}{\milli\meter}$$
-$$d_\text{max} = \SI{75}{\percent}$$
+Our beading strategies are based on a prefered width $w_\text{pref} = \SI{0.4}{\milli\meter}$, which is equal to the size of the hole in the printing nozzle.
 
+We set 
+\begin{align*}
+t(n) &= w_\text{pref} \\
+\alpha_\text{max} &= \SI{135}{\degree} \\
+L(n,d)_i &= 
+\begin{cases}
+-\frac12 W(n,d)_i + \sum_{j=0}^i W(n,d)_j & \text{ if } i < \frac12 (n -1) \\
+d/2 & \text{ if } i =  \frac12 (n -1) \\
+d - W(n,d)_{n-1-i} & \text{ otherwise }\\
+\end{cases}
+\end{align*}
 
 \subsection{Strategies}
-We can emulate a variety of toolpath generation strategies by applying various beading strategies to our framework.
+We can emulate a variety of toolpath generation methods from related literature by applying various beading strategies to our framework.
 
 \paragraph{Naive Strategy}
+Because the naive strategy never employs single line polyline segments, we disable marking edges using the significance measure by choosing the limit angle.
+\begin{align*}
+\alpha_\text{max} &= \SI{180}{\degree} \\
+b(d) &= 2 \left\lfloor \frac{d}{ 2w_\text{pref}} + \frac12 \right\rfloor \\
+W(n,d)_i &= w_\text{pref} \text{ for all } i 
+%\\
+%L(n,d)_i &= w_\text{pref} \left(i + \frac12 \right) \text{ for all } i < \frac12 n
+\end{align*}
+
 
 
 \paragraph{Constant bead count}
 Emulates \cite{Ding2016a}
 
+\begin{align*}
+b(d) &= C \\
+W(n,d)_i &= d / n \text{ for all } i 
+%\\
+%L(n,d)_i &= d / n \left(i + \frac12 \right) \text{ for all } i < \frac12 n
+\end{align*}
 
-\paragraph{Deviation at middle}
+\paragraph{Deviating toolpath at center}
 Emulates \cite{Jin2017}
+
+$r_\text{min} = 0.8 w_\text{pref}$ and $r_\text{max} = 1.25 w_\text{pref}$
+
+\begin{align*}
+b^-(d) &= 2 \left\lfloor \frac{d}{ 2w_\text{pref}} + \frac12 \right\rfloor \\
+b(d) &= b^-(d) +
+\begin{cases}
+-1 & \text{ if } b^-(d) w_\text{pref} - d > w_\text{pref} - r_\text{max} \\
+1  & \text{ if }  b^-(d) w_\text{pref} - d < w_\text{pref} - r_\text{min} \\
+0 & \text{ otherwise}
+\end{cases}
+\\
+W(n,d)_i &= 
+\begin{cases}
+d - (n-1) w_\text{pref} &\text{ if } i = \frac12 (n-1) \\
+w_\text{pref} &\text{ otherwise }
+\end{cases}
+%\\
+%L(n,d)_i &= 
+%\begin{cases}
+%d / 2 & \text{ if } i = \frac12 (n-1) \\
+%w_\text{pref} \left(i + \frac12 \right) & \text{ otherwise }
+%\end{cases}
+\end{align*}
+
 
 
 \paragraph{Only outer bead}
 Emulates \cite{Moesen2011}
+
+$d_\text{max}^\text{intersection} = \SI{0}{\percent}$
+
+\begin{align*}
+t(n) &= 0 \\
+b(d) &=
+\begin{cases}
+1 & \text{ if } d < w_\text{pref} \\
+2 & \text{ otherwise } \\
+\end{cases}
+ \\
+W(n,d)_i &= 
+\begin{cases}
+d & \text{ if } n = 1 \\
+w_\text{pref} & \text{ otherwise } \\
+\end{cases}
+%\\
+%L(n,d)_i &= 
+%\begin{cases}
+%d / 2 & \text{ if } n = 1 \\
+%w_\text{pref} / 2 & \text{ otherwise } \\
+%\end{cases}
+\end{align*}
 
 
 \paragraph{Distributed strategy}
@@ -36,6 +114,12 @@ Distribute the overfill or underfill which would happen using a naive strategy o
 This maximizes robustness and minimizes narrow beads qhich are difficult to print.
 
 
+\begin{align*}
+b(d) &= \left\lfloor \frac{d}{ w_\text{pref}} + \frac12 \right\rfloor \\
+W(n,d)_i &= d / n \text{ for all } i 
+%\\
+%L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
+\end{align*}
 
 
 
