@@ -122,6 +122,30 @@ W(n,d)_i &= d / n \text{ for all } i
 \end{align*}
 
 
+\paragraph{General distributed strategy}
+Distribute the overfill or underfill which would happen using a naive strategy $E$ over all beads unevenly depending on some weighing function $M(n.d)$, which defines the portion of overfill or underfill which would occur in the naive strategy to distribute to each junction.
+
+
+\begin{align*}
+b(d) &= \left\lfloor \frac{d}{ w_\text{pref}} + \frac12 \right\rfloor \\
+E(n,d) &= d - n w_\text{pref} \\
+W(n,d)_i &= w_\text{pref} + E(n,d) \frac{M(n,d)_i}{\sum_{j=0}^{n-1} M(n,d)_j} \text{ for all } i 
+%\\
+%L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
+\end{align*}
+
+
+\todo{TODO: check $n$ vs $n-1$ everywhere when comparing indices and the total size! Largest index should be $n-1$, not $n$!}
+
+\paragraph{Inward distributed strategy}
+For example, we can choose 
+$$M(n,d)_i = \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )$$
+To distribute the hypothetical over-/underfill over the innermost $2N$ beads, and distribute most of it to the inner beads.
+That way we limit the impact of the distributed strategy and have the nominal bead width $w_\text{pref}$ in regions farther away from the middle.
+This helps if print settings for bead widths other than the prefered width aren't calibrated as well as the settings for $w_\text{pref}$.
+Toolpaths with deviating widths might result in less dimensional accuracy on the outline and uncalibrated mechanical properties throughout the volume, so limiting the number of beads width deviating bead width might be beneficial.
+\todo{Emphasize this point more. Put it in the abstract and conclusion.}
+
 
 
 \subsubsection{Proposed optimal beading strategy}
