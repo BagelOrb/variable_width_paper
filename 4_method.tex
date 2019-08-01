@@ -439,7 +439,7 @@ The anchor position within the transition length is proportional to the transiti
 \label{section_toolpath_extraction}
 Now that we have decided on the bead counts in the central marked regions, we can apply those bead counts outward along the unmarked bones of the skeleton in order to define the locations of the toolpath junctions.
 Because there is a plethora ways to cover a distance $d$ with $n$ beads, the placement of junctions depends on the chosen beading strategy.
-The beading strategy is used to generate the radial distances at which the junctions are placed for each node: the \emph{beading}.
+The beading strategy is used to generate the bead widths and radial distances at which the junctions are placed for each node: the \emph{beading}.
 That beading information is then propagated along the unmarked bones of the skeleton, so that we can generate the junctions on each unmarked bone.
 The junctions are then connected together per trapezoid in order to form the final toolpaths.
 
@@ -458,7 +458,7 @@ $t_0(n)$ (transition anchor position) have already been defined above.
 We introduce here
 $W(n, d)$, which gives the sequence of bead widths to cover a distance $d$ using $n$ beads
 and
-$L(n, d)$, which gives the sequence of toolpath positions as distances from the outline to cover a distance $d$ using $n$ beads.
+$L(n, d)$, which gives the sequence of toolpath positions as radial distances from the outline to cover a distance $d$ using $n$ beads.
 \end{definition}
 
 
@@ -527,19 +527,15 @@ and the middle is highlighted in red.
 \end{figure}
 
 
-\subsubsection{Beading conflicts}\label{section_beading_conflicts}
-
-Interpolation distance $t_\text{beading}$
-
-In marked regions of the ST we employ the approach of applying the optimal bead counts and employing transitioning, while in unmarked regions the beading is only governed by the beading of locations with locally maximal feature radius.
-Marked bones always form chains and don't branch out because of the angle constraint on $\alpha_\text{max}$. \todo{Not true anymore}
-At the end of such chain $v$ we may need to transition from the former approach to the latter.
-This only happens when the feature radius continues increasing: if $\exists v_n \in v.\text{neighborhood}: R(v) < R(v_n) \land | R(v) - R(v_n) | / |v - v_n| >  \cos(\alpha_\text{max} / 2)$ then the bead count assigned by the marked region doesn't fit with a beading which would follow from a local maximum at $v_n$ or some farther node.
+\subsubsection{Beading propagation}\label{section_beading_conflicts}
+Because the beading information will be propagated outward from the central marked regions, beading conflicts can arise where a marked bone has unmarked upward edges attached to them, since beading will also be propagated down from the local maxima or other higher marked regions.
 See \cref{beading_conflict_problem}.
+In such a case we will interpolate between the lower beading and the beading propagated from above,
+starting from the lower marked node and ending at a distance $t_\text{beading}$ upward.
+At the nodes in between we will apply the interpolation between the two beadings and propagate the interpolated beading outward from those nodes.
+This interpolation is performed during the beading propagation algorithm.
+\todo{Make a better figure for this.}
 
-
-\todo{Applying the bead count and determining the beading with the associated widths $W$ and locations $L$ is only handled in the next section, so perhaps we should introduce the beading propagation before the section on transitioning.}
-See \cref{alg_beading_propagation}.
 
 \begin{figure}
 \centering
@@ -551,159 +547,97 @@ The beading approach from the marked region (blue) results in toolpaths (black) 
 \label{beading_conflict_problem}
 \end{figure}
 
-
-The transition length of these transitions to unmarked regions is determined by the fractional difference in bead count between the two beadings:
-if $b^*_v < n$ then $t = t(n) . (R(v) - v.L_n)$
-otherwise $t = t(n) . (1 - (R(v) - v.L_n))$,
-where $n = \argmax_i v.L_i < R(v)$.
-At a distance $t$ from $v$ along marked bones we introduce an new node $v_0$ for the end of the transition and again we connect it to the outline as per the ST requirements.
-
-
-We modify $b^*_v$ such that it coincides with the beading propagated to $v$ from some farther local maximum or another marked region.
-(This propagation is explained in \cref{section_toolpath_extraction}.)
-We assign $b^*_v = n + 1 - \epsilon$, so that the transition switches from the marked beading to the beading of the unmarked approach entirely.
-For nodes $v_x$ in between $v_0$ and $v$ we interpolate $b^*_{v_x}$ again linearly based on the Euclidean distance along the bones in between $v$ and $v_0$.
-
-\todo{Compute beading propagation after initial $b^*$ assignment, but before transitioning}
-\todo{Explain beading propagation before transitioning}
-
-
-
-
-
-
-\subsubsection{Junction placement}
-
-Now that we have the skeleton set up, we determine the locations along the bones where the vertices of the toolpath polygons should be: the \emph{junctions}.
-For marked regions we have already inroduced joints around the transitions which serve as those locations.
-For unmarked regions we can simply apply the beading strategy in order to find the toolpath verts.
-
-
-This needs to be stable against small perturbations in the outline polygon.
-For any sequence on unmarked bones from the outline polygon inward we define the stable end point as the first vertex which is connected to a marked ST segment.
-Based on the feature radius $R$ there we place junctions along the unmarked bones following the beading strategy.
-
-
-
-
-
-\subsubsection{Toolpath extraction algorithm}
-After the beading strategy has been applied we have a beading associated with each marked node as well as each node with locally maximal $R$.
-In order to determine the junction locations of trapezoids which don't contain any such node, we propagate the beading information down.
-We therefore sort all trapezoids on their highest $R$-value and process the high $R$ trapezoids first.
-The beading information is then passed down along the bones of the trapezoid to lower $R$ nodes if those nodes don't already have a beading associated.
-
-See \cref{alg_beading_propagation}.
+After each marked node is assigned a beading by the beading strategy, we propagate the beadings outward to all nodes in the ST.
+The beading propagation is performed in two stages: an upward stage and a downward phases.
+%First we sort all upward half-edges on the radial distance of their destination node, so that we can efficiently flood fill the beading information.
+In the upward phase we walk from each marked node upward along unmarked edges and map each node encountered to a pair consisting of the traversed distance and the bottom source beading.
+In the downward phase we walk from each marked node downward along unmarked edges and map each node to a pair consisting of the traversed distance and the upper source beading -
+however, if we encounter a node which was already mapped to an upward propagated beading we employ the interpolation scheme described above in order to define the beading, which is then further propagated downward.
+This is implemented in a flood-fill fashion: see \cref{alg_beading_propagation}.
 
 \begin{algorithm}
 \caption{Beading propagation}
 \label{alg_beading_propagation}
 \begin{algorithmic}
-\State trapezoids.sortOn(getHighestR())
-\ForAll{$q \in$ trapezoids}
-	\State $v_\text{max} = q$.getHighestR()
-	\State beading = retrieveBeading($v_\text{max}$)
-	\If {$\neg$ retrieveBeading($v_\text{max}$.next())}
-		\State storeBeading($v_\text{max}$.next(), beading)
+\ForAll{$v \in$ nodes}
+	\If {marked($v$)} $\text{map}[v] = (0, B(b^*_v, 2 R(v)))$ \EndIf
+\EndFor
+\ForAll{$e \in$ edges}
+	\If {$R(v_0^e) < R(v_1^e)$}
+		% \State 
+		upwardEdges.add($e$)
 	\EndIf
-	\If {$\neg$ retrieveBeading($v_\text{max}$.prev())}
-		\State storeBeading($v_\text{max}$.prev(), beading)
+\EndFor
+\State upwardEdges.sort($\uplambda e_1 e_2 . R(v_1^{e_1}) < R(v_1^{e_2})$) \Comment {low to high $v_1$}
+\ForAll{$e \in$ upwardEdges} \Comment{upward phase}
+	\If {$\text{map}[v_0^e] \land \neg \text{map}[v_1^e$]}
+    		\State $(d, B) = \text{map}[v_0^e]$
+    		\State $\text{map}[v_1^e] \leftarrow (d + |v_1^e - v_0^e|, B)$
+	\EndIf
+\EndFor
+\ForAll{$e \in$ reverse(upwardEdges)} \Comment{downward phase}
+	\If {$\text{map}[v_1^e]$}
+    		\State $(d, B) \leftarrow \text{map}[v_1^e]$
+    		% d + |v_1^e - v_0^e|
+    		\If {$\text{map}[v_0^e]$}
+    			\State $(d_0, B_0) = \text{map}[v_0^e]$
+    			\State $B \leftarrow \text{interpolate}(\min(1, d_0 /  t_\text{beading}), B_0, B)$
+    		\EndIf
+    		\State $\text{map}[v_1^e] \leftarrow (0, B)$
 	\EndIf
 \EndFor
 \end{algorithmic}
 \end{algorithm}
 
 
-We can then process all bones in arbitrary order and generate the junctions along those bones.
-See \cref{alg_junction_generation}.
 
-\begin{algorithm}
-\caption{Junction generation}
-\label{alg_junction_generation}
-\lstset{language=C++}
-\begin{lstlisting}[frame=single]
-Point a = edge->to->p;
-Point b = edge->from->p;
-Point ab = b - a;
 
-int start_R = edge->to->data.distance_to_boundary; // higher R
-int end_R = edge->from->data.distance_to_boundary; // lower R
-assert(end_R <= start_R);
-
-int junction_idx;
-// compute starting junction_idx for this segment
-for (junction_idx = (beading->toolpath_locations.size() - 1) / 2; junction_idx >= 0 && junction_idx < beading->toolpath_locations.size(); junction_idx--)
-{
-  int bead_R = beading->toolpath_locations[junction_idx];
-  if (bead_R <= start_R)
-    break; // junction coinciding with start node is used in this function call
-}
-
-for (; junction_idx >= 0 && junction_idx < coord_t(beading->toolpath_locations.size()); junction_idx--)
-{
-  int bead_R = beading->toolpath_locations[junction_idx];
-  assert(bead_R > 0);
-  if (bead_R < end_R)
-    break; // junction coinciding with a node is handled by the next segment
-  
-  Point junction(a + ab * (bead_R - start_R) / (end_R - start_R));
-  junctions.emplace_back(junction, beading->bead_widths[junction_idx], junction_idx);
-}
-\end{lstlisting}
-\end{algorithm}
-
+\subsubsection{Toolpath extraction algorithm}
+Now that each node has a beading associated with it we can apply the beading to generate the junctions of the toolpaths.
+For each upward half-edge $e$ we generate each junction $J$ based on the beading $B = B^{v_1^e}$:
+\begin{align*}
+J &= \{ v, w, i \} \\ 
+v &= v_1^e + (v_0^e - v_1^e) \frac{R(v_1^e) - l_i^B}{R(v_1^e) - R(v_0^e)} \\ 
+w &= w_i^B
+% \\ i^J &= i
+\end{align*}
+for any $i$ for which $R(v_0^e) < l_i^B \leq R(v_1^e)$.
+We store all junctions of a segment in a mapping from edge to a list of junctions.
 
 We then generate bead segments for each trapezoid by connecting together the junctions of the same index.
-If the amount of junctions on both sides of the trapezoid is not the same then this trapezoid is in a transition and we leave one junction unconnected.
+If the amount of junctions on both sides of the trapezoid is not the same then this trapezoid is in a transition and we leave one inner junction unconnected.
+If a central edge has both nodes with an odd beadcount assigned to it $b^* \bmod 2 = 1 $ we should prevent the algorithm from generating the center segment from both trapezoids.
+We therefore use some arbitrary condition to decide which one of the two to include based on the ordering of the coordinates of $v_0$ and $v_1$.
 
+All segments are then connected together into polylines, which are then closed into polygonal toolpaths.
+The odd center segments remain in polylines, so the final toolpaths contain both polygonal paths and open polyline paths.
 
-\paragraph{Printing order}
-The order in which beads are printed has influence on the quality and dimensional accuracy of a print.
-If the inner beads are printed first then small inaccuracies in the deposition process propagate outward and the final outline of the print layer will be less accurate.
-However, if the second bead is printed before the outer bead then the outer bead has more material to adhere to, which lessens the overhang constraints.
-We therefore choose to print the inner beads first starting from the second bead and at the very end print the outermost bead.
-
-
-
-\begin{figure}
-\begin{subfigure}{0.45\columnwidth}
-\includegraphics[width=\columnwidth]{sources/method/single_bead_strategy.jpg}
-\caption{Overview}
-\label{single_bead_strategy_overview}
-\end{subfigure}
-\begin{subfigure}{0.45\columnwidth}
-\includegraphics[width=\columnwidth]{sources/method/single_bead_strategy_order.jpg}
-\caption{Travel order}s
-\end{subfigure}
-\caption{We can do single-bead segments. Blue is travel move.}
-\label{single_bead_strategy}
-\end{figure}
-
-When all extrusion segments are generated, we combine them into semi-continuous polyline toolpaths.
-These polylines generally form closed polygons, but at marked regions of the ST the toolpaths consist of single bead polyline toolpaths.
-See \cref{single_bead_strategy}.
-These single bead polylines can connect to polygonal toolpaths and they can also meet each other at 3-way junctions.
-We determine the printing order for all segments of a given bead index by minimizing the travel distance using a greedy path order optimizer.
-\todo{[implementation needed!]}
-
-
-In general the toolpath location should be centered on the middle of the bead.
-However, when the bead width is smaller than the nozzle size we might want to offset the toolpath toward a previously printed bead.
-That way the previously printed bead occludes part of the hole in the nozzle such that the unoccluded hole is as wide as the required bead width.
-The printing order and the toolpath positioning of the beading strategy are therefore interrelated.
-
-Around 3-way junctions we need to prevent overextrusion.
-We need to reduce the extrusion amount after the first time we pass an intersection: commonly known as \emph{ghosting}.
-See \cref{ghosting}.
-In order to realize the reduction we remove a section from the extrusion bead up to a distance equal to the feature radius from the junction.
+Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
+Such intersections cause overextrusion because the nozzle passes the location multiple times.
+In order to reduce the amount of overextrusion of a polyline ending in a junction $J$ we therefore remove part of the polyline paths up to the intersection by a distance of $d_\text{max}^\text{intersection} w^J$, where $d_\text{max}$ is some ration between $0$ and $1$.
+We do this for all polylines until only two outward toolpath segments remain, which constitute a single pass over the junction.
+See \cref{polyline_reduction}.
 
 
 \begin{figure}
 \centering
-\includegraphics[width=.99\columnwidth]{sources/method/ghosting.pdf}
-\caption{Ghosting prevents over-extrusion at junctions.}
-\label{ghosting}
+\setlength{\figwidth}{\columnwidth}
+\begin{subfigure}{0.45\figwidth}\centering
+\includegraphics[width=\columnwidth]{sources/method/polyline_reduction_unreduced.pdf}
+\caption{No reduction}
+\end{subfigure}
+\begin{subfigure}{0.45\figwidth}\centering
+\includegraphics[width=\columnwidth]{sources/method/polyline_reduction_reduced.pdf}
+\caption{Reduction}
+\end{subfigure}
+\caption{
+Reducing polyline toolpaths away from intersections in order to prevent overextrusion.
+Toolpath locations in black, underextrusion in blue, overextrusion in red and orange and normal extrusion in grey.
+Intersections result in overextrusion, so we remove parts of the polylines at intersections.
+}
+\label{polyline_reduction}
 \end{figure}
+
 
 
 

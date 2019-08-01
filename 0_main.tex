@@ -89,9 +89,11 @@
 	\pgfplotsset{compat=1.15}
 	\usetikzlibrary{backgrounds}
 
-	\usepackage{algpseudocode} % algorithmic
+	\usepackage[noend]{algpseudocode} % algorithmic
 	\usepackage{algorithm} % wrapper for pseudocode to give a caption and label
+
 	\newcommand{\pluseq}{\mathrel{+}=} %pluseq symbol
+	\usepackage{upgreek} % \uplambda
 
 	\usepackage{listings} % for listing C++ code instead of pseudocode
 	\lstset{ 
