@@ -605,6 +605,7 @@ for any $i$ for which $R(v_0^e) < l_i^B \leq R(v_1^e)$.
 We store all junctions of a segment in a mapping from edge to a list of junctions.
 
 We then generate bead segments for each trapezoid by connecting together the junctions of the same index.
+\todo{TODO: Image}
 If the amount of junctions on both sides of the trapezoid is not the same then this trapezoid is in a transition and we leave one inner junction unconnected.
 If a central edge has both nodes with an odd beadcount assigned to it $b^* \bmod 2 = 1 $ we should prevent the algorithm from generating the center segment from both trapezoids.
 We therefore use some arbitrary condition to decide which one of the two to include based on the ordering of the coordinates of $v_0$ and $v_1$.
@@ -614,7 +615,7 @@ The odd center segments remain in polylines, so the final toolpaths contain both
 
 Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
 Such intersections cause overextrusion because the nozzle passes the location multiple times.
-In order to reduce the amount of overextrusion of a polyline ending in a junction $J$ we therefore remove part of the polyline paths up to the intersection by a distance of $d_\text{max}^\text{intersection} w^J$, where $d_\text{max}$ is some ration between $0$ and $1$.
+In order to reduce the amount of overextrusion of a polyline ending in a junction $J$ we therefore remove part of the polyline paths up to the intersection by a distance of $w^J d_\text{max}^\text{intersection}$, where $d_\text{max}$ is some ration between $0$ and $1$.
 We do this for all polylines until only two outward toolpath segments remain, which constitute a single pass over the junction.
 See \cref{polyline_reduction}.
 
