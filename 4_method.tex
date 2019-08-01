@@ -321,14 +321,14 @@ If the total length traversed until we reach another marked node $v_1$ is shorte
 In order to apply a beading strategy to the ST we first assign bead counts to the central regions and then decide on how to apply those bead counts outward.
 In order to decide on an initial bead count, we require a function mapping a feature diameter to a bead count: $b: \mathbb{R} \to \mathbb{N}$.
 (The feature diameter is twice the radius.)
-The function $b$ is determined by the beading strategy.
+The function $b$ is determined by the beading strategy and is required to increase monotonically with the input feature diameter.
 
-We first assign each marked node $v$ of the skeleton an initial bead count $B^*_v \leftarrow b(2R(v))$, but it is modified in order to prevent high frequency changes in bead count and it is changed in order to account for smooth transitions in bead count.
+We first assign each marked node $v$ of the skeleton an initial bead count $b^*_v \leftarrow b(2R(v))$, but it is modified in order to prevent high frequency changes in bead count and it is changed in order to account for smooth transitions in bead count.
 See \cref{beading_transitioning_filtering__bead_count}.
 
 We also filter unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
 From each marked node $v_0$ with an upward unmarked bone attached we walk along the upward edges (which cannot branch because of \cref{single_upward_edge}) until we hit another marked node $v_1$.
-If the upper node has the same bead count $B^*_{v_1} = B^*_{v_0}$ we mark all bones and nodes $v$ in between, and set the bead count $B^*_v \leftarrow B^*_{v_0}$.
+If the upper node has the same bead count $b^*_{v_1} = b^*_{v_0}$ we mark all bones and nodes $v$ in between, and set the bead count $b^*_v \leftarrow b^*_{v_0}$.
 
 
 \begin{figure*}
@@ -374,11 +374,11 @@ See \cref{transitions}.
 The length along the marked region of a transition from bead count $n$ to $n+1$ is determined by some function $t(n)$.
 Because transitions in bead count only occurs in locations where the prefered bead count $b$ changes, we introduce $b^{-1}(n) := \argmax_d b(d) = n$.
 
-For each marked bone between $v_0$ and $v_1$ with $v_0.B^* \neq v_1.B*$ we introduce transitions.
+For each marked bone between $v_0$ and $v_1$ with $b^*_{v_0} \neq b^*_{v_1}$ we introduce transitions.
 A transition from bead count $n$ to $n+1$ will be placed anchored on each location $v_x$ where $R(v_x) = b^{-1}(n)$.
 We can compute the location of the anchor simply as
 $$v_x = v_0 + (v_1 - v_0) \frac{ b^{-1}(n) - R(v_0) }{ R(v_1) - R(v_0) }$$
-for each $n$ such that $v_0.B^*<n<v_1.B^*$.
+for each $n$ such that $b^*_{v_0}<n<b^*_{v_1}$.
 See \cref{beading_transitioning_filtering__transition_mids}.
 
 A transition with length $t(n)$ will be placed somewhere covering the anchor position.
@@ -392,8 +392,9 @@ If we hit the end of a marked region and the traversed distance from the anchor 
 See \cref{beading_transitioning_filtering__filtered}.
 
 In order to generate the lower and upper end point of the transitions we walk downward and upward along the marked regions from each anchor position $v$ until we have traversed the coresponding distance of $t_{0}(n)$ or $t_{1}(n)$.
-If there is any node $v_x$ in between $v$ and $v_0$ or $v_1$ we assign it a fractional bead count by linear interpolation: $v_x.B^* = n + D(v_0, v_x)/t(n)$, where $D(.)$ is the cumulative distance measured along the marked bone(s).
+If there is any node $v_x$ in between $v$ and $v_0$ or $v_1$ we assign it a fractional bead count by linear interpolation: $b^*_{v_x} = n + D(v_0, v_x)/t(n)$, where $D(.)$ is the cumulative distance measured along the marked bone(s).
 See \cref{beading_transitioning_filtering__transition_ends}.
+These fractional bead counts will be used in \cref{section_beading_interpolation}.
 
 Finally we perform the graph update by introducing nodes at the transition ends and introducing radial bones from these new nodes to the outline as per the trapezoidation requirement.
 See \cref{beading_transitioning_filtering__transitions_applied}.
@@ -443,62 +444,93 @@ That beading information is then propagated along the unmarked bones of the skel
 The junctions are then connected together per trapezoid in order to form the final toolpaths.
 
 
-\subsection{Beading strategy}
-First we determine how we should fill a 	polygon with constant width with a number of beads.
-We want to fit an exact whole number of beads in order to prevent a gap being generated.
-We consider only half of the polygon, because our beading strategy should be symmetrical.
-
+\begin{definition}
 We define a beading strategy as the following set:
 $$
-\left\{ b(d), W(n, d), L(n, d), t(n), t_0(n), \alpha_{\text{max}} \right\}
+\left\{ \alpha_\text{max}, b(d), t(n), t_0(n), W(n, d), L(n, d) \right\}
 $$
 where
-$b(d)$ gives the optimal bead count to cover a total distance of $d$,
-$W(n, d)$ gives the sequence of bead widths to cover a distance $d$ using $n$ beads,
-$L(n, d)$ gives the sequence of toolpath positions as distances from the outline to cover a distance $d$ using $n$ beads,
-$t(n)$ is the length of the transition region to switch from $n$ to $n+1$ beads,
-$t_0(n)$ is the length of between the lower end and the anchor point of the transition from $n$ to $n+1$ beads
+$\alpha_{\text{max}}$ (the limit bisector angle),
+$b(d)$ (optimal bead count),
+$t(n)$ (transition length)
 and
-$\alpha_{\text{max}}$ is the limit bisector angle of the significance measure.
+$t_0(n)$ (transition anchor position) have already been defined above.
+We introduce here
+$W(n, d)$, which gives the sequence of bead widths to cover a distance $d$ using $n$ beads
+and
+$L(n, d)$, which gives the sequence of toolpath positions as distances from the outline to cover a distance $d$ using $n$ beads.
+\end{definition}
 
-\todo{TODO: Replace `distance' with `diameter'.}
-
-For our method we require the inverse $b^{-1}(n) := \argmax_d b(d) = n$.
 
 The following restrictions hold:
 \begin{itemize}
-\item $b(d) \geq 0, W(n,d) > 0, L(n, d) \geq 0, t \geq 0$
-\item $120\degree < \alpha_{\text{max}} \leq 180\degree$
 \item $W$ is symetric: $W(n, d)_i = W(n, d)_{n-i-1}$
 \item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
-\item $b$ is monotonic: $ b(d) \leq b(d + \epsilon)$
 \item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
 \item $t$ is viable:  \todo{TODO: verify this.} \\ $t_1(n) + t_0(n+1) < \left( b^{-1}(n + 1) - b^{-1}(n) \right) /{2 \cos \alpha_\text{max}}$
 \end{itemize}
 
-The angle requirement ensures that there is never a 3-way junction of significant bones. \todo{not true anymore}
 
-By applying the beading strategy to a skeleton location $v$ and a predetermined bead count $n$ we get a beading, which is defined as the following set:
+\begin{definition}
+By applying the beading strategy to a skeleton location $v$ and a predetermined bead count $n$ we get a beading $B$, which is defined as the following set:
 $$
-\left\{ d, w_i, l_i  \right\}
+\left\{ d, n, w_i, l_i  \right\}
 $$
 where
-$d = 2 R(v)$ is the total distance associated with $v$,
-$w_i$ is the bead width of the bead with index $i$
-end
-$l_i$ is the distance of the toolpath location of bead $i$ from the outline.
+$d = 2 R(v)$ is the diameter associated with $v$,
+$n$ is the bead count,
+$w_i$ is the bead width of the bead with index $0 \leq i < n$ counting from the outline inward
+and
+$l_i$ is the distance of the toolpath location of bead with index $0 \leq i < n$.
+\end{definition}
 
 
 
-
-\paragraph{Beading interpolation}
+\subsubsection{Beading interpolation}\label{section_beading_interpolation}
 Skeletal nodes which are in the middle of a transition have obtained a fractional bead count, but the functions defined in the beading strategy are only defined on natural numbers.
 The fractional part of the bead count is used to interpolate between two beadings defined on the fractional bead count rounded up and down.
+Suppose we want to interpolate between two beadings $B^V$ and $B^W$, for which $n^{B^V} < n^{B^W}$.
+We interpolate the diameter $d$, widths $w_i$ and locations $l_i$ for indices $i < \frac12 n^{B^V}$ linearly and enforce the symmetry contraints on the upper indices.
+See \cref{beading_interpolation}.
+The linear interpolation enforces robustness against small perturbations in the outline shape which cause extra bones to appear in the skeleton inside of transition regions.
 
+\iffalse
+In order to create an interpolated beading $B = xB^V + (1-x) B^W$, for some $0<x<1$
+we calculate:
+\begin{align*}
+n^{B} &= n^{B^W} \\
+d^B &= x d^{B^V} + (1-x) d^{B^W} \\
+w_i^{B} &= w_{n^B-i}^{B} = x w_i^{B^V} + (1-x) w_i^{B^W} \text{ for } i < \frac12 n^{B^V} \\
+%  w_{frac{n}{2}^B - frac12}  = something difficult \text{ if } n \mod 2 == 1
+w_i^{B} &= w_i^{B^W} \text{ otherwise}\\
+l_i^{B} &= 
+\begin{cases} 
+x l_i^{B^V} + (1-x) l_i^{B^W} & \text{ for } i < \frac12 (n^{B^V} - 1) \\
+d^B - x l_{i-n^{B^W}+n^{B^V}}^{B^V} + (1-x) l_i^{B^W} & \text{ for } i > n^B - 1 - \frac12 (n^{B^V} - 1) \\
+\frac12 d^B  & \text{ if $n^B$ is odd and } i = (n^B - 1) / 2 \\
+l_i^{B^W} - l_{n^{B^V}-1}^{B^W} + l_{n^{B^V}-1}^B & \text{ otherwise}
+\end{cases}
+\end{align*}
+\fi
 
+\begin{figure}
+\centering
+\includegraphics[width=.8\columnwidth]{sources/method/beading_interpolation_v2.pdf}
+\caption{
+Interpolation between two beadings $B^V$ and $B^W$ with a ratio $x$ results in a beading $B^x$.
+Distances between the thick black lines constitute diameters $d$,
+the toolpath locations are visualized as dots,
+the widths are visualized as bidirection arrows
+and the middle is highlighted in red.
+}
+\label{beading_interpolation}
+\end{figure}
 
 
 \subsubsection{Beading conflicts}\label{section_beading_conflicts}
+
+Interpolation distance $t_\text{beading}$
+
 In marked regions of the ST we employ the approach of applying the optimal bead counts and employing transitioning, while in unmarked regions the beading is only governed by the beading of locations with locally maximal feature radius.
 Marked bones always form chains and don't branch out because of the angle constraint on $\alpha_\text{max}$. \todo{Not true anymore}
 At the end of such chain $v$ we may need to transition from the former approach to the latter.
@@ -521,18 +553,18 @@ The beading approach from the marked region (blue) results in toolpaths (black) 
 
 
 The transition length of these transitions to unmarked regions is determined by the fractional difference in bead count between the two beadings:
-if $v.B^* < n$ then $t = t(n) . (R(v) - v.L_n)$
+if $b^*_v < n$ then $t = t(n) . (R(v) - v.L_n)$
 otherwise $t = t(n) . (1 - (R(v) - v.L_n))$,
 where $n = \argmax_i v.L_i < R(v)$.
 At a distance $t$ from $v$ along marked bones we introduce an new node $v_0$ for the end of the transition and again we connect it to the outline as per the ST requirements.
 
 
-We modify $v.B^*$ such that it coincides with the beading propagated to $v$ from some farther local maximum or another marked region.
+We modify $b^*_v$ such that it coincides with the beading propagated to $v$ from some farther local maximum or another marked region.
 (This propagation is explained in \cref{section_toolpath_extraction}.)
-We assign $v.B^* = n + 1 - \epsilon$, so that the transition switches from the marked beading to the beading of the unmarked approach entirely.
-For nodes $v_x$ in between $v_0$ and $v$ we interpolate $v_x.B^*$ again linearly based on the Euclidean distance along the bones in between $v$ and $v_0$.
+We assign $b^*_v = n + 1 - \epsilon$, so that the transition switches from the marked beading to the beading of the unmarked approach entirely.
+For nodes $v_x$ in between $v_0$ and $v$ we interpolate $b^*_{v_x}$ again linearly based on the Euclidean distance along the bones in between $v$ and $v_0$.
 
-\todo{Compute beading propagation after initial $B^*$ assignment, but before transitioning}
+\todo{Compute beading propagation after initial $b^*$ assignment, but before transitioning}
 \todo{Explain beading propagation before transitioning}
 
 
