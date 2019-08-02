@@ -1,0 +1,32 @@
+odrive tool
+
+check confluence pagina van p3
+https://confluence.ultimaker.com/display/RD/P3+Direct+Drive+BLDC+linear+advance+and+intergalactic+cheetah
+
+plug in P3 via usb
+start odrivetool
+
+cope paste
+def resetMotor():
+    odrv0.axis1.motor.config.current_lim = 10
+    odrv0.axis1.controller.config.vel_limit = 500000
+    odrv0.axis1.motor.config.calibration_current = 4
+    odrv0.axis1.controller.config.pos_gain = 100
+    odrv0.axis1.controller.config.vel_gain = 0.0001
+    odrv0.axis1.controller.config.vel_integrator_gain = 0.01
+    odrv0.axis1.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+ 
+def sd():
+    odrv0.axis1.controller.config.control_mode = CTRL_MODE_POSITION_CONTROL
+    odrv0.axis1.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL   
+    odrv0.axis1.config.enable_step_dir = 1
+    odrv0.config.enable_uart = False
+    odrv0.axis1.config.counts_per_step = 27
+    
+    
+then run:
+resetMotor()
+sd()
+
+
+
