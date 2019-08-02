@@ -95,6 +95,32 @@ W(n,d)_i &= w_\text{pref} \text{ for all } i
 \end{align*}
 
 
+\paragraph{Only outer bead}
+Emulates \cite{Moesen2011}. We don't reduce line segments in 3-way intersections.
+
+$d_\text{max}^\text{intersection} = \SI{0}{\percent}$
+
+\begin{align*}
+t(n) &= 0 \\
+b(d) &=
+\begin{cases}
+1 & \text{ if } d < w_\text{pref} \\
+2 & \text{ otherwise } \\
+\end{cases}
+ \\
+W(n,d)_i &= 
+\begin{cases}
+d & \text{ if } n = 1 \\
+w_\text{pref} & \text{ otherwise } \\
+\end{cases}
+%\\
+%L(n,d)_i &= 
+%\begin{cases}
+%d / 2 & \text{ if } n = 1 \\
+%w_\text{pref} / 2 & \text{ otherwise } \\
+%\end{cases}
+\end{align*}
+
 
 \paragraph{Constant bead count}
 Emulates \cite{Ding2016a}
@@ -136,31 +162,6 @@ w_\text{pref} &\text{ otherwise }
 
 
 
-\paragraph{Only outer bead}
-Emulates \cite{Moesen2011}
-
-$d_\text{max}^\text{intersection} = \SI{0}{\percent}$
-
-\begin{align*}
-t(n) &= 0 \\
-b(d) &=
-\begin{cases}
-1 & \text{ if } d < w_\text{pref} \\
-2 & \text{ otherwise } \\
-\end{cases}
- \\
-W(n,d)_i &= 
-\begin{cases}
-d & \text{ if } n = 1 \\
-w_\text{pref} & \text{ otherwise } \\
-\end{cases}
-%\\
-%L(n,d)_i &= 
-%\begin{cases}
-%d / 2 & \text{ if } n = 1 \\
-%w_\text{pref} / 2 & \text{ otherwise } \\
-%\end{cases}
-\end{align*}
 
 
 \paragraph{Distributed strategy}
