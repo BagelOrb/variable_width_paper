@@ -208,19 +208,58 @@ Toolpaths with deviating widths might result in less dimensional accuracy on the
 
 
 \subsection{Computational analysis}
+Experiments were performed on an Intel Core i7-7500U CPU @ \SI{2.70}{\giga\hertz} using a single core and \SI{16.3}{\giga\byte} memory.
+The naive method was implemented using the state-of-the-art polygon offset library called Clipper. \cite{johnson2014clipper}
+
 \paragraph{Accuracy}
-Render toolpaths and calculate amount of overfilling and amount of underfilling.
+In order to estimate the overfill and underfill we need to accurately calculate the area covered by a single extrusion path.
+If we would simply use a isosceles trapezoidal area with base lengths equal to the widths of the two end points of the segment we would get strange artifacts at corners in the toolpath.
+We therefore visualize include a semi-circle with a diameter equal to the starting width in the one end, and exclude it at the other end, because it will be included in the next extrusion segment.
+For polyline extrusion paths which are not closed, we also include the semi-circle corresponding to the extrusion width of the end-position.
+In order to print such extrusion paths accurately, we can modulate the amount of material flow per millimeter based on this visualization model.
+See \cref{segment_visualization}.
 
-\paragraph{Printability}
-Define some function to determine printability $0<P<1$, 
-then define a loss function $L = 1/P$.
-Evaluate average loss divided by total toolpath length.
+\begin{figure}
+\centering
+\setlength{\figwidth}{.25\columnwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\columnwidth]{sources/validation/visualization_principle_blocky.pdf}
+\caption{Blocky}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\columnwidth]{sources/validation/visualization_principle_rounded.pdf}
+\caption{Rounded}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\columnwidth]{sources/validation/visualization_principle_rounded_excluded.pdf}
+\caption{Excluded}
+\end{subfigure}
+\caption{
+Extruded area of two extrusion toolpath segments.
+Red areas signify doubly extruded areas.
+}
+\label{segment_visualization}
+\end{figure}
 
-\old{Visualize thickness of beads as color.}
+We can then estimate the amount of underfill by unioning the rounded visualization of all extrusion segments and then takign the difference from the original outline shape.
+In order to deal with rounding errors we perform a morpholocial close of \SI{5}{\micro\meter} before calculating the total area of the underfill regions.
 
-Show results for different settings.
+The overfill regions are calculated by adding the polygonal areas of each extrusion segment to a list.
+We then add the original outline shape in reverse and perform a clipper operation which only keeps areas of positive winding order.
+Because the reverse outline shape reduces the winding order of all extruded segments by one, we are left with the overfill areas.
+In order to estimate the areas which are triply covered by extrusion segments, we repeat the process of adding the outline in reverse and performing the clipper operation.
+These tripple extrusion areas count double toward the total amount of overfill.
+The resulting overfill and underfill areas are visualzied for the different toolpath strategies in \cref{visualized_accuracy}.
 
-\old{Also render with nozzle size as minimal width and use middle of toolpaths instead of middle of beads.}
+
+\todo{Visualize results in tables and/or graphs.}
+
+
+
+\paragraph{Manufacturability}
+Depending on the hardware configuration some bead widths are difficult to manufacture.
+A bead width far below the nozzle size can result in fluttered extrusion, while a bead width far above the nozzle size can require pressures above the specifications of the machine.
+We visualize the bead widths reslting from the different strategies in an exaggerated manner in \cref{visualized_accuracy}.
 
 Example shapes:
 \begin{itemize}
