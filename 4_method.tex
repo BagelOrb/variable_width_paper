@@ -384,6 +384,23 @@ See \cref{beading_transitioning_filtering__transition_mids}.
 A transition with length $t(n)$ will be placed somewhere covering the anchor position.
 We require an additional function to be specified by the beading strategy: $t_0(n)$ determines the distance between the lower end of a transition from bead count $n$ to $n+1$ and the anchor point - as measured along the marked bones of the skeleton.
 From that we calculate $t_1(n) = t(n) - t_0(n)$ for the distance from the anchor to the upper end of the transition.
+The transitions lengths should be such that they fit between anchor locations of two consecutive transitions even for a bone with high bisector angle:
+$$t_1(n) + t_0(n+1) < \frac{ b^{-1}(n + 1) - b^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$$
+for each $n \in \mathbb{N}$.
+See \cref{transition_placement}.
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=.4\columnwidth]{sources/method/transition_length_limit.pdf}
+\caption{
+Placement of transition ends (magenta and pink) with respect to the anchor positions of the transitions (purple) on a skeleton segment (blue) with bisector angle $\alpha \approx \SI{135}{\degree}$.
+The distance between the anchor position and the upper end ($t_1$) and the distance between the anchor position and the lower end of the transition ($t_0$) should add up to less than the total distance between the anchor positions, which is limited by $\alpha_\text{max}$.
+}
+\label{transition_placement}
+\end{figure}
+
 
 In order to prevent frequent oscillations in the bead count, we filter locally maximal or minimal bead count regions.
 For each edge which contains a transition anchor we walk along the marked regions until we encounter another anchor.
@@ -416,18 +433,6 @@ Discontinuities around regions where the bead count changes are prevented by tra
 }
 \label{transitions}
 \end{figure}
-
-\iffalse
-\begin{figure}
-\centering
-\includegraphics[width=.3\columnwidth]{sources/method/transition_location_precise.pdf}
-\caption{
-Transition placement.
-The anchor position within the transition length is proportional to the transition location within the range between two distances with preferred length. 
-}
-\label{transition_placement}
-\end{figure}
-\fi
 
 
 
@@ -467,7 +472,6 @@ The following restrictions hold:
 \item $W$ is symetric: $W(n, d)_i = W(n, d)_{n-i-1}$
 \item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
 \item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
-\item $t$ is viable:  \todo{TODO: verify this.} \\ $t_1(n) + t_0(n+1) < \left( b^{-1}(n + 1) - b^{-1}(n) \right) /{2 \cos \alpha_\text{max}}$
 \end{itemize}
 
 
