@@ -18,4 +18,24 @@ and it also allows for some parallelism during the computation of the toolpaths.
 
 
 \subsection{Comparison of different beading strategies}
-\todo{Discussion of finding of Validation section}
+\todo{Discussion of finding of Validation section}\
+
+Naive strategy causes a lot of overfills and underfills.
+This overpoweres any positive effect of perfectly homogeneous bead width.
+
+The single bead strategy solves the underfill problem in regions where the model is more thin than the nozzle size.
+However, the strategy doesn't deal with the remaining area.
+In our visualization we print the outline of the remaining area which exposes an overextrusion problem.
+
+The constant beading strategy effectively deals with all overfills and underfills, but at the cost of wildly differing bead widths.
+For an input outline shape which contains both very small and very large features the algorithm produces bead widths which can fall outside of the range of manufacturable bead widths.
+
+The center beading strategy effectively deals with overfill and underfill and produces bead widths which are the optimal bead width in all locations, but in the center the bead widths are within a factor 2 off from the optimal bead width, which is still quite a bit.
+
+The distributed strategy greatly reduces the total underfill and overfill and severely limits the amount of beads with a width which differs greatly from an optimal width, but the toolpaths contain a lot of bends in transitioning areas.
+
+The inward distributed beading strategy shows similar behavior to the distributed strategy, but large regions are less affected by the bends introduced because of transitioning.
+This can be seen in \cref{applications_gear}.
+
+
+
