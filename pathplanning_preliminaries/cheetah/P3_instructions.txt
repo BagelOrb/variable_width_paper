@@ -6,7 +6,7 @@ https://confluence.ultimaker.com/display/RD/P3+Direct+Drive+BLDC+linear+advance+
 plug in P3 via usb
 start odrivetool
 
-cope paste
+>> copy paste:
 def resetMotor():
     odrv0.axis1.motor.config.current_lim = 10
     odrv0.axis1.controller.config.vel_limit = 500000
@@ -24,7 +24,7 @@ def sd():
     odrv0.axis1.config.counts_per_step = 27
     
     
-then run:
+>> then run:
 resetMotor()
 sd()
 
