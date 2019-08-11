@@ -1,17 +1,26 @@
 \section{Introduction}
-Additive manufacturing in general
+3D printing enables the fabrication of complex geometry under very few design constraints compared to conventional fabrication techniques.
+Recent developments have seen a rapid growth in the use and capabilities of desktop 3D printing systems.
+The rapid spread of 3D printing through different industries and types of application calls for the possibility to manufacture a wide range of geometries while guaranteeing mechanical properties of the resulting parts.
 
-FDM is
+Fused Deposition Modeling (FDM) is one of the most common 3D printing techniques.
+It is widely used because of the versatility in the types of plastics which can be used and the relatively low running costs.
+FDM printers are used for example in showcasing scale models of buildings, casings for electronics, prototypes blowmold parts, jigs and fixtures - to name just some.
+Recent research developments have investigated manufacturing complex volumetric structures such as microstructures, topology optimized structures and infill structures.
+Quite some of these applications require 3D models with detailed features within the order of magnitude of the printing resolution, which restrains the field of the process planning algorithms.
 
-FDM is used for...
+FDM printers expell molten plastic through a nozzle, which extrudes semi-continuous beads of plastic generally in flat horizontal layers.
+Because the positioning system generally has an order of magnitude better resolution than the width of the nozzle,
+the toolpaths for filling the arbitrary polygonal shape of a layer with extrusion beads are following the contour of that layer.
 
-FDM works by depositing beads in flat layers
-
-Outer walls are contour following because the resolution determined by the bead width is worse than the spatial accuracy of the XYZ positioning system.
-
-Naive method
-
-mechanical properties of FDM parts and relations with bead width
+The naive method for generating the shape filling toolpaths of a layer consists in performing inward offsets with the size of the hole in the nozzle from the outline shape.
+However, for geometrical features which are not an exact multiple of the nozzle size this method produces areas where an extrusion bead is placed twice: \emph{overfill} areas; and other areas which are not filled at all: \emph{underfll} areas.
+See \cref{intro_wedge}(top).
+Overfills cause a buildup of pressure in the mechanical extrusion system, which can result in bulges or even a full print failure.
+Underfills on the other hand can cause a drastic decrease in the part stiffness or even for small features not to be printed at all.
+These problems are exacerbated for models with layer outlines with small features, because the over- and underfill areas are large compared to the whole part.
+In order to avoid over- and underfills in regions which are not as wide as an exact multiple of the nozzle size we need algorithms which produce toolpaths which employ adaptive bead width.
+Some such toolpath generation techniques have already been developed.
 
 \begin{figure}\centering
 \includegraphics[width=\columnwidth]{sources/intro/TEST_naive_pretty.png}
@@ -25,59 +34,29 @@ Red signifies overfill and blue underfill.
 
 
 
-\subsection{Problem}
-Thin model parts either produce overfill or underfill in the naive method.
-
-3D models may have parts with pieces with a thickness of non-integer multiples of the nominal bead width.
-How can we fill such a shape?
-We must employ varying line width.
-
-
-
-\subsection{Significance}
-
 There is a large body of literature on relating process parameters such as bead width to various mechanical properties of the end part.
-In order to accurately fabricate something with prescribed mechanical properties we need to print while employing roughly homogenous line width.
+The bead width has been associated with total print time, the roughness of top surfaces, printing resolution and the strength of a part, through the contact area it makes with neighboring beads. \cite{N.Turner2014,ahn2002anisotropic}
+In order to accurately fabricate a part restricted to prescribed mechanical properties we need to generate toolpaths using the corresponding process parameters as close as possible.
+We therefore develop a parametric system which can be used to generate toolpaths which not only avoid over- and underfill, but also keep the bead width closer to the nominal bead width then existing techniques.
+See \cref{intro_wedge}(bottom).
 
-Line width is influenced by the following factors:
+%\subsection{Contributions}
+A polygonal shape with a width of a fractional multiple of the nominal bead width will always result in the bead widths deviating from the nominal bead width by the fractional part in total,
+because the total of the widths of the beads must add up to the fractional width of the part in order to avoid under- or overfill.
+We therefore propose a framework which makes it possible to distribute the fractional discrepancy over several beads, so that the beads are generally closer to the nominal width.
+Our contributions are as follows:
 \begin{itemize}
-\item Larger for filling cravices
-\item Larger or smaller (?) for heat dissipation
-\item Larger for larger contact surface, so better adhesion \cite{N.Turner2014}
-\item Larger fills up an area faster \cite{ahn2002anisotropic}
-\item Smaller for better quality top surfaces \cite{ahn2002anisotropic}
-\item Smaller for overhangs
-\item Smaller to compensate for die swell
-\item Smaller for more detail, less rounded corners \cite{N.Turner2014}
+\item A geometric framework for generating densely filling contour-parallel toolpaths employing adaptive width, according to any function which maps a model diameter to a number of beads and their widths.
+\item A specific beading strategy function for this framework for:
+\begin{itemize}
+\item Accurately filling a 2D outline with extrusion beads
+\item Reducing the overfill and underfill areas compared to the naive method
+\item Reducing the amount of beads with greatly deviating width compared to existing literature
+\item Promoting smooth toolpaths which are close to the nominal width toward the outline of the shape.
+\end{itemize}
 \end{itemize}
 
 
 
-\iffalse
-
-``Small bead width increases build time. Small bead width increases surfacequality.''\cite{ahn2002anisotropic}
-
-``The final width of the road determines the resolution that can be achieved in the print process, as well as the contactarea between neighboring beads.  The rounded, oblong shape of  the  bead  inevitably  leads  to  small  voids  in  the  part.  The strength   of   the   bond   between   neighboring   roads,   and ultimately the overall mechanical properties of the part, will depend on the contact area between those beads and the size of the voids.''\cite{N.Turner2014}
-\fi
-
-
-
-\subsection{Goal}
-\begin{itemize}
-\item Accurate fabrication of thin walls
-\item Prevent underfilling and overfilling
-\item ... for accurately matching stiffness properties
-\item ... and/or translucency properties
-\item Without generating paths smaller than \SI{70}{\percent} of the nozzle size
-\item While generating maximally paths of \SI{140}{\percent} of the nozzle size
-\end{itemize}
-
-
-
-\subsection{Contributions}
-\begin{itemize}
-\item A framework for generating conentric toolpaths with variable width
-\end{itemize}
-
-This work is patent pending, but the source code is available open source.
+%This work is patent pending, but the source code is available open source.
 
