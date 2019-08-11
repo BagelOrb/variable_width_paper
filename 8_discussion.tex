@@ -3,7 +3,7 @@
 \subsection{Theoretical analysis}
 In this paper the significance measure is not used heuristically, as it is sometimes used in other literature.
 The significance measure is an exact measure of the relative size of gaps when using the naive toolpathing method.
-\todo{[figure showing wedges, naive toolpaths and gaps]}
+See \cref{naive_overfill_underfill}
 Note also that contrary to some literature we don't remove bones from the skeleton, but leave it intact.
 The final skeleton is still an exact and full feature descriptor.
 In that sense our framework provides an exact solution space.
@@ -18,7 +18,7 @@ and it also allows for some parallelism during the computation of the toolpaths.
 
 
 \subsection{Comparison of different beading strategies}
-\todo{Discussion of finding of Validation section}\
+\todo{Discussion of finding of Validation section}
 
 Naive strategy causes a lot of overfills and underfills.
 This overpoweres any positive effect of perfectly homogeneous bead width.
@@ -39,3 +39,10 @@ This can be seen in \cref{applications_gear}.
 
 
 
+\subsection{Computation time}
+Algorithmic complexity is limited by the generation of the Voronoi Diagram, which is $O(n \log n)$.
+The number of elements in the trapezoidation is linear in the number of elements in the VD.
+All of the stages of our framework are also linear in the number of elements in the skeleton.
+
+Experiments.
+The computation time is comparable to the naive method as implemented using Clipper.
