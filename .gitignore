@@ -1,3 +1,6 @@
+## TK added ignores:
+sources/applications/inward
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
