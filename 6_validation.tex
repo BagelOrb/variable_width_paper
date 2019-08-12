@@ -202,6 +202,21 @@ This helps if print settings for bead widths other than the prefered width aren'
 Toolpaths with deviating widths might result in less dimensional accuracy on the outline and uncalibrated mechanical properties throughout the volume, so limiting the number of beads width deviating bead width might be beneficial.
 \todo{Emphasize this point more. Put it in the abstract and conclusion.}
 
+Determining what the optimal distribution scheme would be is left as future work.
+
+
+
+\paragraph{Widening}
+Complementary to any of these strategies we can enforce a minimum feature size at no extra cost in our framework.
+Regions where the model is narrower than the nozzle size can be printed with a bead width larger than the model thickness.
+We can simply override
+\begin{align*}
+W'(n,d)_1 &=
+\begin{cases}
+\max \left( w_\text{nozzle}  ,  W(n,d)_1 \right) & \text{ if } n = 1 \\
+W(n,d)_1 & \text{ otherwise}
+\end{cases}
+\end{align*}
 
 
 
