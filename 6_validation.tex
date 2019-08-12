@@ -198,11 +198,10 @@ For example, we can choose
 $$M(n,d)_i = \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )$$
 To distribute the hypothetical over-/underfill over the innermost $2N$ beads, and distribute most of it to the inner beads.
 That way we limit the impact of the distributed strategy and have the nominal bead width $w_\text{pref}$ in regions farther away from the middle.
-This helps if print settings for bead widths other than the preferred width aren't calibrated as well as the settings for $w_\text{pref}$.
-Toolpaths with deviating widths might result in less dimensional accuracy on the outline and uncalibrated mechanical properties throughout the volume, so limiting the number of beads width deviating bead width might be beneficial.
-\todo{Emphasize this point more. Put it in the abstract and conclusion.}
+This limits the impact of transitioning regions so that transitions keep the toolpaths smooth farther away from the central regions.
+Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanial properties derived for prints using hte naive strategy will still hold approximately.
 
-Determining what the optimal distribution scheme would be is left as future work.
+Determining what the optimal distribution scheme would be for a particular hardware setup is left as future work.
 
 
 
