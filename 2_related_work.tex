@@ -1,5 +1,22 @@
 \section{Related Work}
 
+Toolpath generation is an integral part of process planning for 3D printing. For an overview of the processing pipeline, we refer to the survey by Levesu et al.~\cite{Livesu2017CGF} . For reducing printing time and material cost, sparse infill structures such as triangular and hexagonal patterns have been used to approximate the interior of 3D shapes. In this paper, we focus on generating toolpath that seamlessly covers the entire 2D contour. This is sometimes called dense infill~\cite{Livesu2017CGF}.
+
+
+
+Direction parallel and contour parallel are two basic toolpath strategies. Direction parallel (or zig-zag) toolpath fills an arbitrarily shaped contour with a set of parallel, equally spaced line segments. These parallel segments are linked at one of their extremities, to avoid frequent stop and restart. Contour parallel infill consists of a set of equally spaced offset contours from the slice boundary. A strategy to connect the parallel offsets was introduced in []. One of the problems with contour parallel infill is that it tends to leave gaps within the slices. This is due to the fact that the offset contour meets around the medial axis and the remaining space might not match exactly the (constant) deposition width. To avoid problems with such gaps, hybrid approaches that combine direction and contour parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}. Close to the slice boundary there are a few contour parallel curves, while into the interior there is a zig-zag pattern. The entire cross-section could also be decomposed into a set of patches, and for each of them, the basic strategies can be applied~\cite{Ding2014}. To reduce the number of sharp turns thereby enable faster motions, Zhao et al proposed to use Fermat spiral to cover the contour ~\cite{Zhao2016}. Alternative toolpath patterns, seen also in CNC machining, include space-filling curves~\cite{Cox1994CAD}.
+
+
+
+Our method to reduce underfilling is related to the work by Kao and Prinz~\cite{kao1998optimal}. Instead of uniformly offsetting, they produced adaptive offsetting toolpaths based on the geometry skeleton. This approach originally handles simply geometry where there are no branches in the medial axis. This was extended by Ding et al to handle complex shape~\cite{}. For this purpose, they made use of the medial axis to decompose the slice into different components. This approach 
+
+
+
+Our idea to reduce under- and over-filling is to deposit with varying width which allows the opportunity to locally match the space between adjacent paths. Varying width extraction can be realized by changing the extrusion rate or the nozzle travel velocity~\cite{Ertay2018,Kuipers2018}. This width is varying but bounded.
+
+
+
+
 \subsection{Toolpath strategies}
 Simple Zig-Zag toolpathing strategy. \cite{mcmains2000layered}
 Patchwise Zig-Zag toolpathing strategy. \cite{Ding2014}
