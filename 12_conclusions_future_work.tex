@@ -1,25 +1,26 @@
 \section{Conclusion and future work}
+In this paper we have introduced a framework for computing contour parallel toolpaths employing adaptive bead width in order to minimize underfill and overfill areas.
+Our framework is shown to be flexible, since we have shown several beading strategies which emulate existing techniques and the computation times are on par with the state-of-the-art library for performing offsets of non-adaptive bead width.
+Our framework is robust and local, meaning that small changes in the toolpath are caused by small local changes in the outline shape.
 
-\begin{itemize}
-\item Accurate filling using few/small overfill and underfill areas
-\item Which allows for accurate reproduction of thin parts and variable thickness microstructures.
-\item Our framework is able to emulate several methods proposed in related literature.
-\item Our framework allows for deposition width control which reduces the amount of extrusion paths with wildly different width compared to previous methods
-\item Our framework allows for limiting the stretch on the outer toolpath in order to reduce any adverse affect of variable extrusion width on dimensional accuracy.
-\item Our framework is stable against slight perturbations of the outline shape or large perturbations of the outline shape in far away regions.
-\item We can define a strategy which distributes the bead width deviation over a small region so as to retain smooth toolpaths of nominal width throughout the larger part of big regions.
-\item Our strategy keep mechanical properties more constant.
-\item The computation times are approximately 3(?) times as fast as the state of the art method for naive toolpath generation employing constant width.
-\end{itemize}
+We have introduced the inward distributed beading strategy which reduces the amount of beads with a width deviating from the nominal bead width by a large amount
+and instead distributes the deviation in bead width over several beads near the center of the shape.
+That way the impact of adaptive bead width on mechanical properties of the resulting print are limited.
+Moreover the outer toolpath is affected less by the deviation, meaning that the dimensional accuracy in the horizontal direction is affected less by inaccuracies in the mechanical system which realized adaptive bead width.
 
+The proposed beading strategy greatly improves the process planning for parts with thin contours, which often occur for exmaple in architectural models, prototypes for casings or microstructures.
+On the other hand it leaves most of the toolpaths the same as the naive method in case of wide/large contours, which means that existing literature which relates process parameters with mechanical properties of the end part are still applicable.
 
 
 \subsection{Future work}
-Define the optimal strategy for a given piece of hardware by finding an accurate objective function which takes into account the manufacturability or dimensional accuracy as a function of bead width and its effect on qualities of top layers, stiffness or the dimensional accuracy of the outline shape.
+The work presented here is evaluated mostly on a theoretical level, because the effectiveness of a mechanical system to accurately print an adaptive bead width interferes with the validation of our techniques.
+Future research might be devoted to optimizing the distribution scheme to a specific hardware setup.
+If we can assign a loss function to several aspects (e.g. manufacturability, print speed, dimensional accuracy) of a toolpath we could deduce the optimal beading strategy.
 
-Use Skeletal Trapezoidation to generate quad dominant meshings for FEM.
+In its current form the skeleton has been used to determine toolpaths based on the local feature size.
+One direction of future research could be devoted to incorporating other information.
+We could for example make the bead widths depend on properties on the outline, such as curvature or visibility.
+We could also take into account volumetric considerations such as the toolpathing of the previous layer or some volumetric constraint defined by a functionally graded material.
 
-Generate thicker bead widths near sharp corners in order to mimic limitations in the extrusion process.
-Allow for adjusting the toolpath widths to local part curvature.
-
-Allow for information sharing between the layers.
+Taking a broader perspective we note that the skeletonization decomposes a shape into trapezoids and these trapezoids are decomposed into quads by the toolpath segments which we generate for it.
+It would be interesting to see if similar technique can be used to generate quad dominant meshings for finite element analysis.
