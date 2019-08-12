@@ -609,13 +609,28 @@ for any $i$ for which $R(v_0^e) < l_i^B \leq R(v_1^e)$.
 We store all junctions of a segment in a mapping from edge to a list of junctions.
 
 We then generate bead segments for each trapezoid by connecting together the junctions of the same index.
-\todo{TODO: Image}
+See \cref{segment_generation}.
 If the amount of junctions on both sides of the trapezoid is not the same then this trapezoid is in a transition and we leave one inner junction unconnected.
 If a central edge has both nodes with an odd beadcount assigned to it $b^* \bmod 2 = 1 $ we should prevent the algorithm from generating the center segment from both trapezoids.
 We therefore use some arbitrary condition to decide which one of the two to include based on the ordering of the coordinates of $v_0$ and $v_1$.
 
-All segments are then connected together into polylines, which are then closed into polygonal toolpaths.
-The odd center segments remain in polylines, so the final toolpaths contain both polygonal paths and open polyline paths.
+Each of the trapezoids is connceting to a single outline polygon.
+By traversing the trapezoids in the domain of each outline polygon in order we can efficiently connect all segments into polylines.
+See \cref{segment_generation}.
+In a final step we connect the ends of polylines together, so that the final toolpaths contain both polygons and polylines.
+
+\begin{figure}
+\centering
+\includegraphics[width=.3\columnwidth]{sources/method/segment_generation.pdf}
+\caption{
+Generating toolpaths on a aprt of the test outline shape which is fully shown in \cref{shape_decomp_complex}.
+Each edge is assigned toolpath junctions (yellow) which are connected together as shown in the singled out trapezoid.
+By following the trapezoids along the domain (cyan) of a single outline polygon,
+the segments can efficiently be connected into existing polyline toolpaths (light and dark gray).
+}
+\label{segment_generation}
+\end{figure}
+
 
 Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
 Such intersections cause overextrusion because the nozzle passes the location multiple times.
