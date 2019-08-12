@@ -12,9 +12,9 @@ We use a transition anchor position of
 %$$t_-(n) =  t(n) \frac{ b^{-1}(n) - 0.4n }{0.4(n+1) - 0.4n }$$
 %$$t_-(n) =  t(n) \frac{ b^{-1}(n) - 0.4n }{0.4}$$
 $$t_0(n) =  t(n) \left( b^{-1}(n) / 0.4  - n \right)$$
-This should ensure that the transitions never overlap with the locations $v$ where $2 R(v) = 0.4n$ for $n \in \mathbb{N}$, since \SI{0.4}{\milli\meter} is the prefered bead width for a similar nozzle size.
+This should ensure that the transitions never overlap with the locations $v$ where $2 R(v) = 0.4n$ for $n \in \mathbb{N}$, since \SI{0.4}{\milli\meter} is the preferred bead width for a similar nozzle size.
 
-Our beading strategies are based on a prefered width $w_\text{pref} = \SI{0.4}{\milli\meter}$, which is equal to the size of the hole in the printing nozzle.
+Our beading strategies are based on a preferred width $w_\text{pref} = \SI{0.4}{\milli\meter}$, which is equal to the size of the hole in the printing nozzle.
 
 We set 
 \begin{align*}
@@ -167,7 +167,7 @@ w_\text{pref} &\text{ otherwise }
 
 \paragraph{Distributed strategy}
 Distribute the overfill or underfill which would happen using a naive strategy over all beads.
-This maximizes robustness and minimizes narrow beads qhich are difficult to print.
+This maximizes robustness and minimizes narrow beads which are difficult to print.
 
 
 \begin{align*}
@@ -198,7 +198,7 @@ For example, we can choose
 $$M(n,d)_i = \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )$$
 To distribute the hypothetical over-/underfill over the innermost $2N$ beads, and distribute most of it to the inner beads.
 That way we limit the impact of the distributed strategy and have the nominal bead width $w_\text{pref}$ in regions farther away from the middle.
-This helps if print settings for bead widths other than the prefered width aren't calibrated as well as the settings for $w_\text{pref}$.
+This helps if print settings for bead widths other than the preferred width aren't calibrated as well as the settings for $w_\text{pref}$.
 Toolpaths with deviating widths might result in less dimensional accuracy on the outline and uncalibrated mechanical properties throughout the volume, so limiting the number of beads width deviating bead width might be beneficial.
 \todo{Emphasize this point more. Put it in the abstract and conclusion.}
 
@@ -256,15 +256,15 @@ Red areas signify doubly extruded areas.
 \label{segment_visualization}
 \end{figure}
 
-We can then estimate the amount of underfill by unioning the rounded visualization of all extrusion segments and then takign the difference from the original outline shape.
-In order to deal with rounding errors we perform a morpholocial close of \SI{5}{\micro\meter} before calculating the total area of the underfill regions.
+We can then estimate the amount of underfill by unioning the rounded visualization of all extrusion segments and then taking the difference from the original outline shape.
+In order to deal with rounding errors we perform a morpholocical close of \SI{5}{\micro\meter} before calculating the total area of the underfill regions.
 
 The overfill regions are calculated by adding the polygonal areas of each extrusion segment to a list.
 We then add the original outline shape in reverse and perform a clipper operation which only keeps areas of positive winding order.
 Because the reverse outline shape reduces the winding order of all extruded segments by one, we are left with the overfill areas.
 In order to estimate the areas which are triply covered by extrusion segments, we repeat the process of adding the outline in reverse and performing the clipper operation.
-These tripple extrusion areas count double toward the total amount of overfill.
-The resulting overfill and underfill areas are visualzied for the different toolpath strategies in the top of \cref{visualized_accuracy}.
+These triple extrusion areas count double toward the total amount of overfill.
+The resulting overfill and underfill areas are visualized for the different toolpath strategies in the top of \cref{visualized_accuracy}.
 
 
 \todo{Zjenja should visualize overfill and underfill results in tables and/or graphs.}
