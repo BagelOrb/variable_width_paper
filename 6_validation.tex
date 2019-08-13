@@ -285,14 +285,62 @@ We visualize the bead widths resulting from the different strategies in an exagg
 Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle,
 which employs linear advance on a direct drive extruder for accurate deposition width control.
 We set the prefered width to $w_\text{pref} = \SI{0.6}{\milli\meter}$, so that we avoid fluttered printing of lines thinner than the nozzle size.
+We used a layer thickness of \SI{0.2}{\milli\meter} and a movement speed of \SI{10}{\milli\meter\per\second}.
 
 
+\begin{figure}
+\centering
+\begin{subfigure}{\columnwidth}\centering
+\setlength{\figwidth}{\columnwidth}
+\includegraphics[width=\figwidth]{sources/applications/P3_print_wedge_naive_edited.png}
+\includegraphics[width=\figwidth]{sources/applications/P3_print_wedge_center_edited.png}
+\includegraphics[width=\figwidth]{sources/applications/P3_print_wedge_inward_edited.png}
+\caption{Wedge}\label{print_wedge}
+\end{subfigure}
+\caption{
+A wedge shape printed using the naive strategy, center deivation strategy and the inward distributed strategy.
+The wedge print can be read like a graph with model diameter on the X-axis and the resulting beads over the Y-axis.
+The naive and center deviation strategy show problems around certain model diameters.
+}
+\label{wedge_print}
+\end{figure}
+
+\begin{figure}
+\centering
+\setlength{\figheight}{.38\columnwidth}
+\setlength{\figwidth}{0.32\columnwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/applications/P3_print_hex_naive_edited.png}
+\includegraphics[width=\figwidth]{sources/applications/P3_print_UM_naive_edited.png}
+\caption{Naive}\label{print_naive}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/applications/P3_print_hex_center_edited.png}
+\includegraphics[width=\figwidth]{sources/applications/P3_print_UM_center_edited.png}
+\caption{Center deviation}\label{print_center}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/applications/P3_print_hex_inward_edited.png}
+\includegraphics[width=\figwidth]{sources/applications/P3_print_UM_inward_edited.png}
+\caption{Inward distributed}\label{print_inward}
+\end{subfigure}
+\caption{
+Test shapes printed using the naive strategy, center deivation strategy and the inward distributed strategy.
+The naive method produces distinct underfill areas.
+The center deviation strategy shows some defects due to inaccurate control of extremal deposition widths.
+The inward distributed strategy produces the least defects.
+}
+\label{wedge_print}
+\end{figure}
+
+
+\iffalse
 \todo{Maybe test the following qualities:}
 \begin{itemize}
 \item visual consistency of flat top skin surface
 \item graphs of tensile tests on thin walled object
 \end{itemize}
-
+\fi
 
 
 
