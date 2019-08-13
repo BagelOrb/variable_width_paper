@@ -29,57 +29,6 @@ d - W(n,d)_{n-1-i} & \text{ otherwise }\\
 \end{align*}
 
 
-\begin{figure*}
-\centering
-\setlength{\figwidth}{0.19\textwidth}
-\setlength{\figheight}{0.283\textwidth}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_naive_accuracy.png}
-\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_naive_widths.png}
-\caption{Naive}\label{TEST_naive_accuracy}
-\end{subfigure}
-%\begin{subfigure}{\figwidth}\centering
-%\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_SingleBead_accuracy.png}
-%\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_SingleBead_widths.png}
-%\caption{Single}\label{TEST_SingleBead_accuracy}
-%\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Constant_accuracy.png}
-\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Constant_widths.png}
-\caption{Constant}\label{TEST_Constant_accuracy}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Center_accuracy.png}
-\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Center_widths.png}
-\caption{Center}\label{TEST_Center_accuracy}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Distributed_accuracy.png}
-\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Distributed_widths.png}
-\caption{Distributed}\label{TEST_Distributed_accuracy}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[width=\columnwidth]{sources/validation/gMAT_example/TEST_InwardDistributed_accuracy.png}
-\includegraphics[width=\columnwidth]{sources/validation/gMAT_example/TEST_InwardDistributed_widths.png}
-\caption{Inward}\label{TEST_InwardDistributed_accuracy}
-\end{subfigure}
-\begin{subfigure}{.04\columnwidth}\centering
-\vspace{4cm}
-\includegraphics[height=\figheight]{sources/validation/gMAT_example/widths_legend.png}
-\end{subfigure}
-\caption{
-Visualizing the overfills and underfills and the exaggerated widths for various beading strategies.
-Grey areas are covered by extruded material,
-blue areas in the top images signify underfill regions,
-red areas overfill,
-orange areas triply extruded areas (double overfill).
-The bottom visualized the bead widths at each location by exaggerating their widths.
-Cold colors are narrower than the nozzle size and warm colors are wider than the nozzle size.
-}
-\label{visualized_accuracy}
-\end{figure*}
-
-
 \subsection{Strategies}
 We can emulate a variety of toolpath generation methods from related literature by applying various beading strategies to our framework.
 
@@ -216,6 +165,64 @@ W'(n,d)_1 &=
 W(n,d)_1 & \text{ otherwise}
 \end{cases}
 \end{align*}
+
+
+
+
+
+
+\begin{figure*}
+\centering
+\setlength{\figwidth}{0.19\textwidth}
+\setlength{\figheight}{0.283\textwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_naive_accuracy.png}
+\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_naive_widths.png}
+\caption{Naive}\label{TEST_naive_accuracy}
+\end{subfigure}
+%\begin{subfigure}{\figwidth}\centering
+%\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_SingleBead_accuracy.png}
+%\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_SingleBead_widths.png}
+%\caption{Single}\label{TEST_SingleBead_accuracy}
+%\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Constant_accuracy.png}
+\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Constant_widths.png}
+\caption{Constant}\label{TEST_Constant_accuracy}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Center_accuracy.png}
+\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Center_widths.png}
+\caption{Center}\label{TEST_Center_accuracy}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Distributed_accuracy.png}
+\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_Distributed_widths.png}
+\caption{Distributed}\label{TEST_Distributed_accuracy}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\columnwidth]{sources/validation/gMAT_example/TEST_InwardDistributed_accuracy.png}
+\includegraphics[width=\columnwidth]{sources/validation/gMAT_example/TEST_InwardDistributed_widths.png}
+\caption{Inward}\label{TEST_InwardDistributed_accuracy}
+\end{subfigure}
+\begin{subfigure}{.04\columnwidth}\centering
+\vspace{4cm}
+\includegraphics[height=\figheight]{sources/validation/gMAT_example/widths_legend.png}
+\end{subfigure}
+\caption{
+Visualizing the overfills and underfills and the exaggerated widths for various beading strategies.
+Grey areas are covered by extruded material,
+blue areas in the top images signify underfill regions,
+red areas overfill,
+orange areas triply extruded areas (double overfill).
+The bottom visualized the bead widths at each location by exaggerating their widths.
+Cold colors are narrower than the nozzle size and warm colors are wider than the nozzle size.
+}
+\label{visualized_accuracy}
+\end{figure*}
+
+
+
 
 
 
