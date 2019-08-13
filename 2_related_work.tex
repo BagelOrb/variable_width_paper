@@ -2,8 +2,9 @@
 
 Given a planar contour, representing the intersection of a plane and a 3D solid object, the task is to generate a path in the domain bounded by the contour.
 The nozzle is then instructed to move along the path while extruding material.
-The deposited material covers the path with a certain width. Toolpath generation is an integral part of process planning for 3D printing.
-For an overview of the processing pipeline, we refer to the survey by Levesu et al.~\cite{Livesu2017CGF} .
+The deposited material covers the path with a certain width.
+Toolpath generation is an integral part of process planning for 3D printing.
+For an overview of the processing pipeline, we refer to the survey by \citeauthor{Livesu2017CGF}.~\cite{Livesu2017CGF} .
 For reducing printing time and material cost, sparse infill structures such as triangular and hexagonal patterns have been used to approximate the interior of 3D shapes.
 In this paper, we focus on generating toolpath that seamlessly covers the entire 2D contour.
 This is sometimes called dense infill~\cite{Livesu2017CGF}.
@@ -26,7 +27,7 @@ This is due to the fact that the offset contour meets around the medial axis and
 To avoid problems with such gaps, hybrid approaches that combine direction and contour parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}.
 Close to the slice boundary there are a few contour parallel curves, while in the interior there is a zig-zag pattern.
 For complex shapes, the entire cross-section could be decomposed into a set of patches, and for each of them, the basic strategies can be applied~\cite{Ding2014}.
-To reduce the number of sharp turns thereby enable faster motions, Zhao et al proposed to use Fermat spiral to cover the contour ~\cite{Zhao2016}.
+To reduce the number of sharp turns thereby enable faster motions, \citeauthor{Zhao2016} proposed to use Fermat spiral to cover the contour ~\cite{Zhao2016}.
 Alternative toolpath patterns, seen also in CNC machining, include space-filling curves~\cite{Cox1994CAD,Griffiths1994,Shaikh2016}.
 
 Our idea to reduce under- and over-filling is to deposit material with a varying width.
@@ -36,7 +37,7 @@ However, we note that the range of possible widths is not unlimited. For instanc
 Our method to reduce underfilling is related to the work by Kao and Prinz~\cite{kao1998optimal}.
 Instead of uniform offsetting, they produced adaptive offsetting toolpaths based on the geometry skeleton.
 This approach originally handles simply geometry where there are no branches in the medial axis.
-This was extended by Ding et al to handle complex shapes~\cite{Ding2016a}.
+This was extended by \citeauthor{Ding2016a} to handle complex shapes~\cite{Ding2016a}.
 For this purpose, they made use of the medial axis to decompose the slice into a set of simple geometries.
 This extension, however, inherits a problem in the original method.
 From any point in the geometry skeleton to the boundary, the number of contours is constant.
@@ -44,8 +45,8 @@ Since the distance may vary considerably, this strategy leads to a toolpath with
 In this paper we propose an adaptive beading strategy to address this problem.
 
 Besides under- and over-filling, there are a few other robustness issues in toolpath generation, especially concerning thin geometric features.
-Moesen et al. proposed a method to make beam compensation more reliable for thin geometric features~\cite{Moesen2011}.
-Behandish et al. presented a method to characterize local topological discrepancies due to material under- and over-deposition, and used this information to modify the as-manufactured outcomes~\cite{Behandish2019a}.
+\citeauthor{Moesen2011} proposed a method to make beam compensation more reliable for thin geometric features~\cite{Moesen2011}.
+\citeauthor{Behandish2019a} presented a method to characterize local- topological discrepancies due to material under- and over-deposition, and used this information to modify the as-manufactured outcomes~\cite{Behandish2019a}.
 
 
 
