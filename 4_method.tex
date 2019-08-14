@@ -449,7 +449,7 @@ That beading information is then propagated along the unmarked bones of the skel
 The junctions are then connected together per trapezoid in order to form the final toolpaths.
 
 
-\begin{definition}
+\begin{definition}\label{beading_strategy_definition}
 We define a beading strategy as the following set:
 $$
 \left\{ \alpha_\text{max}, b(d), t(n), t_0(n), W(n, d), L(n, d) \right\}
@@ -468,11 +468,11 @@ $L(n, d)$, which gives the sequence of toolpath positions as radial distances fr
 
 
 The following restrictions hold:
-\begin{itemize}
+\begin{enumerate}
 \item $W$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$
 \item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
 \item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
-\end{itemize}
+\end{enumerate}
 
 
 \begin{definition}

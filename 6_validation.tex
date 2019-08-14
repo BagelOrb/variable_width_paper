@@ -1,23 +1,22 @@
-\section{Validation}
-We use the following constants:
-\begin{align}
+\section{Beading strategies}
+Now that we have described a framework for deciding and applying on bead counts and their widths locally, we can introduce several beading strategies which determine the bead count and their widths in different ways.
+We can emulate a variety of toolpath generation methods from related literature by meticulously defining new beading strategies.
+We also introduce new beading strategies which produce toolpaths with less extremal widths then techniques from existing literature.
+
+A beading strategy was defined as a set of some particular variables and functions (\cref{beading_strategy_definition}).
+Our beading strategies are based on a preferred width $w_\text{pref} = \SI{0.4}{\milli\meter}$, which is equal to the size of the hole in the printing nozzle.
+Most of the beading strategies we introduce share a common ground:
+\begin{align*}
 d_\text{max}^\text{transition} &= \SI{1}{\milli\meter} \\
 d^\text{discretization} &= \SI{0.2}{\milli\meter} \\
-t_\text{beading} &= \SI{0.4}{\milli\meter} \\
-d_\text{max}^\text{intersection} &= \SI{75}{\percent}
-\end{align}
-
-We use a transition anchor position of
+t_\text{beading} &= w_\text{pref} \\
+d_\text{max}^\text{intersection} &= \SI{75}{\percent} \\
+%
+%We use a transition anchor position of
 %$$t_-(n) =  t(n) \frac{ b^{-1}(n) - p(n) }{p(n+1) - p(n) }$$
 %$$t_-(n) =  t(n) \frac{ b^{-1}(n) - 0.4n }{0.4(n+1) - 0.4n }$$
 %$$t_-(n) =  t(n) \frac{ b^{-1}(n) - 0.4n }{0.4}$$
-$$t_0(n) =  t(n) \left( b^{-1}(n) / 0.4  - n \right)$$
-This should ensure that the transitions never overlap with the locations $v$ where $2 R(v) = 0.4n$ for $n \in \mathbb{N}$, since \SI{0.4}{\milli\meter} is the preferred bead width for a similar nozzle size.
-
-Our beading strategies are based on a preferred width $w_\text{pref} = \SI{0.4}{\milli\meter}$, which is equal to the size of the hole in the printing nozzle.
-
-We set 
-\begin{align*}
+t_0(n) &=  t(n) \left( b^{-1}(n) / w_\text{pref}  - n \right) \\
 t(n) &= w_\text{pref} \\
 \alpha_\text{max} &= \SI{135}{\degree} \\
 L(n,d)_i &= 
@@ -28,28 +27,30 @@ d - W(n,d)_{n-1-i} & \text{ otherwise }\\
 \end{cases}
 \end{align*}
 
-
-\subsection{Strategies}
-We can emulate a variety of toolpath generation methods from related literature by applying various beading strategies to our framework.
+The transition anchor position $t_0$ ensures that the transitions never overlap with the locations $v$ where $2 R(v) = n w_\text{pref}$ for $n \in \mathbb{N}$.
+The transition length $t$ ensures that the center beads don't overlap with the innermost transitioning beads, while keeping the amount of underfill low and keeping the toolpath smooth.
+The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths.
+The toolpath locations $L$ ensure that beads are extruded from the center of where they end up, that the beads don't overlap and that the symmetry restrictions are met.
 
 
 \paragraph{Naive Strategy}
-Because the naive strategy never employs single line polyline segments, we disable marking edges using the significance measure by choosing the limit angle.
+We can define a beading strategy which emulates the naive method by disabling the marking of edges, so that we never employ transitioning.
 \begin{align*}
 \alpha_\text{max} &= \SI{180}{\degree} \\
-b(d) &= 2 \left\lfloor \frac{d}{ 2w_\text{pref}} + \frac12 \right\rfloor \\
+b^-(d) &= 2 \left\lfloor \frac{d}{ 2w_\text{pref}} + \frac12 \right\rfloor \\
 W(n,d)_i &= w_\text{pref} \text{ for all } i 
 %\\
 %L(n,d)_i &= w_\text{pref} \left(i + \frac12 \right) \text{ for all } i < \frac12 n
 \end{align*}
 
 
-\paragraph{Only outer bead}
-Emulates \cite{Moesen2011}. We don't reduce line segments in 3-way intersections.
 
-$d_\text{max}^\text{intersection} = \SI{0}{\percent}$
+\paragraph{Only outer bead}
+We can emulate the method by \citeauthor{Moesen2011} by carefully choosing how the beading strategy functions deal with the outermost bead.
+Also we turn off the reduction of line segments near 3-way intersections, so that the polygonal toolpaths emulate the remaining area to be filled by another path planning technique similar to their technique.
 
 \begin{align*}
+d_\text{max}^\text{intersection} &= \SI{0}{\percent} \\
 t(n) &= 0 \\
 b(d) &=
 \begin{cases}
@@ -72,20 +73,26 @@ w_\text{pref} & \text{ otherwise } \\
 
 
 \paragraph{Constant bead count}
-Emulates \cite{Ding2016a}. We unmark all outer segments.
+We can emulate the method by \citeauthor{Ding2016a}, by dividing the feature diameter over the widths of a constant number of beads.
+Additionally in order to emulate their definition of branches we mark all segments and in a separate algorithm we unmark the outer bones connected to the outline shape.
+Note that this deviation from the proposed framework violates the robustness against small perturbations in the outline polygon, since the topology of the skeletal graph is not stable against those.
 
 \begin{align*}
-\alpha_\text{max} &= \SI{180}{\degree} \\
+\alpha_\text{max} &= \SI{0}{\degree} \\
 b(d) &= C \\
 W(n,d)_i &= d / n \text{ for all } i 
 %\\
 %L(n,d)_i &= d / n \left(i + \frac12 \right) \text{ for all } i < \frac12 n
 \end{align*}
 
-\paragraph{Deviating toolpath at center}
-Emulates \cite{Jin2017JMS}
 
-$r_\text{min} = 0.8 w_\text{pref}$ and $r_\text{max} = 1.25 w_\text{pref}$
+
+\paragraph{Deviating center}
+We can emulate the method by \citeauthor{Jin2017JMS}, by transcribing how they deviate from the naive tool paths.
+We therefore base the beading strategy on the bead count $b^(d)$ defined by the naive beading strategy.
+\citeauthor{Jin2017JMS} replace two beads from the naive toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w_\text{pref}$.
+Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w_\text{pref}$.\cite{Jin2017JMS}
+We emulate the rounded polygonal path rerouting they define by supplying a transition length which results in a discretized version of the rounded polygon segment.
 
 \begin{align*}
 t(n) &= \frac12 w_\text{pref} \\
@@ -114,9 +121,12 @@ w_\text{pref} &\text{ otherwise }
 
 
 
-\paragraph{Evenly distributed strategy}
-Distribute the overfill or underfill which would happen using a naive strategy over all beads.
-This maximizes robustness and minimizes narrow beads which are difficult to print.
+\paragraph{Evenly distributed}
+By taking the advantages of the above two strategies we can define a beading strategy which constitutes a novel toolpathing technique.
+We can evenly divide the local feature diameter over the widths of all beads, but choose a local bead count better matching the local feature size.
+We determine the local bead count by dividing the diameter by the prefered bead width and rounding to the nearest integer.
+This reduces the demands on the system and deviation from mechanical properties caused by beads with extreme deviations from the preferred width.
+
 
 
 \begin{align*}
@@ -127,8 +137,14 @@ W(n,d)_i &= d / n \text{ for all } i
 \end{align*}
 
 
+
+
 \paragraph{General distributed strategy}
-Distribute the overfill or underfill which would happen using a naive strategy $E$ over all beads unevenly depending on some weighing function $M(n.d)$, which defines the portion of overfill or underfill which would occur in the naive strategy to distribute to each junction.
+The evenly distributed strategy can be conceptualized as calculating the total discrepancy $E$ between the actual feature diameter $d$ and the total prefered width $n w_\text{pref}$, dividing the total discrepancy by the number of beads and setting the width of each bead to 
+$w_\text{pref} + E / n$.
+However, depending on the application we might want a different distribution of widths.
+We therefore supply a beading strategy which supports an arbitrary distribution of the discrepancy.
+The distribution is determined by some weighing function $M(n.d)$, which defines the portion of the discrepancy to distribute to each bead.
 
 
 \begin{align*}
@@ -143,12 +159,11 @@ W(n,d)_i &= w_\text{pref} + E(n,d) \frac{M(n,d)_i}{\sum_{j=0}^{n-1} M(n,d)_j} \t
 \paragraph{Inward distributed strategy}
 For example, we can choose 
 $$M(n,d)_i = \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )$$
-To distribute the hypothetical over-/underfill over the innermost $2N$ beads, and distribute most of it to the inner beads.
-That way we limit the impact of the distributed strategy and have the nominal bead width $w_\text{pref}$ in regions farther away from the middle.
-This limits the impact of transitioning regions so that transitions keep the toolpaths smooth farther away from the central regions.
+to distribute the discrepancy over the innermost $2N$ beads, and distribute most of it to the inner beads.
+That way we limit the region of impact of the distributed strategy to a central region and have the nominal bead width $w_\text{pref}$ in regions farther away.
+This limits the impact of transitioning regions so that transitions keep the toolpaths smooth farther away from the central regions. % and it forces most of the beads to have exactly the prefered width.
 Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanial properties derived for prints using hte naive strategy will still hold approximately.
 
-Determining what the optimal distribution scheme would be for a particular hardware setup is left as future work.
 
 
 
@@ -168,6 +183,22 @@ W(n,d)_1 & \text{ otherwise}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Validation}
 
 \begin{figure*}
 \centering
