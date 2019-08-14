@@ -17,10 +17,24 @@ This means the toolpathing is stable against large perturbations of the input sh
 and it also allows for some parallelism during the computation of the toolpaths.
 
 
-\subsection{Comparison of different beading strategies}
+\subsection{Computation time}
+Algorithmic complexity is limited by the generation of the Voronoi Diagram, which is $O(n \log n)$, where $n$ is the number of vertices in the input shape.
+The number of elements in the trapezoidation is linear in the number of elements in the VD
+and all of the stages of our framework are also linear in the number of elements in the skeleton,
+so the total running time of our algorithm is $O(n \log n)$.
+
+From the experimental results shows in \cref{computime} we can see that both our framework and the naive method as implemented using Clipper have an expected running time of approximately $10^{-5} n \log n$ seconds.
+The computation time is approximately five times the computation time of the naive method, which puts it in the same order of magnitude.
+
+
+
+
+\subsection{Comparison of beading strategies}
 \todo{Discussion of finding of Validation section}
 
-Naive strategy causes a lot of overfills and underfills.
+The naive strategy and the single bead strategy are of little use to FDM printers, but they show the flexibility of our parametric system.
+
+Naive method causes a lot of overfills and underfills.
 This overpoweres any positive effect of perfectly homogeneous bead width.
 
 The single bead strategy solves the underfill problem in regions where the model is more thin than the nozzle size.
@@ -39,10 +53,7 @@ This can be seen in \cref{applications_gear}.
 
 
 
-\subsection{Computation time}
-Algorithmic complexity is limited by the generation of the Voronoi Diagram, which is $O(n \log n)$.
-The number of elements in the trapezoidation is linear in the number of elements in the VD.
-All of the stages of our framework are also linear in the number of elements in the skeleton.
 
-Experiments.
-The computation time is comparable to the naive method as implemented using Clipper.
+
+
+
