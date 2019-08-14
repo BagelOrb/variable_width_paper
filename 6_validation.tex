@@ -33,7 +33,7 @@ The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transi
 The toolpath locations $L$ ensure that beads are extruded from the center of where they end up, that the beads don't overlap and that the symmetry restrictions are met.
 
 
-\paragraph{Naive Strategy}
+\paragraph{Naive Beading Strategy}
 We can define a beading strategy which emulates the naive method by disabling the marking of edges, so that we never employ transitioning.
 \begin{align*}
 \alpha_\text{max} &= \SI{180}{\degree} \\
@@ -45,7 +45,7 @@ W(n,d)_i &= w_\text{pref} \text{ for all } i
 
 
 
-\paragraph{Only outer bead}
+\paragraph{Outer bead}
 We can emulate the method by \citeauthor{Moesen2011} by carefully choosing how the beading strategy functions deal with the outermost bead.
 Also we turn off the reduction of line segments near 3-way intersections, so that the polygonal toolpaths emulate the remaining area to be filled by another path planning technique similar to their technique.
 
@@ -87,7 +87,7 @@ W(n,d)_i &= d / n \text{ for all } i
 
 
 
-\paragraph{Deviating center}
+\paragraph{Centered}
 We can emulate the method by \citeauthor{Jin2017JMS}, by transcribing how they deviate from the naive tool paths.
 We therefore base the beading strategy on the bead count $b^(d)$ defined by the naive beading strategy.
 \citeauthor{Jin2017JMS} replace two beads from the naive toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w_\text{pref}$.
@@ -156,7 +156,7 @@ W(n,d)_i &= w_\text{pref} + E(n,d) \frac{M(n,d)_i}{\sum_{j=0}^{n-1} M(n,d)_j} \t
 \end{align*}
 
 
-\paragraph{Inward distributed strategy}
+\paragraph{Inward distributed}
 For example, we can choose 
 $$M(n,d)_i = \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )$$
 to distribute the discrepancy over the innermost $2N$ beads, and distribute most of it to the inner beads.
