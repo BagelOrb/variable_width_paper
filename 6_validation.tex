@@ -114,7 +114,7 @@ w_\text{pref} &\text{ otherwise }
 
 
 
-\paragraph{Distributed strategy}
+\paragraph{Evenly distributed strategy}
 Distribute the overfill or underfill which would happen using a naive strategy over all beads.
 This maximizes robustness and minimizes narrow beads which are difficult to print.
 
@@ -139,8 +139,6 @@ W(n,d)_i &= w_\text{pref} + E(n,d) \frac{M(n,d)_i}{\sum_{j=0}^{n-1} M(n,d)_j} \t
 %L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
 \end{align*}
 
-
-\todo{TODO: check $n$ vs $n-1$ everywhere when comparing indices and the total size! Largest index should be $n-1$, not $n$!}
 
 \paragraph{Inward distributed strategy}
 For example, we can choose 
@@ -355,7 +353,7 @@ The naive method produces distinct underfill areas.
 The center deviation strategy shows some defects due to inaccurate control of extremal deposition widths.
 The inward distributed strategy produces the least defects.
 }
-\label{wedge_print}
+\label{prints}
 \end{figure}
 
 

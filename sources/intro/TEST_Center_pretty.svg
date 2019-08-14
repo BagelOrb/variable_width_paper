@@ -11,7 +11,10 @@
    style="width:1024px;height:1024px"
    id="svg1178"
    sodipodi:docname="TEST_Center_pretty.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="/home/t.kuipers/Documents/PhD/Variable_Width_project/paper/paper_private_git/sources/intro/TEST_Center_pretty.png"
+   inkscape:export-xdpi="100"
+   inkscape:export-ydpi="100">
   <metadata
      id="metadata1184">
     <rdf:RDF>
@@ -20,7 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -40,7 +43,7 @@
      id="namedview1180"
      showgrid="false"
      inkscape:zoom="2.36"
-     inkscape:cx="224.23314"
+     inkscape:cx="150.71619"
      inkscape:cy="-738.52561"
      inkscape:window-x="0"
      inkscape:window-y="27"
