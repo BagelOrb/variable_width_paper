@@ -23,14 +23,13 @@ Direction parallel and contour parallel are two basic toolpath strategies.
 Direction parallel (or zig-zag) toolpath fills an arbitrarily shaped contour with a set of parallel, equally spaced line segments.
 These parallel segments are linked at one of their extremities, to avoid frequent stop and restart.
 Contour parallel toolpath typically consists of a set of equally spaced offset contours from the slice boundary.
-A strategy to connect the parallel offsets was introduced in~\cite{KUIPERS2019CAD}.
-\todo{Tim: connecting the contour parallel lines is also exactly what the Fermat spiral papers are about.}
+A strategy to connect the parallel offsets was introduced in~\cite{KUIPERS2019CAD}. This approach however introduces sharp turns.
+To reduce the number of sharp turns thereby enable faster motions, \citeauthor{Zhao2016} proposed to use Fermat spiral to cover the contour ~\cite{Zhao2016}.
 One of the problems with contour parallel toolpath is that it tends to leave gaps within the slices.
 This is due to the fact that the offset contour meets around the medial axis and the remaining space might not match exactly the (constant) deposition width.
 To avoid problems with such gaps, hybrid approaches that combine direction and contour parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}.
 Close to the slice boundary there are a few contour parallel curves, while in the interior there is a zig-zag pattern.
 For complex shapes, the entire cross-section could be decomposed into a set of patches, and for each of them, the basic strategies can be applied~\cite{Ding2014,Jin2017JCIM}.
-To reduce the number of sharp turns thereby enable faster motions, \citeauthor{Zhao2016} proposed to use Fermat spiral to cover the contour ~\cite{Zhao2016}.
 Alternative toolpath patterns, seen also in CNC machining, include space-filling curves~\cite{Cox1994CAD,Griffiths1994,Shaikh2016}.
 
 Our idea to reduce under- and over-filling is to deposit material with a varying width.
@@ -39,16 +38,15 @@ Material extraction with a varying width can be realized by changing the extrusi
 However, we note that the range of possible widths is not unlimited.
 For instance, printing a width that is tripple the nozzle diameter is challenging.
 Our method to reduce underfilling is related to the work by \citeauthor{kao1998optimal}~\cite{kao1998optimal}.
-Instead of uniform offsetting, they produced adaptive offsetting toolpaths based on the geometry skeleton.
-This approach originally handles simply geometry where there are no branches in the medial axis.
-This was extended by \citeauthor{Ding2016a} to handle complex shapes~\cite{Ding2016a}.
+Instead of uniform offsetting, they produced adaptive offsetting toolpaths based on the geometry skeleton. 
+Skeleton was also used in~\cite{Jin2017} to construct a skeleton-based path for alleviating under- and over-filling in contour parallel toolpath. 
+The adaptive offsetting approach by \citeauthor{kao1998optimal} handles simply geometry where there are no branches in the medial axis.
+An extension was proposed by \citeauthor{Ding2016a} to handle complex shapes~\cite{Ding2016a}.
 For this purpose, they made use of the medial axis to decompose the slice into a set of simple geometries.
 This extension, however, inherits a problem in the original method.
 From any point in the geometry skeleton to the boundary, the number of contours is constant.
 Since the distance may vary considerably, this strategy leads to a toolpath with widths that may differ by a factor of two or more.
-In this paper we propose an adaptive beading strategy to address this problem. Skeleton was also used in~\cite{Jin2017} to 
-
-\todo{TODO: Describe the paper by } \citeauthor{Jin2017}
+In this paper we propose an adaptive beading strategy to address this problem. 
 
 Besides under- and over-filling, there are a few other robustness issues in toolpath generation, especially concerning thin geometric features.
 \todo{Being able to print thin geometrical features can be seen as a a special case of the goal to preventing underfill regions.}
