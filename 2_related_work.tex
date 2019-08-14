@@ -24,7 +24,8 @@ Direction parallel (or zig-zag) toolpath fills an arbitrarily shaped contour wit
 These parallel segments are linked at one of their extremities, to avoid frequent stop and restart.
 Contour parallel toolpath typically consists of a set of equally spaced offset contours from the slice boundary.
 A strategy to connect the parallel offsets was introduced in~\cite{KUIPERS2019CAD}. This approach however introduces sharp turns.
-To reduce the number of sharp turns thereby enable faster motions, \citeauthor{Zhao2016} proposed to use Fermat spiral to cover the contour ~\cite{Zhao2016}.
+To reduce the number of sharp turns thereby enable faster motions, \citeauthor{Zhao2016} proposed to use Fermat spiral to cover the contour ~\cite{Zhao2016}. 
+Spiral toolpaths have also been applied to machining~\cite{Held2009,Huang2017}.
 One of the problems with contour parallel toolpath is that it tends to leave gaps within the slices.
 This is due to the fact that the offset contour meets around the medial axis and the remaining space might not match exactly the (constant) deposition width.
 To avoid problems with such gaps, hybrid approaches that combine direction and contour parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}.
