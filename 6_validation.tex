@@ -200,6 +200,8 @@ W(n,d)_1 & \text{ otherwise}
 
 \section{Validation}
 
+\todo{describe dataset of 3d models and random slices... X number of 3d files. varying in size, topology, features (size). random selection of slices. 300 slices total.  5 toolpath strategies were applied for each layer.}
+
 \begin{figure*}
 \centering
 \setlength{\figwidth}{0.19\textwidth}
@@ -260,11 +262,13 @@ Cold colors are narrower than the nozzle size and warm colors are wider than the
 \subsection{Computational analysis}
 Experiments were performed on an Intel Core i7-7500U CPU @ \SI{2.70}{\giga\hertz} using a single core and \SI{16.3}{\giga\byte} memory.
 The naive method was implemented using the state-of-the-art polygon offset library Clipper. \cite{johnson2014clipper}
+The computation time of each slice from the dataset was recorded for the "Inward distributed" and "Naive" strategy. 
+\cref{computime} shows these computation times of each layer plotted against the vertex count of the layer.
 
 \paragraph{Accuracy}
 In order to estimate the overfill and underfill, we need to accurately calculate the area covered by a single extrusion path.
 If we would simply use an isosceles trapezoidal area with base lengths equal to the widths of the two end points of the segment, we would get strange artifacts at corners in the toolpath.
-We therefore visualize include a semi-circle with a diameter equal to the starting width in the one end, and exclude it at the other end, because it will be included in the next extrusion segment.
+We therefore use a semi-circle with a diameter equal to the starting width in the one end of each segment, and exclude it at the other end, because it will be included in the next segment.
 For polyline extrusion paths which are not closed, we also include the semi-circle corresponding to the extrusion width of the end-position.
 In order to print such extrusion paths accurately, we can modulate the amount of material flow per millimeter based on this visualization model.
 See \cref{segment_visualization}.
@@ -292,7 +296,7 @@ Red areas signify doubly extruded areas.
 \end{figure}
 
 We can then estimate the amount of underfill by unioning the rounded visualization of all extrusion segments and then taking the difference from the original outline shape.
-In order to deal with rounding errors we perform a morpholocical close of \SI{5}{\micro\meter} before calculating the total area of the underfill regions.
+In order to deal with rounding errors, we perform a morphological close of \SI{5}{\micro\meter} before calculating the total area of the underfill regions.
 
 The overfill regions are calculated by adding the polygonal areas of each extrusion segment to a list.
 We then add the original outline shape in reverse and perform a clipper operation which only keeps areas of positive winding order.
@@ -301,10 +305,14 @@ In order to estimate the areas which are triply covered by extrusion segments, w
 These triple extrusion areas count double toward the total amount of overfill.
 The resulting overfill and underfill areas are visualized for the different toolpath strategies in the top of \cref{visualized_accuracy}.
 
+We calculated the total overfill and underfill areas of the different toolpath strategies applied on the dataset. 
+The overfill and underfill area as a percentage of the total area of the slices from the dataset are illustrated in \cref{over_underfill}.  
+The "Inward distributed" strategy has a calculated overfill of 0.24\% and an underfill of 0.17\%.
+This is lower compared to the "Naive" strategy, which results in 1.2\% overfill and 1.7\% underfill when applied to on dataset.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{sources/validation/overunderfill.pdf}
-\caption{total over and underfill for all data}
+\caption{total over and underfill for entire dataset}
 \label{over_underfill}
 \end{figure}
 
@@ -316,8 +324,8 @@ The resulting overfill and underfill areas are visualized for the different tool
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{sources/validation/widthHistogram.pdf}
-\caption{Distribution of extrusion width, sampled at 200$\mu$m, visualized data is binned at intervals of 10$\mu$m}
-\label{sd}
+\caption{Distribution of extrusion width, sampled at  \SI{200}{\micro\meter}, visualized data is binned at intervals of  \SI{10}{\micro\meter}}
+\label{widthHistogram}
 \end{figure}
 
 \begin{figure}
@@ -326,20 +334,27 @@ The resulting overfill and underfill areas are visualized for the different tool
 \label{computime}
 \end{figure}
 
-\todo{Zjenja should visualize overfill and underfill results in tables and/or graphs.}
-
-
 
 \paragraph{Uniformity}
-Depending on the hardware configuration some bead widths might be difficult to manufacture.
-A bead width far below the nozzle size can result in fluttered extrusion, while a bead width far above the nozzle size can require pressures above the specifications of the machine.
+Depending on the printer hardware configuration, some bead widths might be difficult or impossible to manufacture.
+A bead width far below the nozzle size can result in fluttered extrusion, while a bead width far above the nozzle size can require pressures above the specifications of the machine. 
+Also, large bead widths can cause the extruded material to upwards instead of filling the required width.
 \todo{Include picture of flutter?}
 Moreover, bead widths deviating from the nominal bead width by a large amount may impact the mechanical properties of the print.
 We visualize the bead widths resulting from the different strategies in an exaggerated manner in the bottom of \cref{visualized_accuracy}.
 
+To evaluate the width uniformity, we sampled the extrusion widths of all generated toolpaths 
+at intervals of \SI{200}{\micro\meter} along the toolpath.
+From these sampled values, we calculated the mean bead width, and standard deviation.
+\cref{widthHistogram} shows the distribution of extrusion width for each strategy.
+The results show that the mean width of our strategies "Inwards distributed" and "Evenly distributed" is close to nominal nozzle size of \SI{400}{\micro\meter}, while their standard deviation is lower than for strategies "Centered" and "Constant bead count". 
+These values indicate that, while causing less overfill and underfill, our strategy deviates less and less often from the nominal nozzle size.
 
-
-
+\paragraph{Smoothness of toolpaths}
+In order to maintain a high printing speed, it is desirable that toolpaths have fewer and less sharp corners. 
+For each strategy, we measured the angle between consecutive segments.
+The relative frequency of these angles is shown in \cref{smoothness}.
+While the strategy "constant bead width" has a lower number of corners overall, we found no significant differences in the smoothness of the toolpaths generated by the remaining strategies. 
 
 \subsection{Experimentation}
 Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle and a filament extrusion drive directly mounted on the print head.
