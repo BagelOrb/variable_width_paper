@@ -140,7 +140,7 @@ W(n,d)_i &= d / n \text{ for all } i
 
 
 \paragraph{General distributed strategy}
-The evenly distributed strategy can be conceptualized as calculating the total discrepancy $E$ between the actual feature diameter $d$ and the total prefered width $n w_\text{pref}$, dividing the total discrepancy by the number of beads and setting the width of each bead to 
+The evenly distributed strategy can be conceptualized as calculating the total discrepancy $E$ between the actual feature diameter $d$ and the total preferred width $n w_\text{pref}$, dividing the total discrepancy by the number of beads and setting the width of each bead to 
 $w_\text{pref} + E / n$.
 However, depending on the application we might want a different distribution of widths.
 We therefore supply a beading strategy which supports an arbitrary distribution of the discrepancy.
@@ -244,7 +244,7 @@ Grey areas are covered by extruded material,
 blue areas in the top images signify underfill regions,
 red areas overfill,
 orange areas triply extruded areas (double overfill).
-The bottom visualized the bead widths at each location by exaggerating their widths.
+The bottom visualizes the bead widths at each location by exaggerating their widths.
 Cold colors are narrower than the nozzle size and warm colors are wider than the nozzle size.
 }
 \label{visualized_accuracy}
@@ -259,11 +259,11 @@ Cold colors are narrower than the nozzle size and warm colors are wider than the
 
 \subsection{Computational analysis}
 Experiments were performed on an Intel Core i7-7500U CPU @ \SI{2.70}{\giga\hertz} using a single core and \SI{16.3}{\giga\byte} memory.
-The naive method was implemented using the state-of-the-art polygon offset library called Clipper. \cite{johnson2014clipper}
+The naive method was implemented using the state-of-the-art polygon offset library Clipper. \cite{johnson2014clipper}
 
 \paragraph{Accuracy}
-In order to estimate the overfill and underfill we need to accurately calculate the area covered by a single extrusion path.
-If we would simply use a isosceles trapezoidal area with base lengths equal to the widths of the two end points of the segment we would get strange artifacts at corners in the toolpath.
+In order to estimate the overfill and underfill, we need to accurately calculate the area covered by a single extrusion path.
+If we would simply use an isosceles trapezoidal area with base lengths equal to the widths of the two end points of the segment, we would get strange artifacts at corners in the toolpath.
 We therefore visualize include a semi-circle with a diameter equal to the starting width in the one end, and exclude it at the other end, because it will be included in the next extrusion segment.
 For polyline extrusion paths which are not closed, we also include the semi-circle corresponding to the extrusion width of the end-position.
 In order to print such extrusion paths accurately, we can modulate the amount of material flow per millimeter based on this visualization model.
