@@ -13,7 +13,7 @@ Toolpath has a direct influence on the printing time, material cost, and mechani
 There are a few desirable properties for the toolpath.
 First, the path shall be as continuous as possible.
 A discontinuous path requires to stop and restart material extrusion. 
-For certain material such as TPU, this could lead to material defect~\cite{KUIPERS2019CAD}.
+For certain material such as TPU, this could lead to material defects~\cite{KUIPERS2019CAD}.
 Furthermore, a smooth path is often preferred.
 A path with a lot of sharp turns requires to slow down the movement of the nozzle, and this consequently prolongs the printing process.
 Second, the path, extended with a certain width, ideally shall cover the bounded region no voids or gaps --  underfilling, and no overlap -- overfilling.
@@ -24,6 +24,7 @@ Direction parallel (or zig-zag) toolpath fills an arbitrarily shaped contour wit
 These parallel segments are linked at one of their extremities, to avoid frequent stop and restart.
 Contour parallel toolpath typically consists of a set of equally spaced offset contours from the slice boundary.
 A strategy to connect the parallel offsets was introduced in~\cite{KUIPERS2019CAD}.
+\todo{Tim: connecting the contour parallel lines is also exactly what the Fermat spiral papers are about.}
 One of the problems with contour parallel toolpath is that it tends to leave gaps within the slices.
 This is due to the fact that the offset contour meets around the medial axis and the remaining space might not match exactly the (constant) deposition width.
 To avoid problems with such gaps, hybrid approaches that combine direction and contour parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}.
@@ -34,9 +35,9 @@ Alternative toolpath patterns, seen also in CNC machining, include space-filling
 
 Our idea to reduce under- and over-filling is to deposit material with a varying width.
 This allows the opportunity to locally match the nonuniform space between adjacent paths, and thus to ensure a better coverage of the domain.
-Material extraction with a varying width can be realized by changing the extrusion rate or the nozzle travel velocity~\cite{Ertay2018}.
+Material extraction with a varying width can be realized by changing the extrusion rate or the nozzle travel velocity~\cite{Ertay2018,Kuipers2018}.
 However, we note that the range of possible widths is not unlimited.
-For instance, printing a width that is twice the nozzle radius is challenging.
+For instance, printing a width that is tripple the nozzle diameter is challenging.
 Our method to reduce underfilling is related to the work by \citeauthor{kao1998optimal}~\cite{kao1998optimal}.
 Instead of uniform offsetting, they produced adaptive offsetting toolpaths based on the geometry skeleton.
 This approach originally handles simply geometry where there are no branches in the medial axis.
@@ -47,7 +48,10 @@ From any point in the geometry skeleton to the boundary, the number of contours 
 Since the distance may vary considerably, this strategy leads to a toolpath with widths that may differ by a factor of two or more.
 In this paper we propose an adaptive beading strategy to address this problem.
 
+\todo{TODO: Describe the paper by } \citeauthor{Jin2017}
+
 Besides under- and over-filling, there are a few other robustness issues in toolpath generation, especially concerning thin geometric features.
+\todo{Being able to print thin geometrical features can be seen as a a special case of the goal to preventing underfill regions.}
 \citeauthor{Moesen2011} proposed a method to make beam compensation more reliable for thin geometric features~\cite{Moesen2011}.
 \citeauthor{Behandish2019a} presented a method to characterize local- topological discrepancies due to material under- and over-deposition, and used this information to modify the as-manufactured outcomes~\cite{Behandish2019a}.
 
