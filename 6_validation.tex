@@ -305,10 +305,14 @@ We visualize the bead widths resulting from the different strategies in an exagg
 
 
 \subsection{Experimentation}
-Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle,
-which employs linear advance on a direct drive extruder for accurate deposition width control.
+Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle and a filament extrusion drive directly mounted on the print head.
+The firmware of the printer employs linear advance~\cite{linadvance}: to gain the extra pressure required to change to a wider bead an extra amount of filament is advanced into the physical system between the extruder and the nozzle so that we can realize accurate adaptive deposition width control.
 We set the prefered width to $w_\text{pref} = \SI{0.6}{\milli\meter}$, so that we avoid fluttered printing of lines thinner than the nozzle size.
 We used a layer thickness of \SI{0.2}{\milli\meter} and a movement speed of \SI{10}{\milli\meter\per\second}.
+
+The resulting prints are viewed in \cref{wedge_print} and \cref{prints}.
+Because of inaccuracies in the depositioning control system some of the prints show defects.
+Such defects are less prevalant for the inward distributed beading strategy than the other strategies.
 
 
 \begin{figure}
