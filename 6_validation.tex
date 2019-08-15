@@ -222,8 +222,8 @@ W(n,d)_1 & \text{ otherwise}
 \section{Validation}
 In order to test our framework we have assembled a data set of various types of 3D model, ranging over various applications and various types of geometry.
 The dataset is described in detail in the accompanying data in Appendix~\ref{dataset}.
-We sliced all models in the dataset and selected 300 random slices from the total set of slices.
-
+We sliced all models in the dataset and selected 300 random slices from the total set of slices for thorough analysis.
+We generated the toolpaths on these 300 outline shapes using the naive technique as implemented by Clipper and compare it to the constant bead count strategy with a bead count of $C=4$, the centered beading strategy, the evenly distributed and the inward distributed beading strategy, using a nominal bead widths of $w_\text{pref}] = \SI{0.4}{\milli\meter}$.
 
 
 \subsection{Computational analysis}
@@ -360,7 +360,10 @@ This is lower compared to the "Naive" strategy, which results in 1.2\% overfill 
 \caption{Frequency of angles between consecutive segments}
 \label{smoothness}
 \end{subfigure}
-\caption{Results of computational analysis of the results from applying the naive method and various beading strategies using our framework to the dataset.}
+\caption{
+Results of computational analysis of the results from applying the naive method and various beading strategies using our framework to the dataset.
+Note the use of a logarithmic scale on the Y-axes and on some of the X-axes as well.
+}
 \end{figure*}
 
 
@@ -388,7 +391,7 @@ While the strategy "constant bead width" has a lower number of corners overall, 
 
 \subsection{Experimentation}
 Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle and a filament extrusion drive directly mounted on the print head.
-The firmware of the printer employs linear advance~\cite{tronvoll2019investigating}: to gain the extra pressure required to change to a wider bead an extra amount of filament is advanced into the physical system between the extruder and the nozzle so that we can realize accurate adaptive deposition width control.
+The firmware of the printer employs linear advance: to gain the extra pressure required to change to a wider bead an extra amount of filament is advanced into the physical system between the extruder and the nozzle so that we can realize accurate adaptive deposition width control.\cite{tronvoll2019investigating}
 We set the prefered width to $w_\text{pref} = \SI{0.6}{\milli\meter}$, so that we avoid fluttered printing of lines thinner than the nozzle size.
 We used a layer thickness of \SI{0.2}{\milli\meter} and a movement speed of \SI{10}{\milli\meter\per\second}.
 

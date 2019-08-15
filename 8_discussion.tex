@@ -18,7 +18,7 @@ and it also allows for some parallelism during the computation of the toolpaths.
 
 
 \subsection{Computation time}
-Algorithmic complexity is limited by the generation of the Voronoi Diagram, which is $O(n \log n)$, where $n$ is the number of vertices in the input shape.
+The algorithmic complexity is limited by the generation of the Voronoi Diagram, which is $O(n \log n)$, where $n$ is the number of vertices in the input shape.
 The number of elements in the trapezoidation is linear in the number of elements in the VD
 and all of the stages of our framework are also linear in the number of elements in the skeleton,
 so the total running time of our algorithm is $O(n \log n)$.
