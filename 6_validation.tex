@@ -160,9 +160,30 @@ W(n,d)_i &= w_\text{pref} + E(n,d) \frac{M(n,d)_i}{\sum_{j=0}^{n-1} M(n,d)_j} \t
 For example, we can choose 
 $$M(n,d)_i = \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )$$
 to distribute the discrepancy over the innermost $2N$ beads, and distribute most of it to the inner beads.
+See \cref{distributed_comparison}.
 That way we limit the region of impact of the distributed strategy to a central region and have the nominal bead width $w_\text{pref}$ in regions farther away.
 This limits the impact of transitioning regions so that transitions keep the toolpaths smooth farther away from the central regions. % and it forces most of the beads to have exactly the prefered width.
-Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanial properties derived for prints using hte naive strategy will still hold approximately.
+Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanial properties derived for prints using the naive strategy will still hold approximately.
+
+
+
+\begin{figure}
+\centering
+\setlength{\figwidth}{.45\columnwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=.8\columnwidth]{sources/validation/wedge_Distributed_pretty_evenly.png}
+\caption{Evenly distributed}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=.8\columnwidth]{sources/validation/wedge_Distributed_pretty_inward.png}
+\caption{Inward distributed}
+\end{subfigure}
+\caption{
+Closeup of toolpaths generated with the distributed beading strategies for a large wedge shape.
+}
+\label{distributed_comparison}
+\end{figure}
+
 
 
 
