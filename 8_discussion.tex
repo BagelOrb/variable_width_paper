@@ -31,10 +31,9 @@ The computation time is approximately five times the computation time of the nai
 
 
 \subsection{Comparison of beading strategies}
-\todo{Discussion of finding of Validation section}
 The naive strategy and the single bead strategy are of little use to FDM printers, but they show the flexibility of our parametric system.
 
-We can see from \cref{TEST_naive_accuracy}(top) and~\ref{over_underfill} that the naive method causes a lot of overfills and underfills: on average approximately \SI{10}{\percent} of the total target area is covered by underfill and likewise for overfill.
+We can see from \cref{TEST_naive_accuracy}(top) and~\ref{over_underfill} that the naive method causes a lot of overfills and underfills: on average approximately \SI{1}{\percent} of the total target area is covered by underfill and likewise for overfill.
 These defects surely influence the mechanical properties of the parts beyond a point that process parameters can reliably be correlated to mechanical properties of the part.
 
 %The single bead strategy solves the underfill problem in regions where the model is more thin than the nozzle size.
@@ -50,7 +49,7 @@ Moreover the skeleton marking is not robust against small perturbations in the o
 
 If we look at \cref{TEST_Center_accuracy} we can see that
 the centered beading strategy effectively deals with overfill and underfill and produces bead widths which are the optimal bead width in all locations, but in the center the bead widths are within a factor 2 off from the optimal bead width, which is still quite a bit.
-According to \cref{over_underfill} the overfill and underfill of the over- and underfill for the centered, the evenly distributed and the inward distributed strategy are all approximately \SI{2}{\percent}, which is a considerable improvement over the naive method.
+According to \cref{over_underfill} the overfill and underfill of the over- and underfill for the centered, the evenly distributed and the inward distributed strategy are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the naive method.
 
 However, according to \cref{widthHistogram} the centered strategy exhibits a lot wider range of bead widths than the distributed strategies:
 the standard deviation of the bead widths in the centered beading strategy is approximately \SI{38}{\micro\meter}, while the standard deviation resulting from the distributed strategies is approximately \SI{15}{\micro\meter}.
@@ -60,6 +59,7 @@ The inward distributed beading strategy was introduced in order to limit the num
 The effect is difficult to see when comparing \cref{TEST_Distributed_accuracy} with~\ref{TEST_InwardDistributed_accuracy}, because there are no large solid areas in that specific shape.
 Also when looking at \cref{smoothness} we cannot conclude any difference in the smoothness between the evenly distributed and the inward distributed beadign strategy.
 We do not provide any statistical evidence that the inward distributed beading strategy is in fact better than the evenly distributed strategy.
+
 However, we can say that by looking at \cref{distributed_comparison} we see that the outer toolpaths have the nominal bead width more often, which means that the inaccuracies of the adaptive bead width deposition system affect the dimensional accuracy of the outline shape less.
 The errors from such inaccuracies and the errors in mechanical properties due to deviation from the nominal bead width are located near the center of the shape, which means the overal mechanical properties of the part are least affected by the discrepancy between the actual feature size and the preferred feature size when using the inward distributed beading strategy.
 
