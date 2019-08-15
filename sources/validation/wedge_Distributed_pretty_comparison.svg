@@ -7,12 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   height="76.067276"
-   width="70.974762"
+   height="51.866116"
+   width="89.573227"
    id="svg1860"
    version="1.1"
    sodipodi:docname="wedge_Distributed_pretty_comparison.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="/home/t.kuipers/Documents/PhD/Variable_Width_project/paper/paper_private_git/sources/validation/wedge_Distributed_pretty_inward.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
   <defs
      id="defs404" />
   <sodipodi:namedview
@@ -32,9 +35,9 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="-18.678573"
-     inkscape:cy="43.94357"
+     inkscape:zoom="2"
+     inkscape:cx="-100.11002"
+     inkscape:cy="92.362291"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
