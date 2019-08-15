@@ -367,7 +367,7 @@ While the strategy "constant bead width" has a lower number of corners overall, 
 
 \subsection{Experimentation}
 Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle and a filament extrusion drive directly mounted on the print head.
-The firmware of the printer employs linear advance~\cite{linadvance}: to gain the extra pressure required to change to a wider bead an extra amount of filament is advanced into the physical system between the extruder and the nozzle so that we can realize accurate adaptive deposition width control.
+The firmware of the printer employs linear advance~\cite{tronvoll2019investigating}: to gain the extra pressure required to change to a wider bead an extra amount of filament is advanced into the physical system between the extruder and the nozzle so that we can realize accurate adaptive deposition width control.
 We set the prefered width to $w_\text{pref} = \SI{0.6}{\milli\meter}$, so that we avoid fluttered printing of lines thinner than the nozzle size.
 We used a layer thickness of \SI{0.2}{\milli\meter} and a movement speed of \SI{10}{\milli\meter\per\second}.
 
