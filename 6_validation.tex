@@ -308,34 +308,43 @@ In order to estimate the areas which are triply covered by extrusion segments, w
 These triple extrusion areas count double toward the total amount of overfill.
 The resulting overfill and underfill areas are visualized for the different toolpath strategies in the top of \cref{visualized_accuracy}.
 
+
+
 We calculated the total overfill and underfill areas of the different toolpath strategies applied on the dataset. 
 The overfill and underfill area as a percentage of the total area of the slices from the dataset are illustrated in \cref{over_underfill}.  
 The "Inward distributed" strategy has a calculated overfill of 0.24\% and an underfill of 0.17\%.
 This is lower compared to the "Naive" strategy, which results in 1.2\% overfill and 1.7\% underfill when applied to on dataset.
 
-\begin{figure}
-\includegraphics[width=\columnwidth]{sources/validation/overunderfill.pdf}
-\caption{total over and underfill for entire dataset}
-\label{over_underfill}
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=\columnwidth]{sources/validation/smoothness.pdf}
-\caption{occurrence of angles between consecutive segments}
-\label{smoothness}
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=\columnwidth]{sources/validation/widthHistogram.pdf}
-\caption{Distribution of extrusion width, sampled at  \SI{200}{\micro\meter}, visualized data is binned at intervals of  \SI{10}{\micro\meter}}
-\label{widthHistogram}
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=\columnwidth]{sources/validation/computime2.pdf}
-\caption{Computation time per slice}
+\begin{figure*}
+\centering
+\setlength{\figheight}{0.2\textwidth}
+\setlength{\figwidth}{0.24\textwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/validation/computime2.pdf}
+%\includegraphics[width=\figwidth]{sources/validation/computime2.pdf}
+\caption{Computation time and target vertex count for the full dataset}
 \label{computime}
-\end{figure}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/validation/overunderfill.pdf}
+%\includegraphics[width=\figwidth]{sources/validation/overunderfill.pdf}
+\caption{Total over and underfill area}
+\label{over_underfill}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/validation/widthHistogram.pdf}
+%\includegraphics[width=\figwidth]{sources/validation/widthHistogram.pdf}
+\caption{Relative frequency of extrusion widths}
+\label{widthHistogram}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources/validation/smoothness.pdf}
+%\includegraphics[width=\figwidth]{sources/validation/smoothness.pdf}
+\caption{Frequency of angles between consecutive segments}
+\label{smoothness}
+\end{subfigure}
+\caption{Results of computational analysis of the results from applying the naive method and various beading strategies using our framework to the dataset.}
+\end{figure*}
 
 
 \paragraph{Uniformity}
@@ -349,7 +358,7 @@ We visualize the bead widths resulting from the different strategies in an exagg
 To evaluate the width uniformity, we sampled the extrusion widths of all generated toolpaths 
 at intervals of \SI{200}{\micro\meter} along the toolpath.
 From these sampled values, we calculated the mean bead width, and standard deviation.
-\cref{widthHistogram} shows the distribution of extrusion width for each strategy.
+\cref{widthHistogram} shows the distribution of extrusion width for each strategy binned at intervals of  \SI{10}{\micro\meter}.
 The results show that the mean width of our strategies "Inwards distributed" and "Evenly distributed" is close to nominal nozzle size of \SI{400}{\micro\meter}, while their standard deviation is lower than for strategies "Centered" and "Constant bead count". 
 These values indicate that, while causing less overfill and underfill, our strategy deviates less and less often from the nominal nozzle size.
 
