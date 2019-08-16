@@ -359,6 +359,7 @@ If the total length traversed until we reach another marked node $v_1$ is shorte
 In order to apply a beading strategy to the ST we first assign bead counts to the central regions and then decide on how to apply those bead counts outward.
 In order to decide on an initial bead count, we require a function mapping a feature diameter to a bead count: $b: \mathbb{R} \to \mathbb{N}$.
 (The feature diameter is twice the radius.)
+For example we might choose to round to the nearest integer multiple of some preferred width $w_\text{pref}$: $b(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
 The function $b$ is determined by the beading strategy and is required to increase monotonically with the input feature diameter.
 
 We first assign each marked node $v$ of the skeleton an initial bead count $b^*_v \leftarrow b(2R(v))$, but it is modified in order to prevent high frequency changes in bead count and it is changed in order to account for smooth transitions in bead count.
