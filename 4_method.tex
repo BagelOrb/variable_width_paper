@@ -644,7 +644,36 @@ w &= w_i^B
 % \\ i^J &= i
 \end{align*}
 for any $i$ for which $R(v_0^e) < l_i^B \leq R(v_1^e)$.
+See \cref{junction_placement}.
 We store all junctions of a segment in a mapping from edge to a list of junctions.
+
+
+\begin{figure}
+\centering
+\setlength{\figheight}{.29\columnwidth}
+\begin{subfigure}{0.14\columnwidth}\centering
+\includegraphics[height=\figheight]{sources/method/trapezoid_beading_beading.pdf}
+\caption{Beadings}\label{trapezoid_beading_beading}
+\end{subfigure}
+\begin{subfigure}{0.5\columnwidth}\centering
+\includegraphics[height=\figheight]{sources/method/trapezoid_beading_propagated.pdf}
+\caption{Single beading propagated to all nodes}\label{trapezoid_beading_propagated}
+\end{subfigure}
+\begin{subfigure}{0.34\columnwidth}\centering
+\includegraphics[height=\figheight]{sources/method/trapezoid_beading_separate.pdf}
+\caption{Separate beadings at either top node}\label{trapezoid_beading_separate}
+\end{subfigure}
+\caption{
+Applying beadings togenerate junctions along trapezoids.
+\subref{trapezoid_beading_beading} shows half of the locations $L(n,d)_i$ and widths $W(n,d)_i$ of two arbitrary different beadings.
+\subref{trapezoid_beading_propagated} shows the application of $B^1$ to the various types of trapezoid.
+\subref{trapezoid_beading_separate} shows how a trapezoid with a marked edge will have two different beadings assigned, which will generate their respective junctions along the support bones.
+No junctions will be generated along marked bones.
+Wide black lines are outline segments, marked nodes and bones in blue, the junctions in yellow and green wavefronts of equidistant radial distance at $R = L(n,d)_i$.
+}
+\label{junction_placement}
+\end{figure}
+
 
 We then generate bead segments for each trapezoid by connecting together the junctions of the same index.
 See \cref{segment_generation}.
