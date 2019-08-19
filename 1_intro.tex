@@ -1,17 +1,17 @@
 \section{Introduction}
-3D printing enables the fabrication of complex geometry under very few design constraints compared to conventional fabrication techniques.
-Recent developments have seen a rapid growth in the use and capabilities of desktop 3D printing systems.
-The rapid spread of 3D printing through different industries and types of application calls for the possibility to manufacture a wide range of geometries while guaranteeing mechanical properties of the resulting parts.
-
+3D printing enables the fabrication of complex geometry under few design constraints compared to conventional fabrication techniques.
+Recent developments have seen a rapid growth in both the use and capabilities of desktop 3D printing systems.
+%The rapid spread of 3D printing through different industries and types of application calls for the possibility to manufacture a wide range of geometries while guaranteeing mechanical properties of the resulting parts.
 Fused Deposition Modeling (FDM) is one of the most common 3D printing techniques.
 It is widely used because of the versatility in the types of plastics which can be used and the relatively low running costs.
 FDM printers are used, for example, in showcasing scale models of buildings, casings for electronics, prototypes blowmold parts, jigs and fixtures.
-Recent research developments have investigated manufacturing complex volumetric structures such as microstructures, topology optimized structures and infill structures.
+Recent research developments have investigated manufacturing complex volumetric structures such as microstructures~\cite{}, topology optimized structures~\cite{} and infill structures~\cite{}.
 Many of these applications require 3D models with detailed features within the order of magnitude of the printing resolution, which restrains the field of the process planning algorithms.
 
-FDM printers deposit molten plastic through a nozzle, which extrudes semi-continuous beads of plastic generally in flat horizontal layers.
-Because the positioning system has an order of magnitude better resolution than the width of the nozzle,
+FDM printers extrude semi-continuous beads of molten plastic through a nozzle, which moves along a planned toolpath within each layer of a 3D object.
+Because the resolution of the positioning system is order of magnitude smaller than the width of the nozzle (typically from $??$ to $??$),
 the toolpaths for filling the arbitrary polygonal shape of a layer with extrusion beads are following the contour of that layer.
+\jun{I had difficulty to follow the logic behind this sentence}
 
 The naive method for generating the shape filling toolpaths of a layer consists in performing inward offsets with the radius of the the nozzle from the outline shape.
 However, for geometrical features which are not an exact multiple of the nozzle size this method produces areas where an extrusion bead is placed twice: \emph{overfill} areas; and other areas which are not filled at all: \emph{underfll} areas.
