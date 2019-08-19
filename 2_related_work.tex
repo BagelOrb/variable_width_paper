@@ -7,7 +7,7 @@ The deposited material covers the path with a certain width.
 Toolpath generation is an integral part of process planning for 3D printing.
 For an overview of the processing pipeline, we refer to the survey by \citeauthor{Livesu2017CGF}.~\cite{Livesu2017CGF} .
 For reducing printing time and material cost, sparse infill structures such as triangular and hexagonal patterns have been used to approximate the interior of 3D shapes.
-In this paper, we focus on generating toolpath that seamlessly covers the entire 2D contour.
+In this paper, we focus on generating toolpath that seamlessly fills the entire 2D contour.
 This is sometimes called dense infill~\cite{Livesu2017CGF}.
 
 % criteria for toolpath generation
@@ -17,8 +17,8 @@ First, the path shall be as continuous as possible.
 A discontinuous path requires to stop and restart material extrusion.
 For certain material such as TPU, this could lead to material defects~\cite{KUIPERS2019CAD}.
 Furthermore, a smooth path is often preferred.
-A path with a lot of sharp turns requires to slow down the movement of the nozzle, and this consequently prolongs the printing process.
-Second, the path, extended with a certain width, ideally shall cover the bounded region no voids or gaps --  underfilling, and no overlap -- overfilling. 
+Sharp turns require to slow down the movement of the nozzle, and this consequently prolongs the printing process.
+Second, the path, extended with a certain width, ideally shall cover the bounded region without voids or gaps --  underfilling, and no overlap -- overfilling. 
 An analysis of under- and overfill from a vertical cross-section was presented in~\cite{Han2002JMSE}. 
 Our method is primarily concerned with minimizing under- and overfill within slices, i.e. horizontal cross-sections.
 
@@ -28,21 +28,21 @@ Direction parallel (or zig-zag) toolpath fills an arbitrarily shaped contour wit
 These parallel segments are linked at one of their extremities, to avoid frequent stop and restart.
 Contour parallel toolpath typically consists of a set of equally spaced offset contours from the slice boundary.
 A strategy to connect the parallel offsets was introduced in~\cite{KUIPERS2019CAD}. This approach however introduces sharp turns.
-To reduce the number of sharp turns thereby enable faster motions, \citeauthor{Zhao2016} proposed to use Fermat spiral to cover the contour ~\cite{Zhao2016}. 
+To reduce the number of sharp turns, and thereby enable faster motions, \citeauthor{Zhao2016} proposed to use Fermat spiral to cover the contour ~\cite{Zhao2016}. 
 Spiral toolpaths have also been applied to machining~\cite{Held2009,Huang2017}.
 One of the problems with contour parallel toolpath is that it tends to leave gaps within the slices.
-This is due to the fact that the offset contour meets around the medial axis and the remaining space might not match exactly the (constant) deposition width.
+This is due to the fact that the offset contour meets around the medial axis and the remaining space might not exactly match the (constant) deposition width.
 To avoid problems with such gaps, hybrid approaches that combine direction and contour parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}.
-Close to the slice boundary there are a few contour parallel curves, while in the interior there is a zig-zag pattern.
+Close to the slice boundary, there are a few contour parallel curves, while in the interior there is a zig-zag pattern.
 For complex shapes, the entire cross-section could be decomposed into a set of patches, and for each of them, the basic strategies can be applied~\cite{Ding2014,Jin2017RCIM}.
 Alternative toolpath patterns, seen also in CNC machining, include space-filling curves~\cite{Cox1994CAD,Griffiths1994,Shaikh2016}.
 
 % the idea, and (some of) the most related work
-Our idea to reduce under- and over-filling is to deposit material with a varying width.
-This allows the opportunity to locally match the nonuniform space between adjacent paths, and thus to ensure a better coverage of the domain.
+Our approach to reduce under- and over-filling is to deposit material with a varying width.
+This allows the opportunity to locally match the nonuniform space between adjacent paths, and thus to ensure a better filling of the area.
 Material extraction with a varying width can be realized by changing the extrusion rate or the nozzle travel velocity~\cite{Ertay2018,Kuipers2018}.
 However, we note that the range of possible widths is not unlimited.
-For instance, printing a width that is tripple the nozzle diameter is challenging.
+For instance, printing a width that is triple the nozzle diameter is challenging.
 Our method to reduce underfilling is related to the work by \citeauthor{kao1998optimal}~\cite{kao1998optimal}.
 Instead of uniform offsetting, they produced adaptive offsetting toolpaths based on the geometry skeleton. 
 Skeleton was also used in~\cite{Jin2017RCIM} to construct a skeleton-based path for alleviating under- and over-filling in contour parallel toolpath. 

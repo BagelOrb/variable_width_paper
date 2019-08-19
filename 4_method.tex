@@ -573,7 +573,7 @@ and the middle is highlighted in red.
 \subsubsection{Beading propagation}\label{section_beading_conflicts}
 Because the beading information will be propagated outward from the central marked regions, beading conflicts can arise where a marked bone has unmarked upward edges attached to them, since beading will also be propagated down from the local maxima or other higher marked regions.
 See \cref{beading_conflict_problem}.
-In such a case we will interpolate between the lower beading and the beading propagated from above,
+In such a case we interpolate between the lower beading and the beading propagated from above,
 starting from the lower marked node and ending at a distance $t_\text{beading}$ upward.
 At the nodes in between we will apply the interpolation between the two beadings and propagate the interpolated beading outward from those nodes.
 This interpolation is performed during the beading propagation algorithm.
@@ -591,7 +591,7 @@ The beading approach from the marked region (blue) results in toolpaths (black) 
 \end{figure}
 
 After each marked node is assigned a beading by the beading strategy, we propagate the beadings outward to all nodes in the ST.
-The beading propagation is performed in two stages: an upward stage and a downward phases.
+The beading propagation is performed in two stages: an upward and downward stage.
 %First we sort all upward half-edges on the radial distance of their destination node, so that we can efficiently flood fill the beading information.
 In the upward phase we walk from each marked node upward along unmarked edges and map each node encountered to a pair consisting of the traversed distance and the bottom source beading.
 In the downward phase we walk from each marked node downward along unmarked edges and map each node to a pair consisting of the traversed distance and the upper source beading -
