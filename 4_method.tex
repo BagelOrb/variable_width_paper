@@ -172,8 +172,9 @@ which are \subref{overview_fig_toolpaths} connected together to make the toolpat
 
 
 \subsection{Surface construction}\label{sec_surface_construction}
-The shape decomposition we employ on the outline shape of a layer is based on a common skeletonization of the polygonal outline shape: the medial axis.
-Starting from the medial axis we further decompose the shape into simple fragments, so that we can easily process the shape using piecewise linear approximations.
+The union of cones surface mesh can be derived from a common skeletonization of the polygonal outline shape: the medial axis.
+By assigning each node in the skeleton a height equal to the radial distance to the outline we obtain the shape of the UoC.
+Starting from the medial axis we further decompose the shape into simple fragments, so that the mesh contains only quads and triangles.
 
 
 
@@ -184,9 +185,9 @@ We call the set of closest points on the outline polygon $P$ of a point $v$ on t
 The resulting skeleton consists of straight segments and parabolic segments which form a graph.
 See \cref{MAT_explanation_circles}.
 
-Alternatively the medial axis can be defined as the locations where the union of cones on the boundary shape is discontinuous,
+Alternatively the medial axis can be defined as the locations where the UoC surface is discontinuous,
 or it can be defined as the locations where wave-front propagating from the outline shape make sharp corners. \cite{blum1967transformation}
-This last interpretation is especially relevant because the naive toolpath generation method consists precisely in equidistant wave-fronts from the outline.
+This last conceptualization is especially relevant because the naive toolpath generation method consists precisely in equidistant wave-fronts from the outline.
 The medial axis can therefore be seen as the space within which contour following toolpaths are generated.
 See \cref{MAT_explanation}.
 
@@ -215,7 +216,7 @@ Feature radius and node locations of segments will be used below to analyse the 
 \begin{subfigure}{0.3\columnwidth}
 \centering
 \includegraphics[height=1.5\columnwidth]{sources/method/MAT_explanation_cones.pdf}
-\caption{Cones}
+\caption{Union of Cones}
 \end{subfigure}
 \caption{
 Medial axis representations.
@@ -227,18 +228,24 @@ or as ridges in a volume defined by the union of cones.
 \end{figure}
 
 
-\begin{figure}
-\begin{subfigure}{0.3\columnwidth}
-\centering
-%\includegraphics[height=1.5\columnwidth]{sources/method/MAT_explanation_shape_decomposition.pdf}
-\includegraphics[height=1.5\columnwidth]{sources/method/half_edge_datastructure.pdf}
-\caption{Simple case}
-\label{shape_decomposition_simple}
+\begin{figure}\centering
+\setlength{\figwidth}{0.24\columnwidth}
+\setlength{\figwidthTwo}{0.15\columnwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figwidthTwo]{sources/method/simple_skeleton_mat}
+\caption{MAT}\label{shape_decomposition_mat}
 \end{subfigure}
-\begin{subfigure}{0.65\columnwidth}
-\includegraphics[width=\columnwidth]{sources/method/MAT_VD_VQ.pdf}
-\caption{Complex case employing discretization}
-\label{shape_decomp_complex}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figwidthTwo]{sources/method/simple_skeleton_vd}
+\caption{VD}\label{shape_decomposition_vd}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figwidthTwo]{sources/method/simple_skeleton_st}
+\caption{ST}\label{shape_decomposition_st}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figwidthTwo]{sources/method/half_edge_datastructure.pdf}
+\caption{Datastructure}\label{shape_decomposition_datastructure}
 \end{subfigure}
 \caption{
 Skeletonization of an outline shape (black).
@@ -248,24 +255,16 @@ Relation between the medial axis (red), the limited Voronoi Diagram (red and gre
 \end{figure}
 
 
-\begin{figure} \centering
-\includegraphics[width=.75\columnwidth]{sources/method/mat_3d_blender_render.png}
-\caption{
-Visualization of the distance field function as captured by the skeletal trapezoidation.
-}
-\label{mat_3d}
-\end{figure}
-
-
 
 \subsubsection{Skeletal trapezoidation}
-We employ a shape decomposition proposed by \citeauthor{Ding2016a} which starts from the medial axis and further decomposes the outline shape into simple fragments. \cite{Ding2016a}
+The MAT decomposes the outline shape into several complex shapes which we need to further decompose in order to have a mesh consisting only of quads and triangles.
+We employ a shape decomposition proposed by \citeauthor{Ding2016a}. \cite{Ding2016a}
 Each of the regions demarcated by the skeleton is further decomposed by adding radial bones from each node $v$ to its support $\text{sup}(v)$.
 The resulting skeleton decomposes the outline shape into trapezoids and triangles.
 We will therefore call this shape decomposition the \emph{Skeletal Trapezoidation} (ST).
 (The concept of a trapezoidation conventionally allows for the degenerate case where a trapezoid resolves into a triangle. \cite{chazelle1984,fournier1984})
 We represent such a skeleton in a standard half-edge data-structure.
-See \cref{shape_decomposition_simple}.
+See \cref{shape_decomposition_datastructure}.
 
 
 The medial axis of a polygonal shape can be obtained from the Voronoi Diagram (VD) generated on the line segments and vertices of the shape, by throwing away all segments of the VD falling outside of the outline shape and throwing away the bones connected to concave vertices in the outline shape. \cite{lee1982medial}
@@ -275,9 +274,10 @@ See \cref{skeletonization_comparison}.
 
 
 We then also discretize parabolic segments and segments generated by two concave outline vertices into segments approximately as long as some constant $d^\text{discretization}$.
-See \cref{discretization} and \cref{shape_decomp_complex}.
+See \cref{discretization} and the middle of \cref{shape_decomposition_st}.
 That way we can approximate the feature radius $R$ in between the two nodes $v_0$ and $v_1$ of a bone in the ST by interpolating linearly between $R(v_0)$ and $R(v_1)$.
-This makes the skeleton capture a discrete approximation of the radius function which can then be used to create a triangulated 3D model of the conical representation of the medial axis; see \cref{mat_3d}.
+This makes the skeleton capture a discrete approximation of the radius function which is then used to determine the height of each node in the skeleton in order to generate the 3D mesh of the UoC.
+%; see \cref{mat_3d}.
 
 
 \begin{figure}
