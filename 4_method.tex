@@ -90,6 +90,11 @@ See \cref{overview_fig}.
 
 
 
+
+
+
+
+
 \begin{figure*}
 \centering
 \setlength{\figwidth}{0.19\textwidth}
@@ -142,7 +147,9 @@ which are \subref{overview_fig_toolpaths} connected together to make the toolpat
 
 
 
-\subsection{Shape decomposition}
+\subsection{Surface construction}
+\todo{TODO: explain section title!}
+
 The shape decomposition we employ on the outline shape of a layer is based on a common skeletonization of the polygonal outline shape: the medial axis.
 Starting from the medial axis we further decompose the shape into simple fragments, so that we can easily process the shape using piecewise linear approximations.
 
@@ -275,7 +282,9 @@ The blue segments are significant according to $\alpha_\text{max} = 135\degree$.
 
 
 
-\subsection{Bead counts}
+\subsection{Center classification}
+\todo{TODO: explain section title!}
+
 We assign a bead count to each node in the skeleton which is in `the center' of the shape in a sense which will be defined in \cref{sec:significance_measure}.
 Around regions where the bead count changes we introduce transition regions, so that we can smoothly change between regions with different bead count.
 
@@ -420,6 +429,11 @@ If the total length traversed until we reach another marked node $v_1$ is shorte
 
 
 
+\subsection{Central height adjustment}
+\todo{TODO: explain section title!}
+
+\todo{Introduce what's to come in this section.}
+
 \subsubsection{Initial bead count}
 In order to apply a beading strategy to the ST we first assign bead counts to the central regions and then decide on how to apply those bead counts outward.
 In order to decide on an initial bead count, we require a function mapping a feature diameter to a bead count: $b: \mathbb{R} \to \mathbb{N}$.
@@ -544,54 +558,36 @@ Discontinuities around regions where the bead count changes are prevented by tra
 
 
 
-\subsection{Toolpath extraction}
+
+
+
+
+
+
+
+\subsection{Peripheral height adjustment}
 \label{section_toolpath_extraction}
+
+For our purposes we only need to define the height at the locations which will be part of a slice.
+Instead of adjusting the height of peripheral nodes, we determine the locations along the bones where the adjusted height is an integer multiple of half the nozzle size.
+This helps to define an efficient slicing algorithm in \cref{sec_toolpath_extraction}.
+
+\todo{TODO:}
+\begin{itemize}
+\item explain section title
+\item Reword and/or introduce concept of Beading 
+\item Check compatibility with surrounding text!
+\end{itemize}
+
+
 Now that we have decided on the bead counts in the central marked regions, we can apply those bead counts outward along the unmarked bones of the skeleton in order to define the locations of the toolpath junctions.
 Because there is a plethora ways to cover a distance $d$ with $n$ beads, the placement of junctions depends on the chosen beading strategy.
 The beading strategy is used to generate the bead widths and radial distances at which the junctions are placed for each node: the \emph{beading}.
 That beading information is then propagated along the unmarked bones of the skeleton, so that we can generate the junctions on each unmarked bone.
 The junctions are then connected together per trapezoid in order to form the final toolpaths.
 
-
-\begin{definition}\label{beading_strategy_definition}
-We define a beading strategy as the following set:
-$$
-\left\{ \alpha_\text{max}, b(d), t(n), t_0(n), W(n, d), L(n, d) \right\}
-$$
-where
-$\alpha_{\text{max}}$ (the limit bisector angle),
-$b(d)$ (optimal bead count),
-$t(n)$ (transition length)
-and
-$t_0(n)$ (transition anchor position) have already been defined above.
-We introduce here
-$W(n, d)$, which gives the sequence of bead widths to cover a distance $d$ using $n$ beads
-and
-$L(n, d)$, which gives the sequence of toolpath positions as radial distances from the outline to cover a distance $d$ using $n$ beads.
-\end{definition}
-
-
-The following restrictions hold:
-\begin{enumerate}
-\item $W$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$
-\item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
-\item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
-\end{enumerate}
-
-
-\begin{definition}
-By applying the beading strategy to a skeleton location $v$ and a predetermined bead count $n$ we get a beading $B$, which is defined as the following set:
-$$
-\left\{ d, n, w_i, l_i  \right\}
-$$
-where
-$d = 2 R(v)$ is the diameter associated with $v$,
-$n$ is the bead count,
-$w_i$ is the bead width of the bead with index $0 \leq i < n$ counting from the outline inward
-and
-$l_i$ is the distance of the toolpath location of bead with index $0 \leq i < n$.
-\end{definition}
-
+\todo{Definition of beading strategy got moved!}
+\todo{Check compatibility with surrounding text!}
 
 
 \subsubsection{Beading interpolation}\label{section_beading_interpolation}
@@ -700,7 +696,19 @@ This is implemented in a flood-fill fashion: see \cref{alg_beading_propagation}.
 
 
 
-\subsubsection{Toolpath extraction algorithm}
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Toolpath extraction}\label{sec_toolpath_extraction}
 Now that each node has a beading associated with it we can apply the beading to generate the junctions of the toolpaths.
 For each upward half-edge $e$ we generate each junction $J$ based on the beading $B = B^{v_1^e}$:
 \begin{align*}
