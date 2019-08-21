@@ -1,85 +1,107 @@
 \section{Method}
 \subsection{Overview}
-
-The naive method consists of consecutive inward offsets from the outline.
-
+The naive method consists of consecutive inward offsets from the outline using a constant bead width.
 These offsets can be generated from the medial axis transform (MAT).
-The medial axis transform can be conceptualized as the skeleton of the mesh of the volume defined by the union of all cones with \SI{45}{\degree} touching the input shape.
-The constant width insets are then conceptualized as the intersection between the Union of Cones (UoC) and horizontal planes at regular intervals.
+The medial axis transform can be conceptualized as the skeleton of the mesh of the volume defined by the union of all cones of \SI{45}{\degree} which are touching the input shape. \cite{blum1967transformation}
+The constant width insets are the intersections between the Union of Cones (UoC) and horizontal planes at regular intervals.
+We can therefore use the MAT to efficiently calculate the consecutive offsets defining the naive toolpathing. \cite{eiamsa2003toward}
 
-Alternatively: the MAT captures the internal part of the distance field and the constant width insets are the isocontours of the that distance field.
+For the naive method the overfill and underfill problems arise in the center,
+because constant widths inward steps might not resolve to the arbitrary diameter of the outline shape.
+We therefore change the UoC mesh such that an exact integer beads will be generated in the center.
+More specifically, we round the height to the nearest multiple of \emph{half} the nozzle size.
+That way we allow for an odd number of beads to be placed between the two sides of the outline shape.
 
-The problem with the constant width insets is that in the center of the shape \todo{it doesn't fit}.
-because the distance to the boundary is not an integer multiple of the nozzle size.
-We therefore change the mesh such that an exact integer beads will be generated.
-
-A simplified version of our framework can be conceptualized as such:
+Our technique consists of the folowing steps:
 \begin{itemize}
 \item Compute the mesh representing the Union of Cones (UoC) for the input shape
+\item Identify central regions of the UoC
 \item Round the heights of central nodes to to the nearest slicing height
-\item Smooth out sharp transitions between regions with different integer multiple slice heights
+\item Smooth out sharp transitions between regions with different integer heights
+\item Determine the heights in the periphery (non-central regions)
 \item Slice the mesh at regular intervals to get the toolpaths to fill the input shape
 \end{itemize}
 See \cref{3d_surface_overview}.
 
 
-\begin{figure}
+
+
+
+
+\begin{figure*}
 \centering
-\setlength{\figwidth}{.3\columnwidth}
-\begin{subfigure}{\figwidth}
-\includegraphics[width=\columnwidth]{sources/method/surface/simple_surface_mat.png}
-\includegraphics[width=\columnwidth]{sources/method/surface/naive.pdf}
-\caption{Union of Cones}
+\setlength{\figwidth}{.18\textwidth}
+\setlength{\figwidthTwo}{.17\textwidth}
+\setlength{\figwidthTree}{.22\textwidth}
+\setlength{\tempheight}{-0.3cm}
+\setlength{\tempheightTwo}{-0.5cm}
+\begin{subfigure}{\figwidth}\centering
+\hspace*{\tempheightTwo}
+\includegraphics[width=\figwidthTree]{sources/method/surface/union_of_cones_cropped.png}
+
+\vspace{\tempheight}
+
+\includegraphics[width=\figwidthTwo]{sources/method/surface/uoc.pdf}
+\caption{Union of Cones}\label{3d_surface_overview_uoc}
 \end{subfigure}
-\begin{subfigure}{\figwidth}
-\includegraphics[width=\columnwidth]{sources/method/surface/simple_surface_no_transitions.png}
-\includegraphics[width=\columnwidth]{sources/method/surface/no_transitions.pdf}
-\caption{Rounded}
+\begin{subfigure}{\figwidth}\centering
+\hspace*{\tempheightTwo}
+\includegraphics[width=\figwidthTree]{sources/method/surface/marking_cropped.png}
+
+\vspace{\tempheight}
+
+\includegraphics[width=\figwidthTwo]{sources/method/surface/marked.pdf}
+\caption{Center}\label{3d_surface_overview_center}
 \end{subfigure}
-\begin{subfigure}{\figwidth}
-\includegraphics[width=\columnwidth]{sources/method/surface/simple_surface_st.png}
-\includegraphics[width=\columnwidth]{sources/method/surface/distributed.pdf}
-\caption{Smoothed}
+\begin{subfigure}{\figwidth}\centering
+\hspace*{\tempheightTwo}
+\includegraphics[width=\figwidthTree]{sources/method/surface/rounded_cropped.png}
+
+\vspace{\tempheight}
+
+\includegraphics[width=\figwidthTwo]{sources/method/surface/rounded.pdf}
+\caption{Rounded}\label{3d_surface_overview_rounded}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\hspace*{\tempheightTwo}
+\includegraphics[width=\figwidthTree]{sources/method/surface/smoothed_cropped.png}
+
+\vspace{\tempheight}
+
+\includegraphics[width=\figwidthTwo]{sources/method/surface/smoothed.pdf}
+\caption{Smoothed}\label{3d_surface_overview_smoothed}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\hspace*{\tempheightTwo}
+\includegraphics[width=\figwidthTree]{sources/method/surface/sliced_cropped.png}
+
+\vspace{\tempheight}
+
+\includegraphics[width=\figwidthTwo]{sources/method/surface/sliced_2D.png}
+\caption{Sliced}\label{3d_surface_overview_sliced}
 \end{subfigure}
 \caption{
-A simplified geometrical conceptualization of our framework.
-The 3D surface representations (top) are sliced into the toolpaths (bottom) which fill the outline shape.
-We first compute the Union of Cones mesh, then alter it to prevent shallow slopes and then smooth it to prevent instantaneous changes.
+A geometrical conceptualization of our technique.
+3D visualization on top and the corresponding 2D visualization on bottom.
+In the UoC \subref{3d_surface_overview_uoc}
+we mark the central regions blue \subref{3d_surface_overview_center}
+and round the height values to the nearest integer muliple of half the nozzle width \subref{3d_surface_overview_rounded}.
+We then smooth out the jumps between different integer multiples \subref{3d_surface_overview_smoothed}
+and finally we slice the structure to get the toolpaths \subref{3d_surface_overview_sliced}.
 }
 \label{3d_surface_overview}
-\end{figure}
+\end{figure*}
 
 
-
-problems
-
-Not all non-outline nodes are central.
-How to determine the height of such nodes?
-
-\Cref{section_toolpath_extraction} shows how we can determine the heights of non-central verts, extends the simplified method to a generalized framework and provides an efficient algorithm to slice the modified UoC.
-
+We describe how to construct the mesh of the UoC in \cref{sec_surface_construction} and
+explain how to identify central regions in \cref{sec_center_classification}.
+Rounding the heights in the central mesh regions and smoothing those heights is handled in \cref{sec_central_height_adjustment}.
+We then describe how to deal with heights in the periphery in \cref{sec_peripheral_height_adjustment}
+and describe the toolpath extraction algorithm in \cref{sec_toolpath_extraction}.
+In \cref{sec_generalization} we describe how to generalize our method into a general framework for generating contour parallel toolpaths using an arbitrary beading strategy and we show several such beading strategies.
 
 
-
-
-
-\todo{OLD: }
-When performing the naive method of offsetting the outline inward with constant width paths the overfill and underfill problems arise in the center.
-Constant widths inward steps might not resolve to the arbitrary width of the outline shape.
-Our method therefore decides on the number of beads everywhere first and then determines the widths of the beads.
-We decide on a bead count at locations which lie in central positions of the shape and apply an optimal distribution of widths from the central regions outward.
-
-What constitutes an optimal distribution is governed by a beading strategy.
-Our framework allows for different beading strategies which can optimize for different criteria.
-A beading strategy is defined by several several functions which govern the behavior of our framework.
-
-\begin{enumerate}
-\item Compute a skeleton of the outline shape.
-\item Use a significance measure to mark regions of the skeleton which are central.
-\item Determine the bead count values in the marked regions and handle transitions to different bead count values.
-\item Generate junctions along unmarked bones of the skeleton and connect the junctions together to form the extrusion beads.
-\end{enumerate}
-See \cref{overview_fig}.
+For ease of reference we have included a legend explaining the vocabulary employed in this manuscript in \cref{legend}.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{sources/method/terminology.pdf}
@@ -94,6 +116,7 @@ See \cref{overview_fig}.
 
 
 
+\iffalse
 
 \begin{figure*}
 \centering
@@ -133,6 +156,7 @@ which are \subref{overview_fig_toolpaths} connected together to make the toolpat
 \label{overview_fig}
 \end{figure*}
 
+\fi
 
 
 
@@ -147,9 +171,7 @@ which are \subref{overview_fig_toolpaths} connected together to make the toolpat
 
 
 
-\subsection{Surface construction}
-\todo{TODO: explain section title!}
-
+\subsection{Surface construction}\label{sec_surface_construction}
 The shape decomposition we employ on the outline shape of a layer is based on a common skeletonization of the polygonal outline shape: the medial axis.
 Starting from the medial axis we further decompose the shape into simple fragments, so that we can easily process the shape using piecewise linear approximations.
 
@@ -282,7 +304,7 @@ The blue segments are significant according to $\alpha_\text{max} = 135\degree$.
 
 
 
-\subsection{Center classification}
+\subsection{Center classification}\label{sec_center_classification}
 \todo{TODO: explain section title!}
 
 We assign a bead count to each node in the skeleton which is in `the center' of the shape in a sense which will be defined in \cref{sec:significance_measure}.
@@ -429,7 +451,7 @@ If the total length traversed until we reach another marked node $v_1$ is shorte
 
 
 
-\subsection{Central height adjustment}
+\subsection{Central height adjustment}\label{sec_central_height_adjustment}
 \todo{TODO: explain section title!}
 
 \todo{Introduce what's to come in this section.}
@@ -565,8 +587,7 @@ Discontinuities around regions where the bead count changes are prevented by tra
 
 
 
-\subsection{Peripheral height adjustment}
-\label{section_toolpath_extraction}
+\subsection{Peripheral height adjustment}\label{sec_peripheral_height_adjustment}
 
 For our purposes we only need to define the height at the locations which will be part of a slice.
 Instead of adjusting the height of peripheral nodes, we determine the locations along the bones where the adjusted height is an integer multiple of half the nozzle size.
