@@ -37,6 +37,25 @@ The following restrictions hold:
 \end{enumerate}
 
 
+\todo{TODO: Format this in the same way is the list above:}
+The transitions lengths should be such that they fit between anchor locations of two consecutive transitions even for a bone with high bisector angle:
+$$t_1(n) + t_0(n+1) < \frac{ b^{-1}(n + 1) - b^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$$
+for each $n \in \mathbb{N}$.
+See \cref{transition_placement}.
+
+\begin{figure}
+\centering
+\includegraphics[width=.4\columnwidth]{sources/method/transition_length_limit.pdf}
+\caption{
+Placement of transition ends (magenta and pink) with respect to the anchor positions of the transitions (purple) on a skeleton segment (blue) with bisector angle $\alpha \approx \SI{135}{\degree}$.
+The distance between the anchor position and the upper end ($t_1$) and the distance between the anchor position and the lower end of the transition ($t_0$) should add up to less than the total distance between the anchor positions, which is limited by $\alpha_\text{max}$.
+}
+\label{transition_placement}
+\end{figure}
+
+
+
+
 \begin{definition}
 By applying the beading strategy to a skeleton location $v$ and a predetermined bead count $n$ we get a beading $B$, which is defined as the following set:
 $$

@@ -463,30 +463,27 @@ if the total length traversed until we reach another marked node $v_1$ is shorte
 
 
 
-
 \subsection{Central height adjustment}\label{sec_central_height_adjustment}
-\todo{TODO: explain section title!}
+Now that we have identified and marked the central regions we can round the heights to integer multiples of half the nozzle size.
+We assign each node a new height value measured in terms of an integer number: it's \emph{bead count}.
+We define the bead count as the number of beads to fit along the \emph{diameter} of the shape, which is twice the feature radius.
+While the feature radii are measured along the support bones, the diameter is not measurable as such because the support bones are generally not collinear;
+we introduce the concept of the diameter so that we can deal with an odd number of beads while using integer logic.
 
-\todo{Introduce what's to come in this section.}
-
-\subsubsection{Initial bead count}
-In order to apply a beading strategy to the ST we first assign bead counts to the central regions and then decide on how to apply those bead counts outward.
+\subsubsection{Initial bead count}\label{sec_initial_bead_count}
 In order to decide on an initial bead count, we require a function mapping a feature diameter to a bead count: $b: \mathbb{R} \to \mathbb{N}$.
-(The feature diameter is twice the radius.)
-For example we might choose to round to the nearest integer multiple of some preferred width $w_\text{pref}$: $b(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
-The function $b$ is determined by the beading strategy and is required to increase monotonically with the input feature diameter.
+For our example we choose to round to the nearest integer multiple of the nozzle size $w_\text{pref}$: $b(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
+In our generalized framewotk the function $b$ is determined by a beading strategy.
 
-We first assign each marked node $v$ of the skeleton an initial bead count $b^*_v \leftarrow b(2R(v))$, but it is modified in order to prevent high frequency changes in bead count and it is changed in order to account for smooth transitions in bead count.
-See \cref{beading_transitioning_filtering__bead_count}.
-
-We also filter unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
-From each marked node $v_0$ with an upward unmarked bone attached we walk along the upward edges (which cannot branch because of \cref{single_upward_edge}) until we hit another marked node $v_1$.
+We first assign each marked node $v$ of the skeleton an initial bead count $b^*_v \leftarrow b(2R(v))$.
+We then filter unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
+From each marked node $v_0$ with an upward unmarked bone attached we walk along the upward edges until we hit another marked node $v_1$.
 If the upper node has the same bead count $b^*_{v_1} = b^*_{v_0}$ we mark all bones and nodes $v$ in between, and set the bead count $b^*_v \leftarrow b^*_{v_0}$.
 
 
 \begin{figure*}
 \centering
-\setlength{\figwidth}{0.15\textwidth}
+\setlength{\figwidth}{0.13\textwidth}
 \begin{subfigure}{\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/beading_transitioning_filtering__bead_count.pdf}
 \caption{Initial bead counts}\label{beading_transitioning_filtering__bead_count}
@@ -501,18 +498,22 @@ If the upper node has the same bead count $b^*_{v_1} = b^*_{v_0}$ we mark all bo
 \end{subfigure}
 \begin{subfigure}{\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/beading_transitioning_filtering__transition_ends.pdf}
-\caption{Transition ends}\label{beading_transitioning_filtering__transition_ends}
+\caption{Transition remp ends}\label{beading_transitioning_filtering__transition_ends}
 \end{subfigure}
 \begin{subfigure}{\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/beading_transitioning_filtering__transitions_applied.pdf}
-\caption{Radial bones}\label{beading_transitioning_filtering__transitions_applied}
+\caption{Radial support bones}\label{beading_transitioning_filtering__transitions_applied}
+\end{subfigure}
+\begin{subfigure}{.27\textwidth}
+\hspace*{-.5cm}\includegraphics[width=1.2\columnwidth]{sources/method/beading_transitioning_filtering__result_uoc.png}
+\caption{Result UoC}\label{beading_transitioning_filtering__result_uoc}
 \end{subfigure}
 \caption{
 Applying bead counts and transitioning on a shape showing the difference between a simple skeleton (top) and a mirrored version with small perturbations in the outline (bottom).
 Outline in black, medial axis edges in red, radial edges in grey.
 \subref{beading_transitioning_filtering__bead_count} First we initialize the bead counts (black) in the marked regions (blue).
 \subref{beading_transitioning_filtering__transition_mids} We then extract the anchor locations (purple) of the transitions to a different bead count should be.
-\subref{beading_transitioning_filtering__filtered}We then filter out regions of constant bead count.
+\subref{beading_transitioning_filtering__filtered} We then filter out regions of constant bead count.
 \subref{beading_transitioning_filtering__transition_ends} We then calculate the end locations (magenta, pink) of the transitions and modify the bead count at nodes in between to fractional values.
 \subref{beading_transitioning_filtering__transitions_applied} Finally we introduce nodes at the ends and introduce radial edges (purple) as per the trapezoidation constraint.
 The symmetry in the result shows that transitioning is robust against small perturbations in the outline shape.
@@ -522,52 +523,54 @@ The symmetry in the result shows that transitioning is robust against small pert
 
 
 \subsubsection{Transitioning}
-In order to prevent discontinuities in the toolpaths around locations where the bead count changes, we need a way to smoothly transition to a different number of beads around locations where the 3D model has a changing radius.
-See \cref{transitions}.
-The length along the marked region of a transition from bead count $n$ to $n+1$ is determined by some function $t(n)$.
-Because transitions in bead count only occurs in locations where the preferred bead count $b$ changes, we introduce $b^{-1}(n) := \argmax_d b(d) = n$.
+For bones which connect two nodes $v_0$ and $v_1$ with a different bead count assigned $b^*_{v_0} \neq b^*_{v_1}$ we must figure out the exact location(s $v$ where the preferred bead count $b(2R(v))$ changes.
+We call these locations the \emph{transition anchor positions}.
+Rather than applying the jumps to the UoC mesh we calculate the transition anchor positions and apply smoothing based on those positions, so that we modify the UoC mesh afterwards.
 
-For each marked bone between $v_0$ and $v_1$ with $b^*_{v_0} \neq b^*_{v_1}$ we introduce transitions.
-A transition from bead count $n$ to $n+1$ will be placed anchored on each location $v_x$ where $R(v_x) = b^{-1}(n)$.
+We introduce the function $b^{-1}(n) := \argmax_d b(d) = n$.
+%For each marked bone between $v_0$ and $v_1$ with $b^*_{v_0} \neq b^*_{v_1}$ we introduce transitions.
+A transition from bead count $n$ to $n+1$ will be anchored on each location $v_x$ where $R(v_x) = b^{-1}(n)$.
 We can compute the location of the anchor simply as
 $$v_x = v_0 + (v_1 - v_0) \frac{ b^{-1}(n) - R(v_0) }{ R(v_1) - R(v_0) }$$
 for each $n$ such that $b^*_{v_0}<n<b^*_{v_1}$.
 See \cref{beading_transitioning_filtering__transition_mids}.
 
-A transition with length $t(n)$ will be placed somewhere covering the anchor position.
-We require an additional function to be specified by the beading strategy: $t_0(n)$ determines the distance between the lower end of a transition from bead count $n$ to $n+1$ and the anchor point - as measured along the marked bones of the skeleton.
-From that we calculate $t_1(n) = t(n) - t_0(n)$ for the distance from the anchor to the upper end of the transition.
-The transitions lengths should be such that they fit between anchor locations of two consecutive transitions even for a bone with high bisector angle:
-$$t_1(n) + t_0(n+1) < \frac{ b^{-1}(n + 1) - b^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$$
-for each $n \in \mathbb{N}$.
-See \cref{transition_placement}.
-
-
-
-\begin{figure}
-\centering
-\includegraphics[width=.4\columnwidth]{sources/method/transition_length_limit.pdf}
-\caption{
-Placement of transition ends (magenta and pink) with respect to the anchor positions of the transitions (purple) on a skeleton segment (blue) with bisector angle $\alpha \approx \SI{135}{\degree}$.
-The distance between the anchor position and the upper end ($t_1$) and the distance between the anchor position and the lower end of the transition ($t_0$) should add up to less than the total distance between the anchor positions, which is limited by $\alpha_\text{max}$.
-}
-\label{transition_placement}
-\end{figure}
-
-
 In order to prevent frequent oscillations in the bead count, we filter locally maximal or minimal bead count regions.
 For each edge which contains a transition anchor we walk along the marked regions until we encounter another anchor.
 If the other anchor is a transition in the opposite direction and the traversed distance is within some limit $d_\text{max}^\text{transition}$ we remove the transitions and set the bead counts at all nodes in the filtered region to the surrounding bead counts.
-If we hit the end of a marked region and the traversed distance from the anchor point is less than the distance $t_{0}(n)$ or $t_{1}(n)$ to the transition end we dissolve the bead count region in the same manner.
 See \cref{beading_transitioning_filtering__filtered}.
 
-In order to generate the lower and upper end point of the transitions we walk downward and upward along the marked regions from each anchor position $v$ until we have traversed the corresponding distance of $t_{0}(n)$ or $t_{1}(n)$.
+
+
+
+
+
+\subsubsection{Height smoothing}
+In order to prevent discontinuities in the toolpaths around locations where the bead count changes i.e. where there is a jump in height in the UoC, we need a way to smoothly transition to a different number of beads around locations where the outline shape has a changing bead count.
+See \cref{transitions}.
+The length along the marked region of a transition from bead count $n$ to $n+1$ is determined by some function $t(n)$.
+For our example we will use a transition length equal to the nozzle size: $t(n) = w_\text{pref}$.
+
+A transition with length $t(n)$ will be placed somewhere covering the transition anchor position.
+We require an additional function to be specified by the beading strategy: $t_0(n)$ determines the distance between the lower end of a transition from bead count $n$ to $n+1$ and the anchor point - as measured along the marked bones of the skeleton.
+From that we calculate $t_1(n) = t(n) - t_0(n)$ for the distance from the anchor to the upper end of the transition.
+For our example we can simply use $t_0(n) = t_1(n) = \nicefrac12 w_\text{pref}$, so that the transition ramp is centered on the anchor position.
+
+
+Before we generate the transition ramps we filter out transition anchors which are positioned too close to the end of a marked region.
+For each edge which contains a transition anchor we walk along the marked regions until until we have traversed a distance more than $t(n)$.
+If we hit the end of a marked region and the traversed distance from the anchor point is less than the distance $t_{0}(n)$ or $t_{1}(n)$ to the transition end we dissolve the bead count region in the same manner as described above.
+
+The generation of the transition ramps should be robust against small perturbations in the outline shape;
+compare the top and bottom of \cref{beading_transitioning_filtering}.
+In order to generate the lower and upper end point of the transition ramps we walk downward and upward along the marked regions from each anchor position $v$ until we have traversed the corresponding distance of $t_{0}(n)$ or $t_{1}(n)$.
 If there is any node $v_x$ in between $v$ and $v_0$ or $v_1$ we assign it a fractional bead count by linear interpolation: $b^*_{v_x} = n + D(v_0, v_x)/t(n)$, where $D(.)$ is the cumulative distance measured along the marked bone(s).
 See \cref{beading_transitioning_filtering__transition_ends}.
-These fractional bead counts will be used in \cref{section_beading_interpolation}.
+These fractional bead counts will be used in \cref{section_beading_interpolation} in a way which guarantees a similar toolpath in transitioning regions which are crossed by extra support bones for small perturbations and those which are not.
 
-Finally we perform the graph update by introducing nodes at the transition ends and introducing radial bones from these new nodes to the outline as per the trapezoidation requirement.
-See \cref{beading_transitioning_filtering__transitions_applied}.
+Finally we perform the mesh update by introducing nodes at the transition ends and introducing radial support bones from these new nodes to the outline as per the trapezoidation requirement.
+We end up with a UoC with marked regions altered to be horizontal at integer multiples of half the nozzle width for long stretches with ramps in between.
+See \cref{beading_transitioning_filtering__transitions_applied} and \subref{beading_transitioning_filtering__result_uoc}.
 
 
 \begin{figure}
@@ -628,7 +631,7 @@ The junctions are then connected together per trapezoid in order to form the fin
 Skeletal nodes which are in the middle of a transition have obtained a fractional bead count, but the functions defined in the beading strategy are only defined on natural numbers.
 The fractional part of the bead count is used to interpolate between two beadings defined on the fractional bead count rounded up and down.
 Suppose we want to interpolate between two beadings $B^V$ and $B^W$, for which $n^{B^V} < n^{B^W}$.
-We interpolate the diameter $d$, widths $w_i$ and locations $l_i$ for indices $i < \frac12 n^{B^V}$ linearly and enforce the symmetry constraints on the upper indices.
+We interpolate the diameter $d$, widths $w_i$ and locations $l_i$ for indices $i < \nicefrac12 n^{B^V}$ linearly and enforce the symmetry constraints on the upper indices.
 See \cref{beading_interpolation}.
 The linear interpolation enforces robustness against small perturbations in the outline shape which cause extra bones to appear in the skeleton inside of transition regions.
 
