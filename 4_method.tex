@@ -1,4 +1,69 @@
 \section{Method}
+\subsection{Overview}
+
+The naive method consists of consecutive inward offsets from the outline.
+
+These offsets can be generated from the medial axis transform (MAT).
+The medial axis transform can be conceptualized as the skeleton of the mesh of the volume defined by the union of all cones with \SI{45}{\degree} touching the input shape.
+The constant width insets are then conceptualized as the intersection between the Union of Cones (UoC) and horizontal planes at regular intervals.
+
+Alternatively: the MAT captures the internal part of the distance field and the constant width insets are the isocontours of the that distance field.
+
+The problem with the constant width insets is that in the center of the shape \todo{it doesn't fit}.
+because the distance to the boundary is not an integer multiple of the nozzle size.
+We therefore change the mesh such that an exact integer beads will be generated.
+
+A simplified version of our framework can be conceptualized as such:
+\begin{itemize}
+\item Compute the mesh representing the Union of Cones (UoC) for the input shape
+\item Round the heights of central nodes to to the nearest slicing height
+\item Smooth out sharp transitions between regions with different integer multiple slice heights
+\item Slice the mesh at regular intervals to get the toolpaths to fill the input shape
+\end{itemize}
+See \cref{3d_surface_overview}.
+
+
+\begin{figure}
+\centering
+\setlength{\figwidth}{.3\columnwidth}
+\begin{subfigure}{\figwidth}
+\includegraphics[width=\columnwidth]{sources/method/surface/simple_surface_mat.png}
+\includegraphics[width=\columnwidth]{sources/method/surface/naive.pdf}
+\caption{Union of Cones}
+\end{subfigure}
+\begin{subfigure}{\figwidth}
+\includegraphics[width=\columnwidth]{sources/method/surface/simple_surface_no_transitions.png}
+\includegraphics[width=\columnwidth]{sources/method/surface/no_transitions.pdf}
+\caption{Rounded}
+\end{subfigure}
+\begin{subfigure}{\figwidth}
+\includegraphics[width=\columnwidth]{sources/method/surface/simple_surface_st.png}
+\includegraphics[width=\columnwidth]{sources/method/surface/distributed.pdf}
+\caption{Smoothed}
+\end{subfigure}
+\caption{
+A simplified geometrical conceptualization of our framework.
+The 3D surface representations (top) are sliced into the toolpaths (bottom) which fill the outline shape.
+We first compute the Union of Cones mesh, then alter it to prevent shallow slopes and then smooth it to prevent instantaneous changes.
+}
+\label{3d_surface_overview}
+\end{figure}
+
+
+
+problems
+
+Not all non-outline nodes are central.
+How to determine the height of such nodes?
+
+\Cref{section_toolpath_extraction} shows how we can determine the heights of non-central verts, extends the simplified method to a generalized framework and provides an efficient algorithm to slice the modified UoC.
+
+
+
+
+
+
+\todo{OLD: }
 When performing the naive method of offsetting the outline inward with constant width paths the overfill and underfill problems arise in the center.
 Constant widths inward steps might not resolve to the arbitrary width of the outline shape.
 Our method therefore decides on the number of beads everywhere first and then determines the widths of the beads.
