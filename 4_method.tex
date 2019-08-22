@@ -576,11 +576,11 @@ See \cref{beading_transitioning_filtering__transitions_applied} and \subref{bead
 \begin{figure}
 \centering
 \setlength{\figwidth}{\columnwidth}
-\begin{subfigure}{0.9\figwidth}
+\begin{subfigure}{0.9\figwidth}\centering
 \includegraphics[width=\columnwidth]{sources/method/wedge_distributed_generated__no_transitions.pdf}
 \caption{Without transitioning}
 \end{subfigure}
-\begin{subfigure}{0.9\figwidth}
+\begin{subfigure}{0.9\figwidth}\centering
 \includegraphics[width=\columnwidth]{sources/method/wedge_distributed_generated.pdf}
 \caption{Transitioning}
 \end{subfigure}
@@ -603,33 +603,71 @@ Discontinuities around regions where the bead count changes are prevented by tra
 
 
 
-\subsection{Peripheral height adjustment}\label{sec_peripheral_height_adjustment}
+\subsection{Peripheral heights}\label{sec_peripheral_height_adjustment}
+Now that we have transformed the heights in the central regions of the UoC we need to determine the heights in the rest of the shape, i.e. the periphery, and slice the resulting mesh into isocontour toolpaths.
+The peripheral heights could be determined in a plethora of ways according to various beading strategies.
+The ramps from the outline shape to the center might have various curves,
+but for our example we use straight ramps, just like the original UoC.
+See \cref{peripheral_heights}.
+That means we can stretch the $R$ heights of the UoC with a multiplier depending on the height of the center in terms of bead count.
 
-For our purposes we only need to define the height at the locations which will be part of a slice.
-Instead of adjusting the height of peripheral nodes, we determine the locations along the bones where the adjusted height is an integer multiple of half the nozzle size.
+
+\begin{figure}\centering
+\setlength{\figheight}{.2\columnwidth}
+\begin{subfigure}{.55\columnwidth}\centering
+\includegraphics[height=\figheight]{sources/method/peripheral_heights_3D.png}
+\caption{Surface mesh}
+\end{subfigure}
+\begin{subfigure}{.4\columnwidth}\centering
+\includegraphics[height=\figheight]{sources/method/peripheral_heights.pdf}
+\caption{ST}
+\end{subfigure}
+\caption{
+Shallow corners will cause peripheral nodes for which the height should be determined based on the central node above it.
+}
+\label{peripheral_heights}
+\end{figure}
+
+
+
+For the purpose of generating toolpaths we only need to define the height at the locations which will be part of a slice, rather than at all locations in the periphery.
+Instead of adjusting the height of peripheral mesh nodes, we determine the locations along the bones where the adjusted height coincides with a slicing height.
+In this section we will show how we can define a mapping from radial distance values to the indices of slicing heights, called a \emph{beading},
+how each beading is calculated for a central node
+and how the beadings are propagated outward to peripheral nodes.
 This helps to define an efficient slicing algorithm in \cref{sec_toolpath_extraction}.
 
-\todo{TODO:}
-\begin{itemize}
-\item explain section title
-\item Reword and/or introduce concept of Beading 
-\item Check compatibility with surrounding text!
-\end{itemize}
+\begin{definition}
+In order to help generate these toolpath locations we associate each central node with a mapping from radial distances to bead indices, the beading $B$,
+which we define as the following set:
+$$
+B = \left\{ d, n, \left\{ w_0 , \dots , w_{n-1} \right\}, \left\{ l_0 , \dots , l_{n-1} \right\}  \right\}
+$$
+where
+$d = 2 R(v)$ is the diameter associated with $v$,
+$n \in \mathbb{N}$ is the bead count,
+$w_i$ is the bead width of the bead with index $i$ counting from the outline inward
+and
+$l_i$ is the radial distance which maps to the bead with index $i$.
+\end{definition}
+
+For our example we linearly map the $R$ values using a multiplication factor of $d/n$:
+\begin{align*}
+w_i &= d/n  \\
+l_i &= d / n (i + \nicefrac12)
+\end{align*}
+An example beading is visualzied in the top of \cref{beading_interpolation}:
+$B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the same width and radial distances $l$ evenly divided over the length $d$.
 
 
-Now that we have decided on the bead counts in the central marked regions, we can apply those bead counts outward along the unmarked bones of the skeleton in order to define the locations of the toolpath junctions.
-Because there is a plethora ways to cover a distance $d$ with $n$ beads, the placement of junctions depends on the chosen beading strategy.
-The beading strategy is used to generate the bead widths and radial distances at which the junctions are placed for each node: the \emph{beading}.
-That beading information is then propagated along the unmarked bones of the skeleton, so that we can generate the junctions on each unmarked bone.
-The junctions are then connected together per trapezoid in order to form the final toolpaths.
-
-\todo{Definition of beading strategy got moved!}
-\todo{Check compatibility with surrounding text!}
+The beading information will be used in the next phase to directly generate the junctions of the toolpaths.
+Note that a beading conceptually covers the whole diameter, while we only apply it along the radii;
+the upper half of the beading is therefore unused.
 
 
 \subsubsection{Beading interpolation}\label{section_beading_interpolation}
-Skeletal nodes which are in the middle of a transition have obtained a fractional bead count, but the functions defined in the beading strategy are only defined on natural numbers.
-The fractional part of the bead count is used to interpolate between two beadings defined on the fractional bead count rounded up and down.
+Central nodes which are in the middle of a transition have obtained a fractional bead count, but the definition of a beading presupposed integer numbers.
+In order to generate a beading for a central node with a fractional bead count assigned we use the fractional part of the bead count to interpolate between two beadings defined on the fractional bead count rounded up and down.
 Suppose we want to interpolate between two beadings $B^V$ and $B^W$, for which $n^{B^V} < n^{B^W}$.
 We interpolate the diameter $d$, widths $w_i$ and locations $l_i$ for indices $i < \nicefrac12 n^{B^V}$ linearly and enforce the symmetry constraints on the upper indices.
 See \cref{beading_interpolation}.
@@ -669,21 +707,32 @@ and the middle is highlighted in red.
 
 
 \subsubsection{Beading propagation}\label{section_beading_conflicts}
-Because the beading information will be propagated outward from the central marked regions, beading conflicts can arise where a marked bone has unmarked upward edges attached to them, since beading will also be propagated down from the local maxima or other higher marked regions.
+The beading information associated with the central nodes is then propagated outward throughout the whole mesh.
+However, beading conflicts can arise where a marked bone has unmarked upward edges attached to them, since beading will also be propagated down from the local maxima or other higher marked regions.
 See \cref{beading_conflict_problem}.
 In such a case we interpolate between the lower beading and the beading propagated from above,
 starting from the lower marked node and ending at a distance $t_\text{beading}$ upward.
 At the nodes in between we will apply the interpolation between the two beadings and propagate the interpolated beading outward from those nodes.
 This interpolation is performed during the beading propagation algorithm.
-\todo{Make a better figure for this.}
 
 
-\begin{figure}
-\centering
-\includegraphics[width=.5\columnwidth]{sources/method/transition_to_insignificance_problem.pdf}
+\begin{figure}\centering
+\setlength{\figheight}{.2\columnwidth}
+\begin{subfigure}{.45\columnwidth}\centering
+\includegraphics[width=\columnwidth]{sources/method/beading_conflict_3D.png}
+\includegraphics[height=\figheight]{sources/method/beading_conflict.pdf}
+\caption{Beading conflict}\label{beading_conflict}
+\end{subfigure}
+\begin{subfigure}{.45\columnwidth}\centering
+\includegraphics[width=\columnwidth]{sources/method/beading_conflict_solved_3D.png}
+\includegraphics[height=\figheight]{sources/method/beading_conflict_solved.pdf}
+\caption{Conflict resolution}\label{beading_conflict_solved}
+\end{subfigure}
 \caption{
-Problems at the boundary of marked regions highlighted with red ovals.
-The beading approach from the marked region (blue) results in toolpaths (black) which don't line up with the approach following from the beading which results from the bead count at the local maximum in the bottom center.
+\subref{beading_conflict} The beading propagated from above conflicts with the beading below.
+\subref{beading_conflict_solved} The beading conflict is resolved by gradually interpolating between the two beadings.
+The ramp to the upper ridge doesn't line up with the lower ridge, which means that
+the toolpaths (dashed) resulting from the beading propagated from above doesn't align with the beading from the thin outline feature (highlighted in red).
 }
 \label{beading_conflict_problem}
 \end{figure}
