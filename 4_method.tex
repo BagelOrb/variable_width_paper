@@ -231,23 +231,27 @@ or as ridges in a volume defined by the union of cones.
 
 
 \begin{figure}\centering
-\setlength{\figwidth}{0.24\columnwidth}
-\setlength{\figwidthTwo}{0.15\columnwidth}
+\setlength{\figwidth}{0.19\columnwidth}
+\setlength{\figwidthTwo}{0.3\columnwidth}
 \begin{subfigure}{\figwidth}\centering
-\includegraphics[width=\figwidthTwo]{sources/method/simple_skeleton_mat}
-\caption{MAT}\label{shape_decomposition_mat}
+\includegraphics[height=\figwidthTwo]{sources/method/simple_skeleton_mat}
+\caption{Medial Axis}\label{shape_decomposition_mat}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
-\includegraphics[width=\figwidthTwo]{sources/method/simple_skeleton_vd}
-\caption{VD}\label{shape_decomposition_vd}
+\includegraphics[height=\figwidthTwo]{sources/method/simple_skeleton_vd}
+\caption{Voronoi Diagram}\label{shape_decomposition_vd}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
-\includegraphics[width=\figwidthTwo]{sources/method/simple_skeleton_st}
-\caption{ST}\label{shape_decomposition_st}
+\includegraphics[height=\figwidthTwo]{sources/method/simple_skeleton_st}
+\caption{Skeletal Trapezoids}\label{shape_decomposition_st}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
-\includegraphics[width=\figwidthTwo]{sources/method/half_edge_datastructure.pdf}
-\caption{Datastructure}\label{shape_decomposition_datastructure}
+\includegraphics[height=\figwidthTwo]{sources/method/half_edge_datastructure.pdf}
+\caption{Data structure}\label{shape_decomposition_datastructure}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figwidthTwo]{sources/method/domains.pdf}
+\caption{Polygon Domains}\label{shape_decomposition_domains}
 \end{subfigure}
 \caption{
 Skeletonization of an outline shape (black).
@@ -267,6 +271,11 @@ We will therefore call this shape decomposition the \emph{Skeletal Trapezoidatio
 (The concept of a trapezoidation conventionally allows for the degenerate case where a trapezoid resolves into a triangle. \cite{chazelle1984,fournier1984})
 We represent such a skeleton in a standard half-edge data-structure.
 See \cref{shape_decomposition_datastructure}.
+
+The trapezoids are classified as belonging to a specific domain following \citeauthor{Ding2016a}.
+Each polygon in the input shape acquires it's own domain.
+The domains of hole polygons are touching the domains of the outer polygon.
+See \cref{shape_decomposition_domains}.
 
 
 The medial axis of a polygonal shape can be obtained from the Voronoi Diagram (VD) generated on the line segments and vertices of the shape, by throwing away all segments of the VD falling outside of the outline shape and throwing away the bones connected to concave vertices in the outline shape. \cite{lee1982medial}
