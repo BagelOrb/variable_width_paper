@@ -9,7 +9,10 @@ The final skeleton is still an exact and full feature descriptor.
 In that sense our framework provides an exact solution space.
 
 Note also that our method is robust against small perturbations in the input shape.
-Although the skeleton might acquire extra bones, the significant portions of the skeleton remain similar and the output toolpaths change infinitesimally.
+Geometrically small changes to the outline shape introduce extra bones and therefore change the topology of the ST graph.
+However, the significance measure and beading are defined in terms of radial distances so the robustness of the distance field against such perturbations means our method bypasses the unstability of the skeleton.
+Moreover, we have developed a method for dealing with bones within transition regions such that the toolpath is the same as if there wasn't any bone in that region.
+The toolpaths generated using our framework therefore remain the same when extra bones are added to the ST.
 
 Our framework is also local.
 The toolpathing around some section of the input polygons is independent of far away regions of the polygon.
