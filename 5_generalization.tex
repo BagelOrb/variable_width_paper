@@ -1,14 +1,10 @@
 \section{Generalization}\label{sec_generalization}
-In this section we will generaize the described method into a parametric system, i.e. a geometric framework.
-
-\todo{TODO:}
-\begin{itemize}
-\item introduce section
-\end{itemize}
-
-\subsection{Beading strategy}
-Depending on the application, the hardware and the materials used we might want to have different strategies for filling a shape with contour parallel toolpaths.
-we therefore..
+In this section we will generalize the described method into a parametric system, i.e. an algorithmic framework.
+The method we have described above is one for distributing the beads evenly over the total diameter of an outline shape feature.
+Depending on the application, the hardware and the materials used we might need different strategies for determining the bead widths.
+In this section we will generalize the method so that we can apply any distribution of bead widths over a feature radius.
+There are several strategies one can take for determining the distribution of bead widths.
+We will formalize several strategies and describe the set of parameters these strategies require.
 
 
 \begin{definition}\label{beading_strategy_definition}
@@ -23,25 +19,21 @@ $t(n)$ (transition length)
 and
 $t_0(n)$ (transition anchor position) have already been defined above.
 We introduce here
-$W(n, d)$, which gives the sequence of bead widths to cover a distance $d$ using $n$ beads
+$W(n, d)$, which gives the sequence of bead widths $\left\{ w_i \right\}$ for each bead with index $i$
 and
-$L(n, d)$, which gives the sequence of toolpath positions as radial distances from the outline to cover a distance $d$ using $n$ beads.
+$L(n, d)$, which gives the sequence of radial locations $\left\{ l_i \right\}$ which map to each bead index $i$.
 \end{definition}
 
 
 The following restrictions hold:
 \begin{enumerate}
+\item $\alpha_\text{max}$ is viable: $t_1(n) + t_0(n+1) < \frac{ b^{-1}(n + 1) - b^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$ for each $n \in \mathbb{N}$ (see \cref{transition_placement})
 \item $W$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$
 \item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
-\item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$.
+\item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$
 \end{enumerate}
 
 
-\todo{TODO: Format this in the same way is the list above:}
-The transitions lengths should be such that they fit between anchor locations of two consecutive transitions even for a bone with high bisector angle:
-$$t_1(n) + t_0(n+1) < \frac{ b^{-1}(n + 1) - b^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$$
-for each $n \in \mathbb{N}$.
-See \cref{transition_placement}.
 
 \begin{figure}
 \centering
@@ -56,26 +48,8 @@ The distance between the anchor position and the upper end ($t_1$) and the dista
 
 
 
-\begin{definition}
-By applying the beading strategy to a skeleton location $v$ and a predetermined bead count $n$ we get a beading $B$, which is defined as the following set:
-$$
-\left\{ d, n, w_i, l_i  \right\}
-$$
-where
-$d = 2 R(v)$ is the diameter associated with $v$,
-$n$ is the bead count,
-$w_i$ is the bead width of the bead with index $0 \leq i < n$ counting from the outline inward
-and
-$l_i$ is the distance of the toolpath location of bead with index $0 \leq i < n$.
-\end{definition}
-
-
-
-
 \subsection{Beading strategies}
-\todo{This section was moved. Check compatibility with surrounding text.}
-
-Now that we have described a framework for deciding and applying on bead counts and their widths locally, we can introduce several beading strategies which determine the bead count and their widths in different ways.
+We introduce several beading strategies which determine the bead count and their widths in various ways.
 We can emulate a variety of toolpath generation methods from related literature by meticulously defining new beading strategies.
 We also introduce new beading strategies which produce toolpaths with less extremal widths compared to techniques from existing literature.
 

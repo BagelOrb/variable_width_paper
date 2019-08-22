@@ -648,7 +648,7 @@ $d = 2 R(v)$ is the diameter associated with $v$,
 $n \in \mathbb{N}$ is the bead count,
 $w_i$ is the bead width of the bead with index $i$ counting from the outline inward
 and
-$l_i$ is the radial distance which maps to the bead with index $i$.
+$l_i$ is the radial locations which maps to the bead with index $i$.
 \end{definition}
 
 For our example we linearly map the $R$ values using a multiplication factor of $d/n$:
@@ -657,7 +657,7 @@ w_i &= d/n  \\
 l_i &= d / n (i + \nicefrac12)
 \end{align*}
 An example beading is visualzied in the top of \cref{beading_interpolation}:
-$B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the same width and radial distances $l$ evenly divided over the length $d$.
+$B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the same width and radial locations $l$ evenly divided over the length $d$.
 
 
 The beading information will be used in the next phase to directly generate the junctions of the toolpaths.
@@ -825,11 +825,11 @@ We store all junctions of a segment in a mapping from edge to a list of junction
 \end{subfigure}
 \caption{
 Applying beadings togenerate junctions along trapezoids.
-\subref{trapezoid_beading_beading} shows half of the locations $L(n,d)_i$ and widths $W(n,d)_i$ of two arbitrary different beadings.
+\subref{trapezoid_beading_beading} shows half of the locations $l_i$ and widths $w_i$ of two arbitrary different beadings.
 \subref{trapezoid_beading_propagated} shows the application of $B^1$ to the various types of trapezoid.
 \subref{trapezoid_beading_separate} shows how a trapezoid with a marked edge will have two different beadings assigned, which will generate their respective junctions along the support bones.
 No junctions will be generated along marked bones.
-Wide black lines are outline segments, marked nodes and bones in blue, the junctions in yellow and green wavefronts of equidistant radial distance at $R = L(n,d)_i$.
+Wide black lines are outline segments, marked nodes and bones in blue, the junctions in yellow and green wavefronts of equidistant radial distance at $R = l_i$.
 }
 \label{junction_placement}
 \end{figure}
