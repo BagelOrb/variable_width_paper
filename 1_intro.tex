@@ -9,9 +9,11 @@ Recent research developments have investigated manufacturing complex volumetric 
 Many of these applications require 3D models with detailed features within the order of magnitude of the printing resolution, which restrains the field of the process planning algorithms.
 
 FDM printers extrude semi-continuous beads of molten plastic through a nozzle, which moves along a planned toolpath within each layer of a 3D object.
-Because the resolution of the positioning system is order of magnitude smaller than the width of the nozzle (typically from $??$ to $??$),
-the toolpaths for filling the arbitrary polygonal shape of a layer with extrusion beads are following the contour of that layer.
-\jun{I had difficulty to follow the logic behind this sentence}
+A common strategy to accurately manufacture a given 3D model is to extrude a contour following print path,
+because the positiong and shape of the toolpath can be controled relatively accurately.
+Filling up a shape using parallel straight lines would expose defects of the size of the nozzle ($\pm 10^2 \mu$), which is generally an order of magnitude larger than the resolution of the positioning system ($\pm 10^1 \mu$).
+Contour parallel extrusion therefore leads to a less bumpy outline shape than direction parallel extrusion does.
+
 
 The naive method for generating the shape filling toolpaths of a layer consists in performing inward offsets with the radius of the the nozzle from the outline shape.
 However, for geometrical features which are not an exact multiple of the nozzle size this method produces areas where an extrusion bead is placed twice: \emph{overfill} areas; and other areas which are not filled at all: \emph{underfll} areas.

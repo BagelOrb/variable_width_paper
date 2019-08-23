@@ -350,12 +350,12 @@ This sections covers what parts of the UoC will be marked as being central, rath
 
 We mark a node of the skeleton as central if its feature radius is larger than that of all of the neighboring nodes in the skeletal graph.
 That is: we mark the local maxima, i.e. the mountain tops of the UoC as being central.
-We also mark whole bones as being central if they are significant according to a common significance measure.
+We also mark whole bones as being central if they are significant according to a significance measure which is commonly used in shape analysis.
 
 
 \subsubsection{Significance measure}\label{sec:significance_measure}
 Centrality can be formalized by looking at a commonly used significance measure knows as the \emph{bisector angle}.
-The bisector angle $\alpha$ is the angle $\angle{p_ovp_1}$ between a location $v$ on a bone of the skeleton and its two supporting polygon points $p_0$ and $p_1$.\cite{attali1996modeling}
+The bisector angle $\alpha$ is the interior angle $\angle{p_ovp_1} \leq \si{180}{\degree}$ between a location $v$ on a bone of the skeleton and its two supporting polygon points $p_0$ and $p_1$.\cite{attali1996modeling}
 Bones are significant if the bisector angle exceeds $\alpha_\text{max}$ which is governed by the beading strategy.
 
 For a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$, which corresponds to overfill areas and underfill areas the size of $\nicefrac12 w^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using a naive strategy of constant bead width $w$.
