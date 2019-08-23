@@ -9,8 +9,8 @@ The final skeleton is still an exact and full feature descriptor.
 In that sense our framework provides an exact solution space.
 
 Note also that our method is robust against small perturbations in the input shape.
-Geometrically small changes to the outline shape introduce extra bones and therefore change the topology of the ST graph.
-However, the significance measure and beading are defined in terms of radial distances so the robustness of the distance field against such perturbations means our method bypasses the unstability of the skeleton.
+Geometrically small changes to the outline shape introduce extra bones and therefore change the topology of the graph of the ST.
+However, the significance measure and beading are defined in terms of radial distances so the robustness of the distance field against such perturbations means our method bypasses the instability of the skeleton.
 Moreover, we have developed a method for dealing with bones within transition regions such that the toolpath is the same as if there wasn't any bone in that region.
 The toolpaths generated using our framework therefore remain the same when extra bones are added to the ST.
 
@@ -36,7 +36,7 @@ See \cref{TEST_Constant_accuracy}.
 Note that around regions where the bead width changes a lot we can see some overfill areas, which explains the unusually high overfill statistic in \cref{over_underfill}.
 Because the bead count 
 For an input outline shape which contains both very small and very large features the algorithm produces bead widths which can fall outside of the range of manufacturable bead widths.
-Moreover the skeleton marking is not robust against small perturbations in the outline; adding a small chamfer in a corner causes the unmarked skeleton to be very small at that location, which results in tiny bead widths.
+Moreover the centrality marking is not robust against small perturbations in the outline; adding a small chamfer in a corner causes the unmarked ST to be very small at that location, which results in tiny bead widths.
 
 If we look at \cref{TEST_Center_accuracy} we can see that
 the centered beading strategy effectively deals with overfill and underfill and produces bead widths which are the optimal bead width in all locations, but in the center the bead widths are within a factor 2 off from the optimal bead width, which is still quite a bit.

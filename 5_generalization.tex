@@ -39,7 +39,7 @@ The following restrictions hold:
 \centering
 \includegraphics[width=.4\columnwidth]{sources/method/transition_length_limit.pdf}
 \caption{
-Placement of transition ends (magenta and pink) with respect to the anchor positions of the transitions (purple) on a skeleton segment (blue) with bisector angle $\alpha \approx \SI{135}{\degree}$.
+Placement of transition ends (magenta and pink) with respect to the anchor positions of the transitions (purple) on a ST edge (blue) with bisector angle $\alpha \approx \SI{135}{\degree}$.
 The distance between the anchor position and the upper end ($t_1$) and the distance between the anchor position and the lower end of the transition ($t_0$) should add up to less than the total distance between the anchor positions, which is limited by $\alpha_\text{max}$.
 }
 \label{transition_placement}
@@ -133,7 +133,7 @@ w_\text{pref} & \text{ otherwise } \\
 \paragraph{Constant bead count}
 We can emulate the method by \citeauthor{Ding2016a}, by dividing the feature diameter over the widths of a constant number of beads.
 Additionally in order to emulate their definition of branches we mark all segments and in a separate algorithm we unmark the outer bones connected to the outline shape.
-Note that this deviation from the proposed framework violates the robustness against small perturbations in the outline polygon, since the topology of the skeletal graph is not stable against those.
+Note that this deviation from the proposed framework violates the robustness against small perturbations in the outline polygon, since the topology of the graph of the ST is not stable against those.
 
 \begin{align*}
 \alpha_\text{max} &= \SI{0}{\degree} \\
