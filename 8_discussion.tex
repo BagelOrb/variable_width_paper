@@ -22,7 +22,7 @@ and it also allows for some parallelism during the computation of the toolpaths.
 
 
 \subsection{Comparison of beading strategies}
-The naive strategy and the single bead strategy are of little use to FDM printers, but they show the flexibility of our parametric system.
+The 'Naive' strategy and the 'Outer bead' strategy are of little use to FDM printers, but they show the flexibility of our parametric system.
 
 We can see from \cref{TEST_naive_accuracy}(top) and~\ref{over_underfill} that the naive method causes a lot of overfills and underfills: on average approximately \SI{1}{\percent} of the total target area is covered by underfill and likewise for overfill.
 These defects surely influence the mechanical properties of the parts beyond a point that process parameters can reliably be correlated to mechanical properties of the part.
@@ -31,28 +31,29 @@ These defects surely influence the mechanical properties of the parts beyond a p
 %However, the strategy doesn't deal with the remaining area.
 %In our visualization we print the outline of the remaining area which exposes an overextrusion problem.
 
-The constant bead count beading strategy effectively deals with all overfills and underfills, but at the cost of wildly differing bead widths.
-See \cref{TEST_Constant_accuracy}.
-Note that around regions where the bead width changes a lot we can see some overfill areas, which explains the unusually high overfill statistic in \cref{over_underfill}.
-Because the bead count 
-For an input outline shape which contains both very small and very large features the algorithm produces bead widths which can fall outside of the range of manufacturable bead widths.
+The 'Constant bead count' strategy effectively deals with underfills, but generates orders of magnitude more overfills compared to the other strategies. 
+Also, the strategy comes at the cost of greatly varying bead widths and an average bead width that is not close to the nominal bead width.
+Note that most overfill areas occur near regions of alternating bead width. 
+
+For an input outline shape which contains both very small and very large features, the algorithm produces bead widths which can fall outside of the range of manufacturable bead widths.
 Moreover the centrality marking is not robust against small perturbations in the outline; adding a small chamfer in a corner causes the unmarked ST to be very small at that location, which results in tiny bead widths.
 
 If we look at \cref{TEST_Center_accuracy} we can see that
-the centered beading strategy effectively deals with overfill and underfill and produces bead widths which are the optimal bead width in all locations, but in the center the bead widths are within a factor 2 off from the optimal bead width, which is still quite a bit.
-According to \cref{over_underfill} the overfill and underfill of the over- and underfill for the centered, the evenly distributed and the inward distributed strategy are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the naive method.
+the centered beading strategy effectively deals with overfill and underfill and produces bead widths which are the optimal bead width in all locations, but in the center the bead widths are within a factor 2 off from the optimal bead width.
+According to \cref{over_underfill} the overfill and underfill for the 'Centered', the 'Evenly distributed' and the 'Inward distributed' strategy are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the naive method.
 
-However, according to \cref{widthHistogram} the centered strategy exhibits a lot wider range of bead widths than the distributed strategies:
-the standard deviation of the bead widths in the centered beading strategy is approximately \SI{38}{\micro\meter}, while the standard deviation resulting from the distributed strategies is approximately \SI{15}{\micro\meter}.
-We can therefore state that the distributed strategies result in bead widths closer to the nominal bead widths than the centered strategy, which means that the distributed strategies realize the mechanical properties associated to a given nominal bead width more closely.
+However, according to \cref{widthHistogram} the Centered strategy exhibits a lot wider range of bead widths than the Distributed strategies:
+the standard deviation of the bead widths in the Centered strategy is approximately \SI{39}{\micro\meter}, while the standard deviation resulting from the Distributed strategies is approximately \SI{14}{\micro\meter}.
+We can therefore state that the Distributed strategies result in bead widths closer to the nominal widths compared to the Centered strategy.
+This is desirable for the manufacturability of the beads and can therefore have a positive effect on the mechanical properties and surface quality of the 3D prints. 
 
-The inward distributed beading strategy was introduced in order to limit the number of beads deviating from the nominal bead width and to limit the number of angled extrusion segments in transitioning regions.
+The Inward distributed beading strategy was introduced in order to limit the number of beads deviating from the nominal bead width and to limit the number of angled extrusion segments in transitioning regions.
 The effect is difficult to see when comparing \cref{TEST_Distributed_accuracy} with~\ref{TEST_InwardDistributed_accuracy}, because there are no large solid areas in that specific shape.
-Also when looking at \cref{smoothness} we cannot conclude any difference in the smoothness between the evenly distributed and the inward distributed beadign strategy.
-We do not provide any statistical evidence that the inward distributed beading strategy is in fact better than the evenly distributed strategy.
 
-However, we can say that by looking at \cref{distributed_comparison} we see that the outer toolpaths have the nominal bead width more often, which means that the inaccuracies of the adaptive bead width deposition system affect the dimensional accuracy of the outline shape less.
-The errors from such inaccuracies and the errors in mechanical properties due to deviation from the nominal bead width are located near the center of the shape, which means the overal mechanical properties of the part are least affected by the discrepancy between the actual feature size and the preferred feature size when using the inward distributed beading strategy.
+However, when comparing the bead width of the outer toolpaths, \cref{distributed_comparison} and  \cref{widthIndexedHistogram}, we can clearly see that the these toolpaths have the nominal bead width more often, which means that errors from inaccuracies due to deviation from the nominal bead width are concentrated near the center of the shape, leaving the dimensional accuracy of the outline shape less affected, if at all. 
+Also, we find that compared to Evenly distributed, the Inward distributed strategy produces smoother toolpaths overall (\cref{smoothness}), and with less jaggedness on the contour toolpaths (\cref{smoothness}). 
+Therefore, when using the Inward distributed strategy the surface of the 3D print is less affected by both width variation and jagged toolpaths, while overfill and underfill are kept at a a low percentage.
+
 
 
 
