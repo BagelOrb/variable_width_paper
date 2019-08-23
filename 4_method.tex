@@ -320,7 +320,7 @@ The blue segments are significant according to $\alpha_\text{max} = 135\degree$.
 
 \subsubsection{Union of cones}
 In order to transform the ST into a 3D surface we add another dimension to the skeleton.
-We assign each node a new height value measured in terms of an integer number: it's \emph{bead count}.
+We assign each node a height value measured in terms of an integer number: it's \emph{bead count}.
 We define the bead count as the number of beads to fit along the \emph{diameter} of the shape, which is twice the feature radius.
 While the feature radii are measured along the support bones, the diameter is not measurable as such because the support bones are generally not collinear;
 we introduce the concept of the diameter so that we can deal with an odd number of beads while using integer logic.
@@ -891,7 +891,7 @@ In a final step we connect the ends of polylines together, so that the final too
 \centering
 \includegraphics[width=.5\columnwidth]{sources/method/segment_generation.pdf}
 \caption{
-Generating toolpaths on a part of the test outline shape which is fully shown in \cref{shape_decomp_complex}.
+Generating toolpaths on a part of the test outline shape which is fully shown in \cref{shape_decomposition_domains}.
 Each edge is assigned toolpath junctions (yellow) which are connected together as shown in the singled out trapezoid.
 By following the trapezoids along the domain (cyan) of a single outline polygon,
 the segments can efficiently be connected into existing polyline toolpaths (light and dark gray).
