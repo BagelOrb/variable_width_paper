@@ -4,15 +4,15 @@
 In this paper the significance measure is not used heuristically, as it is sometimes used in other literature.
 The significance measure is an exact measure of the relative size of gaps when using the naive toolpathing method.
 See \cref{naive_overfill_underfill}
-Note also that contrary to some literature we don't remove bones from the skeleton, but leave it intact.
+Note also that contrary to some literature we don't remove edges from the skeleton, but leave it intact.
 The final skeleton is still an exact and full feature descriptor.
 In that sense our framework provides an exact solution space.
 
 Note also that our method is robust against small perturbations in the input shape.
-Geometrically small changes to the outline shape introduce extra bones and therefore change the topology of the graph of the ST.
+Geometrically small changes to the outline shape introduce extra edges and therefore change the topology of the graph of the ST.
 However, the significance measure and beading are defined in terms of radial distances so the robustness of the distance field against such perturbations means our method bypasses the instability of the skeleton.
-Moreover, we have developed a method for dealing with bones within transition regions such that the toolpath is the same as if there wasn't any bone in that region.
-The toolpaths generated using our framework therefore remain the same when extra bones are added to the ST.
+Moreover, we have developed a method for dealing with edges within transition regions such that the toolpath is the same as if there wasn't any edge in that region.
+The toolpaths generated using our framework therefore remain the same when extra edges are added to the ST.
 
 Our framework is also local.
 The toolpathing around some section of the input polygons is independent of far away regions of the polygon.
@@ -46,7 +46,7 @@ However, according to \cref{widthHistogram} the centered strategy exhibits a lot
 the standard deviation of the bead widths in the centered beading strategy is approximately \SI{38}{\micro\meter}, while the standard deviation resulting from the distributed strategies is approximately \SI{15}{\micro\meter}.
 We can therefore state that the distributed strategies result in bead widths closer to the nominal bead widths than the centered strategy, which means that the distributed strategies realize the mechanical properties associated to a given nominal bead width more closely.
 
-The inward distributed beading strategy was introduced in order to limit the number of beads deviating from the nominal bead width and to limit the number of angled segments in transitioning regions.
+The inward distributed beading strategy was introduced in order to limit the number of beads deviating from the nominal bead width and to limit the number of angled extrusion segments in transitioning regions.
 The effect is difficult to see when comparing \cref{TEST_Distributed_accuracy} with~\ref{TEST_InwardDistributed_accuracy}, because there are no large solid areas in that specific shape.
 Also when looking at \cref{smoothness} we cannot conclude any difference in the smoothness between the evenly distributed and the inward distributed beadign strategy.
 We do not provide any statistical evidence that the inward distributed beading strategy is in fact better than the evenly distributed strategy.

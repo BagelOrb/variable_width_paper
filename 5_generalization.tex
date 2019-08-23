@@ -105,7 +105,7 @@ W(n,d)_i &= w_\text{pref} \text{ for all } i
 
 \paragraph{Outer bead}
 We can emulate the method by \citeauthor{Moesen2011} by carefully choosing how the beading strategy functions deal with the outermost bead.
-Also we turn off the reduction of line segments near 3-way intersections, so that the polygonal toolpaths emulate the remaining area to be filled by another path planning technique similar to their technique.
+Also we turn off the reduction of toolpaths near 3-way intersections, so that the polygonal toolpaths emulate the remaining area to be filled by another path planning technique similar to their technique.
 
 \begin{align*}
 d_\text{max}^\text{intersection} &= \SI{0}{\percent} \\
@@ -132,7 +132,7 @@ w_\text{pref} & \text{ otherwise } \\
 
 \paragraph{Constant bead count}
 We can emulate the method by \citeauthor{Ding2016a}, by dividing the feature diameter over the widths of a constant number of beads.
-Additionally in order to emulate their definition of branches we mark all segments and in a separate algorithm we unmark the outer bones connected to the outline shape.
+Additionally in order to emulate their definition of branches we mark all ST edges and in a separate algorithm we unmark the outer edges connected to the outline shape.
 Note that this deviation from the proposed framework violates the robustness against small perturbations in the outline polygon, since the topology of the graph of the ST is not stable against those.
 
 \begin{align*}
