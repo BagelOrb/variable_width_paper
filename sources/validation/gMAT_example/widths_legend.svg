@@ -48,12 +48,12 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="0.834386"
-     inkscape:cx="-618.78925"
-     inkscape:cy="467.52013"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:cx="102.09407"
+     inkscape:cy="439.34632"
+     inkscape:window-x="948"
+     inkscape:window-y="1080"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2" />
+     inkscape:current-layer="layer1" />
   <g
      inkscape:groupmode="layer"
      id="layer1"
@@ -70,17 +70,17 @@
        x="48.185524"
        y="705.96753"
        style="font-size:24px;fill:#000000"
-       id="text4">0.6</text>
+       id="text4">0.9</text>
     <text
        x="48.185524"
        y="90.899307"
        style="font-size:24px;fill:#000000"
-       id="text6">0.2</text>
+       id="text6">0.3</text>
     <text
        x="48.185524"
        y="398.43338"
        style="font-size:24px;fill:#000000"
-       id="text8">0.4</text>
+       id="text8">0.6</text>
     <line
        x1="20.897684"
        y1="705.96753"

@@ -219,17 +219,22 @@ Moreover, the bead widths equal the nominal bead width for large regions meaning
 
 \begin{figure}
 \centering
-\setlength{\figwidth}{.45\columnwidth}
+\setlength{\figwidth}{.4\columnwidth}
+\setlength{\figheight}{.25\columnwidth}
 \begin{subfigure}{\figwidth}\centering
-\includegraphics[width=.8\columnwidth]{sources/validation/wedge_Distributed_pretty_evenly.png}
+\includegraphics[height=\figheight]{sources/validation/wedge_Distributed_pretty_evenly.png}
 \caption{Evenly distributed}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
-\includegraphics[width=.8\columnwidth]{sources/validation/wedge_Distributed_pretty_inward.png}
+\includegraphics[height=\figheight]{sources/validation/wedge_Distributed_pretty_inward.png}
 \caption{Inward distributed}
+\end{subfigure}
+\begin{subfigure}{.1\columnwidth}\centering
+\includegraphics[height=\figheight]{sources/validation/wedge_Distributed_pretty_legend.png}
 \end{subfigure}
 \caption{
 Closeup of toolpaths generated with the distributed beading strategies for a large wedge shape.
+Colors represent bead widths.
 }
 \label{distributed_comparison}
 \end{figure}
