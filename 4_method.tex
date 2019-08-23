@@ -257,15 +257,16 @@ This makes the ST capture a discrete approximation of the radius function which 
 In order to visualize the ST as a 3D surface, we add a third dimension.
 We assign each node a height value measured in terms of beads: it's \emph{bead count}.
 We define the bead count as the number of beads to fit along the \emph{diameter} of the shape, which is twice the feature radius.
-While the feature radii are measured along the support bones, the diameter is not measurable as such because the support bones are generally not collinear;
+While the feature radii are measured along the support edges, the diameter is not measurable as such because the support edges are generally not collinear;
 we introduce the concept of the diameter so that we can deal with an odd number of beads while using integer logic.
 
 For each node $v$ we assign an initial bead count based on the feature diameter $2R$ and the nozzle size $w_\text{pref}$: $b^*_v \leftarrow 2 R(v) / w_\text{pref}$.
 The result is a mesh representing the union of cones (UoC) consisting entirely of quads and triangles.
 Note that although the overview of the method was described geometrically in terms of the UoC, the actual method relies on the 2-dimensional ST, while the use of the bead count as a height value is only a visualization aid.
 
-
-
+We compute the UoC by first generating the VD using the Boost \verb!C++! library, which implements the algorithm proposed by \citeauthor{fortune1986sascg}.\cite{fortune1986sascg}
+We transfer the internal parts of each Voronoi cell to our half-edge data-structure, discretize non-linear VD edges and add the support edges to form the ST.
+We then assign each node the bead count values using the simple formula described above.
 
 
 
