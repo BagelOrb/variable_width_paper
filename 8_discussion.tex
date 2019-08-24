@@ -55,3 +55,29 @@ This means the toolpathing is stable against large perturbations of the input sh
 and it also allows for some parallelism during the computation of the toolpaths.
 
 
+
+\subsection{Limitations}
+In the beading strategies we discussed we set the length of the smoothed transitions to $t(n) = w_\text{pref}$.
+That might demand changes in cross-sectional area as high as \SI{200}{\percent} over a distance as small as the nozzle size,
+which might be difficult to accurately manufacture on some hardware.
+While ching the cross-sectional area of the bead could be implemented by changing the movement speed, the movement speed is also constrained by acceleration considerations around junctions in the toolpath, so this approach is inherently limited.
+Our strategies require a more accurate control of the volumetric flow rate (in \si{\milli\meter\cubed\per\second}).
+Using a filament feeder directly mounted on the print head (a.k.a. direct drive) is certainly a large improvement over Bowden style FDM printers.,
+but still some control system is required in order to accurately change the volumetric flow rate such as advance algorithms. \cite{tronvoll2019investigating}
+Still inaccuracies in direct drive systems employing advance algorithms might arise due to the changes in back-pressure required by changing bead size.
+
+
+Another limiting factor in the adoption of adaptive bead width is that Gcode -- a common file format for storing machine instructions -- doesn't support  moves with varying cross-sectional area.
+A typical extrusion move \lstinline{G1 X$x$ Y$y$ E$v$} only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed across the extrusion move.
+This could be mediated by discretizing a variable width extrusion segment into smaller segments, but that approach might still result in some small inaccuracies.
+Ideally the Gcode language would be expanded in some way to allow for extrusion segments with varying cross-sectional area.
+
+
+Taking a broader perspective, we note that our proposed inward distributed strategy is a pragmatic solution.
+Rather than deriving some optimal beading strategy from a clear specification of the objective, we propose some arbitrary inward distributed beading strategy and show that it is better than the other beading strategies.
+An optimal beading strategy can be derived if the objective is formalized terms of a unambiguous fitness function, but that would depend on the specific hardware setup and application for which toolpaths are generated.
+This manuscript is therefore limited to showing the flexibility and versatility of the framework, rather than deriving an optimal beading strategy.
+
+
+
+
