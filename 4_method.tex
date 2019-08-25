@@ -838,8 +838,9 @@ the extrusion segments can efficiently be connected into existing polyline toolp
 
 Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
 Such intersections cause overfill because the nozzle passes the location multiple times.
-In order to reduce the amount of overfill of a polyline ending in a junction $J$ we therefore remove part of the polyline paths up to the intersection by a distance of $w^J d_\text{max}^\text{intersection}$, where $d_\text{max}$ is some ration between $0$ and $1$.
-We do this for all polylines until only two outward toolpath segments remain, which constitute a single pass over the junction.
+We deal with this special case by forcing a new polyline when traversing the trapezoids, and in the final polyline connection step we greadily connect the first two polylines ending in the same location and retreat all other polylines ending in that same location in order to prevent the overfill.
+In order to retreat a polyline ending in a junction $J$ we remove part of the polyline paths up to the intersection by a distance of $w^J d_\text{max}^\text{intersection}$, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.
+This ratio effectively deals with the balance between overfill and underfill generated at that location after the retreat has been applied.
 See \cref{polyline_reduction}.
 
 
