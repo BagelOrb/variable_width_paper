@@ -845,19 +845,18 @@ See \cref{polyline_reduction}.
 
 \begin{figure}
 \centering
-\setlength{\figwidth}{\columnwidth}
-\begin{subfigure}{0.45\figwidth}\centering
-\includegraphics[width=\columnwidth]{sources/method/polyline_reduction_unreduced.pdf}
+\setlength{\figwidth}{.35\columnwidth}
+\begin{subfigure}{0.45\columnwidth}\centering
+\includegraphics[width=\figwidth]{sources/method/polyline_reduction_before}
 \caption{No reduction}
 \end{subfigure}
-\begin{subfigure}{0.45\figwidth}\centering
-\includegraphics[width=\columnwidth]{sources/method/polyline_reduction_reduced.pdf}
+\begin{subfigure}{0.45\columnwidth}\centering
+\includegraphics[width=\figwidth]{sources/method/polyline_reduction_after}
 \caption{Reduction}
 \end{subfigure}
 \caption{
 Reducing polyline toolpaths away from intersections in order to prevent overfill.
 Toolpath locations in black, underfill in azure and overfill in orange.
-Intersections result in overfill, so we remove parts of the toolpaths at intersections.
 }
 \label{polyline_reduction}
 \end{figure}
