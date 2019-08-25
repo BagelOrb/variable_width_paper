@@ -4,7 +4,6 @@ Although the algorithm improves performance for all parts compared to existing t
 
 
 \Cref{applications_overview} shows the widths of generated layer toolpaths for various types of 3D model using the inward distributed beading strategy.
-\Cref{application_closeups} highlights closeups of the generated toolpaths.
 Thin parts often occur in architectural models, casings, embossed text, gears and microstructures.
 Also in larger regions and organic shapes (\cref{applications_case} and \subref{applications_statue}) our method finds succesful application.
 
@@ -20,22 +19,14 @@ Another class of microstructures consists of homogenous patterns which employ va
 \Cref{applications_hex} shows how the toolpathing of a hexagonal grid neatly switches between different bead counts over the volume, which prevents the jagged moves a direction parallel infill pattern would create for such a case. \cite{bates2018compressive}
 
 
-\begin{figure}
-\centering
-\includegraphics[width=\columnwidth]{sources/applications/combined_small_dilated_circled.pdf}
-\caption{
-Visualization of the widths for the output toolpaths of the inward distributed beading strategy applied to various example application objects.
-A legend for the colors can be found in \cref{visualized_accuracy}.
-From left to right and top to bottom: a house, a case for electronics, a statue, two common logos, a gear, a topologically optimized bone structure, a homogeneous lateral thickness tilted gyroid structure and a heterogeneous thickness hexagonal grid.
-}
-\label{applications_overview}
-\end{figure}
-
-
 \begin{figure*}
 \centering
-\setlength{\figwidth}{0.1\textwidth}
-\setlength{\figheight}{0.1\textwidth}
+\setlength{\figwidth}{0.099\textwidth}
+\setlength{\figheight}{0.099\textwidth}
+\begin{subfigure}{\textwidth}\centering
+\includegraphics[width=\textwidth]{sources/applications/combined_small_dilated_circled.pdf}
+%\caption{Overview}\label{applications_overview}
+\end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[height=\figheight]{sources/applications/house.png}
 \caption{House}\label{applications_house}
@@ -73,10 +64,13 @@ From left to right and top to bottom: a house, a case for electronics, a statue,
 \caption{Hex}\label{applications_hex}
 \end{subfigure}
 \caption{
-Closeups of results for the inward distributed beading strategy for various applications.
-The extrusion widths are visualized exaggeratedly and using a color scheme exaplained in \cref{visualized_accuracy}.
+Visualization of the widths for the output toolpaths of the inward distributed beading strategy applied to various example application objects.
+A legend for the colors can be found in \cref{visualized_accuracy}.
+From left to right and top to bottom: a house, a case for electronics, a statue, two common logos, a gear, a topologically optimized bone structure, a homogeneous lateral thickness tilted gyroid structure and a heterogeneous thickness hexagonal grid.
 }
-\label{application_closeups}
+\label{applications_overview}
 \end{figure*}
+
+
 
 
