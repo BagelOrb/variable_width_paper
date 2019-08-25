@@ -60,7 +60,7 @@ and it also allows for some parallelism during the computation of the toolpaths.
 In the beading strategies we discussed we set the length of the smoothed transitions to $t(n) = w_\text{pref}$.
 That might demand changes in cross-sectional area as high as \SI{200}{\percent} over a distance as small as the nozzle size,
 which might be difficult to accurately manufacture on some hardware.
-While ching the cross-sectional area of the bead could be implemented by changing the movement speed, the movement speed is also constrained by acceleration considerations around junctions in the toolpath, so this approach is inherently limited.
+While changing the cross-sectional area of the bead could be implemented by changing the movement speed, the movement speed is also constrained by acceleration considerations around junctions in the toolpath, so this approach is inherently limited.
 Our strategies require a more accurate control of the volumetric flow rate (in \si{\milli\meter\cubed\per\second}).
 Using a filament feeder directly mounted on the print head (a.k.a. direct drive) is certainly a large improvement over Bowden style FDM printers.,
 but still some control system is required in order to accurately change the volumetric flow rate such as advance algorithms. \cite{tronvoll2019investigating}

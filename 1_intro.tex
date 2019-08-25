@@ -4,19 +4,19 @@ Recent developments have seen a rapid growth in both the use and capabilities of
 %The rapid spread of 3D printing through different industries and types of application calls for the possibility to manufacture a wide range of geometries while guaranteeing mechanical properties of the resulting parts.
 Fused Deposition Modeling (FDM) is one of the most common 3D printing techniques.
 It is widely used because of the versatility in the types of plastics which can be used and the relatively low running costs.
-FDM printers are used, for example, in showcasing scale models of buildings, casings for electronics, prototypes blowmold parts, jigs and fixtures.
+FDM printers are used, for example, in showcasing scale models of buildings, casings for electronics, prototypes for blow molded parts, jigs and fixtures.
 Recent research developments have investigated manufacturing complex volumetric structures such as microstructures~\cite{}, topology optimized structures~\cite{} and infill structures~\cite{}.
 Many of these applications require 3D models with detailed features within the order of magnitude of the printing resolution, which restrains the field of the process planning algorithms.
 
 FDM printers extrude semi-continuous beads of molten plastic through a nozzle, which moves along a planned toolpath within each layer of a 3D object.
 A common strategy to accurately manufacture a given 3D model is to extrude a contour following print path,
-because the positiong and shape of the toolpath can be controled relatively accurately.
+because the position and shape of the toolpath can be controlled relatively accurately.
 Filling up a shape using parallel straight lines would expose defects of the size of the nozzle ($\pm 10^2 \mu$), which is generally an order of magnitude larger than the resolution of the positioning system ($\pm 10^1 \mu$).
 Contour parallel extrusion therefore leads to a less bumpy outline shape than direction parallel extrusion does.
 
 
 The naive method for generating the shape filling toolpaths of a layer consists in performing inward offsets with the radius of the the nozzle from the outline shape.
-However, for geometrical features which are not an exact multiple of the nozzle size this method produces areas where an extrusion bead is placed twice: \emph{overfill} areas; and other areas which are not filled at all: \emph{underfll} areas.
+However, for geometrical features which are not an exact multiple of the nozzle size this method produces areas where an extrusion bead is placed twice: \emph{overfill} areas; and other areas which are not filled at all: \emph{underfill} areas.
 See \cref{intro_wedge}(top).
 Overfills cause a buildup of pressure in the mechanical extrusion system, which can result in bulges or even a full print failure.
 Underfills on the other hand, can cause a drastic decrease in the part stiffness or even for small features not to be printed at all.

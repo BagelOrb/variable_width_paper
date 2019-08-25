@@ -216,7 +216,7 @@ or as ridges in a volume defined by the union of cones.
 Skeletonization of an outline shape (black).
 Relation between the medial axis (red), the limited Voronoi Diagram (red and green) and the Skeletal Trapezoidation (red, green and gray): MAT $\subset$ Limited VD $\subset$ ST.
 \subref{shape_decomposition_datastructure} We can represent a skeleton using a half-edge data-structure.
-\subref{shape_decomposition_domains} The ST divides the shape into primitives which can be classified as belonging to one of the inout shape polygons.
+\subref{shape_decomposition_domains} The ST divides the shape into primitives which can be classified as belonging to one of the input shape polygons.
 }
 \label{skeletonization_comparison}
 \end{figure}
@@ -373,7 +373,7 @@ The condition $|v - p| = \Delta R$ is true exactly for those ST edges between a 
 \iffalse
 % This fact is not used anymore, because we change the marking such that it doesn't hold for marked edges any more.
 A node in the ST can have at most two significant edges.
-For a node in the VD $v$ with a support of three points on the outline polygon $p_1, p_2, p_3$, the bisector angles $\angle{p_1vp_2} + \angle{p_2vp_3} + \angle{p_3vp_1} = 360\degree$, so if two angles are more than $\alpha_\text{max} > 120\degree$ the third one needs to be smaller than $360\degree - 2\alpha_\text{max} < 120\degree$ and therefore nonsignificant.
+For a node in the VD $v$ with a support of three points on the outline polygon $p_1, p_2, p_3$, the bisector angles $\angle{p_1vp_2} + \angle{p_2vp_3} + \angle{p_3vp_1} = 360\degree$, so if two angles are more than $\alpha_\text{max} > 120\degree$ the third one needs to be smaller than $360\degree - 2\alpha_\text{max} < 120\degree$ and therefore not significant.
 % However, because of some filtering operations this property does not neccesarily hold for the markings.
 The extra edges added to the VD to form the ST can never be significant because their bisector angle is \SI{0}{\degree} by definition,
 so the nodes of the ST also have at most two significant edges.
@@ -450,7 +450,7 @@ When the heights of a ridge are rounded to an \emph{odd} bead count, the ridge w
 %\subsubsection{Initial bead count}\label{sec_initial_bead_count}
 In order to update the bead count values, we require a flattening operator which maps a feature diameter to a bead count: $f: \mathbb{R} \to \mathbb{N}$.
 For our example we choose to round to the nearest integer multiple of the nozzle size $w_\text{pref}$: $f(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
-In our generalized framewotk the function $b$ is determined by a beading strategy.
+In our generalized framework the function $b$ is determined by a beading strategy.
 
 We first assign each marked node $v$ of the ST the bead count $b^*_v \leftarrow f(2R(v))$.
 We then filter out short unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
@@ -633,7 +633,7 @@ For our example we linearly map the $R$ values using a multiplication factor of 
 w_i &= d/n  \\
 l_i &= d / n (i + \nicefrac12)
 \end{align*}
-An example beading is visualzied in the top of \cref{beading_interpolation}:
+An example beading is visualized in the top of \cref{beading_interpolation}:
 $B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the same width and radial locations $l$ evenly divided over the length $d$.
 
 
@@ -676,7 +676,7 @@ l_i^{B^W} - l_{n^{B^V}-1}^{B^W} + l_{n^{B^V}-1}^B & \text{ otherwise}
 Interpolation between two beadings $B^V$ and $B^W$ with a ratio $x$ results in a beading $B^x$.
 Distances between the thick black lines constitute diameters $d$,
 the toolpath locations are visualized as dots,
-the widths are visualized as bidirection arrows
+the widths are visualized as bidirectional arrows
 and the middle is highlighted in red.
 }
 \label{beading_interpolation}
@@ -801,7 +801,7 @@ We store all junctions of an edge in a mapping from edge to a list of junctions.
 \caption{Separate beadings at either top node}\label{trapezoid_beading_separate}
 \end{subfigure}
 \caption{
-Applying beadings togenerate junctions along trapezoids.
+Applying beadings to generate junctions along trapezoids.
 \subref{trapezoid_beading_beading} shows half of the locations $l_i$ and widths $w_i$ of two arbitrary different beadings.
 \subref{trapezoid_beading_propagated} shows the application of $B^1$ to the various types of trapezoid.
 \subref{trapezoid_beading_separate} shows how a trapezoid with a marked edge will have two different beadings assigned, which will generate their respective junctions along the support edges.
@@ -837,8 +837,8 @@ the extrusion segments can efficiently be connected into existing polyline toolp
 
 
 Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
-Such intersections cause overextrusion because the nozzle passes the location multiple times.
-In order to reduce the amount of overextrusion of a polyline ending in a junction $J$ we therefore remove part of the polyline paths up to the intersection by a distance of $w^J d_\text{max}^\text{intersection}$, where $d_\text{max}$ is some ration between $0$ and $1$.
+Such intersections cause overfill because the nozzle passes the location multiple times.
+In order to reduce the amount of overfill of a polyline ending in a junction $J$ we therefore remove part of the polyline paths up to the intersection by a distance of $w^J d_\text{max}^\text{intersection}$, where $d_\text{max}$ is some ration between $0$ and $1$.
 We do this for all polylines until only two outward toolpath segments remain, which constitute a single pass over the junction.
 See \cref{polyline_reduction}.
 
@@ -855,9 +855,9 @@ See \cref{polyline_reduction}.
 \caption{Reduction}
 \end{subfigure}
 \caption{
-Reducing polyline toolpaths away from intersections in order to prevent overextrusion.
-Toolpath locations in black, underextrusion in blue, overextrusion in red and orange and normal extrusion in grey.
-Intersections result in overextrusion, so we remove parts of the polylines at intersections.
+Reducing polyline toolpaths away from intersections in order to prevent overfill.
+Toolpath locations in black, underfill in azure and overfill in orange.
+Intersections result in overfill, so we remove parts of the toolpaths at intersections.
 }
 \label{polyline_reduction}
 \end{figure}
