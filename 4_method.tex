@@ -99,7 +99,7 @@ explain how to identify central regions in \cref{sec_center_classification}.
 Quantizing and smoothing the heights in the central mesh regions are handled in \cref{sec_central_height_adjustment}.
 We then describe how to deal with heights in the periphery in \cref{sec_peripheral_height_adjustment}
 and describe the toolpath extraction algorithm in \cref{sec_toolpath_extraction}.
-In \cref{sec_generalization} we describe how to generalize our method for generating evenly distributed bead widths into a general framework for generating contour parallel toolpaths using an arbitrary beading strategy and we show several such beading strategies.
+In \cref{sec_generalization} we describe how to generalize our method for generating evenly distributed bead widths into a general framework for generating contour parallel toolpaths using an arbitrary beading scheme and we show several such beading schemes.
 
 
 For ease of reference we have included a legend explaining the vocabulary employed in this manuscript in \cref{legend}.
@@ -292,7 +292,7 @@ We also mark whole edges as being central if they are significant according to a
 \subsubsection{Significance measure}\label{sec:significance_measure}
 Centrality can be formalized by looking at a commonly used significance measure knows as the \emph{bisector angle}.
 The bisector angle $\alpha$ is the interior angle $\angle{p_ovp_1} \leq \si{180}{\degree}$ between a location $v$ on an edge of the ST and its two supporting polygon points $p_0$ and $p_1$.\cite{attali1996modeling}
-Edges are significant if the bisector angle exceeds $\alpha_\text{max}$ which is governed by the beading strategy.
+Edges are significant if the bisector angle exceeds $\alpha_\text{max}$ which is governed by the beading scheme.
 
 For a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$, which corresponds to overfill areas and underfill areas the size of $\nicefrac12 w^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using the simple technique of uniform bead width $w$.
 See \cref{naive_overfill_underfill}.
@@ -451,7 +451,7 @@ When the heights of a ridge are rounded to an \emph{odd} bead count, the ridge w
 %\subsubsection{Initial bead count}\label{sec_initial_bead_count}
 In order to update the bead count values, we require a quantization operator which maps a feature diameter to a bead count: $q: \mathbb{R} \to \mathbb{N}$.
 For our example we choose to round to the nearest integer multiple of the nozzle size $w_\text{pref}$: $q(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
-In our generalized framework the function $q$ is determined by a beading strategy.
+In our generalized framework the function $q$ is determined by a beading scheme.
 
 We first assign each marked node $v$ of the ST the bead count $b^*_v \leftarrow q(2R(v))$.
 We then filter out short unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
@@ -530,7 +530,7 @@ The length along the marked region of a transition from bead count $n$ to $n+1$ 
 For our example we will use a transition length equal to the nozzle size: $t(n) = w_\text{pref}$.
 
 A transition with length $t(n)$ will be placed somewhere covering the transition anchor position.
-We require an additional function to be specified by the beading strategy: $t_0(n)$ determines the distance between the lower end of a transition from bead count $n$ to $n+1$ and the anchor point - as measured along the marked edges of the ST.
+We require an additional function to be specified by the beading scheme: $t_0(n)$ determines the distance between the lower end of a transition from bead count $n$ to $n+1$ and the anchor point - as measured along the marked edges of the ST.
 From that we calculate $t_1(n) = t(n) - t_0(n)$ for the distance from the anchor to the upper end of the transition.
 For our example we can simply use $t_0(n) = t_1(n) = \nicefrac12 w_\text{pref}$, so that the transition ramp is centered on the anchor position.
 
@@ -583,7 +583,7 @@ Discontinuities around regions where the bead count changes are prevented by tra
 
 \subsection{Peripheral heights}\label{sec_peripheral_height_adjustment}
 Now that we have transformed the heights in the central regions of the UoC we need to determine the heights in the rest of the shape, i.e. the periphery, and slice the resulting mesh into isocontour toolpaths.
-The peripheral heights could be determined in a plethora of ways according to various beading strategies.
+The peripheral heights could be determined in a plethora of ways according to various beading schemes.
 The ramps from the outline shape to the center might have various curves,
 but for our example we use straight ramps, just like the original UoC.
 See \cref{peripheral_heights}.
@@ -715,7 +715,7 @@ the toolpaths (dashed) resulting from the beading propagated from above doesn't 
 \label{beading_conflict_problem}
 \end{figure}
 
-After each marked node is assigned a beading by the beading strategy, we propagate the beadings outward to all nodes in the ST.
+After each marked node is assigned a beading by the beading scheme, we propagate the beadings outward to all nodes in the ST.
 The beading propagation is performed in two stages: an upward and downward stage.
 %First we sort all upward half-edges on the radial distance of their destination node, so that we can efficiently flood fill the beading information.
 In the upward phase we walk from each marked node upward along unmarked edges and map each node encountered to a pair consisting of the traversed distance and the bottom source beading.

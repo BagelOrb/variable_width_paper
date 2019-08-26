@@ -1,14 +1,14 @@
 \section{Generalization}\label{sec_generalization}
 In this section we will generalize the described method into a parametric system, i.e. an algorithmic framework.
 The method we have described above is one for distributing the beads evenly over the total diameter of an outline shape feature.
-Depending on the application, the hardware and the materials used we might need different strategies for determining the bead widths.
+Depending on the application, the hardware and the materials used we might need different schemes for determining the bead widths.
 In this section we will generalize the method so that we can apply any distribution of bead widths over a feature radius.
-There are several strategies one can take for determining the distribution of bead widths.
-We will formalize several strategies and describe the set of parameters these strategies require.
+There are several schemes one can take for determining the distribution of bead widths.
+We will formalize several schemes and describe the set of parameters these schemes require.
 
 
-\begin{definition}\label{beading_strategy_definition}
-We define a beading strategy as the following set:
+\begin{definition}\label{beading_scheme_definition}
+We define a beading scheme as the following set:
 $$
 \left\{ \alpha_\text{max}, q(d), t(n), t_0(n), W(n, d), L(n, d) \right\}
 $$
@@ -56,14 +56,14 @@ However, our approach bypasses the peripheral height adjustment and directly gen
 
 
 
-\subsection{Beading strategies}
-We introduce several beading strategies which determine the bead count and their widths in various ways.
-We can emulate a variety of toolpath generation methods from related literature by defining new beading strategies.
-We also introduce new beading strategies which produce toolpaths with less extremal widths compared to techniques from existing literature.
+\subsection{Beading schemes}
+We introduce several beading schemes which determine the bead count and their widths in various ways.
+We can emulate a variety of toolpath generation methods from related literature by defining new beading schemes.
+We also introduce new beading schemes which produce toolpaths with less extremal widths compared to techniques from existing literature.
 
-A beading strategy is defined as a set of some particular variables and functions (\cref{beading_strategy_definition}).
-Our beading strategies are based on a preferred width $w_\text{pref} = \SI{0.4}{\milli\meter}$, which is equal to the diameter of the printing nozzle.
-Most of the beading strategies we introduce share a common ground:
+A beading scheme is defined as a set of some particular variables and functions (\cref{beading_scheme_definition}).
+Our beading schemes are based on a preferred width $w_\text{pref} = \SI{0.4}{\milli\meter}$, which is equal to the diameter of the printing nozzle.
+Most of the beading schemes we introduce share a common ground:
 \begin{align*}
 d_\text{max}^\text{transition} &= \SI{1}{\milli\meter} \\
 d^\text{discretization} &= \SI{0.2}{\milli\meter} \\
@@ -91,8 +91,8 @@ The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transi
 The toolpath locations $L$ ensure that beads are extruded from the center of where they end up, that the beads don't overlap and that the symmetry restrictions are met.
 
 
-\paragraph{Uniform Beading Strategy}
-We can define a beading strategy which emulates the uniform width offsetting technique by disabling the marking of edges, so that we never employ transitioning.
+\paragraph{Uniform Beading scheme}
+We can define a beading scheme which emulates the uniform width offsetting technique by disabling the marking of edges, so that we never employ transitioning.
 \begin{align*}
 \alpha_\text{max} &= \SI{180}{\degree} \\
 q^-(d) &= 2 \left\lfloor \frac{d}{ 2w_\text{pref}} + \frac12 \right\rfloor \\
@@ -104,7 +104,7 @@ W(n,d)_i &= w_\text{pref} \text{ for all } i
 
 
 \paragraph{Outer bead}
-We can emulate the method by \citeauthor{Moesen2011} by carefully choosing how the beading strategy functions deal with the outermost bead.
+We can emulate the method by \citeauthor{Moesen2011} by carefully choosing how the beading scheme functions deal with the outermost bead.
 Also we turn off the reduction of toolpaths near 3-way intersections, so that the polygonal toolpaths emulate the remaining area to be filled by another path planning technique similar to their technique.
 
 \begin{align*}
@@ -147,7 +147,7 @@ W(n,d)_i &= d / n \text{ for all } i
 
 \paragraph{Centered}
 We can emulate the method by \citeauthor{Jin2017JMS}, by transcribing how they deviate from the uniform width toolpaths.
-We therefore base the beading strategy on the bead count $q^-(d)$ defined by the uniform beading strategy.
+We therefore base the beading scheme on the bead count $q^-(d)$ defined by the uniform beading scheme.
 \citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w_\text{pref}$.
 Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w_\text{pref}$.\cite{Jin2017JMS}
 We emulate the rounded polygonal path rerouting they define by supplying a transition length which results in a discretized version of the rounded polygon segment.
@@ -180,7 +180,7 @@ w_\text{pref} &\text{ otherwise }
 
 
 \paragraph{Evenly distributed}
-By taking the advantages of the above two strategies we can define a beading strategy which constitutes a novel toolpathing technique.
+By taking the advantages of the above two schemes we can define a beading scheme which constitutes a novel toolpathing technique.
 We can evenly divide the local feature diameter over the widths of all beads, but choose a local bead count better matching the local feature size.
 We determine the local bead count by dividing the diameter by the prefered bead width and rounding to the nearest integer.
 This reduces the demands on the system and deviation from mechanical properties caused by beads with extreme deviations from the preferred width.
@@ -197,11 +197,11 @@ W(n,d)_i &= d / n \text{ for all } i
 
 
 
-\paragraph{General distributed strategy}
-The evenly distributed strategy can be conceptualized as calculating the total discrepancy $E$ between the actual feature diameter $d$ and the total preferred width $n w_\text{pref}$, dividing the total discrepancy by the number of beads and setting the width of each bead to 
+\paragraph{General distributed scheme}
+The evenly distributed scheme can be conceptualized as calculating the total discrepancy $E$ between the actual feature diameter $d$ and the total preferred width $n w_\text{pref}$, dividing the total discrepancy by the number of beads and setting the width of each bead to 
 $w_\text{pref} + E / n$.
 However, depending on the application we might want a different distribution of widths.
-We therefore supply a beading strategy which supports an arbitrary distribution of the discrepancy.
+We therefore supply a beading scheme which supports an arbitrary distribution of the discrepancy.
 The distribution is determined by some weighing function $M(n.d)$, which defines the portion of the discrepancy to distribute to each bead.
 
 
@@ -219,9 +219,9 @@ For example, we can choose
 $$M(n,d)_i = \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )$$
 to distribute the discrepancy over the innermost $2N$ beads, and distribute most of it to the inner beads.
 See \cref{distributed_comparison}.
-That way we limit the region of impact of the distributed strategy to a central region and have the nominal bead width $w_\text{pref}$ in regions farther away.
+That way we limit the region of impact of the distributed scheme to a central region and have the nominal bead width $w_\text{pref}$ in regions farther away.
 This limits the impact of transitioning regions so that transitions keep the toolpaths smooth farther away from the central regions. % and it forces most of the beads to have exactly the prefered width.
-Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanical properties derived for prints using the uniform strategy will still hold approximately.
+Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanical properties derived for prints using the uniform scheme will still hold approximately.
 
 
 
@@ -241,7 +241,7 @@ Moreover, the bead widths equal the nominal bead width for large regions meaning
 \includegraphics[height=\figheight]{sources/validation/wedge_Distributed_pretty_legend.png}
 \end{subfigure}
 \caption{
-Closeup of toolpaths generated with the distributed beading strategies for a large wedge shape.
+Closeup of toolpaths generated with the distributed beading schemes for a large wedge shape.
 Colors represent bead widths.
 }
 \label{distributed_comparison}
@@ -252,7 +252,7 @@ Colors represent bead widths.
 
 
 \paragraph{Widening}
-Complementary to any of these strategies we can enforce a minimum feature size at no extra cost in our framework.
+Complementary to any of these schemes we can enforce a minimum feature size at no extra cost in our framework.
 Regions where the model is narrower than the nozzle size can be printed with a bead width larger than the model thickness.
 We can simply override
 \begin{align*}

@@ -2,14 +2,14 @@
 In order to test our framework, we have assembled a data set of different types of 3D models, ranging over various applications and various types of geometry.
 The data set is described in detail in the accompanying data in Appendix~\ref{dataset}.
 We sliced all models in the data set and selected 300 random slices from the total set of slices for analysis.
-We generated the toolpaths on these 300 outline shapes using the uniform technique as implemented by Clipper and compare it to the 4 strategies discussed in \cref{sec_generalization}, namely 'Constant bead count' strategy with a bead count of $C=4$, the 'Centered' beading strategy, the 'Evenly distributed', and the 'Inward distributed' beading strategy, using a nominal bead widths of $w_\text{pref}] = \SI{0.4}{\milli\meter}$.
+We generated the toolpaths on these 300 outline shapes using the uniform technique as implemented by Clipper and compare it to the 4 beading schemes discussed in \cref{sec_generalization}, namely 'Constant bead count' scheme with a bead count of $C=4$, the 'Centered' beading scheme, the 'Evenly distributed', and the 'Inward distributed' beading scheme, using a nominal bead widths of $w_\text{pref}] = \SI{0.4}{\milli\meter}$.
 
 
 
 \subsection{Computational analysis}
 Experiments were performed on an Intel Core i7-7500U CPU @ \SI{2.70}{\giga\hertz} using a single core and \SI{16.3}{\giga\byte} memory.
 The uniform width offsetting technique was implemented using the state-of-the-art polygon offset library Clipper. \cite{johnson2014clipper}
-The computation time of each slice from the data set was recorded for the uniform technique and the inward distributed strategy. 
+The computation time of each slice from the data set was recorded for the uniform technique and the inward distributed scheme. 
 \cref{computime} shows these computation times of each layer plotted against the vertex count of the layer.
 
 The algorithmic complexity is limited by the generation of the Voronoi Diagram, which is $O(n \log n)$, where $n$ is the number of vertices in the input shape.
@@ -64,7 +64,7 @@ We then add the original outline shape in reverse and perform a Vatti clipping o
 Because the reverse outline shape reduces the winding number of all extruded segments by one, only the overfill areas are left with a positive winding number.
 In order to estimate the areas which are triply covered by extrusion segments, we repeat the process of adding the outline in reverse and performing Vatti's clipping operation.
 These triple extrusion areas count double toward the total amount of overfill.
-The resulting overfill and underfill areas are visualized for the different toolpath strategies in the top of \cref{visualized_accuracy}.
+The resulting overfill and underfill areas are visualized for the different toolpath schemes in the top of \cref{visualized_accuracy}.
 
 
 \begin{figure*}
@@ -106,7 +106,7 @@ The resulting overfill and underfill areas are visualized for the different tool
 \includegraphics[height=\figheight]{sources/validation/gMAT_example/widths_legend.png}
 \end{subfigure}
 \caption{
-Visualizing the overfills and underfills and the widths for various beading strategies.
+Visualizing the overfills and underfills and the widths for various beading schemes.
 Extrusion beads in gray tones,
 overfill in orange,
 underfill in azure,
@@ -117,10 +117,10 @@ and wide beads in red.
 \end{figure*}
 
 
-We calculated the total overfill and underfill areas of the different toolpath strategies applied on the data set. 
+We calculated the total overfill and underfill areas of the different toolpath schemes applied on the data set. 
 The overfill and underfill areas as a percentage of the total area of the slices from the data set are illustrated in \cref{over_underfill}.  
-The inward distributed strategy has a calculated overfill of 0.24\% and an underfill of 0.17\%.
-This is lower compared to the uniform strategy, which results in 1.2\% overfill and 1.7\% underfill when applied to the data set.
+The inward distributed scheme has a calculated overfill of 0.24\% and an underfill of 0.17\%.
+This is lower compared to the uniform scheme, which results in 1.2\% overfill and 1.7\% underfill when applied to the data set.
 
 \begin{figure*}
 \centering
@@ -165,7 +165,7 @@ This is lower compared to the uniform strategy, which results in 1.2\% overfill 
 
 
 \caption{
-Results of computational analysis of the results from applying the uniform width technique and various beading strategies using our framework to the data set.
+Results of computational analysis of the results from applying the uniform width technique and various beading schemes using our framework to the data set.
 Note the use of a logarithmic scale on the Y-axes and on some of the X-axes as well.
 }
 \end{figure*}
@@ -183,23 +183,23 @@ Depending on the printer hardware configuration, some bead widths might be diffi
 A bead width far below the nozzle size can result in fluttered extrusion, while a bead width far above the nozzle size can require pressures above the specifications of the machine. 
 Also, large bead widths may cause the extruded material to bulge upwards instead of filling the required width.
 Moreover, bead widths deviating from the nominal bead width by a large amount may impact the mechanical properties of the print.
-We visualize the bead widths resulting from the different strategies in the bottom of \cref{visualized_accuracy}.
+We visualize the bead widths resulting from the different schemes in the bottom of \cref{visualized_accuracy}.
 
 To evaluate the width uniformity, we sampled the extrusion widths of all generated toolpaths 
 at intervals of \SI{1}{\micro\meter} along the toolpath.
-From these sampled values, we calculated the mean bead width, and standard deviation per strategy.
-\cref{widthHistogram} shows the distribution of extrusion width for each strategy binned at intervals of \SI{10}{\micro\meter}.
-We found that the mean width of our strategies 'Inward distributed' and 'Evenly distributed' is close to nominal nozzle size of \SI{400}{\micro\meter}, while their standard deviation is lower than for strategies 'Centered' and 'Constant bead count'. 
-These results indicate that, while causing less overfill and underfill, 'Inwards distributed' and 'Evenly distributed' strategies deviate less and infrequently from the nominal nozzle size compared to the other strategies.
-We compared the width uniformity of the 6 outer beads for the strategies 'Inward distributed' and 'Evenly distributed', the distribution of these extrusion widths is shown in \cref{widthIndexedHistogram}. 
-The outer beads of the 'Inward distributed' strategy clearly have more often the nominal width of \SI{400}{\micro\meter}, while the 'Evenly distributed' more often extrudes widths that deviate from the nominal width.
+From these sampled values, we calculated the mean bead width, and standard deviation per scheme.
+\cref{widthHistogram} shows the distribution of extrusion width for each scheme binned at intervals of \SI{10}{\micro\meter}.
+We found that the mean width of our schemes 'Inward distributed' and 'Evenly distributed' is close to nominal nozzle size of \SI{400}{\micro\meter}, while their standard deviation is lower than for schemes 'Centered' and 'Constant bead count'. 
+These results indicate that, while causing less overfill and underfill, 'Inwards distributed' and 'Evenly distributed' schemes deviate less and infrequently from the nominal nozzle size compared to the other schemes.
+We compared the width uniformity of the 6 outer beads for the schemes 'Inward distributed' and 'Evenly distributed', the distribution of these extrusion widths is shown in \cref{widthIndexedHistogram}. 
+The outer beads of the 'Inward distributed' scheme clearly have more often the nominal width of \SI{400}{\micro\meter}, while the 'Evenly distributed' more often extrudes widths that deviate from the nominal width.
 
 \paragraph{Smoothness of toolpaths}
 In order to maintain a high printing speed, it is desirable that toolpaths have fewer and less sharp corners. 
-We measured the angle between consecutive extrusion segments generated by each strategy.
+We measured the angle between consecutive extrusion segments generated by each scheme.
 The relative frequency of these angles is shown in \cref{smoothness}.
-All strategies show a higher number of corners for smaller angles with a peak towards \SI{0}{\degree} (straight line).
-The 'Inward distributed' strategy produces an order of magnitude less corners around \SI{30}{\degree}, compared to 'Evenly distributed'. 
+All schemes show a higher number of corners for smaller angles with a peak towards \SI{0}{\degree} (straight line).
+The 'Inward distributed' scheme produces an order of magnitude less corners around \SI{30}{\degree}, compared to 'Evenly distributed'. 
 We also investigated the effect of the transition regions on the smoothness of the toolpaths. 
 \cref{smoothnessNoTransition} shows that introducing the transitions greatly reduces the number of corners around \SI{90}{\degree}. 
 
@@ -211,7 +211,7 @@ We used a layer thickness of \SI{0.2}{\milli\meter} and a movement speed of \SI{
 
 The resulting prints are shown in \cref{wedge_print} and \cref{prints}.
 Because of inaccuracies in the deposition control system some of the prints show defects.
-Such defects are less prevalent for the inward distributed beading strategy than the other strategies.
+Such defects are less prevalent for the inward distributed beading scheme than the other schemes.
 
 
 \begin{figure}
@@ -224,8 +224,8 @@ Such defects are less prevalent for the inward distributed beading strategy than
 \caption{Wedge}\label{print_wedge}
 \end{subfigure}
 \caption{
-A wedge shape printed using the uniform strategy, center deviation strategy and the inward distributed strategy.
-The uniform and center deviation strategy show problems around certain model diameters.
+A wedge shape printed using the uniform scheme, center deviation scheme and the inward distributed scheme.
+The uniform and center deviation scheme show problems around certain model diameters.
 }
 \label{wedge_print}
 \end{figure}
@@ -260,10 +260,10 @@ The uniform and center deviation strategy show problems around certain model dia
 \caption{Inward distributed}\label{print_inward}
 \end{subfigure}
 \caption{
-Test shapes printed using the uniform strategy, center deviation strategy and the inward distributed strategy.
+Test shapes printed using the uniform scheme, center deviation scheme and the inward distributed scheme.
 The uniform technique produces distinct underfill areas.
-The center deviation strategy shows some defects due to inaccurate control of extremal deposition widths.
-The inward distributed strategy produces the least defects.
+The center deviation scheme shows some defects due to inaccurate control of extremal deposition widths.
+The inward distributed scheme produces the least defects.
 }
 \label{prints}
 \end{figure}

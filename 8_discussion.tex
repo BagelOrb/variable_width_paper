@@ -1,38 +1,38 @@
 \section{Discussion}
 
 
-\subsection{Comparison of beading strategies}
+\subsection{Comparison of beading schemess}
 The uniform beading scheme and the outer bead scheme are of little use to FDM printers, but they show the flexibility of our algorithmic framework.
 
 We can see from \cref{TEST_naive_accuracy}(top) and~\ref{over_underfill} that the uniform technique causes a lot of overfills and underfills: on average approximately \SI{1}{\percent} of the total target area is covered by underfill and likewise for overfill.
 These defects surely influence the mechanical properties of the parts beyond a point that process parameters can reliably be correlated to mechanical properties of the part.
 
-%The single bead strategy solves the underfill problem in regions where the model is more thin than the nozzle size.
-%However, the strategy doesn't deal with the remaining area.
+%The single bead scheme solves the underfill problem in regions where the model is more thin than the nozzle size.
+%However, the scheme doesn't deal with the remaining area.
 %In our visualization we print the outline of the remaining area which exposes an overextrusion problem.
 
-The 'Constant bead count' strategy effectively deals with underfills, but generates orders of magnitude more overfills compared to the other strategies. 
-Also, the strategy comes at the cost of greatly varying bead widths and an average bead width that is not close to the nominal bead width.
+The 'Constant bead count' scheme effectively deals with underfills, but generates orders of magnitude more overfills compared to the other schemess. 
+Also, the scheme comes at the cost of greatly varying bead widths and an average bead width that is not close to the nominal bead width.
 Note that most overfill areas occur near regions of alternating bead width. 
 
 For an input outline shape which contains both very small and very large features, the algorithm produces bead widths which can fall outside of the range of manufacturable bead widths.
 Moreover the centrality marking is not robust against small perturbations in the outline; adding a small chamfer in a corner causes the unmarked ST to be very small at that location, which results in tiny bead widths.
 
 If we look at \cref{TEST_Center_accuracy} we can see that
-the centered beading strategy effectively deals with overfill and underfill and produces bead widths which are the optimal bead width in all locations, but in the center the bead widths are within a factor 2 off from the optimal bead width.
+the centered beading scheme effectively deals with overfill and underfill and produces bead widths which are the optimal bead width in all locations, but in the center the bead widths are within a factor 2 off from the optimal bead width.
 According to \cref{over_underfill} the overfill and underfill for the centered, the evenly distributed and the inward distributed scheme are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the uniform technique.
 
-However, according to \cref{widthHistogram} the Centered strategy exhibits a lot wider range of bead widths than the Distributed strategies:
-the standard deviation of the bead widths in the Centered strategy is approximately \SI{39}{\micro\meter}, while the standard deviation resulting from the Distributed strategies is approximately \SI{14}{\micro\meter}.
-We can therefore state that the Distributed strategies result in bead widths closer to the nominal widths compared to the Centered strategy.
+However, according to \cref{widthHistogram} the Centered scheme exhibits a lot wider range of bead widths than the Distributed schemess:
+the standard deviation of the bead widths in the Centered scheme is approximately \SI{39}{\micro\meter}, while the standard deviation resulting from the Distributed schemess is approximately \SI{14}{\micro\meter}.
+We can therefore state that the Distributed schemess result in bead widths closer to the nominal widths compared to the Centered scheme.
 This is desirable for the manufacturability of the beads and can therefore have a positive effect on the mechanical properties and surface quality of the 3D prints. 
 
-The Inward distributed beading strategy was introduced in order to limit the number of beads deviating from the nominal bead width and to limit the number of angled extrusion segments in transitioning regions.
+The Inward distributed beading scheme was introduced in order to limit the number of beads deviating from the nominal bead width and to limit the number of angled extrusion segments in transitioning regions.
 The effect is difficult to see when comparing \cref{TEST_Distributed_accuracy} with~\ref{TEST_InwardDistributed_accuracy}, because there are no large solid areas in that specific shape.
 
 However, when comparing the bead width of the outer toolpaths, \cref{distributed_comparison} and  \cref{widthIndexedHistogram}, we can clearly see that the these toolpaths have the nominal bead width more often, which means that errors from inaccuracies due to deviation from the nominal bead width are concentrated near the center of the shape, leaving the dimensional accuracy of the outline shape less affected, if at all. 
-Also, we find that compared to Evenly distributed, the Inward distributed strategy produces smoother toolpaths overall (\cref{smoothness}), and with less jaggedness on the contour toolpaths (\cref{smoothness}). 
-Therefore, when using the Inward distributed strategy the surface of the 3D print is less affected by both width variation and jagged toolpaths, while overfill and underfill are kept at a low percentage.
+Also, we find that compared to Evenly distributed, the Inward distributed scheme produces smoother toolpaths overall (\cref{smoothness}), and with less jaggedness on the contour toolpaths (\cref{smoothness}). 
+Therefore, when using the Inward distributed scheme the surface of the 3D print is less affected by both width variation and jagged toolpaths, while overfill and underfill are kept at a low percentage.
 
 
 \subsection{Theoretical analysis}
@@ -57,11 +57,11 @@ and it also allows for some parallelism during the computation of the toolpaths.
 
 
 \subsection{Limitations}
-In the beading strategies we discussed we set the length of the smoothed transitions to $t(n) = w_\text{pref}$.
+In the beading schemess we discussed we set the length of the smoothed transitions to $t(n) = w_\text{pref}$.
 That might demand changes in cross-sectional area as high as \SI{200}{\percent} over a distance as small as the nozzle size,
 which might be difficult to accurately manufacture on some hardware.
 While changing the cross-sectional area of the bead could be implemented by changing the movement speed, the movement speed is also constrained by acceleration considerations around junctions in the toolpath, so this approach is inherently limited.
-Our strategies require a more accurate control of the volumetric flow rate (in \si{\milli\meter\cubed\per\second}).
+Our schemess require a more accurate control of the volumetric flow rate (in \si{\milli\meter\cubed\per\second}).
 Using a filament feeder directly mounted on the print head (a.k.a. direct drive) is certainly a large improvement over Bowden style FDM printers.,
 but still some control system is required in order to accurately change the volumetric flow rate such as advance algorithms. \cite{tronvoll2019investigating}
 Still inaccuracies in direct drive systems employing advance algorithms might arise due to the changes in back-pressure required by changing bead size.
@@ -73,10 +73,10 @@ This could be mediated by discretizing a variable width extrusion segment into s
 Ideally the Gcode language would be expanded in some way to allow for extrusion segments with varying cross-sectional area.
 
 
-Taking a broader perspective, we note that our proposed inward distributed strategy is a pragmatic solution.
-Rather than deriving some optimal beading strategy from a clear specification of the objective, we propose some arbitrary inward distributed beading strategy and show that it is better than the other beading strategies.
-An optimal beading strategy can be derived if the objective is formalized terms of a unambiguous fitness function, but that would depend on the specific hardware setup and application for which toolpaths are generated.
-This manuscript is therefore limited to showing the flexibility and versatility of the framework, rather than deriving an optimal beading strategy.
+Taking a broader perspective, we note that our proposed inward distributed scheme is a pragmatic solution.
+Rather than deriving some optimal beading scheme from a clear specification of the objective, we propose some arbitrary inward distributed beading scheme and show that it is better than the other beading schemess.
+An optimal beading scheme can be derived if the objective is formalized terms of a unambiguous fitness function, but that would depend on the specific hardware setup and application for which toolpaths are generated.
+This manuscript is therefore limited to showing the flexibility and versatility of the framework, rather than deriving an optimal beading scheme.
 
 
 
