@@ -2,14 +2,14 @@
 In order to test our framework, we have assembled a data set of different types of 3D models, ranging over various applications and various types of geometry.
 The data set is described in detail in the accompanying data in Appendix~\ref{dataset}.
 We sliced all models in the data set and selected 300 random slices from the total set of slices for analysis.
-We generated the toolpaths on these 300 outline shapes using the naive technique as implemented by Clipper and compare it to the 4 strategies discussed in \cref{sec_generalization}, namely 'Constant bead count' strategy with a bead count of $C=4$, the 'Centered' beading strategy, the 'Evenly distributed', and the 'Inward distributed' beading strategy, using a nominal bead widths of $w_\text{pref}] = \SI{0.4}{\milli\meter}$.
+We generated the toolpaths on these 300 outline shapes using the uniform technique as implemented by Clipper and compare it to the 4 strategies discussed in \cref{sec_generalization}, namely 'Constant bead count' strategy with a bead count of $C=4$, the 'Centered' beading strategy, the 'Evenly distributed', and the 'Inward distributed' beading strategy, using a nominal bead widths of $w_\text{pref}] = \SI{0.4}{\milli\meter}$.
 
 
 
 \subsection{Computational analysis}
 Experiments were performed on an Intel Core i7-7500U CPU @ \SI{2.70}{\giga\hertz} using a single core and \SI{16.3}{\giga\byte} memory.
-The naive method was implemented using the state-of-the-art polygon offset library Clipper. \cite{johnson2014clipper}
-The computation time of each slice from the data set was recorded for the "Inward distributed" and "Naive" strategy. 
+The uniform width offsetting technique was implemented using the state-of-the-art polygon offset library Clipper. \cite{johnson2014clipper}
+The computation time of each slice from the data set was recorded for the uniform technique and the inward distributed strategy. 
 \cref{computime} shows these computation times of each layer plotted against the vertex count of the layer.
 
 The algorithmic complexity is limited by the generation of the Voronoi Diagram, which is $O(n \log n)$, where $n$ is the number of vertices in the input shape.
@@ -17,8 +17,8 @@ The number of elements in the ST is linear in the number of elements in the VD
 and all of the stages of our framework are also linear in the number of elements in the ST,
 so the total running time of our algorithm is $O(n \log n)$.
 
-From the experimental results shown in \cref{computime} we can see that both our framework and the naive method as implemented using Clipper have an expected running time of approximately $2*10^{-5} n \log n$ seconds.
-The computation time is approximately five times the computation time of the naive method, which puts it in the same order of magnitude.
+From the experimental results shown in \cref{computime} we can see that both our framework and the uniform technique as implemented using Clipper have an expected running time of approximately $2*10^{-5} n \log n$ seconds.
+The computation time is approximately five times the computation time of the uniform technique, which puts it in the same order of magnitude.
 
 % only Moessen reports on computation times, but in a weird manner
 
@@ -74,7 +74,7 @@ The resulting overfill and underfill areas are visualized for the different tool
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_naive_accuracy.png}
 \includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_naive_widths.png}
-\caption{Naive}\label{TEST_naive_accuracy}
+\caption{Uniform}\label{TEST_naive_accuracy}
 \end{subfigure}
 %\begin{subfigure}{\figwidth}\centering
 %\includegraphics[height=\figheight]{sources/validation/gMAT_example/TEST_SingleBead_accuracy.png}
@@ -119,8 +119,8 @@ and wide beads in red.
 
 We calculated the total overfill and underfill areas of the different toolpath strategies applied on the data set. 
 The overfill and underfill areas as a percentage of the total area of the slices from the data set are illustrated in \cref{over_underfill}.  
-The "Inward distributed" strategy has a calculated overfill of 0.24\% and an underfill of 0.17\%.
-This is lower compared to the "Naive" strategy, which results in 1.2\% overfill and 1.7\% underfill when applied to the data set.
+The inward distributed strategy has a calculated overfill of 0.24\% and an underfill of 0.17\%.
+This is lower compared to the uniform strategy, which results in 1.2\% overfill and 1.7\% underfill when applied to the data set.
 
 \begin{figure*}
 \centering
@@ -165,7 +165,7 @@ This is lower compared to the "Naive" strategy, which results in 1.2\% overfill 
 
 
 \caption{
-Results of computational analysis of the results from applying the naive method and various beading strategies using our framework to the data set.
+Results of computational analysis of the results from applying the uniform width technique and various beading strategies using our framework to the data set.
 Note the use of a logarithmic scale on the Y-axes and on some of the X-axes as well.
 }
 \end{figure*}
@@ -224,8 +224,8 @@ Such defects are less prevalent for the inward distributed beading strategy than
 \caption{Wedge}\label{print_wedge}
 \end{subfigure}
 \caption{
-A wedge shape printed using the naive strategy, center deviation strategy and the inward distributed strategy.
-The naive and center deviation strategy show problems around certain model diameters.
+A wedge shape printed using the uniform strategy, center deviation strategy and the inward distributed strategy.
+The uniform and center deviation strategy show problems around certain model diameters.
 }
 \label{wedge_print}
 \end{figure}
@@ -241,7 +241,7 @@ The naive and center deviation strategy show problems around certain model diame
 \censorbox{
 \includegraphics[width=\figwidth]{sources/applications/P3_print_UM_naive_edited.png}
 }
-\caption{Naive}\label{print_naive}
+\caption{Uniform}\label{print_naive}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[height=\figheightTwo]{sources/applications/gMAT_center.png}
@@ -260,8 +260,8 @@ The naive and center deviation strategy show problems around certain model diame
 \caption{Inward distributed}\label{print_inward}
 \end{subfigure}
 \caption{
-Test shapes printed using the naive strategy, center deviation strategy and the inward distributed strategy.
-The naive method produces distinct underfill areas.
+Test shapes printed using the uniform strategy, center deviation strategy and the inward distributed strategy.
+The uniform technique produces distinct underfill areas.
 The center deviation strategy shows some defects due to inaccurate control of extremal deposition widths.
 The inward distributed strategy produces the least defects.
 }

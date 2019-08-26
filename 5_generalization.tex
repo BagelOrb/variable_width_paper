@@ -91,8 +91,8 @@ The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transi
 The toolpath locations $L$ ensure that beads are extruded from the center of where they end up, that the beads don't overlap and that the symmetry restrictions are met.
 
 
-\paragraph{Naive Beading Strategy}
-We can define a beading strategy which emulates the naive method by disabling the marking of edges, so that we never employ transitioning.
+\paragraph{Uniform Beading Strategy}
+We can define a beading strategy which emulates the uniform width offsetting technique by disabling the marking of edges, so that we never employ transitioning.
 \begin{align*}
 \alpha_\text{max} &= \SI{180}{\degree} \\
 q^-(d) &= 2 \left\lfloor \frac{d}{ 2w_\text{pref}} + \frac12 \right\rfloor \\
@@ -146,9 +146,9 @@ W(n,d)_i &= d / n \text{ for all } i
 
 
 \paragraph{Centered}
-We can emulate the method by \citeauthor{Jin2017JMS}, by transcribing how they deviate from the naive tool paths.
-We therefore base the beading strategy on the bead count $q^-(d)$ defined by the naive beading strategy.
-\citeauthor{Jin2017JMS} replace two beads from the naive toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w_\text{pref}$.
+We can emulate the method by \citeauthor{Jin2017JMS}, by transcribing how they deviate from the uniform width toolpaths.
+We therefore base the beading strategy on the bead count $q^-(d)$ defined by the uniform beading strategy.
+\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w_\text{pref}$.
 Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w_\text{pref}$.\cite{Jin2017JMS}
 We emulate the rounded polygonal path rerouting they define by supplying a transition length which results in a discretized version of the rounded polygon segment.
 
@@ -221,7 +221,7 @@ to distribute the discrepancy over the innermost $2N$ beads, and distribute most
 See \cref{distributed_comparison}.
 That way we limit the region of impact of the distributed strategy to a central region and have the nominal bead width $w_\text{pref}$ in regions farther away.
 This limits the impact of transitioning regions so that transitions keep the toolpaths smooth farther away from the central regions. % and it forces most of the beads to have exactly the prefered width.
-Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanical properties derived for prints using the naive strategy will still hold approximately.
+Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanical properties derived for prints using the uniform strategy will still hold approximately.
 
 
 

@@ -2,9 +2,9 @@
 
 
 \subsection{Comparison of beading strategies}
-The 'Naive' strategy and the 'Outer bead' strategy are of little use to FDM printers, but they show the flexibility of our parametric system.
+The uniform beading scheme and the outer bead scheme are of little use to FDM printers, but they show the flexibility of our algorithmic framework.
 
-We can see from \cref{TEST_naive_accuracy}(top) and~\ref{over_underfill} that the naive method causes a lot of overfills and underfills: on average approximately \SI{1}{\percent} of the total target area is covered by underfill and likewise for overfill.
+We can see from \cref{TEST_naive_accuracy}(top) and~\ref{over_underfill} that the uniform technique causes a lot of overfills and underfills: on average approximately \SI{1}{\percent} of the total target area is covered by underfill and likewise for overfill.
 These defects surely influence the mechanical properties of the parts beyond a point that process parameters can reliably be correlated to mechanical properties of the part.
 
 %The single bead strategy solves the underfill problem in regions where the model is more thin than the nozzle size.
@@ -20,7 +20,7 @@ Moreover the centrality marking is not robust against small perturbations in the
 
 If we look at \cref{TEST_Center_accuracy} we can see that
 the centered beading strategy effectively deals with overfill and underfill and produces bead widths which are the optimal bead width in all locations, but in the center the bead widths are within a factor 2 off from the optimal bead width.
-According to \cref{over_underfill} the overfill and underfill for the 'Centered', the 'Evenly distributed' and the 'Inward distributed' strategy are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the naive method.
+According to \cref{over_underfill} the overfill and underfill for the centered, the evenly distributed and the inward distributed scheme are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the uniform technique.
 
 However, according to \cref{widthHistogram} the Centered strategy exhibits a lot wider range of bead widths than the Distributed strategies:
 the standard deviation of the bead widths in the Centered strategy is approximately \SI{39}{\micro\meter}, while the standard deviation resulting from the Distributed strategies is approximately \SI{14}{\micro\meter}.
@@ -37,7 +37,7 @@ Therefore, when using the Inward distributed strategy the surface of the 3D prin
 
 \subsection{Theoretical analysis}
 In this paper the significance measure is not used heuristically, as it is sometimes used in other literature.
-The significance measure is an exact measure of the relative size of gaps when using the naive toolpathing method.
+The significance measure is an exact measure of the relative size of gaps when using the uniform toolpathing method.
 See \cref{naive_overfill_underfill}
 Note also that contrary to some literature we don't remove edges from the skeleton, but leave it intact.
 The final skeleton is still an exact and full feature descriptor.

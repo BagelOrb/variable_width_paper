@@ -15,7 +15,7 @@ Filling up a shape using parallel straight lines would expose defects of the siz
 Contour parallel extrusion therefore leads to a less bumpy outline shape than direction parallel extrusion does.
 
 
-The naive method for generating the shape filling toolpaths of a layer consists in performing inward offsets with the radius of the the nozzle from the outline shape.
+The simple technique for generating the shape filling toolpaths of a layer consists in performing uniform inward offsets with the radius of the the nozzle from the outline shape.
 However, for geometrical features which are not an exact multiple of the nozzle size this method produces areas where an extrusion bead is placed twice: \emph{overfill} areas; and other areas which are not filled at all: \emph{underfill} areas.
 See \cref{intro_wedge}(top).
 Overfills cause a buildup of pressure in the mechanical extrusion system, which can result in bulges or even a full print failure.
@@ -29,7 +29,7 @@ Some such toolpath generation techniques have already been developed.
 \includegraphics[width=\columnwidth]{sources/intro/TEST_Center_widths.png}
 \includegraphics[width=\columnwidth]{sources/intro/TEST_InwardDistributed_widths.png}
 \caption{
-Toolpaths for a wedge shape using the naive offsetting approach (top), the approach by \citeauthor{Jin2017JMS}(middle) and our approach (bottom).
+Toolpaths for a wedge shape using the uniform offsetting approach (top), the approach by \citeauthor{Jin2017JMS}(middle) and our approach (bottom).
 Overfill in orange, underfill in azure, narrow beads in blue and wide beads in red.
 The wedge shape can be read like a graph plot: for each model diameter we can read out the resulting over- or underfill if a model has thin features with that particular diameter.
 }
@@ -54,7 +54,7 @@ Our contributions are as follows:
 \item A specific beading strategy function for this framework for:
 \begin{itemize}
 \item Accurately filling a 2D outline with extrusion beads
-\item Reducing the overfill and underfill areas compared to the naive method
+\item Reducing the overfill and underfill areas compared to the uniform width technique
 \item Reducing the amount of beads with greatly deviating width compared to existing literature
 \item Promoting smooth toolpaths which are close to the nominal width toward the outline of the shape.
 \end{itemize}

@@ -1,12 +1,12 @@
 \section{Method}
 \subsection{Overview}
-The naive method consists of consecutive inward offsets from the outline using a constant bead width.
+The simple technique consists of consecutive inward offsets from the outline using a uniform bead width.
 These offsets can be generated from the medial axis transform (MAT).
 The medial axis transform can be conceptualized as the skeleton of the mesh of the volume defined by the union of all cones (with the same incline) which are touching the input shape. \cite{blum1967transformation}
 The constant width insets are the intersections between the Union of Cones (UoC) and horizontal planes at regular intervals.
-We can therefore use the MAT to efficiently calculate the consecutive offsets defining the naive toolpathing. \cite{eiamsa2003toward}
+We can therefore use the MAT to efficiently calculate the consecutive offsets which define the uniform toolpathing. \cite{eiamsa2003toward}
 
-For the naive method the overfill and underfill problems arise in the center,
+For the uniform offsetting technique the overfill and underfill problems arise in the center,
 because constant widths inward steps might not resolve to the arbitrary diameter of the outline shape.
 Our framework can be seen as a way to change the mesh of the UoC such that the heights at the center are aligned with the slicing planes.
 
@@ -148,7 +148,7 @@ See \cref{shape_decomposition_datastructure}.
 
 Alternatively the medial axis can be defined as the locations where the UoC surface is discontinuous,
 or it can be defined as the locations where wave-front propagating from the outline shape make sharp corners. \cite{blum1967transformation}
-This last conceptualization is especially relevant because the naive toolpath generation method consists precisely in equidistant wave-fronts from the outline.
+This last conceptualization is especially relevant because the uniform toolpath generation method consists precisely in equidistant wave-fronts from the outline.
 The medial axis can therefore be seen as the space within which contour following toolpaths are generated.
 See \cref{MAT_explanation}.
 
@@ -280,7 +280,7 @@ We then assign each node the bead count values using the simple formula describe
 
 
 \subsection{Center classification}\label{sec_center_classification}
-The naive method of performing constant width offset produces large overfill and underfill areas on central regions of the ST.
+The simple technique of performing uniform width offset produces large overfill and underfill areas on central regions of the ST.
 These central regions present themselves as upper ridges in the mountains of the UoC surface.
 This sections covers what parts of the UoC will be marked as being central, as opposed to peripheral.
 
@@ -294,9 +294,9 @@ Centrality can be formalized by looking at a commonly used significance measure 
 The bisector angle $\alpha$ is the interior angle $\angle{p_ovp_1} \leq \si{180}{\degree}$ between a location $v$ on an edge of the ST and its two supporting polygon points $p_0$ and $p_1$.\cite{attali1996modeling}
 Edges are significant if the bisector angle exceeds $\alpha_\text{max}$ which is governed by the beading strategy.
 
-For a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$, which corresponds to overfill areas and underfill areas the size of $\nicefrac12 w^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using a naive strategy of constant bead width $w$.
+For a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$, which corresponds to overfill areas and underfill areas the size of $\nicefrac12 w^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using the simple technique of uniform bead width $w$.
 See \cref{naive_overfill_underfill}.
-The bisector angle is therefore an exact measure of the amount of overfill and underfill in the naive toolpaths of constant width.
+The bisector angle is therefore an exact measure of the amount of overfill and underfill in the uniform toolpaths of constant width.
 %Contrary to related literature we will \emph{keep} the non-significant regions of the skeleton.
 We mark all significant edges as such and contrary to related literature we keep the unmarked edges of the ST.
 Our framework will decide on a beading at all of the marked nodes in `the center' nodes and apply the beading outward to the unmarked nodes.
@@ -306,7 +306,7 @@ Our framework will decide on a beading at all of the marked nodes in `the center
 \centering
 \includegraphics[width=.5\columnwidth]{sources/method/naive_overfill_underfill.pdf}
 \caption{
-Overfill and underfill areas in a naive beading using a constant bead width $w$ of a wedge area with vertex angle $\beta$.
+Overfill and underfill areas in a simple toolpathing using a uniform bead width $w$ for a wedge area with vertex angle $\beta$.
 The underfill areas (light blue) are mirrored versions of the overfill areas (dark red).
 The bisector angle $a = 180\degree - \beta$ is the angle between a location $v$ and its support $p_0$ and $p_1$.
 }
