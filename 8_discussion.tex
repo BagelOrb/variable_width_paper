@@ -1,7 +1,7 @@
 \section{Discussion}
 
 
-\subsection{Comparison of beading schemess}
+\subsection{Comparison of beading schemes}
 The uniform beading scheme and the outer bead scheme are of little use to FDM printers, but they show the flexibility of our algorithmic framework.
 
 We can see from \cref{TEST_naive_accuracy}(top) and~\ref{over_underfill} that the uniform technique causes a lot of overfills and underfills: on average approximately \SI{1}{\percent} of the total target area is covered by underfill and likewise for overfill.
@@ -11,7 +11,7 @@ These defects surely influence the mechanical properties of the parts beyond a p
 %However, the scheme doesn't deal with the remaining area.
 %In our visualization we print the outline of the remaining area which exposes an overextrusion problem.
 
-The 'Constant bead count' scheme effectively deals with underfills, but generates orders of magnitude more overfills compared to the other schemess. 
+The constant bead count scheme effectively deals with underfills, but generates orders of magnitude more overfills compared to the other schemes. 
 Also, the scheme comes at the cost of greatly varying bead widths and an average bead width that is not close to the nominal bead width.
 Note that most overfill areas occur near regions of alternating bead width. 
 
@@ -22,16 +22,16 @@ If we look at \cref{TEST_Center_accuracy} we can see that
 the centered beading scheme effectively deals with overfill and underfill and produces bead widths which are the optimal bead width in all locations, but in the center the bead widths are within a factor 2 off from the optimal bead width.
 According to \cref{over_underfill} the overfill and underfill for the centered, the evenly distributed and the inward distributed scheme are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the uniform technique.
 
-However, according to \cref{widthHistogram} the Centered scheme exhibits a lot wider range of bead widths than the Distributed schemess:
-the standard deviation of the bead widths in the Centered scheme is approximately \SI{39}{\micro\meter}, while the standard deviation resulting from the Distributed schemess is approximately \SI{14}{\micro\meter}.
-We can therefore state that the Distributed schemess result in bead widths closer to the nominal widths compared to the Centered scheme.
+However, according to \cref{widthHistogram} the centered scheme exhibits a lot wider range of bead widths than the distributed schemes:
+the standard deviation of the bead widths in the centered scheme is approximately \SI{39}{\micro\meter}, while the standard deviation resulting from the distributed schemes is approximately \SI{14}{\micro\meter}.
+We can therefore state that the distributed schemes result in bead widths closer to the nominal widths compared to the centered scheme.
 This is desirable for the manufacturability of the beads and can therefore have a positive effect on the mechanical properties and surface quality of the 3D prints. 
 
-The Inward distributed beading scheme was introduced in order to limit the number of beads deviating from the nominal bead width and to limit the number of angled extrusion segments in transitioning regions.
+The inward distributed beading scheme was introduced in order to limit the number of beads deviating from the nominal bead width and to limit the number of angled extrusion segments in transitioning regions.
 The effect is difficult to see when comparing \cref{TEST_Distributed_accuracy} with~\ref{TEST_InwardDistributed_accuracy}, because there are no large solid areas in that specific shape.
 
 However, when comparing the bead width of the outer toolpaths, \cref{distributed_comparison} and  \cref{widthIndexedHistogram}, we can clearly see that the these toolpaths have the nominal bead width more often, which means that errors from inaccuracies due to deviation from the nominal bead width are concentrated near the center of the shape, leaving the dimensional accuracy of the outline shape less affected, if at all. 
-Also, we find that compared to Evenly distributed, the Inward distributed scheme produces smoother toolpaths overall (\cref{smoothness}), and with less jaggedness on the contour toolpaths (\cref{smoothness}). 
+Also, we find that compared to evenly distributed, the inward distributed scheme produces smoother toolpaths overall (\cref{smoothness}), and with less jaggedness on the contour toolpaths (\cref{smoothness}). 
 Therefore, when using the Inward distributed scheme the surface of the 3D print is less affected by both width variation and jagged toolpaths, while overfill and underfill are kept at a low percentage.
 
 
@@ -39,14 +39,14 @@ Therefore, when using the Inward distributed scheme the surface of the 3D print 
 In this paper the significance measure is not used heuristically, as it is sometimes used in other literature.
 The significance measure is an exact measure of the relative size of gaps when using the uniform toolpathing method.
 See \cref{naive_overfill_underfill}
-Note also that contrary to some literature we don't remove edges from the skeleton, but leave it intact.
+Note also that contrary to some literature we do not remove edges from the skeleton, but leave it intact.
 The final skeleton is still an exact and full feature descriptor.
 In that sense our framework provides an exact solution space.
 
 Note also that our method is robust against small perturbations in the input shape.
 Geometrically small changes to the outline shape introduce extra edges and therefore change the topology of the graph of the ST.
 However, the significance measure and beading are defined in terms of radial distances so the robustness of the distance field against such perturbations means our method bypasses the instability of the skeleton.
-Moreover, we have developed a method for dealing with edges within transition regions such that the toolpath is the same as if there wasn't any edge in that region.
+Moreover, we have developed a method for dealing with edges within transition regions such that the toolpath is the same as if there was no such edge in that region.
 The toolpaths generated using our framework therefore remain the same when extra edges are added to the ST.
 
 Our framework is also local.
@@ -57,24 +57,24 @@ and it also allows for some parallelism during the computation of the toolpaths.
 
 
 \subsection{Limitations}
-In the beading schemess we discussed we set the length of the smoothed transitions to $t(n) = w_\text{pref}$.
+In the beading schemes we discussed we set the length of the smoothed transitions to $t(n) = w_\text{pref}$.
 That might demand changes in cross-sectional area as high as \SI{200}{\percent} over a distance as small as the nozzle size,
 which might be difficult to accurately manufacture on some hardware.
 While changing the cross-sectional area of the bead could be implemented by changing the movement speed, the movement speed is also constrained by acceleration considerations around junctions in the toolpath, so this approach is inherently limited.
-Our schemess require a more accurate control of the volumetric flow rate (in \si{\milli\meter\cubed\per\second}).
+Our schemes require a more accurate control of the volumetric flow rate (in \si{\milli\meter\cubed\per\second}).
 Using a filament feeder directly mounted on the print head (a.k.a. direct drive) is certainly a large improvement over Bowden style FDM printers.,
 but still some control system is required in order to accurately change the volumetric flow rate such as advance algorithms. \cite{tronvoll2019investigating}
 Still inaccuracies in direct drive systems employing advance algorithms might arise due to the changes in back-pressure required by changing bead size.
 
 
-Another limiting factor in the adoption of adaptive bead width is that Gcode -- a common file format for storing machine instructions -- doesn't support  moves with varying cross-sectional area.
+Another limiting factor in the adoption of adaptive bead width is that Gcode -- a common file format for storing machine instructions -- does not support  moves with varying cross-sectional area.
 A typical extrusion move \lstinline{G1 X$x$ Y$y$ E$v$} only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed across the extrusion move.
 This could be mediated by discretizing a variable width extrusion segment into smaller segments, but that approach might still result in some small inaccuracies.
 Ideally the Gcode language would be expanded in some way to allow for extrusion segments with varying cross-sectional area.
 
 
 Taking a broader perspective, we note that our proposed inward distributed scheme is a pragmatic solution.
-Rather than deriving some optimal beading scheme from a clear specification of the objective, we propose some arbitrary inward distributed beading scheme and show that it is better than the other beading schemess.
+Rather than deriving some optimal beading scheme from a clear specification of the objective, we propose some arbitrary inward distributed beading scheme and show that it is better than the other beading schemes.
 An optimal beading scheme can be derived if the objective is formalized terms of a unambiguous fitness function, but that would depend on the specific hardware setup and application for which toolpaths are generated.
 This manuscript is therefore limited to showing the flexibility and versatility of the framework, rather than deriving an optimal beading scheme.
 
