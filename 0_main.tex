@@ -1,4 +1,4 @@
-\documentclass[preprint,5p,twocolumn,times]{elsarticle}
+\documentclass[5p,twocolumn,10pt,times]{elsarticle}
 \usepackage{amsmath}
 \usepackage{hyperref} % added [draft] to avoid compilation issues that happen if a link is split and appears in two pages
 %\modulolinenumbers[5]
@@ -35,8 +35,6 @@
 	  \endgroup
 	}
 	\makeatother
-	
-	\usepackage{censor} % \censor
 
 	% have multiline subfigure captions be centered
 	\usepackage[labelformat=parens]{subcaption} % subfigures
@@ -184,9 +182,7 @@
 \title{An algorithmic framework for generating contour parallel toolpaths with adaptive extrusion width for additive manufacturing}
 
 %\author{Paper ID: xxx}
-\author{Anonymized}
 
-\iffalse
 \author[um,tud]{Tim Kuipers}
 \author[tud]{Eugeni L. Doubrovski}
 \author[tud]{Jun Wu}
@@ -196,7 +192,7 @@
 \address[um]{Ultimaker, Utrecht, The Netherlands}
 \address[tud]{Department of Design Engineering, Delft University of Technology, The Netherlands}
 \address[cuhk]{Department of Mechanical and Automation Engineering, The Chinese University of Hong Kong, Hong Kong SAR, China}
-\fi
+
 
 \begin{abstract}
 3D printing techniques such as Fused Deposition Modeling (FDM) have enabled the fabrication of complex geometry quickly and cheaply. 
@@ -245,9 +241,9 @@ keyword
 
 
 
- %\temp{%Table of contents just for reviewing purposes
- %\tableofcontents
- %}
+ \temp{%Table of contents just for reviewing purposes
+ \tableofcontents
+ }
 
 \input{1_intro}
 
