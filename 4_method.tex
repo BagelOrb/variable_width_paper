@@ -49,55 +49,73 @@ This section explains how we can generate toolpaths with evenly distributed bead
 
 \begin{figure*}
 \centering
-\setlength{\figwidth}{.18\textwidth}
+\setlength{\figheight}{.15\textwidth}
+\setlength{\figwidth}{.15\textwidth}
+\setlength{\figwidthTwo}{.22\textwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figheight,rotate=-90]{sources/method/overview/2D/input.pdf}
+\caption{Layer outline}\label{}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figheight,rotate=-90]{sources/method/overview/2D/uoc.pdf}
+\caption{Skeleton}\label{}
+\end{subfigure}
+\begin{subfigure}{\figwidthTwo}\centering
+\hspace*{\tempheightTwo}
+\includegraphics[height=\figheight]{sources/method/overview/surface/UoC_with_cones.png}
+\caption{Union of Cones}\label{}
+\end{subfigure}
+\begin{subfigure}{\figwidthTwo}\centering
+\hspace*{\tempheightTwo}
+\includegraphics[height=\figheight]{sources/method/overview/surface/sliced_naive_cropped.png}
+\caption{Slicing}\label{}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figheight,rotate=-90]{sources/method/overview/2D/naive.png}
+\caption{Uniform paths}\label{}
+\end{subfigure}
+
+
+\setlength{\figwidth}{.22\textwidth}
 \setlength{\figwidthTwo}{.17\textwidth}
 \setlength{\figwidthTree}{.22\textwidth}
 \setlength{\tempheight}{-0.3cm}
 \setlength{\tempheightTwo}{-0.5cm}
 \begin{subfigure}{\figwidth}\centering
 \hspace*{\tempheightTwo}
-\includegraphics[width=\figwidthTree]{sources/method/surface/union_of_cones_cropped.png}
+\includegraphics[height=\figheight]{sources/method/overview/surface/marking_cropped.png}
 
 \vspace{\tempheight}
 
-\includegraphics[width=\figwidthTwo]{sources/method/surface/uoc.pdf}
-\caption{Union of Cones}\label{3d_surface_overview_uoc}
+\includegraphics[width=\figheight]{sources/method/overview/2D/marked.pdf}
+\caption{Center identification}\label{3d_surface_overview_center}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \hspace*{\tempheightTwo}
-\includegraphics[width=\figwidthTree]{sources/method/surface/marking_cropped.png}
+\includegraphics[height=\figheight]{sources/method/overview/surface/rounded_cropped.png}
 
 \vspace{\tempheight}
 
-\includegraphics[width=\figwidthTwo]{sources/method/surface/marked.pdf}
-\caption{Center}\label{3d_surface_overview_center}
+\includegraphics[width=\figheight]{sources/method/overview/2D/rounded.pdf}
+\caption{Quantization}\label{3d_surface_overview_rounded}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \hspace*{\tempheightTwo}
-\includegraphics[width=\figwidthTree]{sources/method/surface/rounded_cropped.png}
+\includegraphics[height=\figheight]{sources/method/overview/surface/smoothed_cropped.png}
 
 \vspace{\tempheight}
 
-\includegraphics[width=\figwidthTwo]{sources/method/surface/rounded.pdf}
-\caption{Quantized}\label{3d_surface_overview_rounded}
+\includegraphics[width=\figheight]{sources/method/overview/2D/smoothed.pdf}
+\caption{Smoothing}\label{3d_surface_overview_smoothed}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \hspace*{\tempheightTwo}
-\includegraphics[width=\figwidthTree]{sources/method/surface/smoothed_cropped.png}
+\includegraphics[height=\figheight]{sources/method/overview/surface/sliced_cropped.png}
 
 \vspace{\tempheight}
 
-\includegraphics[width=\figwidthTwo]{sources/method/surface/smoothed.pdf}
-\caption{Smoothed}\label{3d_surface_overview_smoothed}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\hspace*{\tempheightTwo}
-\includegraphics[width=\figwidthTree]{sources/method/surface/sliced_cropped.png}
-
-\vspace{\tempheight}
-
-\includegraphics[width=\figwidthTwo]{sources/method/surface/sliced_2D.png}
-\caption{Sliced}\label{3d_surface_overview_sliced}
+\includegraphics[width=\figheight]{sources/method/overview/2D/sliced.png}
+\caption{Adaptive width paths}\label{3d_surface_overview_sliced}
 \end{subfigure}
 \caption{
 A geometrical conceptualization of our technique.
