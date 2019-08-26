@@ -210,7 +210,7 @@ We propose a framework which allows to define beading strategies which distribut
 Based on a skeletonization of the 2D outline shape of a single layer we generate a 3D surface mesh, the union of cones.
 By slicing the surface at regular heights we obtain contour parallel toolpaths which cover the 2D area of a single layer.
 The heights of the 3D mesh are first altered:
-the heights at central ridges in the 3D surface are flattened to be parallel with the slicing planes in order to prevent over- and underfill
+the heights at central ridges in the 3D surface are quantized in order to prevent over- and underfill
 and the heights in other regions are modified in such a way that the deviation from the nominal extrusion width is distributed over several beads around the center of the shape.
 
 Our framework is shown to be able to emulate several methods discussed in related literature and it enables a wide range of other beading strategies.

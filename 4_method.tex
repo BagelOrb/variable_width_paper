@@ -15,7 +15,7 @@ Our framework can be thought of as following these steps:
 \item Compute the skeleton of the input shape
 \item Assign each node a height in terms of bead count based on the local feature size
 \item Identify central regions of the UoC
-\item Flatten the central regions at heights equal to the nearest integer bead count
+\item Quantize the height of central ridges and peaks
 \item Smooth out sharp transitions between regions with different integer heights
 \item Determine the heights in the periphery (non-central regions)
 \item Slice the mesh at regular intervals to get the toolpaths to fill the input shape
@@ -59,7 +59,7 @@ See \cref{3d_surface_overview}.
 \vspace{\tempheight}
 
 \includegraphics[width=\figwidthTwo]{sources/method/surface/rounded.pdf}
-\caption{Flattened}\label{3d_surface_overview_rounded}
+\caption{Quantized}\label{3d_surface_overview_rounded}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \hspace*{\tempheightTwo}
@@ -84,7 +84,7 @@ A geometrical conceptualization of our technique.
 3D visualization on top and the corresponding 2D visualization on bottom.
 In the UoC \subref{3d_surface_overview_uoc}
 we mark the central regions \subref{3d_surface_overview_center}
-and flatten those regions to heights of the nearest integer \subref{3d_surface_overview_rounded}.
+and quantize the height in those regions \subref{3d_surface_overview_rounded}.
 We then smooth out the jumps between different integer multiples \subref{3d_surface_overview_smoothed}
 and finally we slice the structure to get the toolpaths \subref{3d_surface_overview_sliced}.
 Blue signifies regions marked as being central.
@@ -96,7 +96,7 @@ The numbers are the integer multiples of half the nozzle width.
 This section explains how we can generate toolpaths with evenly distributed bead widths.
 We describe how to construct the mesh of the UoC in \cref{sec_surface_construction} and
 explain how to identify central regions in \cref{sec_center_classification}.
-Flattening the central mesh regions and smoothing are handled in \cref{sec_central_height_adjustment}.
+Quantizing and smoothing the heights in the central mesh regions are handled in \cref{sec_central_height_adjustment}.
 We then describe how to deal with heights in the periphery in \cref{sec_peripheral_height_adjustment}
 and describe the toolpath extraction algorithm in \cref{sec_toolpath_extraction}.
 In \cref{sec_generalization} we describe how to generalize our method for generating evenly distributed bead widths into a general framework for generating contour parallel toolpaths using an arbitrary beading strategy and we show several such beading strategies.
@@ -442,17 +442,18 @@ if the total length traversed until we reach another marked node $v_1$ is shorte
 
 
 \subsection{Central height adjustment}\label{sec_central_height_adjustment}
-Now that we have identified and marked the central regions we flatten those regions to integer heights.
+Now that we have identified and marked the central regions we quantize their heights.
 More specifically we round the heights to integer bead count values.
+Because the bead count is defined in terms of the feature diameter rather than the radius, only half of the integer bead count values coincides with a slicing height.
 When the heights of a ridge are rounded to an \emph{even} bead count, the ridge will be sliced as normal; the intersection between a slicing plane and the mesh surface results in a polyline on both sides of the ridge, which are connected together into a polygonal toolpath.
 When the heights of a ridge are rounded to an \emph{odd} bead count, the ridge will coincide exactly with a slicing height, which results in a single polyline toolpath being generated along the middle of the feature.
 
 %\subsubsection{Initial bead count}\label{sec_initial_bead_count}
-In order to update the bead count values, we require a flattening operator which maps a feature diameter to a bead count: $f: \mathbb{R} \to \mathbb{N}$.
-For our example we choose to round to the nearest integer multiple of the nozzle size $w_\text{pref}$: $f(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
-In our generalized framework the function $b$ is determined by a beading strategy.
+In order to update the bead count values, we require a quantization operator which maps a feature diameter to a bead count: $q: \mathbb{R} \to \mathbb{N}$.
+For our example we choose to round to the nearest integer multiple of the nozzle size $w_\text{pref}$: $q(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
+In our generalized framework the function $q$ is determined by a beading strategy.
 
-We first assign each marked node $v$ of the ST the bead count $b^*_v \leftarrow f(2R(v))$.
+We first assign each marked node $v$ of the ST the bead count $b^*_v \leftarrow q(2R(v))$.
 We then filter out short unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
 From each marked node $v_0$ with an upward unmarked edge attached we walk along the upward edges until we hit another marked node $v_1$.
 If the upper node has the same bead count $b^*_{v_1} = b^*_{v_0}$ we mark all edges and nodes $v$ in between, and set the bead count $b^*_v \leftarrow b^*_{v_0}$.
@@ -463,7 +464,7 @@ If the upper node has the same bead count $b^*_{v_1} = b^*_{v_0}$ we mark all ed
 \setlength{\figwidth}{0.13\textwidth}
 \begin{subfigure}{\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/beading_transitioning_filtering__bead_count.pdf}
-\caption{Flattened bead counts}\label{beading_transitioning_filtering__bead_count}
+\caption{Quantized bead counts}\label{beading_transitioning_filtering__bead_count}
 \end{subfigure}
 \begin{subfigure}{\figwidth}
 \includegraphics[width=\columnwidth]{sources/method/beading_transitioning_filtering__transition_mids.pdf}
@@ -499,16 +500,16 @@ The symmetry in the result shows that transitioning is robust against small pert
 \end{figure*}
 
 
-\subsubsection{Flattening}
-For edges which connect two nodes $v_0$ and $v_1$ with a different bead count assigned $b^*_{v_0} \neq b^*_{v_1}$ we must figure out the exact location(s $v$ where the flattening operator $f(2R(v))$ jump to a different integer.
+\subsubsection{Quantization}
+For edges which connect two nodes $v_0$ and $v_1$ with a different bead count assigned $b^*_{v_0} \neq b^*_{v_1}$ we must figure out the exact location(s $v$ where the quantization operator $q(2R(v))$ jump to a different integer.
 We call these locations the \emph{transition anchor positions}.
 Rather than applying the jumps to the UoC mesh we calculate the transition anchor positions and apply smoothing based on those positions, so that we modify the UoC mesh afterwards.
 
-We introduce the function $f^{-1}(n) := \argmax_d f(d) = n$, which gives the feature diameter at which $f$ jumps from $n$ to $n+1$ beads.
+We introduce the function $q^{-1}(n) := \argmax_d q(d) = n$, which gives the feature diameter at which $q$ jumps from $n$ to $n+1$ beads.
 %For each marked edge between $v_0$ and $v_1$ with $b^*_{v_0} \neq b^*_{v_1}$ we introduce transitions.
-A smoothed transition from bead count $n$ to $n+1$ will be anchored on each location $v_x$ where $R(v_x) = f^{-1}(n)$.
+A smoothed transition from bead count $n$ to $n+1$ will be anchored on each location $v_x$ where $R(v_x) = q^{-1}(n)$.
 We can compute the location of the anchor simply as
-$$v_x = v_0 + (v_1 - v_0) \frac{ f^{-1}(n) - R(v_0) }{ R(v_1) - R(v_0) }$$
+$$v_x = v_0 + (v_1 - v_0) \frac{ q^{-1}(n) - R(v_0) }{ R(v_1) - R(v_0) }$$
 for each $n$ such that $b^*_{v_0}<n<b^*_{v_1}$.
 See \cref{beading_transitioning_filtering__transition_mids}.
 
