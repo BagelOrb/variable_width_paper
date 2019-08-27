@@ -92,8 +92,17 @@ The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transi
 The toolpath locations $L$ ensure that beads are extruded from the center of where they end up, that the beads don't overlap and that the symmetry restrictions are met.
 
 
-\paragraph{Uniform beading scheme}
-We can define a beading scheme which emulates the uniform width offsetting technique by disabling the marking of edges, so that we never employ transitioning.
+
+
+%\fboxsep=10mm%padding thickness
+\begin{figure}%\centering
+\setlength{\figwidth}{.2\textwidth}
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+\captionsetup[subfigure]{justification=justified,singlelinecheck=false}
+\fbox{
+\begin{subfigure}[b]{\figwidth}\centering
+%\frame{
 \begin{align*}
 \alpha_\text{max} &= \SI{180}{\degree} \\
 q^-(d) &= 2 \left\lfloor \frac{d}{ 2w_*} + \frac12 \right\rfloor \\
@@ -101,16 +110,14 @@ W(n,d)_i &= w_* \text{ for all } i
 %\\
 %L(n,d)_i &= w_* \left(i + \frac12 \right) \text{ for all } i < \frac12 n
 \end{align*}
-
-
-
-\paragraph{Outer bead}
-We can emulate the method by \citeauthor{Moesen2011} by carefully choosing how the beading scheme functions deal with the outermost bead.
-Also we turn off the reduction of toolpaths near 3-way intersections, so that the polygonal toolpaths emulate the remaining area to be filled by another path planning technique similar to their technique.
-
+\caption{Uniform scheme}\label{formula_uniform}
+\end{subfigure}
+}
+%
+%
+\fbox{
+\begin{subfigure}[b]{\figwidth}\centering
 \begin{align*}
-d_\text{max}^\text{intersection} &= \SI{0}{\percent} \\
-t(n) &= 0 \\
 q(d) &=
 \begin{cases}
 1 & \text{ if } d < w_* \\
@@ -129,13 +136,13 @@ w_* & \text{ otherwise } \\
 %w_* / 2 & \text{ otherwise } \\
 %\end{cases}
 \end{align*}
-
-
-\paragraph{Constant bead count}
-We can emulate the method by \citeauthor{Ding2016a}, by dividing the feature diameter over the widths of a constant number of beads.
-Additionally in order to emulate their definition of branches we mark all ST edges and in a separate algorithm we unmark the outer edges connected to the outline shape.
-Note that this deviation from the proposed framework violates the robustness against small perturbations in the outline polygon, since the topology of the graph of the ST is not stable against those.
-
+\caption{Outer bead}\label{formula_outer_bead}
+\end{subfigure}
+}
+%
+%
+\fbox{
+\begin{subfigure}[b]{\figwidth}\centering
 \begin{align*}
 \alpha_\text{max} &= \SI{0}{\degree} \\
 q(d) &= C \\
@@ -143,19 +150,29 @@ W(n,d)_i &= d / n \text{ for all } i
 %\\
 %L(n,d)_i &= d / n \left(i + \frac12 \right) \text{ for all } i < \frac12 n
 \end{align*}
-
-
-
-\paragraph{Centered}
-We can emulate the method by \citeauthor{Jin2017JMS}, by transcribing how they deviate from the uniform width toolpaths.
-We therefore base the beading scheme on the bead count $q^-(d)$ defined by the uniform beading scheme.
-\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w_*$.
-Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w_*$.\cite{Jin2017JMS}
-We emulate the rounded polygonal path rerouting they define by supplying a transition length which results in a discretized version of the rounded polygon segment.
-
+\caption{Constant bead count}\label{formula_constant_bead_count}
+\end{subfigure}
+}
+%
+%
+\fbox{
+\begin{subfigure}[b]{\figwidth}\centering
+\begin{align*}
+q(d) &= \left\lfloor \frac{d}{ w_*} + \frac12 \right\rfloor \\
+W(n,d)_i &= d / n \text{ for all } i 
+%\\
+%L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
+\end{align*}
+\caption{Evenly distributed}\label{formula_evenly_distributed}
+\end{subfigure}
+}
+%
+%
+\fbox{
+\begin{subfigure}[b]{\figwidth}\centering
 \begin{align*}
 t(n) &= \frac12 w_* \\
-q^-(d) &= 2 \left\lfloor \frac{d}{ 2w_*} + \frac12 \right\rfloor \\
+%q^-(d) &= 2 \left\lfloor \frac{d}{ 2w_*} + \frac12 \right\rfloor \\
 q(d) &= q^-(d) +
 \begin{cases}
 -1 & \text{ if } q^-(d) w_* - d > w_* - r_\text{max} \\
@@ -175,6 +192,60 @@ w_* &\text{ otherwise }
 %w_* \left(i + \frac12 \right) & \text{ otherwise }
 %\end{cases}
 \end{align*}
+\caption{Centered}\label{formula_centered}
+\end{subfigure}
+}
+%
+%
+\fbox{
+\begin{subfigure}[b]{\figwidth}\centering
+\begin{align*}
+q(d) &= \left\lfloor \frac{d}{ w_*} + \frac12 \right\rfloor \\
+E(n,d) &= d - n w_* \\
+W(n,d)_i &= w_* + E(n,d) \frac{M(n,d)_i}{\sum_{j=0}^{n-1} M(n,d)_j} \text{ for all } i \\
+%L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
+M(n,d)_i &= \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )
+\end{align*}
+\caption{Inward distributed}\label{formula_inward_distributed}
+\end{subfigure}
+}
+\caption{
+Beading schemes.
+}
+\label{beading_schemes}
+\end{figure}
+
+
+\paragraph{Uniform beading scheme}
+We can define a beading scheme which emulates the uniform width offsetting technique by disabling the marking of edges, so that we never employ transitioning.
+See \cref{formula_uniform}.
+
+
+\paragraph{Outer bead}
+We can emulate the method by \citeauthor{Moesen2011} by carefully choosing how the beading scheme functions deal with the outermost bead.
+Also we turn off the reduction of toolpaths near 3-way intersections $d_\text{max}^\text{intersection} = \SI{0}{\percent}$, so that the polygonal toolpaths emulate the remaining area to be filled by another path planning technique similar to their technique.
+We don't need transitioning, so we also set $t(n) = 0 $.
+See \cref{formula_outer_bead}.
+
+
+
+\paragraph{Constant bead count}
+We can emulate the method by \citeauthor{Ding2016a}, by dividing the feature diameter over the widths of a constant number of beads.
+Additionally in order to emulate their definition of branches we mark all ST edges and in a separate algorithm we unmark the outer edges connected to the outline shape.
+Note that this deviation from the proposed framework violates the robustness against small perturbations in the outline polygon, since the topology of the graph of the ST is not stable against those.
+See \cref{formula_constant_bead_count}.
+
+
+
+
+\paragraph{Centered}
+We can emulate the method by \citeauthor{Jin2017JMS}, by transcribing how they deviate from the uniform width toolpaths.
+We therefore base the beading scheme on the bead count $q^-(d)$ defined by the uniform beading scheme.
+\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w_*$.
+Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w_*$.\cite{Jin2017JMS}
+We emulate the rounded polygonal path rerouting they define by supplying a transition length which results in a discretized version of the rounded polygon segment.
+See \cref{formula_centered}.
+
 
 
 
@@ -185,37 +256,21 @@ By taking the advantages of the above two schemes we can define a beading scheme
 We can evenly divide the local feature diameter over the widths of all beads, but choose a local bead count better matching the local feature size.
 We determine the local bead count by dividing the diameter by the prefered bead width and rounding to the nearest integer.
 This reduces the demands on the system and deviation from mechanical properties caused by beads with extreme deviations from the preferred width.
-
-
-
-\begin{align*}
-q(d) &= \left\lfloor \frac{d}{ w_*} + \frac12 \right\rfloor \\
-W(n,d)_i &= d / n \text{ for all } i 
-%\\
-%L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
-\end{align*}
+See \cref{formula_evenly_distributed}.
 
 
 
 
-\paragraph{General distributed scheme}
+
+
+\paragraph{Inward distributed scheme}
+\todo{TODO: merge general distributed with inward distributed decsription.}
 The evenly distributed scheme can be conceptualized as calculating the total discrepancy $E$ between the actual feature diameter $d$ and the total preferred width $n w_*$, dividing the total discrepancy by the number of beads and setting the width of each bead to 
 $w_* + E / n$.
 However, depending on the application we might want a different distribution of widths.
 We therefore supply a beading scheme which supports an arbitrary distribution of the discrepancy.
 The distribution is determined by some weighing function $M(n.d)$, which defines the portion of the discrepancy to distribute to each bead.
-
-
-\begin{align*}
-q(d) &= \left\lfloor \frac{d}{ w_*} + \frac12 \right\rfloor \\
-E(n,d) &= d - n w_* \\
-W(n,d)_i &= w_* + E(n,d) \frac{M(n,d)_i}{\sum_{j=0}^{n-1} M(n,d)_j} \text{ for all } i 
-%\\
-%L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
-\end{align*}
-
-
-\paragraph{Inward distributed}
+%\paragraph{Inward distributed}
 For example, we can choose 
 $$M(n,d)_i = \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )$$
 to distribute the discrepancy over the innermost $2N$ beads, and distribute most of it to the inner beads.
@@ -223,6 +278,10 @@ See \cref{distributed_comparison}.
 That way we limit the region of impact of the distributed scheme to a central region and have the nominal bead width $w_*$ in regions farther away.
 This limits the impact of transitioning regions so that transitions keep the toolpaths smooth farther away from the central regions. % and it forces most of the beads to have exactly the prefered width.
 Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanical properties derived for prints using the uniform scheme will still hold approximately.
+See \cref{formula_inward_distributed}.
+
+
+
 
 
 
@@ -247,6 +306,9 @@ Colors represent bead widths.
 }
 \label{distributed_comparison}
 \end{figure}
+
+
+
 
 
 
