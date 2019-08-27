@@ -497,19 +497,12 @@ if the total length traversed until we reach another marked node $v_1$ is shorte
 \subsection{Central height adjustment}\label{sec_central_height_adjustment}
 Now that we have identified and marked the central regions we quantize their heights.
 More specifically we round the floating heights ($b_\text{initial}$) to integer bead count values ($b_\text{quantized}$).
-Because the bead count is defined in terms of the feature diameter rather than the radius, only half of the integer bead count values ($b_v/2$) coincides with a slicing height.
+Because the bead count is defined in terms of the feature diameter rather than the radius, only half of the integer bead count values ($b/2$) coincides with a slicing height.
 When the heights of a ridge are rounded to an \emph{even} bead count, the ridge will be sliced as normal; the intersection between a slicing plane and the mesh surface results in a polyline on both sides of the ridge, which are connected together into a polygonal toolpath.
 When the heights of a ridge are rounded to an \emph{odd} bead count, the ridge will coincide exactly with a slicing height, which results in a single polyline toolpath being generated along the middle of the feature.
 
 %\subsubsection{Initial bead count}\label{sec_initial_bead_count}
-We define a quantization operator to map a feature diameter to a bead count: $q: \mathbb{R} \to \mathbb{N}$.
-For examples in this section we choose to round to the nearest integer multiple of the nozzle size $w_\text{pref}$: $q(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
-Alternative realizations of the function $q$ will be discussed in \cref{sec_generalization}.
 
-We first assign each marked node $v$ of the ST the bead count $b^*_v \leftarrow q(2R(v))$.
-We then filter out short unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
-From each marked node $v_0$ with an upward unmarked edge attached we walk along the upward edges until we hit another marked node $v_1$.
-If the upper node has the same bead count $b^*_{v_1} = b^*_{v_0}$ we mark all edges and nodes $v$ in between, and set the bead count $b^*_v \leftarrow b^*_{v_0}$.
 
 
 \begin{figure*}
@@ -554,16 +547,26 @@ The symmetry in the result shows that transitioning is robust against small pert
 
 
 \subsubsection{Quantization}
-For edges which connect two nodes $v_0$ and $v_1$ with a different bead count assigned $b^*_{v_0} \neq b^*_{v_1}$ we must figure out the exact location(s $v$ where the quantization operator $q(2R(v))$ jump to a different integer.
+
+We define a quantization operator to map a feature diameter to a bead count: $q: \mathbb{R} \to \mathbb{N}$.
+For examples in this section we choose to round to the nearest integer multiple of the nozzle size $w_\text{pref}$: $q(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
+Alternative realizations of the function $q$ will be discussed in \cref{sec_generalization}.
+
+We first assign each marked node $v$ of the ST the bead count $b^*_v \leftarrow q(2R(v))$.
+We then filter out short unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
+From each marked node $v_0$ with an upward unmarked edge attached we walk along the upward edges until we hit another marked node $v_1$.
+If the upper node has the same bead count $b^*_{v_1} = b^*_{v_0}$ we mark all edges and nodes $v$ in between, and set the bead count $b^*_v \leftarrow b^*_{v_0}$.
+
+For an edge which connects two nodes $v_0$ and $v_1$ with a different bead count assigned $b^*_{v_0} \neq b^*_{v_1}$ we must figure out the exact location(s $v$ where the quantization operator $q(2R(v))$ jump to a different integer.
 We call these locations the \emph{transition anchor positions}.
-Rather than applying the jumps to the UoC mesh we calculate the transition anchor positions and apply smoothing based on those positions, so that we modify the UoC mesh afterwards.
+% Rather than applying the jumps to the UoC mesh we calculate the transition anchor positions and apply smoothing based on those positions, so that we modify the UoC mesh afterwards.
 
 We introduce the function $q^{-1}(n) := \argmax_d q(d) = n$, which gives the feature diameter at which $q$ jumps from $n$ to $n+1$ beads.
 %For each marked edge between $v_0$ and $v_1$ with $b^*_{v_0} \neq b^*_{v_1}$ we introduce transitions.
 A smoothed transition from bead count $n$ to $n+1$ will be anchored on each location $v_x$ where $R(v_x) = q^{-1}(n)$.
 We can compute the location of the anchor simply as
 $$v_x = v_0 + (v_1 - v_0) \frac{ q^{-1}(n) - R(v_0) }{ R(v_1) - R(v_0) }$$
-for each $n$ such that $b^*_{v_0}<n<b^*_{v_1}$.
+for each $n$ such that $b^*_{v_0}\le n<b^*_{v_1}$.
 See \cref{beading_transitioning_filtering__transition_mids}.
 
 In order to prevent frequent oscillations in the bead count, we filter locally maximal or minimal bead count regions.
