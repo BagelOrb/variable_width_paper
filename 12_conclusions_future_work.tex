@@ -20,6 +20,7 @@ If we can assign a loss function to several aspects (e.g. manufacturability, pri
 In its current form the skeleton has been used to determine toolpaths based on the local feature size.
 One direction of future research could be devoted to incorporating other information.
 We could for example make the bead widths depend on properties on the outline, such as curvature or visibility.
+In general it might be interesting to incorporate more `horizontal' flow of information between different parts of a shape, rather than `vertically' between an outline location and a local peak or ridge.
 We could also take into account volumetric considerations such as the toolpathing of the previous layer or some volumetric constraint defined by a functionally graded material.
 
 % Taking a broader perspective we note that the skeletonization decomposes a shape into trapezoids and these trapezoids are decomposed into quads by the toolpath segments which we generate for it.
