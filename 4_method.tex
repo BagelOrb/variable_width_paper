@@ -5,17 +5,17 @@ Given an arbitrarily shaped polygon which represents the intersection of a plane
 The width along a line segment is linearly interpolated from the widths of its two nodes.  
 
 Our method starts with computing the skeleton of the input polygon by medial axis transform (MAT), a strategy that has been commonly used for generating contour parallel toolpath~\cite{eiamsa2003toward}. 
-We make use of the union of cones~\cite{blum1967transformation} to visualize the skeleton, by raising each point in the domain to a height that equals the shortest distance from the point to the polygon boundary (Fig. 2?).
-With the aid of this visualization, contour parallel toolpath with uniform width can be interpreted as the intersection of the union of cones with a set of planar planes at equally spaced heights (Fig. 2?).
+We make use of the union of cones to visualize the skeleton (\cref{sec_surface_construction}), by raising each point in the domain to a height that equals the shortest distance from the point to the polygon boundary (Fig. 2?).
+Contour parallel toolpath with uniform width can be interpreted as the intersection of the union of cones with a set of planar planes at equally spaced heights (Fig. 2?).
 
-As depicted in Fig. 2?-?, starting from the medial axis, our method first identifies edges and nodes in the skeleton that are located in the central of the polygon. The heights at these elements (the distance of the corresponding projected point to the polygon boundary) are then quantized in terms of the number of beads. To ensure a smooth toolpath between regions with quantized integer heights that different more than two, we add new nodes in the skeleton and assign them interpolated integer heights. The union of cones corresponding to the smoothed skeleton is then sliced at regular intervals to obtain a toolpath with varying width.
+As depicted in Fig. 2?-?, starting from the medial axis, our method first identifies edges and nodes in the skeleton that are located in the central of the polygon (\cref{sec_center_classification}). The heights at these elements are then quantized in terms of beads. To ensure a smooth toolpath between regions with quantized integer heights that different more than two, we add new nodes in the skeleton and assign them interpolated integer heights (\cref{sec_central_height_adjustment}). The union of cones corresponding to the smoothed skeleton is then sliced at regular intervals to obtain a toolpath with varying width (\cref{sec_toolpath_extraction}).
 \jun{Do we use regular intervals, but get varying width?}
 
-We note that the union of cones (or UoC) is introduced only for visualization. We describe how to construct the mesh of the UoC in \cref{sec_surface_construction} and
-explain how to identify central regions in \cref{sec_center_classification}.
-Quantizing and smoothing the heights in the central mesh regions are handled in \cref{sec_central_height_adjustment}.
-We then describe how to deal with heights in the periphery in \cref{sec_peripheral_height_adjustment}
-and describe the toolpath extraction algorithm in \cref{sec_toolpath_extraction}.
+% We describe how to construct the mesh of the UoC in \cref{sec_surface_construction} and
+% explain how to identify central regions in \cref{sec_center_classification}.
+% Quantizing and smoothing the heights in the central mesh regions are handled in \cref{sec_central_height_adjustment}.
+% We then describe how to deal with heights in the periphery in \cref{sec_peripheral_height_adjustment}
+% and describe the toolpath extraction algorithm in \cref{sec_toolpath_extraction}.
 
 This section explains how we can generate toolpaths with evenly distributed bead widths. In \cref{sec_generalization} we describe how to generalize our method for generating evenly distributed bead widths into a general framework for generating contour parallel toolpaths using an arbitrary beading scheme and we show several such beading schemes.
 
@@ -63,7 +63,7 @@ This section explains how we can generate toolpaths with evenly distributed bead
 \begin{subfigure}{\figwidthTwo}\centering
 \hspace*{\tempheightTwo}
 \includegraphics[height=\figheight]{sources/method/overview/surface/UoC_with_cones.png}
-\caption{Union of Cones}\label{}
+\caption{Union of cones}\label{}
 \end{subfigure}
 \begin{subfigure}{\figwidthTwo}\centering
 \hspace*{\tempheightTwo}
@@ -118,15 +118,17 @@ This section explains how we can generate toolpaths with evenly distributed bead
 \caption{Adaptive width paths}\label{3d_surface_overview_sliced}
 \end{subfigure}
 \caption{
-A geometrical conceptualization of our technique.
-3D visualization on top and the corresponding 2D visualization on bottom.
-In the UoC \subref{3d_surface_overview_uoc}
-we mark the central regions \subref{3d_surface_overview_center}
-and quantize the height in those regions \subref{3d_surface_overview_rounded}.
-We then smooth out the jumps between different integer multiples \subref{3d_surface_overview_smoothed}
-and finally we slice the structure to get the toolpaths \subref{3d_surface_overview_sliced}.
-Blue signifies regions marked as being central.
-The numbers are the integer multiples of half the nozzle width.
+The first row illustrates the generation of uniform paths (e) by interpreting the path as the intersection of horizontal planes and the union of cones (c) which is an alternative visualization of the skeleton (b). 
+The second row depicts the major steps with both 2D and 3D visualizations for generating paths with adaptive width (i). Central elements in the skeleton are first identified (blue in f). The heights are then quantized in terms of beads (g, the integer values), and smoothed (h).
+% A geometrical conceptualization of our technique.
+% 3D visualization on top and the corresponding 2D visualization on bottom.
+% In the UoC \subref{3d_surface_overview_uoc}
+% we mark the central regions \subref{3d_surface_overview_center}
+% and quantize the height in those regions \subref{3d_surface_overview_rounded}.
+% We then smooth out the jumps between different integer multiples \subref{3d_surface_overview_smoothed}
+% and finally we slice the structure to get the toolpaths \subref{3d_surface_overview_sliced}.
+% Blue signifies regions marked as being central.
+% The numbers are the integer multiples of half the nozzle width.
 }
 \label{3d_surface_overview}
 \end{figure*}
@@ -136,7 +138,7 @@ These terms will be further explained as they first appear later in the paper.
 
 \begin{figure}\centering
 \includegraphics[width=.75\columnwidth]{sources/method/legend2.pdf}
-\caption{Explanation of terms and common color coding.}
+\caption{Illustrative explanation of terms and color coding that are consistently used in this paper.}
 \label{legend}
 \end{figure}
 
@@ -159,37 +161,40 @@ These terms will be further explained as they first appear later in the paper.
 
 
 
+%\subsection{Surface generation}\label{sec_surface_construction}
+\subsection{Union of cones}\label{sec_surface_construction}
 
-\subsection{Surface generation}\label{sec_surface_construction}
-\jun{I would like to change the title, don't have a better word.}
-
-The union of cones surface mesh can be derived from a common skeletonization of the polygonal outline shape: the medial axis.
-By assigning each node in the skeleton a height equal to the radial distance to the outline we obtain the shape of the UoC.
-Starting from the medial axis we further decompose the shape into simple fragments, so that the mesh contains only quads and triangles.
-
+The union of cones (UoC) is derived from a common skeletonization of the polygonal outline shape: the medial axis.
+By assigning each node in the skeleton a height equal to its shortest distance to the outline we obtain the shape of the UoC.
+Starting from the medial axis we further decompose the shape into simple fragments, so that the domain contains only quads and triangles. This decomposition allows to approximate the surface of the UoC as a 3D piecewise linear mesh. 
 
 
-\subsubsection{Medial axis transform}
+%\subsubsection{Medial axis transform}
+\paragraph{Medial axis transform}
 The medial axis is a compact and intrinsic representation of shapes.
-It is defined by the locations where the inscribed circle meets the boundary in at least two locations~\cite{blum1967transformation}.
+It is defined by the locations where the inscribed circle meets the boundary in at least two locations~\cite{blum1967transformation,lee1982medial}.
+The resulting skeleton consists of straight edges and parabolic edges.
+An example is illustrated in \cref{shape_decomposition_mat}.
 We call the set of closest points on the outline polygon $P$ of a point $v$ on the skeleton its \emph{support}:
 \begin{equation}
     \text{sup}(v) = \argmin_{x\in P} |x - v|.
 \end{equation}
-The resulting skeleton consists of straight edges and parabolic edges which form a graph.
-See \cref{MAT_explanation_circles}.
+Consequently the shortest distance for a point on the skeleton is called its feature radius, $R(v)$.
+%See \cref{MAT_explanation_circles}.
 %We therefore represent the skeleton in a standard half-edge data-structure.
 %See \cref{shape_decomposition_datastructure}.
-
 %Alternatively the medial axis can be defined as the locations where the UoC surface is discontinuous \cite{blum1967transformation}
 %This last conceptualization is especially relevant because the uniform toolpath generation method consists precisely in equidistant wave-fronts from the outline.
 %The medial axis can therefore be seen as the space within which contour following toolpaths are generated.
 %See \cref{MAT_explanation}.
-
 %``Because of its shape, the medial axis of a figure is also called the skeleton or the symmetric axis of the figure.'' \cite{lee1982medial} 
-``Associated with the medial axis is a radius function $R$, which defines for each point on the axis its distance to the boundary of the object.'' \cite{lee1982medial}
-The medial axis along with the feature radius values along the skeleton combine into a complete shape descriptor, called the medial axis transform (MAT).
-Feature radius and node locations will be used below to analyse the shape locally.
+%``Associated with the medial axis is a radius function $R$, which defines for each point on the axis its distance to the boundary of the object.'' \cite{lee1982medial}
+The medial axis along with the feature radius values along the skeleton form a complete shape descriptor, known as the medial axis transform (MAT).
+%Feature radius and node locations will be used below to analyse the shape locally.
+
+By vertically raising the center of an inscribed circle to a height that equals the center's feature radius, a right cone is formed by the inscribed circle as the base and the raised center as the apex. 
+The union of cones forms a 3D solid volume. 
+The medial axis can thus also be interpreted as the ridges of the volume defined by the union of cones. 
 
 %\cite{Moesen2011} provides a thorough overview of all MAT algorithms.
 %\cite{Moesen2011} calls $R$ the `feature radius': ``In every point $p \in P$, and thus also in points on the MA, the feature radius $\text{rad}(p)$ of $p$ can be defined as the Euclidean distance to the closest point on the boundary of $P$.''
@@ -257,54 +262,66 @@ Relation between the medial axis (red), the limited Voronoi Diagram (red and gre
 
 
 
-\subsubsection{Skeletal trapezoidation}
-The MAT decomposes the outline shape into several complex shapes which we need to further decompose in order to have a mesh consisting only of quads and triangles.
-We employ a shape decomposition proposed by \citeauthor{Ding2016a}. \cite{Ding2016a}
-Each of the regions demarcated by the skeleton is further decomposed by adding radial edges from each node $v$ to its support $\text{sup}(v)$.
+%\subsubsection{Skeletal trapezoidation}
+\paragraph{Skeletal trapezoidation}
+To construct the union of cones, starting from the medial axis we decompose the input polygon into a set of quads and triangles.
+\jun{Tim, what is our initial purpose of skeletal trapezoidation, the purpose before we concept the approach by union of cones?}
+We employ a shape decomposition similar to the one proposed by \citeauthor{Ding2016a}~\cite{Ding2016a}. 
+The basic idea is to add edges connecting each node $v$ on the medial axis to (all of) its supports, $\text{sup}(v)$. 
 The resulting skeleton decomposes the outline shape into trapezoids and triangles.
-We will therefore call this shape decomposition the \emph{Skeletal Trapezoidation} (ST).
-\footnote{The concept of a trapezoidation conventionally allows for the degenerate case where a trapezoid resolves into a triangle. \cite{chazelle1984,fournier1984}}
-
-The trapezoids are classified as belonging to a specific domain following \citeauthor{Ding2016a}.
-Each polygon in the input shape acquires it's own domain.
-The domains of hole polygons are touching the domains of the outer polygon.
-See \cref{shape_decomposition_domains}.
+Considering the fact that the concept of trapezoidation conventionally allows for the degenerate case where a trapezoid resolves into a triangle~\cite{chazelle1984,fournier1984}, we call this shape decomposition the \emph{Skeletal Trapezoidation} (ST).
 
 
-The medial axis of a polygonal shape can be obtained from the Voronoi Diagram (VD) generated on the line segments and vertices of the shape, by throwing away all edges of the VD falling outside of the outline shape and throwing away the edges connected to concave vertices in the outline shape. \cite{lee1982medial}
-However, the concave vertices are precisely in the support of the nodes to which those edges connect.
-This means we can efficiently compute the ST from the VD by removing all edges which lie outside the outline shape and add radial edges to the nodes from there.
-See \cref{skeletonization_comparison}.
+
+% The trapezoids are classified as belonging to a specific domain following \citeauthor{Ding2016a}.
+% Each polygon in the input shape acquires it's own domain.
+% The domains of hole polygons are touching the domains of the outer polygon.
+% See \cref{shape_decomposition_domains}.
 
 
-We then also discretize parabolic edges and edges generated by two concave outline vertices into edges approximately as long as some constant $d^\text{discretization}$.
-See the middle of \cref{shape_decomposition_st}.
-That way we can approximate the feature radius $R$ in between the two nodes $v_0$ and $v_1$ of an edge in the ST by interpolating linearly between $R(v_0)$ and $R(v_1)$.
-This makes the ST capture a discrete approximation of the radius function which is then used to determine the height of each node in the skeleton in order to generate the 3D mesh of the UoC.
+Besides the nodes that are connected by straight or parabolic edges, we insert nodes to discretize a parabolic edge into a polyline (see the middle of \cref{shape_decomposition_st}). 
+The length of edges in the polyline is upper bounded by a prescribed constant $d^\text{discretization}$.
+Additional nodes, with the same upper bound on the resulting edge length, are also added to discretize an edge that is formed by two concave outline vertices (see the vertex-vertex region in \cref{legend}). 
+This allows to approximate the feature radius $R$ in between the two nodes $v_0$ and $v_1$ of an edge in the medial axis by interpolating linearly between $R(v_0)$ and $R(v_1)$.
+
+%We then also discretize parabolic edges and edges generated by two concave outline vertices into edges approximately as long as some constant $d^\text{discretization}$.
+%See the middle of \cref{shape_decomposition_st}.
+%That way we can approximate the feature radius $R$ in between the two nodes $v_0$ and $v_1$ of an edge in the ST by interpolating linearly between $R(v_0)$ and $R(v_1)$.
+%This makes the ST capture a discrete approximation of the radius function which is then used to determine the height of each node in the skeleton in order to generate the 3D mesh of the UoC.
 %; see \cref{mat_3d}.
 
 
 
 
 
-\subsubsection{Union of cones}
-In order to visualize the ST as a 3D surface, we add a third dimension.
-We assign each node a height value measured in terms of beads: it's \emph{bead count}.
-We define the bead count as the number of beads to fit along the \emph{diameter} of the shape, which is twice the feature radius.
-While the feature radii are measured along the support edges, the diameter is not measurable as such because the support edges are generally not collinear;
-we introduce the concept of the diameter so that we can deal with an odd number of beads while using integer logic.
+%\subsubsection{Union of cones}
+\paragraph{Approximation of union of cones}
+The skeleton trapezoidation (ST) provides a means to visualize the union of cones (UoC) approximated by a 3D surface mesh composed of quadrilateral and triangular patches.
+%In order to visualize the ST as a 3D surface, we add a third dimension.
+We assign each node in ST a (floating) height value measured in terms of beads, referred to as the \emph{bead count}.
+We define the bead count as the number of beads to fit along the \emph{diameter} of the inscribed circle centered at node $v$, i.e. $2R(v)$, by
+\begin{equation}
+    b^*_v = 2 R(v) / w_\text{pref},
+\label{eq:initialBeadCount}
+\end{equation}
+where $w_\text{pref}$ is the nozzle size. 
+%While the feature radii are measured along the support edges, the diameter is not measurable as such because the support edges are generally not collinear;
+We divide the diameter rather than the radius as this allows to deal with an odd number of beads while using integer logic.
+%The result is a mesh representing the union of cones (UoC) consisting entirely of quads and triangles.
+Note that although the overview of the method has been described geometrically in terms of the UoC, the actual method relies on the 2-dimensional ST, while the use of the bead count as a height value is only a visualization aid.
+\jun{is it only a visualization or will it be used for slicing?}
 
-For each node $v$ we assign an initial bead count based on the feature diameter $2R$ and the nozzle size $w_\text{pref}$: $b^*_v \leftarrow 2 R(v) / w_\text{pref}$.
-The result is a mesh representing the union of cones (UoC) consisting entirely of quads and triangles.
-Note that although the overview of the method was described geometrically in terms of the UoC, the actual method relies on the 2-dimensional ST, while the use of the bead count as a height value is only a visualization aid.
+\paragraph{Implementation}
+The medial axis of a polygonal shape is a subset of the Voronoi Diagram (VD) generated from the line segments and vertices of the shape~\cite{lee1982medial}. 
+The edges of the Voronoi diagram that fall outside of the outline shape are irrelevant for our purpose and thus discarded.
+Note that the Voronoi diagram contains, in addition to the medial axis, edges connecting to concave vertices in the outline shape (see \cref{shape_decomposition_vd}). 
+From the Voronoi diagram we add nodes to discretize parabolic edges and edges formed by two concave outline vertices, and then connect all nodes to their supports, forming a skeletal trapezoidation. 
+We then assign each node the bead count values using Eq.~\ref{eq:initialBeadCount}.
+We compute the Voronoi diagram using the Boost \verb!C++! libraries~\cite{schaling2011boost}, which implements the algorithm proposed by \citeauthor{fortune1986sascg}~\cite{fortune1986sascg}. A half-edge data-structure is used to represent the Voronoi diagram (\cref{shape_decomposition_datastructure}).
 
-We compute the UoC by first generating the VD using the Boost \verb!C++! library, which implements the algorithm proposed by \citeauthor{fortune1986sascg}.\cite{fortune1986sascg}
-We transfer the internal parts of each Voronoi cell to our half-edge data-structure, discretize non-linear VD edges and add the support edges to form the ST.
-We then assign each node the bead count values using the simple formula described above.
+%
 
-
-
-
+\jun{Since VD is not frequently used, I propose to suppress the use of VD. The full consequence needs to be checked.}
 
 
 
@@ -314,26 +331,31 @@ We then assign each node the bead count values using the simple formula describe
 
 
 \subsection{Center classification}\label{sec_center_classification}
-The simple technique of performing uniform width offset produces large overfill and underfill areas on central regions of the ST.
-These central regions present themselves as upper ridges in the mountains of the UoC surface.
-This sections covers what parts of the UoC will be marked as being central, as opposed to peripheral.
+%The simple technique of performing uniform width offset produces large overfill and underfill areas on central regions of the ST.
+%These central regions present themselves as upper ridges in the mountains of the UoC surface.
+%This sections covers what parts of the UoC will be marked as being central.
+\jun{TODO: For what purpose ... }
+we mark parts of the UoC as being central.
+The remaining is called peripheral.
+Our framework will decide on a beading at all of the marked nodes in `the center' and apply the beading outward to the unmarked nodes.
 
-We mark a node in the ST as central if its feature radius is larger than that of all of the neighboring nodes.
-That is: we mark the local maxima, i.e. the mountain tops of the UoC as being central.
-We also mark whole edges as being central if they are significant according to a significance measure which is commonly used in shape analysis.
+We mark a node in the ST as central if its feature radius is larger than that of all its neighboring nodes, i.e. a local maxima.
+%That is: we mark the local maxima, i.e. the mountain tops of the UoC as being central.
+We also mark an edge as being central if it is significant according to a significance measure.
 
 
-\subsubsection{Significance measure}\label{sec:significance_measure}
-Centrality can be formalized by looking at a commonly used significance measure knows as the \emph{bisector angle}.
-The bisector angle $\alpha$ is the interior angle $\angle{p_ovp_1} \leq \si{180}{\degree}$ between a location $v$ on an edge of the ST and its two supporting polygon points $p_0$ and $p_1$.\cite{attali1996modeling}
-Edges are significant if the bisector angle exceeds $\alpha_\text{max}$ which is governed by the beading scheme.
-
-For a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$, which corresponds to overfill areas and underfill areas the size of $\nicefrac12 w^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using the simple technique of uniform bead width $w$.
+%\subsubsection{Significance measure}\label{sec:significance_measure}
+\paragraph{Significance measure}
+We make use of the \emph{bisector angle} as an indicator of significance which is commonly used in shape analysis.
+%Centrality can be formalized by looking at a commonly used significance measure knows as the \emph{bisector angle}.
+The bisector angle $\alpha$ is the interior angle $\angle{p_ovp_1} \leq \si{180}{\degree}$, formed by two support edges ($vp_0$ and $vp_1$) of node $v$~\cite{attali1996modeling}. 
+\jun{Bisector angle is defined on nodes, but later we classify edges on either of its nodes, or?}
+Edges are significant if the bisector angle exceeds $\alpha_\text{max}$ which is governed by the beading scheme. 
+For a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$, which corresponds to overfill areas and underfill areas the size of $\nicefrac12 w^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ \jun{$w\to w_{pref}$ }when filled using the simple technique of uniform bead width $w$.
 See \cref{naive_overfill_underfill}.
 The bisector angle is therefore an exact measure of the amount of overfill and underfill in the uniform toolpaths of constant width.
 %Contrary to related literature we will \emph{keep} the non-significant regions of the skeleton.
-We mark all significant edges as such and contrary to related literature we keep the unmarked edges of the ST.
-Our framework will decide on a beading at all of the marked nodes in `the center' nodes and apply the beading outward to the unmarked nodes.
+%We mark all significant edges as such and contrary to related literature we keep the unmarked edges of the ST.
 
 
 \begin{figure}
@@ -347,20 +369,17 @@ The bisector angle $a = 180\degree - \beta$ is the angle between a location $v$ 
 \label{naive_overfill_underfill}
 \end{figure}
 
+% The significance evaluation is performed efficiently by checking the ratio between feature radius $R$ and the Euclidean distance:
+% if $ | R(v_1) - R(v_0) | / |v_1 - v_0| >  \cos(\alpha_\text{max} / 2)$ then $\alpha > \alpha_\text{max}$. See \cref{distance_based_angles}. This ratio has a clear geometrical interpretation as the slope of the ridge in the UoC surface.
 
-A computationally efficient way to compute whether an edge is significant can be obtained by looking at the ratio between feature radius $R$ and the Euclidean distance:
-if $ | R(v_1) - R(v_0) | / |v_1 - v_0| >  \cos(\alpha_\text{max} / 2)$ then $\alpha > \alpha_\text{max}$.
-See \cref{distance_based_angles}.
-This means we can prevent executing trigonometric functions on \emph{each} of the edges in the ST.
-Moreover the ratio has a clear geometrical interpretation as the slope of the ridge in the UoC surface.
-
-This ratio can readily be applied to simple ST edges to determine whether they are significant.
+Whether the bisection angle is larger than a threshold $\alpha_\text{max}$ is equivalent to if $ | R(v_1) - R(v_0) | / |v_1 - v_0| >  \cos(\alpha_\text{max} / 2)$. See \cref{distance_based_angles}. This ratio has a clear geometrical interpretation as the slope of the ridge in the UoC surface.
+%This ratio can readily be applied to simple ST edges to determine whether they are significant.
 For VD edges generated by a polygon vertex at $(0,d)$ and a line segment through $(0,0)$ and $(0,\epsilon)$ or another vertex $(0,0)$, we can determine the significant portion by evaluating $\frac{\partial R}{\partial x} > \cos(\alpha_\text{max} / 2)$.
 For parabolas we introduce extra points in the discretization at the two bounds where $| x | = d  / \tan(\alpha_\text{max} / 2)$
 and for VD edges with vertex-vertex support we introduce discretization points at the two bounds where $| x | = \nicefrac12 d  / \tan(\alpha_\text{max} / 2)$.
 This ensures that the discretization we perform when transforming the VD into the ST doesn't alter the extent and existence of marked central regions.
 See \cref{legend}.
-
+\jun{This paragraph is not clear to me. Is it related to Fig. 6? what is $x$ and what is $d$?}
 
 \begin{figure} \centering
 \newlength{\significancePropertiesHeight}
@@ -454,10 +473,10 @@ so if $\angle p_1 v p_2 < 120\degree$ then $\angle p_2 v p_3 < 60\degree$ and is
 
 
 
-\subsubsection{Marking filtering}
-Using the significance measure and the local maximum feature radius condition we initialize all marked edges and nodes.
-We then filter out high frequency changes in the marking in order to ensure that the output of our technique is smooth. 
-We perform filtering on the unmarked regions, because unmarking central regions could reintroduce large over- and underfill areas.
+%\subsubsection{Marking filtering}
+\paragraph{Marking filtering}
+After initializing all marked edges and nodes, we filter out high frequency changes in the marking in order to ensure that the generated toolpath is smooth. 
+The filtering is performed by additionally marking some unmarked elements, rather than the opposite since unmarking central regions reintroduce large over- and underfill areas.
 From each marked node $v_0$ with an upward unmarked edge attached we walk along the upward edges;
 if the total length traversed until we reach another marked node $v_1$ is shorter than some filter distance $d_\text{max}^\text{unmarked}$, we mark all edges encountered as being central.
 
@@ -477,15 +496,15 @@ if the total length traversed until we reach another marked node $v_1$ is shorte
 
 \subsection{Central height adjustment}\label{sec_central_height_adjustment}
 Now that we have identified and marked the central regions we quantize their heights.
-More specifically we round the heights to integer bead count values.
-Because the bead count is defined in terms of the feature diameter rather than the radius, only half of the integer bead count values coincides with a slicing height.
+More specifically we round the floating heights ($b_\text{initial}$) to integer bead count values ($b_\text{quantized}$).
+Because the bead count is defined in terms of the feature diameter rather than the radius, only half of the integer bead count values ($b_v/2$) coincides with a slicing height.
 When the heights of a ridge are rounded to an \emph{even} bead count, the ridge will be sliced as normal; the intersection between a slicing plane and the mesh surface results in a polyline on both sides of the ridge, which are connected together into a polygonal toolpath.
 When the heights of a ridge are rounded to an \emph{odd} bead count, the ridge will coincide exactly with a slicing height, which results in a single polyline toolpath being generated along the middle of the feature.
 
 %\subsubsection{Initial bead count}\label{sec_initial_bead_count}
-In order to update the bead count values, we require a quantization operator which maps a feature diameter to a bead count: $q: \mathbb{R} \to \mathbb{N}$.
-For our example we choose to round to the nearest integer multiple of the nozzle size $w_\text{pref}$: $q(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
-In our generalized framework the function $q$ is determined by a beading scheme.
+We define a quantization operator to map a feature diameter to a bead count: $q: \mathbb{R} \to \mathbb{N}$.
+For examples in this section we choose to round to the nearest integer multiple of the nozzle size $w_\text{pref}$: $q(d) = \left\lfloor \nicefrac{d}{w_\text{pref}} + \nicefrac12 \right\rfloor$.
+Alternative realizations of the function $q$ will be discussed in \cref{sec_generalization}.
 
 We first assign each marked node $v$ of the ST the bead count $b^*_v \leftarrow q(2R(v))$.
 We then filter out short unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
