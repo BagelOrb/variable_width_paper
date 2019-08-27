@@ -246,10 +246,10 @@ The skeleton trapezoidation (ST) provides a means to visualize the union of cone
 We assign each node in ST a (real number) height value measured in terms of beads, referred to as the \emph{bead count} $b$.
 We define the bead count as the number of beads to fit along the \emph{diameter} of the inscribed circle centered at node $v$, i.e. $2R(v)$, by
 \begin{equation}
-    b^\sim_v = 2 R(v) / w_*,
+    b^\sim_v = 2 R(v) / w^*,
 \label{eq:initialBeadCount}
 \end{equation}
-where $w_*$ is the nozzle size. 
+where $w^*$ is the nozzle size. 
 %While the feature radii are measured along the support edges, the diameter is not measurable as such because the support edges are generally not collinear;
 We divide the diameter rather than the radius as this allows to deal with an odd number of beads while using integer logic.
 %The result is a mesh representing the union of cones (UoC) consisting entirely of quads and triangles.
@@ -302,7 +302,7 @@ We make use of the \emph{bisector angle} as an indicator of significance which i
 %Centrality can be formalized by looking at a commonly used significance measure knows as the \emph{bisector angle}.
 The bisector angle $\alpha$ is the interior angle $\angle{p_0lp_1} \leq \SI{180}{\degree}$, between any location $l$ on an edge of the ST and its two supporting polygon points $ \{ p_0, p_1 \} = \text{sup}(l)$~\cite{attali1996modeling}. 
 Edges are significant if the bisector angle on any location on the edge exceeds $\alpha_\text{max}$ which is governed by the beading scheme. 
-For a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$, which corresponds to overfill areas and underfill areas the size of $\nicefrac12 w_*^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using the simple technique of uniform bead width $w_*$.
+For a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$, which corresponds to overfill areas and underfill areas the size of $\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using the simple technique of uniform bead width $w^*$.
 See \cref{naive_overfill_underfill}.
 The bisector angle is therefore an exact measure of the amount of overfill and underfill in the uniform toolpaths of constant width.
 %Contrary to related literature we will \emph{keep} the non-significant regions of the skeleton.
@@ -452,7 +452,7 @@ The symmetry in the result shows that transitioning is robust against small pert
 \paragraph{Quantization}
 We define a quantization operator $q$ to map a feature diameter ($d=2R(v)$) to a bead count: $q: \mathbb{R} \to \mathbb{N}$.
 Because our quantization scheme should round to the nearest integer multiple of the nozzle size, we have
-$q(d) = \left\lfloor d / w_* + \nicefrac12 \right\rfloor$.
+$q(d) = \left\lfloor d / w^* + \nicefrac12 \right\rfloor$.
 Alternative quantization schemes will be discussed in \cref{sec_generalization}.
 By applying $q$ to the heights of central nodes we quantize the bead count:
 $b^\neg_v = q(2R(v)) = \left\lfloor b^\sim_v + \nicefrac12 \right\rfloor$.
@@ -495,13 +495,13 @@ For two consecutive anchors which transition to opposite directions, if the dist
 
 A sharp transition from $n$ to $n+1$ beads at an anchor location creates sharp turns in the toolpath (see \cref{transitions} top).
 A transition length $t(n)$ is introduced to ensure a smooth transition (see \cref{transitions}). 
-The transition is centered at the anchor, and its length is set to $t(n) = w_*$.
+The transition is centered at the anchor, and its length is set to $t(n) = w^*$.
 We discard any transition anchor which is too close to the end of a chain of marked edges for the smoothed transition to fully fit within the marked region.
 In order to make the transition ramps robust against small perturbations in the outline shape, we modify the nodes which are in between the two ends of the transition by (re-)assigning them a fractional bead count $b^\wedge$, linearly interpolated between the two ends of the transition (see \cref{beading_transitioning_filtering__transitions_applied}).
 %This modification makes the transition ramps robust against small perturbations in the outline shape (to be explained in \cref{section_beading_interpolation});
 %compare the top and bottom of \cref{beading_transitioning_filtering}. 
 Finally we update the ST by adding support edges at the transition ends. 
-As shown in \cref{beading_transitioning_filtering__result_uoc}, the marked regions in the UoC mesh have become horizontal at integer multiples of $\nicefrac12 w_*$ for long stretches with ramps in between.
+As shown in \cref{beading_transitioning_filtering__result_uoc}, the marked regions in the UoC mesh have become horizontal at integer multiples of $\nicefrac12 w^*$ for long stretches with ramps in between.
 
 
 
