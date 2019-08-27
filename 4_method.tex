@@ -411,11 +411,9 @@ if the total length traversed until we reach another marked node $v_1$ is shorte
 
 \subsection{Central height adjustment}\label{sec_central_height_adjustment}
 Now that we have identified and marked the central regions we quantize their heights.
-More specifically we round the floating heights ($b^\sim$) to integer bead count values ($b^\neg$).
-Because the bead count is defined in terms of the feature diameter rather than the radius, only half of the integer bead count values ($b^\sim/2$) coincides with a slicing height.
-When the heights of a ridge are rounded to an \emph{even} bead count, the ridge will be sliced as normal; the intersection between a slicing plane and the mesh surface results in a polyline on both sides of the ridge, which are connected together into a polygonal toolpath.
-When the heights of a ridge are rounded to an \emph{odd} bead count, the ridge will coincide exactly with a slicing height, which results in a single polyline toolpath being generated along the middle of the feature.
-\jun{I like the information in the last few sentences. Shall we make it short here, and describe them in the slicing subsection.}
+We first quantize the initial bead count $b^\sim$ into an integer bead count $b^\neg$ at the marked nodes using a quantization operator $q$,
+then find the locations along the edges where $q$ makes a jump from one bead count $n$ to another $n+1$
+and then introduce ramps to smoothly transition from $n$ to $n+1$ using fractional bead counts $b^\wedge$ along the smooth transition.
 %\subsubsection{Initial bead count}\label{sec_initial_bead_count}
 
 
@@ -464,35 +462,36 @@ The symmetry in the result shows that transitioning is robust against small pert
 %\subsubsection{Quantization}
 
 \paragraph{Quantization}
-We define a quantization operator to map a feature diameter ($d=2R(v)$) to a bead count: $q: \mathbb{R} \to \mathbb{N}$.
-For examples in this section we first assign $b_\text{initial}$ (Eq.~\ref{eq:initialBeadCount}) to a marked node $v$ and then round it to the nearest integer: $q = \left\lfloor b_\text{initial} + \nicefrac12 \right\rfloor$.
-Alternative realizations of the function $q$ will be discussed in \cref{sec_generalization}. Along with this quantization, an amendment to the marking filtering is performed, in order to alleviate a problem that will be handled in \cref{section_beading_conflicts}. Specifically, short unmarked edges (and their nodes) are marked as central if they lie between two nodes with the same integer bead count.
+We define a quantization operator $q$ to map a feature diameter ($d=2R(v)$) to a bead count: $q: \mathbb{R} \to \mathbb{N}$.
+Because our quantization scheme should round to the nearest integer multiple of the nozzle size, we have
+$q(d) = \left\lfloor d / w_\text{pref} + \nicefrac12 \right\rfloor$.
+Alternative quantization schemes will be discussed in \cref{sec_generalization}.
+By applying $q$ to the heights of central nodes we quantize the bead count:
+$b^\neg_v = q(2R(v)) = \left\lfloor b^\sim_v + \nicefrac12 \right\rfloor$.
+\iffalse
+Along with this quantization, an amendment to the marking filtering is performed, in order to alleviate a problem that will be handled in \cref{section_beading_conflicts}.
+Specifically, unmarked regions are marked as central if they lie between two nodes with the same integer bead count.
+\fi
 %We then filter out short unmarked regions where the bead count remains constant in order to limit the extent of a problem handled in \cref{section_beading_conflicts}.
 % From each marked node $v_0$ with an upward unmarked edge attached we walk along the upward edges until we hit another marked node $v_1$.
 % If the upper node has the same bead count $b^*_{v_1} = b^*_{v_0}$ we mark all edges and nodes $v$ in between, and set the bead count $b^*_v \leftarrow b^*_{v_0}$.
 
 \paragraph{Transition anchors}
-For a marked edge which connects nodes $v_0$ and $v_1$ with $b^\neg_{v_0}\le n<b^\neg_{v_1}$, we determine \emph{transition anchors} at which the bead count transits from $n$ to $n+1$.
-% figure out the exact location(s $v$ where the quantization operator $q(2R(v))$ jump to a different integer.
-% We call these locations the \emph{transition anchor positions}.
-% % Rather than applying the jumps to the UoC mesh we calculate the transition anchor positions and apply smoothing based on those positions, so that we modify the UoC mesh afterwards.
+For a marked edge which connects nodes $v_0$ and $v_1$ with $b^\neg_{v_0} \le n < b^\neg_{v_1}$, we determine the \emph{transition anchor locations} at which the bead count transitions from $n$ to $n+1$.
 To this end, we introduce the function 
 \begin{equation}
     q^{-1}(n) := \argmax_d q(d) = n,
 \end{equation}
-which gives the feature diameter $d$ at which $q$ the bead count transits from $n$ to $n+1$.
-%For each marked edge between $v_0$ and $v_1$ with $b^*_{v_0} \neq b^*_{v_1}$ we introduce transitions.
-The location of the anchor is then computed by inversely interpolating $R(v_x) = q^{-1}(n)$, i.e. by
-% A smoothed transition from bead count $n$ to $n+1$ will be anchored on each location $v_x$ where $R(v_x) = q^{-1}(n)$.
-% We can compute the location of the anchor simply as
+which gives the feature diameter $d$ at which the bead count $q$ transitions from $n$ to $n+1$.
+The location of the anchor $v_x$ is then computed by inversely interpolating $R(v_x) = q^{-1}(n)$, i.e. 
 \begin{equation}
     v_x = v_0 + (v_1 - v_0) \frac{ q^{-1}(n) - R(v_0) }{ R(v_1) - R(v_0) }.
 \end{equation}
 %for each $n$ such that $b^*_{v_0}\le n<b^*_{v_1}$.
 An illustration of the anchors is shown in \cref{beading_transitioning_filtering__transition_mids}.
 
-We perform a filtering to smooth frequent oscillations in the bead count (which is not visible in the example in \cref{beading_transitioning_filtering}).
-For two consecutive anchors which transition to opposite directions, if the distance between them is smaller than some limit $d_\text{max}^\text{transition}$, the bead counts at all nodes in-between are set to the surrounding bead counts, and consequently anchors are removed (See \cref{beading_transitioning_filtering__filtered}).
+We perform a filtering step to prevent frequently changing the bead count back and forth within a short distance.
+For two consecutive anchors which transition to opposite directions, if the distance between them is smaller than some limit $d_\text{max}^\text{transition}$, the bead counts at all nodes in-between are set to the surrounding bead counts, and consequently these anchors are removed (See \cref{beading_transitioning_filtering__filtered}).
 
 % For each edge which contains a transition anchor we walk along the marked edges until we encounter another anchor.
 % If the other anchor is a transition in the opposite direction and the traversed distance is within some limit $d_\text{max}^\text{transition}$ we remove the transitions and set the bead counts at all nodes in the filtered region to the surrounding bead counts.
@@ -504,43 +503,19 @@ For two consecutive anchors which transition to opposite directions, if the dist
 
 
 % \subsubsection{Smooth transition}
-\paragraph{Smooth transition}
+\paragraph{Smooth transitions}
 
-A direct transition from $n$ to $n+1$ beads at an anchor creates sharp turns in the toolpath (see \cref{transitions} top).
-A finite transition length ($t(n)$) is designed to ensure a smooth transition (see \cref{transitions} bottom). 
+A sharp transition from $n$ to $n+1$ beads at an anchor location creates sharp turns in the toolpath (see \cref{transitions} top).
+A transition length $t(n)$ is introduced to ensure a smooth transition (see \cref{transitions}). 
 The transition is centered at the anchor, and its length is set to $t(n) = w_\text{pref}$.
-%In order to prevent discontinuities in the toolpaths around locations where the bead count changes i.e. where there is a jump in height in the UoC, we need a way to smoothly transition to a different number of beads around locations where the outline shape has a changing bead count.
-%The length along the marked region of a transition from bead count $n$ to $n+1$ is determined by some function $t(n)$.
-%For our example we will use a transition length equal to the nozzle size: $t(n) = w_\text{pref}$.
-% A transition with length $t(n)$ will be placed somewhere covering the transition anchor position.
-% We require an additional function to be specified by the beading scheme: $t_0(n)$ determines the distance between the lower end of a transition from bead count $n$ to $n+1$ and the anchor point - as measured along the marked edges of the ST.
-% From that we calculate $t_1(n) = t(n) - t_0(n)$ for the distance from the anchor to the upper end of the transition.
-% For our example we can simply use $t_0(n) = t_1(n) = \nicefrac12 w_\text{pref}$, so that the transition ramp is centered on the anchor position.
-The introduction of transition length requires the edge is longer enough to accommodate it. 
-%Therefore, if the distance from an anchor to its adjacent node is smaller than $t(n)/2$, the anchor is discarded. 
-Therefore, we modify nodes that are within $t(n)/2$ by (re-)assigning them a fractional bead count $b^\wedge$, linearly interpolated from the ratio of the distance over $t(n)$ (see \cref{beading_transitioning_filtering__transitions_applied}). 
-This modification makes the transition ramps robust against small perturbations in the outline shape (to be explained in \cref{section_beading_interpolation});
-compare the top and bottom of \cref{beading_transitioning_filtering}. 
-Finally we update the UoC mesh by adding support edges at transition ends. 
-As shown in \cref{beading_transitioning_filtering__result_uoc}, in the updated UoC mesh, the marked regions become horizontal at integer multiples of $w_{pref}$ for long stretches with ramps in between.
-
-% These fractional bead counts will be used in \cref{section_beading_interpolation} in a way which guarantees a similar toolpath in transitioning regions which are crossed by extra support edges for small perturbations and those which are not.
+We discard any transition anchor which is too close to the end of a chain of marked edges for the smoothed transition to fully fit within the marked region.
+In order to make the transition ramps robust against small perturbations in the outline shape, we modify the nodes which are in between the two ends of the transition by (re-)assigning them a fractional bead count $b^\wedge$, linearly interpolated between the two ends of the transition (see \cref{beading_transitioning_filtering__transitions_applied}).
+%This modification makes the transition ramps robust against small perturbations in the outline shape (to be explained in \cref{section_beading_interpolation});
+%compare the top and bottom of \cref{beading_transitioning_filtering}. 
+Finally we update the ST by adding support edges at the transition ends. 
+As shown in \cref{beading_transitioning_filtering__result_uoc}, the marked regions in the UoC mesh have become horizontal at integer multiples of $\nicefrac12 w_{pref}$ for long stretches with ramps in between.
 
 
-% Before we generate the transition ramps we filter out transition anchors which are positioned too close to the end of a marked region.
-% For each edge which contains a transition anchor we walk along the marked regions until until we have traversed a distance more than $t(n)$.
-% If we hit the end of a marked region and the traversed distance from the anchor point is less than the distance $t_{0}(n)$ or $t_{1}(n)$ to the transition end we dissolve the bead count region in the same manner as described above.
-
-% The generation of the transition ramps should be robust against small perturbations in the outline shape;
-% compare the top and bottom of \cref{beading_transitioning_filtering}.
-% In order to generate the lower and upper end point of the transition ramps we walk downward and upward along the marked regions from each anchor position $v$ until we have traversed the corresponding distance of $t_{0}(n)$ or $t_{1}(n)$.
-% If there is any node $v_x$ in between $v$ and $v_0$ or $v_1$ we assign it a fractional bead count by linear interpolation: $b^*_{v_x} = n + D(v_0, v_x)/t(n)$, where $D(.)$ is the cumulative distance measured along the marked edge(s).
-% See \cref{beading_transitioning_filtering__transition_ends}.
-% These fractional bead counts will be used in \cref{section_beading_interpolation} in a way which guarantees a similar toolpath in transitioning regions which are crossed by extra support edges for small perturbations and those which are not.
-
-% Finally we perform the mesh update by introducing nodes at the transition ends and introducing radial support edges from these new nodes to the outline as per the trapezoidation requirement.
-% We end up with a UoC with marked regions altered to be horizontal at integer multiples of half the nozzle width for long stretches with ramps in between.
-% See \cref{beading_transitioning_filtering__transitions_applied} and \subref{beading_transitioning_filtering__result_uoc}.
 
 
 \begin{figure}
@@ -808,8 +783,15 @@ Wide black lines are outline segments, marked nodes and edges in blue, the junct
 We then generate extrusion segments for each trapezoid by connecting together the junctions of the same index.
 See \cref{segment_generation}.
 If the amount of junctions on both sides of the trapezoid is not the same then this trapezoid is in a transition and we leave one inner junction unconnected.
-If a central edge has both nodes with an odd bead count assigned to it $b^\wedge \bmod 2 = 1 $ we should prevent the algorithm from generating the center extrusion segment from both trapezoids.
-We therefore use some arbitrary condition to decide which one of the two to include based on the ordering of the coordinates of $v_0$ and $v_1$.
+
+Because the bead count is defined in terms of the feature diameter rather than the radius, only some of the bead count values $b^\wedge$ in a central region coincide with a slicing height.
+When the bead count $b^\wedge$ is even, the ridge will be sliced as normal;
+the intersection between a slicing plane and the mesh surface results in a polyline on both sides of the ridge, which are connected together into a polygonal toolpath.
+When the bead count $b^\wedge$ is odd, the ridge will coincide exactly with a slicing height, which results in a single polyline toolpath being generated along the middle of the feature.
+In that case we should prevent the algorithm from generating the center extrusion segment twice from the trapezoids on either side of that segment.
+We therefore use some arbitrary condition to decide which one of the two to include based on the ordering of the coordinates of $v_0$ and $v_1$: $x_0 < x_1 \lor (x_0 = x_1 \land y_0 < y_1)$.
+
+
 
 Each of the trapezoids is connecting to a single outline polygon.
 By traversing the trapezoids in the domain of each outline polygon in order we can efficiently connect all segments into polylines.
