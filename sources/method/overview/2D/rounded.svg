@@ -32,9 +32,9 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="1.84375"
-     inkscape:cx="224.38353"
-     inkscape:cy="74.055356"
+     inkscape:zoom="1.3037281"
+     inkscape:cx="209.41721"
+     inkscape:cy="95.318628"
      inkscape:window-x="1920"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -47,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -308,26 +308,26 @@
     <circle
        cx="253.89467"
        cy="236.23599"
-       r="3"
+       r="6"
        id="circle76"
-       style="fill:#000000;stroke:#000000;stroke-width:1" />
+       style="fill:#ff00ff;stroke:#ff00ff;stroke-width:2" />
     <circle
        cx="179.66667"
        cy="215.70267"
-       r="3"
+       r="6"
        id="circle80"
-       style="fill:#000000;stroke:#000000;stroke-width:1" />
+       style="fill:#ff00ff;stroke:#ff00ff;stroke-width:2" />
     <circle
        cx="362.31067"
        cy="236.23599"
-       r="3"
+       r="6"
        id="circle84"
-       style="fill:#000000;stroke:#000000;stroke-width:1" />
+       style="fill:#ff00ff;stroke:#ff00ff;stroke-width:2" />
     <circle
        cx="436.12799"
        cy="215.70267"
-       r="3"
+       r="6"
        id="circle88"
-       style="fill:#000000;stroke:#000000;stroke-width:1" />
+       style="fill:#ff00ff;stroke:#ff00ff;stroke-width:2" />
   </g>
 </svg>

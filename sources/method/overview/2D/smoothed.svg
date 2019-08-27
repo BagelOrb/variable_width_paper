@@ -12,7 +12,10 @@
    id="svg1860"
    version="1.1"
    sodipodi:docname="smoothed.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="/home/t.kuipers/Documents/PhD/Variable_Width_project/paper/paper_private_git/sources/method/overview/2D/smoothed.png"
+   inkscape:export-xdpi="100"
+   inkscape:export-ydpi="100">
   <defs
      id="defs128" />
   <sodipodi:namedview
@@ -32,9 +35,9 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="2.6074563"
-     inkscape:cx="295.91103"
-     inkscape:cy="167.5847"
+     inkscape:zoom="1.84375"
+     inkscape:cx="232.79391"
+     inkscape:cy="105.70642"
      inkscape:window-x="1920"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -47,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -391,31 +394,55 @@
      inkscape:label="layer5"
      id="layer5"
      transform="translate(1.5,2.6500428)">
+    <path
+       id="path872"
+       style="fill:#ff00ff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:0.50196081"
+       d="M 341.98267,164.472 381.92,230.79467 V 308 H 342.18799 V 241.78 L 308,184.90267 Z m 63.75599,-38.192 50.40933,83.98134 V 308 H 416.51866 V 221.144 L 371.65334,146.71067 Z M 274.01733,164.472 234.08,230.79467 V 308 h 39.73201 V 241.78 L 308,184.90267 Z M 210.26134,126.28 159.85201,210.26134 V 308 h 39.62933 v -86.856 l 44.86532,-74.43333 z" />
     <text
-       x="299.89734"
-       y="243.24843"
+       x="306.40582"
+       y="276.87552"
        style="font-size:32px;fill:#000000"
        id="text103">3</text>
     <text
        id="text875"
        style="font-size:32px;fill:#000000"
-       y="200.23109"
-       x="127.57132">5</text>
+       y="234.94298"
+       x="126.48658">5</text>
     <text
        id="text877"
        style="font-size:32px;fill:#000000"
-       y="222.71509"
-       x="208.78067">4</text>
+       y="254.71509"
+       x="206.0688">4</text>
     <text
        id="text879"
        style="font-size:32px;fill:#000000"
-       y="222.71509"
-       x="391.27066">4</text>
+       y="256.34222"
+       x="389.64352">4</text>
     <text
        id="text881"
        style="font-size:32px;fill:#000000"
-       y="200.23109"
-       x="472.27466">5</text>
+       y="236.57007"
+       x="471.7323">5</text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ff00ff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 159.85201,210.26134 199.48134,221.144"
+       id="path875"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ff00ff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 234.08,230.79467 273.81201,241.78"
+       id="path877"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ff00ff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 342.18799,241.78 381.92,230.79467"
+       id="path879"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ff00ff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 416.51866,221.144 39.62933,-10.88266"
+       id="path881"
+       inkscape:connector-curvature="0" />
   </g>
   <g
      inkscape:groupmode="layer"
