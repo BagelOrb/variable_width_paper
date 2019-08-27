@@ -1,7 +1,7 @@
 \section{Method}
 \subsection{Overview}
 
-Given arbitrarily shaped polygons which represent the 2D outline of a layer of a 3D model, our method generates a toolpath with varying width, i.e. a set of (mostly) connected line segments, with each site being assigned a location and an extrusion width;
+Given arbitrarily shaped polygons which represent the 2D outline of a layer of a 3D model, our method generates extrusion toolpaths with varying width, i.e. a set polylines where each site consists of a location and an extrusion width;
 in between the sites we linearly interpolate the position and extrusion width.
 
 Our method starts with computing the skeleton of the input polygon based on the medial axis transform (MAT), a strategy that has been commonly used for generating contour parallel toolpaths~\cite{eiamsa2003toward}. 
@@ -814,7 +814,7 @@ the extrusion segments can efficiently be connected into existing polyline toolp
 Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
 Such intersections cause overfill because the nozzle passes the location multiple times.
 We deal with this special case by forcing a new polyline when traversing the trapezoids, and in the final polyline connection step we greadily connect the first two polylines ending in the same location and retreat all other polylines ending in that same location in order to prevent the overfill.
-In order to retreat a polyline ending in a site $J$ we remove part of the polyline paths up to the intersection by a distance of $w^J d_\text{max}^\text{intersection}$, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.
+In order to retreat a polyline which ends in a site $J$ we remove part of the polyline paths up to the intersection by a distance of $w^J d_\text{max}^\text{intersection}$, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.
 This ratio effectively deals with the balance between overfill and underfill generated at that location after the retreat has been applied.
 See \cref{polyline_reduction}.
 
