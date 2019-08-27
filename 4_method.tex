@@ -1,8 +1,8 @@
 \section{Method}
 \subsection{Overview}
 
-Given arbitrarily shaped polygons which represent the 2D outline of a layer of a 3D model, our method generates a toolpath with varying width, i.e. a set of (mostly) connected line segments, with each junction being assigned a location and an extrusion width;
-in between the junctions we linearly interpolate the position and extrusion width.
+Given arbitrarily shaped polygons which represent the 2D outline of a layer of a 3D model, our method generates a toolpath with varying width, i.e. a set of (mostly) connected line segments, with each site being assigned a location and an extrusion width;
+in between the sites we linearly interpolate the position and extrusion width.
 
 Our method starts with computing the skeleton of the input polygon based on the medial axis transform (MAT), a strategy that has been commonly used for generating contour parallel toolpaths~\cite{eiamsa2003toward}. 
 We visualize the skeleton as the union of cones (UoC) (\cref{sec_surface_construction}), by raising each point in the domain to a height that equals the shortest distance from the point to the polygon boundary (\cref{overview_uoc}).
@@ -605,7 +605,7 @@ An example beading is visualized in the top of \cref{beading_interpolation}:
 $B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the same width and radial locations $l$ evenly divided over the length $d$.
 
 
-The beading information will be used in the next phase to directly generate the junctions of the toolpaths.
+The beading information will be used in the next phase to directly generate the sites of the toolpaths.
 Note that a beading conceptually covers the whole diameter, while we only apply it along the radii;
 the upper half of the beading is therefore unused.
 
@@ -740,8 +740,8 @@ This is implemented in a flood-fill fashion: see \cref{alg_beading_propagation}.
 
 
 \subsection{Toolpath extraction}\label{sec_toolpath_extraction}
-Now that each node has a beading associated with it we can apply the beading to generate the junctions of the toolpaths.
-For each upward half-edge $e$ we generate each junction $J$ based on the beading $B = B^{v_1^e}$:
+Now that each node has a beading associated with it we can apply the beading to generate the sites of the toolpaths.
+For each upward half-edge $e$ we generate each site $J$ based on the beading $B = B^{v_1^e}$:
 \begin{align*}
 J &= \{ v, w, i \} \\ 
 v &= v_1^e + (v_0^e - v_1^e) \frac{R(v_1^e) - l_i^B}{R(v_1^e) - R(v_0^e)} \\ 
@@ -749,8 +749,8 @@ w &= w_i^B
 % \\ i^J &= i
 \end{align*}
 for any $i$ for which $R(v_0^e) < l_i^B \leq R(v_1^e)$.
-See \cref{junction_placement}.
-We store all junctions of an edge in a mapping from edge to a list of junctions.
+See \cref{site_placement}.
+We store all sites of an edge in a mapping from edge to a list of sites.
 
 
 \begin{figure}
@@ -769,20 +769,20 @@ We store all junctions of an edge in a mapping from edge to a list of junctions.
 \caption{Separate beadings at either top node}\label{trapezoid_beading_separate}
 \end{subfigure}
 \caption{
-Applying beadings to generate junctions along trapezoids.
+Applying beadings to generate sites along trapezoids.
 \subref{trapezoid_beading_beading} shows half of the locations $l_i$ and widths $w_i$ of two arbitrary different beadings.
 \subref{trapezoid_beading_propagated} shows the application of $B^1$ to the various types of trapezoid.
-\subref{trapezoid_beading_separate} shows how a trapezoid with a marked edge will have two different beadings assigned, which will generate their respective junctions along the support edges.
-No junctions will be generated along marked edges.
-Wide black lines are outline segments, marked nodes and edges in blue, the junctions in yellow and green wavefronts of equidistant radial distance at $R = l_i$.
+\subref{trapezoid_beading_separate} shows how a trapezoid with a marked edge will have two different beadings assigned, which will generate their respective sites along the support edges.
+No sites will be generated along marked edges.
+Wide black lines are outline segments, marked nodes and edges in blue, the sites in yellow and green wavefronts of equidistant radial distance at $R = l_i$.
 }
-\label{junction_placement}
+\label{site_placement}
 \end{figure}
 
 
-We then generate extrusion segments for each trapezoid by connecting together the junctions of the same index.
+We then generate extrusion segments for each trapezoid by connecting together the sites of the same index.
 See \cref{segment_generation}.
-If the amount of junctions on both sides of the trapezoid is not the same then this trapezoid is in a transition and we leave one inner junction unconnected.
+If the amount of sites on both sides of the trapezoid is not the same then this trapezoid is in a transition and we leave one inner site unconnected.
 
 Because the bead count is defined in terms of the feature diameter rather than the radius, only some of the bead count values $b^\wedge$ in a central region coincide with a slicing height.
 When the bead count $b^\wedge$ is even, the ridge will be sliced as normal;
@@ -803,7 +803,7 @@ In a final step we connect the ends of polylines together, so that the final too
 \includegraphics[width=.5\columnwidth]{sources/method/segment_generation.pdf}
 \caption{
 Generating toolpaths on a part of the test outline shape which is fully shown in \cref{shape_decomposition_domains}.
-Each edge is assigned toolpath junctions (yellow) which are connected together as shown in the singled out trapezoid.
+Each edge is assigned toolpath sites (yellow) which are connected together as shown in the singled out trapezoid.
 By following the trapezoids along the domain (cyan) of a single outline polygon,
 the extrusion segments can efficiently be connected into existing polyline toolpaths (light and dark gray).
 }
@@ -814,7 +814,7 @@ the extrusion segments can efficiently be connected into existing polyline toolp
 Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
 Such intersections cause overfill because the nozzle passes the location multiple times.
 We deal with this special case by forcing a new polyline when traversing the trapezoids, and in the final polyline connection step we greadily connect the first two polylines ending in the same location and retreat all other polylines ending in that same location in order to prevent the overfill.
-In order to retreat a polyline ending in a junction $J$ we remove part of the polyline paths up to the intersection by a distance of $w^J d_\text{max}^\text{intersection}$, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.
+In order to retreat a polyline ending in a site $J$ we remove part of the polyline paths up to the intersection by a distance of $w^J d_\text{max}^\text{intersection}$, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.
 This ratio effectively deals with the balance between overfill and underfill generated at that location after the retreat has been applied.
 See \cref{polyline_reduction}.
 
