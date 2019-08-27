@@ -194,33 +194,28 @@ The medial axis can thus also be interpreted as ribs of the surface of the union
 
 
 \begin{figure}\centering
-\setlength{\figwidth}{0.19\columnwidth}
+\setlength{\figwidth}{0.24\columnwidth}
 \setlength{\figwidthTwo}{0.3\columnwidth}
-\begin{subfigure}{\figwidth}\centering
+\begin{subfigure}[t]{\figwidth}\centering
 \includegraphics[height=\figwidthTwo]{sources/method/simple_skeleton_mat}
 \caption{Medial Axis}\label{shape_decomposition_mat}
 \end{subfigure}
-\begin{subfigure}{\figwidth}\centering
+\begin{subfigure}[t]{\figwidth}\centering
 \includegraphics[height=\figwidthTwo]{sources/method/simple_skeleton_vd}
 \caption{Voronoi Diagram}\label{shape_decomposition_vd}
 \end{subfigure}
-\begin{subfigure}{\figwidth}\centering
+\begin{subfigure}[t]{\figwidth}\centering
 \includegraphics[height=\figwidthTwo]{sources/method/simple_skeleton_st}
 \caption{Skeletal Trapezoids}\label{shape_decomposition_st}
 \end{subfigure}
-\begin{subfigure}{\figwidth}\centering
+\begin{subfigure}[t]{\figwidth}\centering
 \includegraphics[height=\figwidthTwo]{sources/method/half_edge_datastructure.pdf}
 \caption{Data structure}\label{shape_decomposition_datastructure}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[height=\figwidthTwo]{sources/method/domains.pdf}
-\caption{Polygon Domains}\label{shape_decomposition_domains}
 \end{subfigure}
 \caption{
 Skeletonization of an outline shape (black).
 Relation between the medial axis (red), the limited Voronoi Diagram (red and green) and the Skeletal Trapezoidation (red, green and gray): MAT $\subset$ Limited VD $\subset$ ST.
 \subref{shape_decomposition_datastructure} We can represent a skeleton using a half-edge data-structure.
-\subref{shape_decomposition_domains} The ST divides the shape into primitives which can be classified as belonging to one of the input shape polygons.
 }
 \label{skeletonization_comparison}
 \end{figure}
@@ -235,12 +230,6 @@ The basic idea is to add edges connecting each node $v$ on the medial axis to (a
 The resulting skeleton decomposes the outline shape into trapezoids and triangles.
 Considering the fact that the concept of trapezoidation conventionally allows for the degenerate case where a trapezoid resolves into a triangle~\cite{chazelle1984,fournier1984}, we call this shape decomposition the \emph{Skeletal Trapezoidation} (ST).
 
-
-
-% The trapezoids are classified as belonging to a specific domain following \citeauthor{Ding2016a}.
-% Each polygon in the input shape acquires it's own domain.
-% The domains of hole polygons are touching the domains of the outer polygon.
-% See \cref{shape_decomposition_domains}.
 
 
 The ST contains all edges from the medial axis which are generated from two line segments in the outline polygons.
@@ -297,9 +286,7 @@ A half-edge data-structure is used to represent the Voronoi diagram (\cref{shape
 %These central regions present themselves as upper ridges in the mountains of the UoC surface.
 %In order to prevent the over- and underfill we will change the bead counts in the central regions.
 %This sections covers what parts of the UoC will be marked as being central.
-In order to prevent over- and underfill to occur in central
-\jun{TODO: For what purpose ... }
-we mark parts of the UoC as being central.
+In order to prevent over- and underfill to occur in central, we mark parts of the UoC as being central.
 The remaining is called peripheral.
 Our framework will decide on a beading at all of the marked nodes in `the center' and apply the beading outward to the unmarked nodes.
 
@@ -307,6 +294,7 @@ We mark a node in the ST as central if its feature radius is larger than that of
 %That is: we mark the local maxima, i.e. the mountain tops of the UoC as being central.
 We also mark an edge as being central if it is significant according to a significance measure.
 
+\jun{TODO}
 
 %\subsubsection{Significance measure}\label{sec:significance_measure}
 \paragraph{Significance measure}
@@ -352,7 +340,7 @@ Similarly, a MAT edge generated from two vertices at $(0,0)$ and $(0,1)$ follows
 The boundaries of significance are given by $ | x_\text{bound} | = \nicefrac12 (\tan(\alpha_\text{max} / 2))^{-1}$.
 From these we can derive the locations $l = (\pm x_\text{bound}, y(x_\text{bound}))$.
 These specific cases can easily be transformed into all possible cases using scaling and rotation operations.
-
+\jun{TODO}
 
 \begin{figure} \centering
 \newlength{\significancePropertiesHeight}
@@ -548,13 +536,14 @@ Discontinuities around regions where the bead count changes are prevented by tra
 
 
 
-\subsection{Peripheral heights}\label{sec_peripheral_height_adjustment}
+\subsection{Peripheral Beading}\label{sec_peripheral_height_adjustment}
+
 Now that we have transformed the heights in the central regions of the UoC we need to determine the heights in the rest of the shape, i.e. the periphery, and slice the resulting mesh into isocontour toolpaths.
 The peripheral heights could be determined in a plethora of ways according to various beading schemes.
 The ramps from the outline shape to the center might have various curves,
 but for our example we use straight ramps, just like the original UoC.
 See \cref{peripheral_heights}.
-That means we can stretch the $R$ heights of the UoC with a multiplier depending on the height of the center in terms of bead count.
+Mapping an original cone at apex $v$ to a cone with a height equal to the prescribed bead count $b$ of the central region is simply a matter of multiplying the $R$ values by $b / R(v)$.
 
 
 \begin{figure}\centering
@@ -575,32 +564,24 @@ Shallow corners will cause peripheral nodes for which the height should be deter
 
 
 
-For the purpose of generating toolpaths we only need to define the height at the locations which will be part of a slice, rather than at all locations in the periphery.
-Instead of adjusting the height of peripheral mesh nodes, we determine the locations along the edges where the adjusted height coincides with a slicing height.
+However, for the purpose of generating toolpaths we only need to define the height at the locations which will be part of a slice, rather than at all locations in the periphery.
+Instead of adjusting the height of peripheral mesh nodes, we determine the radial distances where the adjusted height coincides with a slicing height.
 In this section we will show how we can define a mapping from radial distance values to the indices of slicing heights, called a \emph{beading},
 how each beading is calculated for a central node
 and how the beadings are propagated outward to peripheral nodes.
 This helps to define an efficient slicing algorithm in \cref{sec_toolpath_extraction}.
 
-\begin{definition}
-In order to help generate these toolpath locations we associate each central node with a mapping from radial distances to bead indices, the beading $B$,
-which we define as the following set:
-$$
-B = \left\{ d, n, \left\{ w_0 , \dots , w_{n-1} \right\}, \left\{ l_0 , \dots , l_{n-1} \right\}  \right\}
-$$
-where
-$d = 2 R(v)$ is the diameter associated with $v$,
-$n \in \mathbb{N}$ is the bead count,
-$w_i$ is the bead width of the bead with index $i$ counting from the outline inward
-and
-$l_i$ is the radial locations which maps to the bead with index $i$.
-\end{definition}
-
-For our example we linearly map the $R$ values using a multiplication factor of $d/n$:
+\paragraph{Beading} 
+We associate each central node $v$ with a set of radial distances for each bead along with the width of that bead, which we call the \emph{beading} $B$.
+For our distributed beading scheme we define the beading for a central node $v$ as:
 \begin{align*}
-w_i &= d/n  \\
-l_i &= d / n (i + \nicefrac12)
+    B &= \left\{ \left( w_0 , l_0 \right), \dots, \left( w_{n-1}, l_{n-1} \right) \right\} \\
+    w_i &= 2R(v) / n  \\
+    l_i &= 2R(v) / n (i + \nicefrac12)
 \end{align*}
+where
+$w_i$ and $l_i$ are the width and location of the $i$th bead,
+respectively, counting from the outline inward.
 An example beading is visualized in the top of \cref{beading_interpolation}:
 $B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the same width and radial locations $l$ evenly divided over the length $d$.
 
@@ -610,7 +591,8 @@ Note that a beading conceptually covers the whole diameter, while we only apply 
 the upper half of the beading is therefore unused.
 
 
-\subsubsection{Beading interpolation}\label{section_beading_interpolation}
+% \subsubsection{Beading interpolation}\label{section_beading_interpolation}
+\paragraph{Beading interpolation}
 Central nodes which are in the middle of a transition have obtained a fractional bead count, but the definition of a beading presupposed integer numbers.
 In order to generate a beading for a central node with a fractional bead count assigned we use the fractional part of the bead count to interpolate between two beadings defined on the fractional bead count rounded up and down.
 Suppose we want to interpolate between two beadings $B^V$ and $B^W$, for which $n^{B^V} < n^{B^W}$.
@@ -651,7 +633,8 @@ and the middle is highlighted in red.
 \end{figure}
 
 
-\subsubsection{Beading propagation}\label{section_beading_conflicts}
+% \subsubsection{Beading propagation}\label{section_beading_conflicts}
+\paragraph{Beading propagation}
 The beading information associated with the central nodes is then propagated outward throughout the whole mesh.
 However, beading conflicts can arise where a marked edge has unmarked upward edges attached to them, since beading will also be propagated down from the local maxima or other higher marked regions.
 See \cref{beading_conflict_problem}.
@@ -689,6 +672,8 @@ In the upward phase we walk from each marked node upward along unmarked edges an
 In the downward phase we walk from each marked node downward along unmarked edges and map each node to a pair consisting of the traversed distance and the upper source beading -
 however, if we encounter a node which was already mapped to an upward propagated beading we employ the interpolation scheme described above in order to define the beading, which is then further propagated downward.
 This is implemented in a flood-fill fashion: see \cref{alg_beading_propagation}.
+
+\jun{It is more logical to first explain the general case (the above paragraph), and then the special treatment -- beading conflict.}
 
 \begin{algorithm}
 \caption{Beading propagation}
@@ -791,7 +776,11 @@ When the bead count $b^\wedge$ is odd, the ridge will coincide exactly with a sl
 In that case we should prevent the algorithm from generating the center extrusion segment twice from the trapezoids on either side of that segment.
 We therefore use some arbitrary condition to decide which one of the two to include based on the ordering of the coordinates of $v_0$ and $v_1$: $x_0 < x_1 \lor (x_0 = x_1 \land y_0 < y_1)$.
 
-
+\tim{Below is taken from an outdated paragraph in section 3.3 (?)}
+The trapezoids are classified as belonging to a specific domain following \citeauthor{Ding2016a}.
+Each polygon in the input shape acquires it's own domain.
+The domains of hole polygons are touching the domains of the outer polygon.
+See \cref{shape_decomposition_domains}.
 
 Each of the trapezoids is connecting to a single outline polygon.
 By traversing the trapezoids in the domain of each outline polygon in order we can efficiently connect all segments into polylines.
@@ -800,9 +789,17 @@ In a final step we connect the ends of polylines together, so that the final too
 
 \begin{figure}
 \centering
-\includegraphics[width=.5\columnwidth]{sources/method/segment_generation.pdf}
+\setlength{\figheight}{.3\columnwidth}
+\begin{subfigure}{.3\columnwidth}\centering
+\includegraphics[height=\figheight]{sources/method/domains.pdf}
+\caption{Polygon domains}\label{shape_decomposition_domains}
+\end{subfigure}
+\begin{subfigure}{.6\columnwidth}\centering
+\includegraphics[height=\figheight]{sources/method/segment_generation.pdf}
+\caption{Extrusion segment chaining}\label{shape_decomposition_domains}
+\end{subfigure}
 \caption{
-Generating toolpaths on a part of the test outline shape which is fully shown in \cref{shape_decomposition_domains}.
+Generating toolpaths on a part of the test outline shape by chaining together extrusion segments along each polygon domain.
 Each edge is assigned toolpath sites (yellow) which are connected together as shown in the singled out trapezoid.
 By following the trapezoids along the domain (cyan) of a single outline polygon,
 the extrusion segments can efficiently be connected into existing polyline toolpaths (light and dark gray).
