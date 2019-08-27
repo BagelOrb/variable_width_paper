@@ -346,10 +346,11 @@ We therefore introduce nodes at the boundaries of the significant portion during
 The significance of all edges can then accurately be evaluated using \cref{simple_significance_measure}.
 
 We calculate the location $l$ of the boundary between a significant and nonsignificant portion of an edge analytically.
-For example, the parabolic MAT edge generated from the outline vertex $(0,1)$ and an outline segment aligned with the X-axis follows $y(x) = \nicefrac12 x^2$.
-We can determine the significant portion $[-x_\text{bound}, x_\text{bound}]$ by evaluating $\frac{\partial R}{\partial x} > \cos(\alpha_\text{max} / 2)$, which is $ x_\text{bound}= 1  / \tan(\alpha_\text{max} / 2)$.
+For example, the parabolic MAT edge generated from the outline vertex $(0,1)$ and an outline segment aligned with the X-axis follows $y(x) = \nicefrac12 x^2$ and $R(x) = y(x)$.
+We can determine the significant portion $[-x_\text{bound}, x_\text{bound}]$ by evaluating $\frac{\partial R}{\partial x} > \cos(\alpha_\text{max} / 2)$, which is $ | x_\text{bound} | = (\tan(\alpha_\text{max} / 2))^{-1}$.
 Similarly, a MAT edge generated from two vertices at $(0,0)$ and $(0,1)$ follows $y(x) = \nicefrac12$ and $R(x) = \sqrt{\nicefrac14 + x^2}$.
-The significant portion is given by $ x_\text{bound} = 1  / 2 \tan(\alpha_\text{max} / 2)$
+The boundaries of significance are given by $ | x_\text{bound} | = \nicefrac12 (\tan(\alpha_\text{max} / 2))^{-1}$.
+From these we can derive the locations $l = (\pm x_\text{bound}, y(x_\text{bound}))$.
 These specific cases can easily be transformed into all possible cases using scaling and rotation operations.
 
 
@@ -447,7 +448,7 @@ so if $\angle p_1 v p_2 < 120\degree$ then $\angle p_2 v p_3 < 60\degree$ and is
 
 %\subsubsection{Marking filtering}
 \paragraph{Marking filtering}
-After initializing all marked edges and nodes, we filter out high frequency changes in the marking in order to ensure that the generated toolpath is smooth. 
+After initializing the marking at all edges and nodes, we filter out high frequency changes in the marking in order to ensure that the generated toolpath is smooth. 
 The filtering is performed by additionally marking some unmarked elements, rather than the opposite since unmarking central regions reintroduce large over- and underfill areas.
 From each marked node $v_0$ with an upward unmarked edge attached we walk along the upward edges;
 if the total length traversed until we reach another marked node $v_1$ is shorter than some filter distance $d_\text{max}^\text{unmarked}$, we mark all edges encountered as being central.
