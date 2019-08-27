@@ -536,7 +536,7 @@ Discontinuities around regions where the bead count changes are prevented by tra
 
 
 
-\subsection{Peripheral Beading}\label{sec_peripheral_height_adjustment}
+\subsection{Beading}\label{sec_peripheral_height_adjustment}
 
 Now that we have transformed the heights in the central regions of the UoC we need to determine the heights in the rest of the shape, i.e. the periphery, and slice the resulting mesh into isocontour toolpaths.
 The peripheral heights could be determined in a plethora of ways according to various beading schemes.
@@ -572,12 +572,12 @@ and how the beadings are propagated outward to peripheral nodes.
 This helps to define an efficient slicing algorithm in \cref{sec_toolpath_extraction}.
 
 \paragraph{Beading} 
-We associate each central node $v$ with a set of radial distances for each bead along with the width of that bead, which we call the \emph{beading} $B$.
+For toolpath geneWe associate each central node $v$ with a set of radial distances for each bead along with the width of that bead, which we call the \emph{beading} $B$.
 For our distributed beading scheme we define the beading for a central node $v$ as:
 \begin{align*}
     B &= \left\{ \left( w_0 , l_0 \right), \dots, \left( w_{n-1}, l_{n-1} \right) \right\} \\
-    w_i &= 2R(v) / n  \\
-    l_i &= 2R(v) / n (i + \nicefrac12)
+    w_i &= 2R(v) / n  & \text{for all $i$}\\
+    l_i &= 2R(v) / n (i + \nicefrac12) & \text{for all $i$}
 \end{align*}
 where
 $w_i$ and $l_i$ are the width and location of the $i$th bead,
