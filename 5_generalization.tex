@@ -62,21 +62,21 @@ We can emulate a variety of toolpath generation methods from related literature 
 We also introduce new beading schemes which produce toolpaths with less extremal widths compared to techniques from existing literature.
 
 A beading scheme is defined as a set of some particular variables and functions (\cref{beading_scheme_definition}).
-Our beading schemes are based on a preferred width $w_\text{pref} = \SI{0.4}{\milli\meter}$, which is equal to the diameter of the printing nozzle.
+Our beading schemes are based on a preferred width $w_* = \SI{0.4}{\milli\meter}$, which is equal to the diameter of the printing nozzle.
 Most of the beading schemes we introduce share a common ground:
 \begin{align*}
 d_\text{max}^\text{transition} &= \SI{1}{\milli\meter} \\
-d_\text{max}^\text{unmarked} &= w_\text{pref} \\ 
+d_\text{max}^\text{unmarked} &= w_* \\ 
 d^\text{discretization} &= \SI{0.2}{\milli\meter} \\
-t_\text{beading} &= w_\text{pref} \\
+t_\text{beading} &= w_* \\
 d_\text{max}^\text{intersection} &= \SI{75}{\percent} \\
 %
 %We use a transition anchor position of
 %$$t_-(n) =  t(n) \frac{ q^{-1}(n) - p(n) }{p(n+1) - p(n) }$$
 %$$t_-(n) =  t(n) \frac{ q^{-1}(n) - 0.4n }{0.4(n+1) - 0.4n }$$
 %$$t_-(n) =  t(n) \frac{ q^{-1}(n) - 0.4n }{0.4}$$
-t_0(n) &=  t(n) \left( q^{-1}(n) / w_\text{pref}  - n \right) \\
-t(n) &= w_\text{pref} \\
+t_0(n) &=  t(n) \left( q^{-1}(n) / w_*  - n \right) \\
+t(n) &= w_* \\
 \alpha_\text{max} &= \SI{135}{\degree} \\
 L(n,d)_i &= 
 \begin{cases}
@@ -86,7 +86,7 @@ d - W(n,d)_{n-1-i} & \text{ otherwise }\\
 \end{cases}
 \end{align*}
 
-The transition anchor position $t_0$ ensures that the transitions never overlap with the locations $v$ where $2 R(v) = n w_\text{pref}$ for $n \in \mathbb{N}$.
+The transition anchor position $t_0$ ensures that the transitions never overlap with the locations $v$ where $2 R(v) = n w_*$ for $n \in \mathbb{N}$.
 The transition length $t$ ensures that the center beads don't overlap with the innermost transitioning beads, while keeping the amount of underfill low and keeping the toolpath smooth.
 The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths.
 The toolpath locations $L$ ensure that beads are extruded from the center of where they end up, that the beads don't overlap and that the symmetry restrictions are met.
@@ -96,10 +96,10 @@ The toolpath locations $L$ ensure that beads are extruded from the center of whe
 We can define a beading scheme which emulates the uniform width offsetting technique by disabling the marking of edges, so that we never employ transitioning.
 \begin{align*}
 \alpha_\text{max} &= \SI{180}{\degree} \\
-q^-(d) &= 2 \left\lfloor \frac{d}{ 2w_\text{pref}} + \frac12 \right\rfloor \\
-W(n,d)_i &= w_\text{pref} \text{ for all } i 
+q^-(d) &= 2 \left\lfloor \frac{d}{ 2w_*} + \frac12 \right\rfloor \\
+W(n,d)_i &= w_* \text{ for all } i 
 %\\
-%L(n,d)_i &= w_\text{pref} \left(i + \frac12 \right) \text{ for all } i < \frac12 n
+%L(n,d)_i &= w_* \left(i + \frac12 \right) \text{ for all } i < \frac12 n
 \end{align*}
 
 
@@ -113,20 +113,20 @@ d_\text{max}^\text{intersection} &= \SI{0}{\percent} \\
 t(n) &= 0 \\
 q(d) &=
 \begin{cases}
-1 & \text{ if } d < w_\text{pref} \\
+1 & \text{ if } d < w_* \\
 2 & \text{ otherwise } \\
 \end{cases}
  \\
 W(n,d)_i &= 
 \begin{cases}
 d & \text{ if } n = 1 \\
-w_\text{pref} & \text{ otherwise } \\
+w_* & \text{ otherwise } \\
 \end{cases}
 %\\
 %L(n,d)_i &= 
 %\begin{cases}
 %d / 2 & \text{ if } n = 1 \\
-%w_\text{pref} / 2 & \text{ otherwise } \\
+%w_* / 2 & \text{ otherwise } \\
 %\end{cases}
 \end{align*}
 
@@ -149,30 +149,30 @@ W(n,d)_i &= d / n \text{ for all } i
 \paragraph{Centered}
 We can emulate the method by \citeauthor{Jin2017JMS}, by transcribing how they deviate from the uniform width toolpaths.
 We therefore base the beading scheme on the bead count $q^-(d)$ defined by the uniform beading scheme.
-\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w_\text{pref}$.
-Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w_\text{pref}$.\cite{Jin2017JMS}
+\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w_*$.
+Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w_*$.\cite{Jin2017JMS}
 We emulate the rounded polygonal path rerouting they define by supplying a transition length which results in a discretized version of the rounded polygon segment.
 
 \begin{align*}
-t(n) &= \frac12 w_\text{pref} \\
-q^-(d) &= 2 \left\lfloor \frac{d}{ 2w_\text{pref}} + \frac12 \right\rfloor \\
+t(n) &= \frac12 w_* \\
+q^-(d) &= 2 \left\lfloor \frac{d}{ 2w_*} + \frac12 \right\rfloor \\
 q(d) &= q^-(d) +
 \begin{cases}
--1 & \text{ if } q^-(d) w_\text{pref} - d > w_\text{pref} - r_\text{max} \\
-1  & \text{ if }  q^-(d) w_\text{pref} - d < w_\text{pref} - r_\text{min} \\
+-1 & \text{ if } q^-(d) w_* - d > w_* - r_\text{max} \\
+1  & \text{ if }  q^-(d) w_* - d < w_* - r_\text{min} \\
 0 & \text{ otherwise}
 \end{cases}
 \\
 W(n,d)_i &= 
 \begin{cases}
-d - (n-1) w_\text{pref} &\text{ if } i = \frac12 (n-1) \\
-w_\text{pref} &\text{ otherwise }
+d - (n-1) w_* &\text{ if } i = \frac12 (n-1) \\
+w_* &\text{ otherwise }
 \end{cases}
 %\\
 %L(n,d)_i &= 
 %\begin{cases}
 %d / 2 & \text{ if } i = \frac12 (n-1) \\
-%w_\text{pref} \left(i + \frac12 \right) & \text{ otherwise }
+%w_* \left(i + \frac12 \right) & \text{ otherwise }
 %\end{cases}
 \end{align*}
 
@@ -189,7 +189,7 @@ This reduces the demands on the system and deviation from mechanical properties 
 
 
 \begin{align*}
-q(d) &= \left\lfloor \frac{d}{ w_\text{pref}} + \frac12 \right\rfloor \\
+q(d) &= \left\lfloor \frac{d}{ w_*} + \frac12 \right\rfloor \\
 W(n,d)_i &= d / n \text{ for all } i 
 %\\
 %L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
@@ -199,17 +199,17 @@ W(n,d)_i &= d / n \text{ for all } i
 
 
 \paragraph{General distributed scheme}
-The evenly distributed scheme can be conceptualized as calculating the total discrepancy $E$ between the actual feature diameter $d$ and the total preferred width $n w_\text{pref}$, dividing the total discrepancy by the number of beads and setting the width of each bead to 
-$w_\text{pref} + E / n$.
+The evenly distributed scheme can be conceptualized as calculating the total discrepancy $E$ between the actual feature diameter $d$ and the total preferred width $n w_*$, dividing the total discrepancy by the number of beads and setting the width of each bead to 
+$w_* + E / n$.
 However, depending on the application we might want a different distribution of widths.
 We therefore supply a beading scheme which supports an arbitrary distribution of the discrepancy.
 The distribution is determined by some weighing function $M(n.d)$, which defines the portion of the discrepancy to distribute to each bead.
 
 
 \begin{align*}
-q(d) &= \left\lfloor \frac{d}{ w_\text{pref}} + \frac12 \right\rfloor \\
-E(n,d) &= d - n w_\text{pref} \\
-W(n,d)_i &= w_\text{pref} + E(n,d) \frac{M(n,d)_i}{\sum_{j=0}^{n-1} M(n,d)_j} \text{ for all } i 
+q(d) &= \left\lfloor \frac{d}{ w_*} + \frac12 \right\rfloor \\
+E(n,d) &= d - n w_* \\
+W(n,d)_i &= w_* + E(n,d) \frac{M(n,d)_i}{\sum_{j=0}^{n-1} M(n,d)_j} \text{ for all } i 
 %\\
 %L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
 \end{align*}
@@ -220,7 +220,7 @@ For example, we can choose
 $$M(n,d)_i = \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )$$
 to distribute the discrepancy over the innermost $2N$ beads, and distribute most of it to the inner beads.
 See \cref{distributed_comparison}.
-That way we limit the region of impact of the distributed scheme to a central region and have the nominal bead width $w_\text{pref}$ in regions farther away.
+That way we limit the region of impact of the distributed scheme to a central region and have the nominal bead width $w_*$ in regions farther away.
 This limits the impact of transitioning regions so that transitions keep the toolpaths smooth farther away from the central regions. % and it forces most of the beads to have exactly the prefered width.
 Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanical properties derived for prints using the uniform scheme will still hold approximately.
 
