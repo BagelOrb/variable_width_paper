@@ -9,8 +9,8 @@ We visualize the skeleton as the union of cones (UoC) (\cref{sec_surface_constru
 Contour parallel toolpath with uniform width can be interpreted as the intersection of the union of cones with a set of planar planes at equally spaced heights (\cref{3d_surface_overview}\subref{overview_outline}-\subref{overview_uniform_paths}).
 
 As depicted in \cref{3d_surface_overview_center}, our method first identifies edges and nodes in the skeleton that are located in the center of the polygon, which correspond to ridges and peaks in the UoC  (\cref{sec_center_classification}).
-The heights at these elements are then quantized to an integer number of beads.
-To ensure a smooth toolpath between regions with quantized integer heights that differ, we add new nodes in the skeleton with quantized heights and interpolate the heights in between (\cref{sec_central_height_adjustment}).
+The heights $b^\sim$ at these elements are then quantized to an integer number of beads $b^\neg$.
+To ensure a smooth toolpath between regions with quantized integer heights that differ, we add new nodes in the skeleton with quantized heights and interpolate the heights $b^\wedge$ in between (\cref{sec_central_height_adjustment}).
 The union of cones corresponding to the smoothed skeleton is then sliced at regular intervals to obtain toolpaths with varying spacing, which translates into varying width (\cref{sec_toolpath_extraction}).
 
 % We describe how to construct the mesh of the UoC in \cref{sec_surface_construction} and
@@ -254,10 +254,10 @@ Again we connect the nodes which are introduced by the discretization to their s
 \paragraph{Approximation of union of cones}
 The skeleton trapezoidation (ST) provides a means to visualize the union of cones (UoC) approximated by a 3D surface mesh composed of quadrilateral and triangular patches.
 %In order to visualize the ST as a 3D surface, we add a third dimension.
-We assign each node in ST a (real number) height value measured in terms of beads, referred to as the \emph{bead count}.
+We assign each node in ST a (real number) height value measured in terms of beads, referred to as the \emph{bead count} $b$.
 We define the bead count as the number of beads to fit along the \emph{diameter} of the inscribed circle centered at node $v$, i.e. $2R(v)$, by
 \begin{equation}
-    b^*_v = 2 R(v) / w_\text{pref},
+    b^\sim_v = 2 R(v) / w_\text{pref},
 \label{eq:initialBeadCount}
 \end{equation}
 where $w_\text{pref}$ is the nozzle size. 
@@ -411,8 +411,8 @@ if the total length traversed until we reach another marked node $v_1$ is shorte
 
 \subsection{Central height adjustment}\label{sec_central_height_adjustment}
 Now that we have identified and marked the central regions we quantize their heights.
-More specifically we round the floating heights ($b_\text{initial}$) to integer bead count values ($b_\text{quantized}$, also denoted by $b^*$ for short).
-Because the bead count is defined in terms of the feature diameter rather than the radius, only half of the integer bead count values ($b^*/2$) coincides with a slicing height.
+More specifically we round the floating heights ($b^\sim$) to integer bead count values ($b^\neg$).
+Because the bead count is defined in terms of the feature diameter rather than the radius, only half of the integer bead count values ($b^\sim/2$) coincides with a slicing height.
 When the heights of a ridge are rounded to an \emph{even} bead count, the ridge will be sliced as normal; the intersection between a slicing plane and the mesh surface results in a polyline on both sides of the ridge, which are connected together into a polygonal toolpath.
 When the heights of a ridge are rounded to an \emph{odd} bead count, the ridge will coincide exactly with a slicing height, which results in a single polyline toolpath being generated along the middle of the feature.
 \jun{I like the information in the last few sentences. Shall we make it short here, and describe them in the slicing subsection.}
@@ -472,7 +472,7 @@ Alternative realizations of the function $q$ will be discussed in \cref{sec_gene
 % If the upper node has the same bead count $b^*_{v_1} = b^*_{v_0}$ we mark all edges and nodes $v$ in between, and set the bead count $b^*_v \leftarrow b^*_{v_0}$.
 
 \paragraph{Transition anchors}
-For a marked edge which connects nodes $v_0$ and $v_1$ with $b^*_{v_0}\le n<b^*_{v_1}$, we determine \emph{transition anchors} at which the bead count transits from $n$ to $n+1$.
+For a marked edge which connects nodes $v_0$ and $v_1$ with $b^\neg_{v_0}\le n<b^\neg_{v_1}$, we determine \emph{transition anchors} at which the bead count transits from $n$ to $n+1$.
 % figure out the exact location(s $v$ where the quantization operator $q(2R(v))$ jump to a different integer.
 % We call these locations the \emph{transition anchor positions}.
 % % Rather than applying the jumps to the UoC mesh we calculate the transition anchor positions and apply smoothing based on those positions, so that we modify the UoC mesh afterwards.
@@ -518,7 +518,7 @@ The transition is centered at the anchor, and its length is set to $t(n) = w_\te
 % For our example we can simply use $t_0(n) = t_1(n) = \nicefrac12 w_\text{pref}$, so that the transition ramp is centered on the anchor position.
 The introduction of transition length requires the edge is longer enough to accommodate it. 
 %Therefore, if the distance from an anchor to its adjacent node is smaller than $t(n)/2$, the anchor is discarded. 
-Therefore, we modify nodes that are within $t(n)/2$ by (re-)assigning them a fractional bead count, linearly interpolated from the ratio of the distance over $t(n)$ (see \cref{beading_transitioning_filtering__transitions_applied}). 
+Therefore, we modify nodes that are within $t(n)/2$ by (re-)assigning them a fractional bead count $b^\wedge$, linearly interpolated from the ratio of the distance over $t(n)$ (see \cref{beading_transitioning_filtering__transitions_applied}). 
 This modification makes the transition ramps robust against small perturbations in the outline shape (to be explained in \cref{section_beading_interpolation});
 compare the top and bottom of \cref{beading_transitioning_filtering}. 
 Finally we update the UoC mesh by adding support edges at transition ends. 
@@ -720,7 +720,7 @@ This is implemented in a flood-fill fashion: see \cref{alg_beading_propagation}.
 \label{alg_beading_propagation}
 \begin{algorithmic}
 \ForAll{$v \in$ nodes}
-	\If {marked($v$)} $\text{map}[v] = (0, B(b^*_v, 2 R(v)))$ \EndIf
+	\If {marked($v$)} $\text{map}[v] = (0, B(b^\wedge_v, 2 R(v)))$ \EndIf
 \EndFor
 \ForAll{$e \in$ edges}
 	\If {$R(v_0^e) < R(v_1^e)$}
@@ -808,7 +808,7 @@ Wide black lines are outline segments, marked nodes and edges in blue, the junct
 We then generate extrusion segments for each trapezoid by connecting together the junctions of the same index.
 See \cref{segment_generation}.
 If the amount of junctions on both sides of the trapezoid is not the same then this trapezoid is in a transition and we leave one inner junction unconnected.
-If a central edge has both nodes with an odd bead count assigned to it $b^* \bmod 2 = 1 $ we should prevent the algorithm from generating the center extrusion segment from both trapezoids.
+If a central edge has both nodes with an odd bead count assigned to it $b^\wedge \bmod 2 = 1 $ we should prevent the algorithm from generating the center extrusion segment from both trapezoids.
 We therefore use some arbitrary condition to decide which one of the two to include based on the ordering of the coordinates of $v_0$ and $v_1$.
 
 Each of the trapezoids is connecting to a single outline polygon.
