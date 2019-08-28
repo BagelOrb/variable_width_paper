@@ -612,7 +612,6 @@ We interpolate the diameter $d$, widths $w_i$ and locations $l_i$ for indices $i
 See \cref{beading_interpolation}.
 The linear interpolation enforces robustness against small perturbations in the outline shape which cause extra edges to appear in the ST inside of transition regions.
 
-\iffalse
 In order to create an interpolated beading $B = xB^V + (1-x) B^W$, for some $0<x<1$
 we calculate:
 \begin{align*}
@@ -644,7 +643,7 @@ and the middle is highlighted in red.
 \label{beading_interpolation}
 \end{figure}
 
-
+\iffalse
 % \subsubsection{Beading propagation}\label{section_beading_conflicts}
 \paragraph{Beading propagation}
 The beading information associated with the central nodes is then propagated outward throughout the whole mesh.
@@ -741,15 +740,15 @@ This is implemented in a flood-fill fashion: see \cref{alg_beading_propagation}.
 
 
 \subsection{Toolpath extraction}\label{sec_toolpath_extraction}
-Now that each node has a beading associated with it we can apply the beading to generate the sites of the toolpaths.
-For each upward half-edge $e$ we generate each site $J$ based on the beading $B = B^{v_1^e}$:
+Now that each node has been assigned a beading we proceed to generate the sites along its support edge which define the toolpath.
+For each upward half-edge \jun{half-edge?} $\overrightarrow{v_0 v_1}$ we decide the location ($v$), width ($w$) of the $i$-th site $J$ based on the beading $B = B^{v_1}$:
 \begin{align*}
 J &= \{ v, w, i \} \\ 
-v &= v_1^e + (v_0^e - v_1^e) \frac{R(v_1^e) - l_i^B}{R(v_1^e) - R(v_0^e)} \\ 
+v &= v_1 + (v_0 - v_1) \frac{R(v_1) - l_i^B}{R(v_1) - R(v_0)} \\ 
 w &= w_i^B
 % \\ i^J &= i
 \end{align*}
-for any $i$ for which $R(v_0^e) < l_i^B \leq R(v_1^e)$.
+for any $i$ for which $R(v_0) < l_i^B \leq R(v_1)$.
 See \cref{site_placement}.
 We store all sites of an edge in a mapping from edge to a list of sites.
 
