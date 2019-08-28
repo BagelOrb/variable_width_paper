@@ -7,8 +7,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   height="255.5468"
-   width="347.66101"
+   height="161.08475"
+   width="340.06781"
    id="svg1860"
    version="1.1"
    sodipodi:docname="beading_conflict_solved.svg"
@@ -29,8 +29,8 @@
      id="namedview512"
      showgrid="false"
      inkscape:zoom="1.84375"
-     inkscape:cx="97.127655"
-     inkscape:cy="53.418778"
+     inkscape:cx="82.945285"
+     inkscape:cy="46.909582"
      inkscape:window-x="1920"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -47,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,16 +55,16 @@
      inkscape:groupmode="layer"
      inkscape:label="layer1"
      id="layer1"
-     transform="translate(3,-108.10288)"
+     transform="translate(3,-155.33391)"
      sodipodi:insensitive="true" />
   <g
      inkscape:groupmode="layer"
      inkscape:label="layer2"
      id="layer2"
-     transform="translate(3,-108.10288)"
+     transform="translate(3,-155.33391)"
      sodipodi:insensitive="true">
     <polygon
-       points="434.5567,290.30926 434.5567,471.75256 181.4433,471.75256 181.4433,290.30926 0,290.30926 0,181.4433 180.53609,181.80618 181.4433,181.4433 181.4433,0 434.5567,0 434.5567,181.4433 616,181.4433 616,290.30926 435.46393,289.94638 "
+       points="0,290.30926 0,181.4433 180.53609,181.80618 181.4433,181.4433 181.4433,0 434.5567,0 434.5567,181.4433 616,181.4433 616,290.30926 435.46393,289.94638 434.5567,290.30926 434.5567,471.75256 181.4433,471.75256 181.4433,290.30926 "
        style="fill:none;stroke:#000000;stroke-width:6;stroke-miterlimit:4;stroke-dasharray:none"
        id="polygon4" />
   </g>
@@ -72,7 +72,7 @@
      inkscape:groupmode="layer"
      inkscape:label="layer3"
      id="layer3"
-     transform="translate(3,-108.10288)"
+     transform="translate(3,-155.33391)"
      style="display:inline">
     <line
        x1="616"
@@ -627,27 +627,13 @@
        y2="235.87628"
        style="stroke:#808080;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
        id="line163" />
-    <ellipse
-       style="opacity:1;fill:#ff0000;fill-opacity:0.42857145;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:12, 6;stroke-dashoffset:0;stroke-opacity:1"
-       id="path2134"
-       cx="200.11864"
-       cy="235.87628"
-       rx="10.576271"
-       ry="31.728813" />
-    <ellipse
-       ry="31.728813"
-       rx="10.576271"
-       cy="235.87628"
-       cx="416.11865"
-       id="ellipse2136"
-       style="opacity:1;fill:#ff0000;fill-opacity:0.42857145;stroke:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:12, 6;stroke-dashoffset:0;stroke-opacity:1" />
   </g>
   <g
      inkscape:groupmode="layer"
      inkscape:label="layer4"
      id="layer4"
      style="display:inline"
-     transform="translate(3,-108.10288)"
+     transform="translate(3,-155.33391)"
      sodipodi:insensitive="true">
     <line
        x1="435.46393"
@@ -781,7 +767,7 @@
      inkscape:label="layer5"
      id="layer5"
      style="display:inline"
-     transform="translate(3,-108.10288)"
+     transform="translate(3,-155.33391)"
      sodipodi:insensitive="true">
     <text
        x="425.70148"
@@ -869,7 +855,7 @@
      inkscape:label="solved"
      id="layer6"
      style="display:none"
-     transform="translate(3,-108.10288)">
+     transform="translate(3,-155.33391)">
     <g
        id="g1453" />
     <path
@@ -890,12 +876,26 @@
   <g
      inkscape:groupmode="layer"
      id="layer7"
-     inkscape:label="conflict">
+     inkscape:label="conflict"
+     style="display:inline"
+     transform="translate(0,-47.231026)">
     <path
        sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccc"
        inkscape:connector-curvature="0"
        d="m 205.12784,127.77339 -4.53607,11.79381 13.42681,8.16494 6.71341,7.25774 3.26597,5.26187 1.633,4.53607 v 8.3464 9.07216 139.34846 h 84.37112 84.37112 v -139.34846 -9.07216 -8.3464 l 1.633,-4.53607 3.26597,-5.26187 6.71341,-7.25774 13.42681,-8.16494 -4.53607,-11.79381 m -357.62478,0 h 148.78349 l -4.53607,-11.79381 13.42681,-8.16494 6.71341,-7.25774 3.26597,-5.261856 1.633,-4.53607 v -8.3464 -9.07216 -139.348449 h 84.37112 84.37112 v 139.348449 9.07216 8.3464 l 1.633,4.53607 3.26597,5.261856 6.71341,7.25774 13.42681,8.16494 -4.53607,11.79381 148.78351,-0.18144"
        style="display:inline;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3, 3;stroke-dashoffset:0;stroke-opacity:1"
        id="path2112-3" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.50196078"
+       d="m 201.49896,115.97958 3.62888,11.79381 -4.53607,11.79381"
+       id="path938"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path940"
+       d="m 420.31958,115.97958 -3.62888,11.79381 4.53607,11.79381"
+       style="fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.50196078" />
   </g>
 </svg>
