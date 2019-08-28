@@ -562,10 +562,7 @@ This helps to define an efficient slicing algorithm in \cref{sec_toolpath_extrac
 We associate each central node $v$ with a set of radial distances for each bead along with the width of that bead, which we call the \emph{beading} $B$.
 For our distributed beading scheme we define the beading for a central node $v$ with $n = b^\wedge_v$ beads and a diameter $d = 2R(v)$  as:
 \begin{align*}
-%    B(n,d) &= \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right)\\
-    B(n,d) &= \left( W(n,d), L(n,d) \right)\\
-    W(n,d) &= \left\{  w_0 , \dots, w_{n-1} \right\} \\
-    L(n,d) &= \left\{ l_0 , \dots, l_{n-1} \right\} \\
+    B(n,d) &= \left( W(n,d), L(n,d) \right)   &=   \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right) \\
     w_i &= 2R(v) / n  & \text{for all $i < n$}\\
     l_i &= 2R(v) / n (i + \nicefrac12) & \text{for all $i <t n$}
 \end{align*}
