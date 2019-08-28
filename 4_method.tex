@@ -231,8 +231,8 @@ The resulting skeleton decomposes the outline shape into trapezoids and triangle
 Considering the fact that the concept of trapezoidation conventionally allows for the degenerate case where a trapezoid resolves into a triangle~\cite{chazelle1984,fournier1984}, we call this shape decomposition the \emph{Skeletal Trapezoidation} (ST).
 
 
-The edges generated from MAT can be classified into three types: (a) straight edge generated from two line segments in the outline polygons, (b) parabolic edge resulting from an outline vertex and a line segment in the outline, and (c) straight edge resulting from two outline vertices.
-Type-b and type-c edges are discretized into pieces with a length up to $d^\text{discretization}$.
+The edges generated from MAT can be classified into three types: (a) line-line edge -- straight edge generated from two line segments in the outline polygons, (b) vertex-line edge -- parabolic edge resulting from an outline vertex and a line segment in the outline, and (c) vertex-vertex edge -- straight edge resulting from two outline vertices.
+The vertex-line and vertex-vertex edges are discretized into pieces with a length up to $d^\text{discretization}$.
 This allows to approximate the feature radius in between two discretized nodes $v_0$ and $v_1$ by linear interpolation. 
 Again we connect the newly inserted nodes to their support, which results in vertex-line regions and vertex-vertex regions such as depicted in \cref{legend}.
 
@@ -325,25 +325,16 @@ The bisector angle $a = 180\degree - \beta$ is the angle between a location $v$ 
 % The significance evaluation is performed efficiently by checking the ratio between feature radius $R$ and the Euclidean distance:
 % if $ | R(v_1) - R(v_0) | / |v_1 - v_0| >  \cos(\alpha_\text{max} / 2)$ then $\alpha > \alpha_\text{max}$. See \cref{distance_based_angles}. This ratio has a clear geometrical interpretation as the slope of the ridge in the UoC surface.
 
-The significance of the three types of medial axis edges is 
+To avoid evaluating the bisection angle at any location on all edges, we devise an efficient measure which operates only on the two nodes of an edge.
 Because all locations along a line-line edge have the same bisector angle we can evaluate whether the edge is significant by checking whether 
 \begin{align}\label{simple_significance_measure}
 | R(v_1) - R(v_0) | / |v_1 - v_0| >  \cos(\alpha_\text{max} / 2)
 \end{align}
 (see \cref{distance_based_angles}).
 This ratio has a clear geometrical interpretation as the slope of the ridge in the UoC surface.
-For line-vertex regions and vertex-vertex regions only a portion of the region may be significant.
-We therefore introduce nodes at the boundaries of the significant portion during the construction of the ST.
+For vertex-line edges and vertex-vertex edges only a portion of the edge may be significant.
+We therefore introduce nodes at the boundaries of the significant portion during the discretization of such edges (see Appendix \cref{edge_discretization}).
 The significance of all edges can then accurately be evaluated using \cref{simple_significance_measure}.
-
-We calculate the location $l$ of the boundary between a significant and nonsignificant portion of an edge analytically.
-For example, the parabolic MAT edge generated from the outline vertex $(0,1)$ and an outline segment aligned with the X-axis follows $y(x) = \nicefrac12 x^2$ and $R(x) = y(x)$.
-We can determine the significant portion $[-x_\text{bound}, x_\text{bound}]$ by evaluating $\frac{\partial R}{\partial x} > \cos(\alpha_\text{max} / 2)$, which is $ | x_\text{bound} | = (\tan(\alpha_\text{max} / 2))^{-1}$.
-Similarly, a MAT edge generated from two vertices at $(0,0)$ and $(0,1)$ follows $y(x) = \nicefrac12$ and $R(x) = \sqrt{\nicefrac14 + x^2}$.
-The boundaries of significance are given by $ | x_\text{bound} | = \nicefrac12 (\tan(\alpha_\text{max} / 2))^{-1}$.
-From these we can derive the locations $l = (\pm x_\text{bound}, y(x_\text{bound}))$.
-These specific cases can easily be transformed into all possible cases using scaling and rotation operations.
-\jun{TODO}
 
 \begin{figure} \centering
 \newlength{\significancePropertiesHeight}

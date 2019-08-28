@@ -1,0 +1,8 @@
+\section{Edge discretization}\label{edge_discretization}
+We calculate the location $l$ of the boundary between a significant and nonsignificant portion of an edge analytically.
+For example, the parabolic MAT edge generated from the outline vertex $(0,1)$ and an outline segment aligned with the X-axis follows $y(x) = \nicefrac12 x^2$ and $R(x) = y(x)$.
+We can determine the significant portion $[-x_\text{bound}, x_\text{bound}]$ by evaluating $\frac{\partial R}{\partial x} > \cos(\alpha_\text{max} / 2)$, which is $ | x_\text{bound} | = (\tan(\alpha_\text{max} / 2))^{-1}$.
+Similarly, a MAT edge generated from two vertices at $(0,0)$ and $(0,1)$ follows $y(x) = \nicefrac12$ and $R(x) = \sqrt{\nicefrac14 + x^2}$.
+The boundaries of significance are given by $ | x_\text{bound} | = \nicefrac12 (\tan(\alpha_\text{max} / 2))^{-1}$.
+From these we can derive the locations $l = (\pm x_\text{bound}, y(x_\text{bound}))$.
+These specific cases can easily be transformed into all possible cases using scaling and rotation operations.
