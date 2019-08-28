@@ -9,8 +9,8 @@ We visualize the skeleton as the union of cones (UoC) (\cref{sec_surface_constru
 Contour parallel toolpath with uniform width can be interpreted as the intersection of the union of cones with a set of planar planes at equally spaced heights (\cref{3d_surface_overview}\subref{overview_outline}-\subref{overview_uniform_paths}).
 
 As depicted in \cref{3d_surface_overview_center}, our method first identifies edges and nodes in the skeleton that are located in the center of the polygon, which correspond to ridges and peaks in the UoC  (\cref{sec_center_classification}).
-The heights $b^\sim$ at these elements are then quantized to an integer number of beads $b^\neg$.
-To ensure a smooth toolpath between regions with quantized integer heights that differ, we add new nodes in the skeleton with quantized heights and interpolate the heights $b^\wedge$ in between (\cref{sec_central_height_adjustment}).
+The heights $\tilde{b}$ at these elements are then quantized to an integer number of beads $\bar{b}$.
+To ensure a smooth toolpath between regions with quantized integer heights that differ, we add new nodes in the skeleton with quantized heights and interpolate the heights $\hat{b}$ in between (\cref{sec_central_height_adjustment}).
 The union of cones corresponding to the smoothed skeleton is then sliced at regular intervals to obtain toolpaths with varying spacing, which translates into varying width (\cref{sec_toolpath_extraction}).
 
 % We describe how to construct the mesh of the UoC in \cref{sec_surface_construction} and
@@ -256,7 +256,7 @@ The skeleton trapezoidation (ST) provides a means to visualize the union of cone
 We assign each node in ST a (real number) height value measured in terms of beads, referred to as the \emph{bead count} $b$.
 We define the bead count as the number of beads to fit along the \emph{diameter} of the inscribed circle centered at node $v$, i.e. $2R(v)$, by
 \begin{equation}
-    b^\sim_v = 2 R(v) / w^*
+    \tilde{b}_v = 2 R(v) / w^*
 \label{eq:initialBeadCount}
 \end{equation}
 where $w^*$ is the nozzle size. 
@@ -379,9 +379,9 @@ if the total length traversed until we reach another marked node $v_1$ is shorte
 
 \subsection{Central height adjustment}\label{sec_central_height_adjustment}
 Now that we have identified and marked the central regions we quantize their heights.
-We first quantize the initial bead count $b^\sim$ into an integer bead count $b^\neg$ at the marked nodes using a quantization operator $q$,
+We first quantize the initial bead count $\tilde{b}$ into an integer bead count $\bar{b}$ at the marked nodes using a quantization operator $q$,
 then find the locations along the edges where $q$ makes a jump from one bead count $n$ to another $n+1$
-and then introduce ramps to smoothly transition from $n$ to $n+1$ using fractional bead counts $b^\wedge$ along the smooth transition.
+and then introduce ramps to smoothly transition from $n$ to $n+1$ using fractional bead counts $\hat{b}$ along the smooth transition.
 %\subsubsection{Initial bead count}\label{sec_initial_bead_count}
 
 
@@ -436,7 +436,7 @@ $q(d) = \left\lfloor d / w^* + \nicefrac12 \right\rfloor$.
 Alternative quantization schemes will be discussed in \cref{sec_generalization}.
 By applying $q$ to the heights of central nodes we quantize the bead count:
 \begin{equation}\label{eq_quantized_bead_count}
-b^\neg_v = q(2R(v)) = \left\lfloor b^\sim_v + \nicefrac12 \right\rfloor
+\bar{b}_v = q(2R(v)) = \left\lfloor \tilde{b}_v + \nicefrac12 \right\rfloor
 \end{equation}
 
 \iffalse
@@ -448,7 +448,7 @@ Specifically, unmarked regions are marked as central if they lie between two nod
 % If the upper node has the same bead count $b^*_{v_1} = b^*_{v_0}$ we mark all edges and nodes $v$ in between, and set the bead count $b^*_v \leftarrow b^*_{v_0}$.
 
 \paragraph{Transition anchors}
-For a marked edge which connects nodes $v_0$ and $v_1$ with $b^\neg_{v_0} \le n < b^\neg_{v_1}$, we determine the \emph{transition anchor locations} at which the bead count transitions from $n$ to $n+1$.
+For a marked edge which connects nodes $v_0$ and $v_1$ with $\bar{b}_{v_0} \le n < \bar{b}_{v_1}$, we determine the \emph{transition anchor locations} at which the bead count transitions from $n$ to $n+1$.
 To this end, we introduce the function 
 \begin{equation}
     q^{-1}(n) := \argmax_d q(d) = n,
@@ -482,9 +482,9 @@ The length of the transition is set to $t(n) = w^*$ and it is centered at the an
 $t_0(n) = \Delta(v_0v_x) = \nicefrac12 w^*$, 
 where $\Delta$ is the total distance along the edges in between two nodes.
 We discard any transition anchor which is too close to the end of a chain of marked edges for the smoothed transition to fully fit within the marked region.
-In order to make the transition ramps robust against small perturbations in the outline shape, we modify the nodes $v_x$ which are in between the two ends $v_0$ and $v_1$ of the transition by (re-)assigning them a fractional bead count $b^\wedge$ which is linearly interpolated between the two ends of the transition (see \cref{beading_transitioning_filtering__transitions_applied}):
+In order to make the transition ramps robust against small perturbations in the outline shape, we modify the nodes $v_x$ which are in between the two ends $v_0$ and $v_1$ of the transition by (re-)assigning them a fractional bead count $\hat{b}$ which is linearly interpolated between the two ends of the transition (see \cref{beading_transitioning_filtering__transitions_applied}):
 \begin{equation}
-b^\wedge_{v_x} = n + {\Delta(v_0v_x)} / {\Delta(v_0v_1)}
+\hat{b}_{v_x} = n + {\Delta(v_0v_x)} / {\Delta(v_0v_1)}
 \end{equation}
 %This modification makes the transition ramps robust against small perturbations in the outline shape (to be explained in \cref{section_beading_interpolation});
 %compare the top and bottom of \cref{beading_transitioning_filtering}. 
@@ -561,7 +561,7 @@ This helps to define an efficient slicing algorithm in \cref{sec_toolpath_extrac
 
 \paragraph{Beading} 
 We associate each central node $v$ with a set of radial distances for each bead along with the width of that bead, which we call the \emph{beading} $B$.
-For our distributed beading scheme we define the beading for a central node $v$ with $n = b^\wedge_v$ beads and a diameter $d = 2R(v)$  as:
+For our distributed beading scheme we define the beading for a central node $v$ with $n = \hat{b}_v$ beads and a diameter $d = 2R(v)$  as:
 \begin{align*}
     B(n,d) &= \left( W(n,d), L(n,d) \right)   &=   \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right) \\
     w_i &= 2R(v) / n  & \text{for all $i < n$}\\
@@ -688,7 +688,7 @@ This is implemented in a flood-fill fashion: see \cref{alg_beading_propagation}.
 \label{alg_beading_propagation}
 \begin{algorithmic}
 \ForAll{$v \in$ nodes}
-	\If {marked($v$)} $\text{map}[v] = (0, B(b^\wedge_v, 2 R(v)))$ \EndIf
+	\If {marked($v$)} $\text{map}[v] = (0, B(\hat{b}_v, 2 R(v)))$ \EndIf
 \EndFor
 \ForAll{$e \in$ edges}
 	\If {$R(v_0^e) < R(v_1^e)$}
@@ -777,10 +777,10 @@ We then generate extrusion segments for each trapezoid by connecting together th
 See \cref{segment_generation}.
 If the amount of sites on both sides of the trapezoid is not the same then this trapezoid is in a transition and we leave one inner site unconnected.
 
-Because the bead count is defined in terms of the feature diameter rather than the radius, only some of the bead count values $b^\wedge$ in a central region coincide with a slicing height.
-When the bead count $b^\wedge$ is even, the ridge will be sliced as normal;
+Because the bead count is defined in terms of the feature diameter rather than the radius, only some of the bead count values $\hat{b}$ in a central region coincide with a slicing height.
+When the bead count $\hat{b}$ is even, the ridge will be sliced as normal;
 the intersection between a slicing plane and the mesh surface results in a polyline on both sides of the ridge, which are connected together into a polygonal toolpath.
-When the bead count $b^\wedge$ is odd, the ridge will coincide exactly with a slicing height, which results in a single polyline toolpath being generated along the middle of the feature.
+When the bead count $\hat{b}$ is odd, the ridge will coincide exactly with a slicing height, which results in a single polyline toolpath being generated along the middle of the feature.
 In that case we should prevent the algorithm from generating the center extrusion segment twice from the trapezoids on either side of that segment.
 We therefore use some arbitrary condition to decide which one of the two to include based on the ordering of the coordinates of $v_0$ and $v_1$: $x_0 < x_1 \lor (x_0 = x_1 \land y_0 < y_1)$.
 
