@@ -479,7 +479,7 @@ For two consecutive anchors which transition to opposite directions, if the dist
 A sharp transition from $n$ to $n+1$ beads at an anchor location creates sharp turns in the toolpath (see \cref{transitions} top).
 A transition length $t(n)$ is introduced to ensure a smooth transition (see \cref{transitions}). 
 The length of the transition is set to $t(n) = w^*$ and it is centered at the anchor, i.e. the distance from the lower end $v_0$ to the anchor position $v_x$ is set to
-$t_0(n) = \Delta(v_0v_x) = \nicefrac12 w^*$, 
+$t_0(n) = \Delta(v_0v_x) = \nicefrac12 w^*$,
 where $\Delta$ is the total distance along the edges in between two nodes.
 We discard any transition anchor which is too close to the end of a chain of marked edges for the smoothed transition to fully fit within the marked region.
 In order to make the transition ramps robust against small perturbations in the outline shape, we modify the nodes $v_x$ which are in between the two ends $v_0$ and $v_1$ of the transition by (re-)assigning them a fractional bead count $\hat{b}$ which is linearly interpolated between the two ends of the transition (see \cref{beading_transitioning_filtering__transitions_applied}):

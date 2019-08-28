@@ -5,16 +5,34 @@ While the framework presented in the previous section takes evenly distributed b
 
 
 \begin{definition}\label{beading_scheme_definition}
-The beading scheme is configured by the following set of parameters and functions:
-$$
-\left\{ \alpha_\text{max}, q(d), t(n), t_0(n), B(n, d) \right\},
-$$
-where, as introduced in previous section, $\alpha_{\text{max}}$ is the limit bisector angle,
+The beading scheme is configured by the following set of functions and constants:
+\begin{align*}
+\{
+&q(d),
+B(n, d),
+t(n),
+t_0(n),
+\\
+&\alpha_\text{max}, 
+t_\text{beading}, 
+d_\text{max}^\text{transition}, 
+d_\text{max}^\text{unmarked}, 
+d_\text{max}^\text{intersection},
+d^\text{discretization}
+ \}
+\end{align*}
+where, as introduced in previous section,
 $q(d)$ the quantization operator,
+$B(n,d)$ is the beading function consisting of $\left( W(n,d), L(n,d) \right)$,
 $t(n)$ the transition length,
-$t_0(n)$ the transition anchor position
+$t_0(n)$ the transition anchor position,
+$\alpha_{\text{max}}$ is the limit bisector angle,
+$t_\text{beading}$ is the beading conflict transition length,
+$d_\text{max}^\text{unmarked}$ is the filter distance for unmarked regions,
+$d_\text{max}^\text{transition}$ is the filter distance for transition anchors,
+$d_\text{max}^\text{intersection}$ is the reduction ratio at 3-way intersections
 and
-$B(n,d)$ is the beading function consisting of $\left( W(n,d), L(n,d) \right)$.
+$d^\text{discretization}$ is the discretization length in vertex-vertex VD edges and vertex-line VD edges.
 %$W(n, d)$ and $L(n, d)$ give the sequence of bead widths $\left\{ w_i \right\}$ and radial locations $\left\{ l_i \right\}$, respectively.
 \end{definition}
 
@@ -25,7 +43,7 @@ The following restrictions hold:
 \item Beadings are symmetric from the center: $W(n, d)_i = W(n, d)_{n-i-1}$ and $L(n, d)_i = d - L(n, d)_{n-i-1}$
 %\item $W$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$
 %\item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
-\item For toolpaths to be smooth we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} \leq 1$
+\item For toolpaths to be smooth and continuous we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} \leq 1$
 \end{enumerate}
 
 
@@ -53,29 +71,41 @@ A beading scheme is defined as a set of some particular variables and functions 
 Our beading schemes are based on a preferred width $w^* = \SI{0.4}{\milli\meter}$, which is equal to the diameter of the printing nozzle.
 Most of the beading schemes we introduce share a common ground:
 \begin{align*}
-\begin{array}{rlrl}
-d_\text{max}^\text{transition} &= \SI{1}{\milli\meter}    &    t_\text{beading} &= w^* \\
-d_\text{max}^\text{unmarked} &= w^*    &    t(n) &= w^*  \\ 
-d^\text{discretization} &= \SI{0.2}{\milli\meter}    &    t_0(n) &=  t(n) \left( q^{-1}(n) / w^*  - n \right) \\
-d_\text{max}^\text{intersection} &= \SI{75}{\percent}     &     \alpha_\text{max} &= \SI{135}{\degree} \\
-\end{array} \\
-%\end{align*}
-%\begin{align*}
 L(n,d)_i = 
 \begin{cases}
 -\frac12 W(n,d)_i + \sum_{j=0}^i W(n,d)_j & \text{ if } i < \frac12 (n -1) \\
 d/2 & \text{ if } i =  \frac12 (n -1) \\
 d - W(n,d)_{n-1-i} & \text{ otherwise }\\
 \end{cases}
+\\
+\begin{array}{rlrl}
+t_\text{beading} &= w^* 
+&
+d_\text{max}^\text{transition} &= \SI{1}{\milli\meter}
+\\
+t(n) &= w^*
+&
+d_\text{max}^\text{unmarked} &= w^*
+\\
+t_0(n) &=  t(n) \left( q^{-1}(n) / w^*  - n \right)
+&
+d^\text{discretization} &= \SI{0.2}{\milli\meter}
+\\
+\alpha_\text{max} &= \SI{135}{\degree} 
+&
+d_\text{max}^\text{intersection} &= \SI{75}{\percent}
+\end{array}
+%\end{align*}
+%\begin{align*}
 \end{align*}
 
-The transition anchor position $t_0$ ensures that the transitions never overlap with the locations $v$ where $2 R(v) = n w^*$ for $n \in \mathbb{N}$.
-The transition length $t$ ensures that the center beads don't overlap with the innermost transitioning beads, while keeping the amount of underfill low and keeping the toolpath smooth.
-The limit bisector angle $\alpha_\text{max}$ ensures thatwe don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths.
 The toolpath locations $L$ ensure 
 that the beads don't overlap,
 that beads are extruded from the center of where they end up
 and that the symmetry restrictions are met.
+The transition anchor position $t_0$ ensures that the transitions never overlap with the locations $v$ where $2 R(v) = n w^*$ for $n \in \mathbb{N}$.
+The transition length $t$ ensures that the center beads don't overlap with the innermost transitioning beads, while keeping the amount of underfill low and keeping the toolpath smooth.
+The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths.
 
 
 
