@@ -14,23 +14,26 @@ While the framework presented in the previous section takes evenly distributed b
 \begin{definition}\label{beading_scheme_definition}
 The beading scheme is configured by the following set of parameters and functions:
 $$
-\left\{ \alpha_\text{max}, q(d), t(n), t_0(n), W(n, d), L(n, d) \right\},
+\left\{ \alpha_\text{max}, q(d), t(n), t_0(n), B(n, d) \right\},
 $$
 where, as introduced in previous section, $\alpha_{\text{max}}$ is the limit bisector angle,
 $q(d)$ the quantization operator,
 $t(n)$ the transition length
 and
-$t_0(n)$ the transition anchor position. \jun{check whether this last one has been defined.}
-$W(n, d)$ and $L(n, d)$ give the sequence of bead widths $\left\{ w_i \right\}$ and radial locations $\left\{ l_i \right\}$, respectively.
+$t_0(n)$ the transition anchor position \jun{check whether this last one has been defined.}
+and
+$B(n,d)$ is the beading function consisting of $\left( W(n,d), L(n,d) \right)$.
+%$W(n, d)$ and $L(n, d)$ give the sequence of bead widths $\left\{ w_i \right\}$ and radial locations $\left\{ l_i \right\}$, respectively.
 \end{definition}
 
 
 The following restrictions hold:
 \begin{enumerate}
 \item $\alpha_\text{max}$ is viable: $t_1(n) + t_0(n+1) < \frac{ q^{-1}(n + 1) - q^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$ for each $n \in \mathbb{N}$ (see \cref{transition_placement})
-\item $W$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$
-\item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
-\item $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} < \infty$
+\item $B$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$ and $L(n, d)_i = d - L(n, d)_{n-i-1}$
+%\item $W$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$
+%\item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
+\item $W_n$ is positive, monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} \leq 1$
 \end{enumerate}
 
 
@@ -65,20 +68,15 @@ A beading scheme is defined as a set of some particular variables and functions 
 Our beading schemes are based on a preferred width $w^* = \SI{0.4}{\milli\meter}$, which is equal to the diameter of the printing nozzle.
 Most of the beading schemes we introduce share a common ground:
 \begin{align*}
-d_\text{max}^\text{transition} &= \SI{1}{\milli\meter} \\
-d_\text{max}^\text{unmarked} &= w^* \\ 
-d^\text{discretization} &= \SI{0.2}{\milli\meter} \\
-t_\text{beading} &= w^* \\
-d_\text{max}^\text{intersection} &= \SI{75}{\percent} \\
-%
-%We use a transition anchor position of
-%$$t_-(n) =  t(n) \frac{ q^{-1}(n) - p(n) }{p(n+1) - p(n) }$$
-%$$t_-(n) =  t(n) \frac{ q^{-1}(n) - 0.4n }{0.4(n+1) - 0.4n }$$
-%$$t_-(n) =  t(n) \frac{ q^{-1}(n) - 0.4n }{0.4}$$
-t_0(n) &=  t(n) \left( q^{-1}(n) / w^*  - n \right) \\
-t(n) &= w^* \\
-\alpha_\text{max} &= \SI{135}{\degree} \\
-L(n,d)_i &= 
+\begin{array}{rlrl}
+d_\text{max}^\text{transition} &= \SI{1}{\milli\meter}    &    t_\text{beading} &= w^* \\
+d_\text{max}^\text{unmarked} &= w^*    &    t(n) &= w^*  \\ 
+d^\text{discretization} &= \SI{0.2}{\milli\meter}    &    t_0(n) &=  t(n) \left( q^{-1}(n) / w^*  - n \right) \\
+d_\text{max}^\text{intersection} &= \SI{75}{\percent}     &     \alpha_\text{max} &= \SI{135}{\degree} \\
+\end{array} \\
+%\end{align*}
+%\begin{align*}
+L(n,d)_i = 
 \begin{cases}
 -\frac12 W(n,d)_i + \sum_{j=0}^i W(n,d)_j & \text{ if } i < \frac12 (n -1) \\
 d/2 & \text{ if } i =  \frac12 (n -1) \\
@@ -88,8 +86,11 @@ d - W(n,d)_{n-1-i} & \text{ otherwise }\\
 
 The transition anchor position $t_0$ ensures that the transitions never overlap with the locations $v$ where $2 R(v) = n w^*$ for $n \in \mathbb{N}$.
 The transition length $t$ ensures that the center beads don't overlap with the innermost transitioning beads, while keeping the amount of underfill low and keeping the toolpath smooth.
-The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths.
-The toolpath locations $L$ ensure that beads are extruded from the center of where they end up, that the beads don't overlap and that the symmetry restrictions are met.
+The limit bisector angle $\alpha_\text{max}$ ensures thatwe don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths.
+The toolpath locations $L$ ensure 
+that the beads don't overlap,
+that beads are extruded from the center of where they end up
+and that the symmetry restrictions are met.
 
 
 
@@ -264,20 +265,17 @@ See \cref{formula_evenly_distributed}.
 
 
 \paragraph{Inward distributed scheme}
-\todo{TODO: merge general distributed with inward distributed decsription.}
 The evenly distributed scheme can be conceptualized as calculating the total discrepancy $E$ between the actual feature diameter $d$ and the total preferred width $n w^*$, dividing the total discrepancy by the number of beads and setting the width of each bead to 
 $w^* + E / n$.
 However, depending on the application we might want a different distribution of widths.
 We therefore supply a beading scheme which supports an arbitrary distribution of the discrepancy.
 The distribution is determined by some weighing function $M(n.d)$, which defines the portion of the discrepancy to distribute to each bead.
 %\paragraph{Inward distributed}
-For example, we can choose 
-$$M(n,d)_i = \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )$$
-to distribute the discrepancy over the innermost $2N$ beads, and distribute most of it to the inner beads.
+For example, we can choose an $M$ which distributes the discrepancy over the innermost beads, and distribute most of it to the inner beads.
 See \cref{distributed_comparison}.
 That way we limit the region of impact of the distributed scheme to a central region and have the nominal bead width $w^*$ in regions farther away.
 This limits the impact of transitioning regions so that transitions keep the toolpaths smooth farther away from the central regions. % and it forces most of the beads to have exactly the prefered width.
-Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanical properties derived for prints using the uniform scheme will still hold approximately.
+%Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanical properties derived for prints using the uniform scheme will still hold approximately.
 See \cref{formula_inward_distributed}.
 
 

@@ -562,10 +562,12 @@ This helps to define an efficient slicing algorithm in \cref{sec_toolpath_extrac
 We associate each central node $v$ with a set of radial distances for each bead along with the width of that bead, which we call the \emph{beading} $B$.
 For our distributed beading scheme we define the beading for a central node $v$ with $n = b^\wedge_v$ beads and a diameter $d = 2R(v)$  as:
 \begin{align*}
-    %B &= \left\{ \left( w_0 , l_0 \right), \dots, \left( w_{n-1}, l_{n-1} \right) \right\} \\
-    B(n,d) &= \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right)\\
-    w_i &= 2R(v) / n  & \text{for all $i \leq n$}\\
-    l_i &= 2R(v) / n (i + \nicefrac12) & \text{for all $i \leq n$}
+%    B(n,d) &= \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right)\\
+    B(n,d) &= \left( W(n,d), L(n,d) \right)\\
+    W(n,d) &= \left\{  w_0 , \dots, w_{n-1} \right\} \\
+    L(n,d) &= \left\{ l_0 , \dots, l_{n-1} \right\} \\
+    w_i &= 2R(v) / n  & \text{for all $i < n$}\\
+    l_i &= 2R(v) / n (i + \nicefrac12) & \text{for all $i <t n$}
 \end{align*}
 where
 $w_i$ and $l_i$ are the width and location of the $i$th bead,
@@ -733,13 +735,13 @@ This is implemented in a flood-fill fashion: see \cref{alg_beading_propagation}.
 
 
 \subsection{Toolpath extraction}\label{sec_toolpath_extraction}
-Now that each node has been assigned a beading we proceed to generate the sites along its support edge which define the toolpath.
-For each upward half-edge \jun{half-edge?} $\overrightarrow{v_0 v_1}$ we decide the location ($v$), width ($w$) of the $i$-th site $J$ based on the beading $B = B^{v_1}$:
+Now that each node has been assigned a beading we proceed to generate the toolpath sites along the edges of the ST.
+A site $S$ consists of a location $v$ a width $w$ and an index $i$, which are computed for an edge $v_0v_1$ from the beading $B$ of the upper node $v_1$:
 \begin{align*}
-J &= \{ v, w, i \} \\ 
+S &= \{ v, w, i \} \\ 
 v &= v_1 + (v_0 - v_1) \frac{R(v_1) - l_i^B}{R(v_1) - R(v_0)} \\ 
 w &= w_i^B
-% \\ i^J &= i
+% \\ i^S &= i
 \end{align*}
 for any $i$ for which $R(v_0) < l_i^B \leq R(v_1)$.
 See \cref{site_placement}.
@@ -819,7 +821,7 @@ the extrusion segments can efficiently be connected into existing polyline toolp
 Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
 Such intersections cause overfill because the nozzle passes the location multiple times.
 We deal with this special case by forcing a new polyline when traversing the trapezoids, and in the final polyline connection step we greadily connect the first two polylines ending in the same location and retreat all other polylines ending in that same location in order to prevent the overfill.
-In order to retreat a polyline which ends in a site $J$ we remove part of the polyline paths up to the intersection by a distance of $w^J d_\text{max}^\text{intersection}$, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.
+In order to retreat a polyline which ends in a site $S$ we remove part of the polyline paths up to the intersection by a distance of $w^S d_\text{max}^\text{intersection}$, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.
 This ratio effectively deals with the balance between overfill and underfill generated at that location after the retreat has been applied.
 See \cref{polyline_reduction}.
 
