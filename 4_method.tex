@@ -313,13 +313,23 @@ The bisector angle is therefore an exact indicator of the amount of overfill and
 
 \begin{figure}
 \centering
-\includegraphics[width=.5\columnwidth]{sources/method/naive_overfill_underfill.pdf}
+\setlength{\figheight}{.3\columnwidth}
+\begin{subfigure}{0.45\columnwidth} \centering
+\includegraphics[height=\figheight]{sources/method/naive_overfill_underfill.pdf}
+\caption{Over- and underfill}\label{naive_overfill_underfill}
+\end{subfigure}
+\begin{subfigure}{0.45\columnwidth} \centering
+\includegraphics[height=.8\figheight]{sources/method/significance_properties.pdf}
+\caption{Significance measure}\label{distance_based_angles}
+\end{subfigure}
 \caption{
-Overfill and underfill areas in a simple toolpathing using a uniform bead width $w$ for a wedge area with vertex angle $\beta$.
-The underfill areas (light blue) are mirrored versions of the overfill areas (dark red).
-The bisector angle $a = 180\degree - \beta$ is the angle between a location $v$ and its support $p_0$ and $p_1$.
+Properties of the significance measure along a skeletal edge (red) generated from two polygon lines (black) using the properties of inscribed circles (gray) and their radii (dashed).
+\subref{naive_overfill_underfill}
+The size of overfill (orange) and underfill areas (azure) for the uniform toolpathing technique can be calculated from the bisector angle.
+% $a = 180\degree - \beta$ is the angle between a location $v$ and its support $p_0$ and $p_1$.
+\subref{distance_based_angles}
+The significance measure can be simplified using $\alpha = 2 \gamma = 2 \cos^{-1} \Delta R / |v_1 - v_0|$.
 }
-\label{naive_overfill_underfill}
 \end{figure}
 
 % The significance evaluation is performed efficiently by checking the ratio between feature radius $R$ and the Euclidean distance:
@@ -336,35 +346,6 @@ For vertex-line edges and vertex-vertex edges only a portion of the edge may be 
 We therefore introduce nodes at the boundaries of the significant portion during the discretization of such edges (see Appendix \cref{edge_discretization}).
 The significance of all edges can then accurately be evaluated using \cref{simple_significance_measure}.
 
-\begin{figure} \centering
-\newlength{\significancePropertiesHeight}
-\setlength{\significancePropertiesHeight}{.25\columnwidth}
-\begin{subfigure}{0.35\columnwidth} \centering
-\includegraphics[height=\significancePropertiesHeight]{sources/method/distance_based_angles.pdf}
-\caption{Significance}
-\label{distance_based_angles}
-\end{subfigure}
-\begin{subfigure}{0.3\columnwidth} \centering
-\includegraphics[height=\significancePropertiesHeight]{sources/method/distance_ratio_limit.pdf}
-\caption{Distance}
-\label{distance_ratio_limit}
-\end{subfigure}
-\begin{subfigure}{0.3\columnwidth} \centering
-\includegraphics[height=\significancePropertiesHeight]{sources/method/branch_upward_edge_property.pdf}
-\caption{Upward edge}
-\label{branch_upward_edge_property}
-\end{subfigure}
-\caption{
-Properties of feature radius $R$.
-Part of outline shape in thick black,
-ST edges in red,
-inscribed circle in gray,
-radii in dashed lines.
-\subref{distance_based_angles} The significance measure can be simplified using $\alpha = 2 \gamma = 2 \cos^{-1} \Delta R / |v_1 - v_0|$.
-\subref{distance_ratio_limit} The distance $|v_1 - v_0| > \Delta R$ because otherwise the feature radius would not be one of an inscribed circle.
-\subref{branch_upward_edge_property} The radial distance can only increase along one edge around a branch point in the medial axis.
-}
-\end{figure}
 
 
 
