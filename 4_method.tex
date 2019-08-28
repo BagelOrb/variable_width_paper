@@ -478,13 +478,14 @@ For two consecutive anchors which transition to opposite directions, if the dist
 
 A sharp transition from $n$ to $n+1$ beads at an anchor location creates sharp turns in the toolpath (see \cref{transitions} top).
 A transition length $t(n)$ is introduced to ensure a smooth transition (see \cref{transitions}). 
-The transition is centered at the anchor, and its length is set to $t(n) = w^*$.
+The length of the transition is set to $t(n) = w^*$ and it is centered at the anchor, i.e. the distance from the lower end $v_0$ to the anchor position $v_x$ is set to
+$t_0(n) = \Delta(v_0v_x) = \nicefrac12 w^*$, 
+where $\Delta$ is the total distance along the edges in between two nodes.
 We discard any transition anchor which is too close to the end of a chain of marked edges for the smoothed transition to fully fit within the marked region.
 In order to make the transition ramps robust against small perturbations in the outline shape, we modify the nodes $v_x$ which are in between the two ends $v_0$ and $v_1$ of the transition by (re-)assigning them a fractional bead count $b^\wedge$ which is linearly interpolated between the two ends of the transition (see \cref{beading_transitioning_filtering__transitions_applied}):
 \begin{equation}
 b^\wedge_{v_x} = n + {\Delta(v_0v_x)} / {\Delta(v_0v_1)}
 \end{equation}
-where $\Delta$ is the total distance along the edges in between two nodes.
 %This modification makes the transition ramps robust against small perturbations in the outline shape (to be explained in \cref{section_beading_interpolation});
 %compare the top and bottom of \cref{beading_transitioning_filtering}. 
 Finally we update the ST by adding support edges at the transition ends. 
@@ -564,7 +565,7 @@ For our distributed beading scheme we define the beading for a central node $v$ 
 \begin{align*}
     B(n,d) &= \left( W(n,d), L(n,d) \right)   &=   \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right) \\
     w_i &= 2R(v) / n  & \text{for all $i < n$}\\
-    l_i &= 2R(v) / n (i + \nicefrac12) & \text{for all $i <t n$}
+    l_i &= 2R(v) / n (i + \nicefrac12) & \text{for all $i < n$}
 \end{align*}
 where
 $w_i$ and $l_i$ are the width and location of the $i$th bead,
