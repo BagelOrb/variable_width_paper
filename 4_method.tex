@@ -525,13 +525,25 @@ Discontinuities around regions where the bead count changes are prevented by tra
 
 
 \subsection{Beading}\label{sec_peripheral_height_adjustment}
+Now that we have determined the bead counts in the central regions we will describe how the peripheral regions are handled.
+Determining bead count values for the unmarked nodes and interpolating linearly along the unmarked edges would mean that toolpath sites would be distributed evenly along each unmarked bone;
+while that would suffice for the evenly distributed beading scheme, it wouldn't allow for more sophisticated, non-linear schemes (see \cref{peripheral_heights}).
+Instead we determine the radial distance to the boundary at which each bead should occur.
+Each central node is associated with a sequence of radial distances $L$ which control the locations of the beads, startign from the outer bead and ending in the center.
+Together with a sequence of bead widths $W$ these form what we call a \emph{beading} $B$.
+For our distributed beading scheme we compute the beading for a central node $v$ with $n = \hat{b}_v$ beads and a diameter $d = 2R(v)$  as:
+\begin{align*}
+    B(n,d) &= \left( W(n,d), L(n,d) \right)   &=   \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right) \\
+    w_i &= 2R(v) / n  & \text{for all $i < n$}\\
+    l_i &= 2R(v) / n (i + \nicefrac12) & \text{for all $i < n$}
+\end{align*}
+where
+$w_i$ and $l_i$ are the width and location of the $i$th bead,
+respectively, counting from the outline inward.
+An example beading is visualized in the top of \cref{beading_interpolation}:
+$B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the same width and radial locations $l$ evenly divided over the length $d$.
 
-Now that we have transformed the heights in the central regions of the UoC we need to determine the heights in the rest of the shape, i.e. the periphery, and slice the resulting mesh into isocontour toolpaths.
-The peripheral heights could be determined in a plethora of ways according to various beading schemes.
-The ramps from the outline shape to the center might have various curves,
-but for our example we use straight ramps, just like the original UoC.
-See \cref{peripheral_heights}.
-Mapping an original cone at apex $v$ to a cone with a height equal to the prescribed bead count $b$ of the central region is simply a matter of multiplying the $R$ values by $b / R(v)$.
+
 
 
 \begin{figure}\centering
@@ -549,30 +561,6 @@ Shallow corners will cause peripheral nodes for which the height should be deter
 }
 \label{peripheral_heights}
 \end{figure}
-
-
-
-However, for the purpose of generating toolpaths we only need to define the height at the locations which will be part of a slice, rather than at all locations in the periphery.
-Instead of adjusting the height of peripheral mesh nodes, we determine the radial distances where the adjusted height coincides with a slicing height.
-In this section we will show how we can define a mapping from radial distance values to the indices of slicing heights, called a \emph{beading},
-how each beading is calculated for a central node
-and how the beadings are propagated outward to peripheral nodes.
-This helps to define an efficient slicing algorithm in \cref{sec_toolpath_extraction}.
-
-\paragraph{Beading} 
-We associate each central node $v$ with a set of radial distances for each bead along with the width of that bead, which we call the \emph{beading} $B$.
-For our distributed beading scheme we define the beading for a central node $v$ with $n = \hat{b}_v$ beads and a diameter $d = 2R(v)$  as:
-\begin{align*}
-    B(n,d) &= \left( W(n,d), L(n,d) \right)   &=   \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right) \\
-    w_i &= 2R(v) / n  & \text{for all $i < n$}\\
-    l_i &= 2R(v) / n (i + \nicefrac12) & \text{for all $i < n$}
-\end{align*}
-where
-$w_i$ and $l_i$ are the width and location of the $i$th bead,
-respectively, counting from the outline inward.
-An example beading is visualized in the top of \cref{beading_interpolation}:
-$B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the same width and radial locations $l$ evenly divided over the length $d$.
-
 
 
 \paragraph{Beading interpolation}
