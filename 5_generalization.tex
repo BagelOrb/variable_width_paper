@@ -32,7 +32,7 @@ The following restrictions hold:
 \item Beadings are symmetric from the center: $W(n, d)_i = W(n, d)_{n-i-1}$ and $L(n, d)_i = d - L(n, d)_{n-i-1}$
 %\item $W$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$
 %\item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
-\item $W_n$ is positive, monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} \leq 1$
+\item For toolpaths to be smooth we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} \leq 1$
 \end{enumerate}
 
 
@@ -47,13 +47,6 @@ The distance between the anchor position and the upper end ($t_1$) and the dista
 \label{transition_placement}
 \end{figure}
 
-
-Because the peripheral height adjustment was described in terms of a mapping from radial distances to sites rather than adjusting the heights of peripheral nodes,
-we can introduce non-linear mappings without refining the surface mesh.
-In the simplified geometrical conceptualization of our technique we can introduce different distributions of bead widths from the center outward, by making the contours of the cones curved.
-If the UoC mesh is generated with cones which are curving inward toward the top, higher slicing planes would intersect more sparsely than lower ones, which means that the inter-bead distance and thus their width becomes larger when going inward.
-In order for the simplified geometrical approach to capture such curved shapes it would have to perform mesh refinement.
-However, our approach bypasses the peripheral height adjustment and directly generates the radial distances at the slicing heights, which means our technique generalized effortlessly.
 
 
 
