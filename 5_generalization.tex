@@ -1,27 +1,27 @@
 \section{Generalization}\label{sec_generalization}
-In this section we will generalize the described method into a parametric system, i.e. an algorithmic framework.
-The method we have described above is one for distributing the beads evenly over the total diameter of an outline shape feature.
-Depending on the application, the hardware and the materials used we might need different schemes for determining the bead widths.
-In this section we will generalize the method so that we can apply any distribution of bead widths over a feature radius.
-There are several schemes one can take for determining the distribution of bead widths.
-We will formalize several schemes and describe the set of parameters these schemes require.
+A critical component in toolpath generation is how to distribute the beads over the feature radius.
+While the framework presented in the previous section takes evenly distributed beads as an example, it allows to apply different beading schemes to configure the bead distribution to cater for specific requirements from the application, 3d printer or material.
+
+
+% In this section we will generalize the described method into a parametric system, i.e. an algorithmic framework.
+% The method we have described above is one for distributing the beads evenly over the total diameter of an outline shape feature.
+% Depending on the application, the hardware and the materials used we might need different schemes for determining the bead widths.
+% In this section we will generalize the method so that we can apply any distribution of bead widths over a feature radius.
+% There are several schemes one can take for determining the distribution of bead widths.
+% We will formalize several schemes and describe the set of parameters these schemes require.
 
 
 \begin{definition}\label{beading_scheme_definition}
-We define a beading scheme as the following set:
+The beading scheme is configured by the following set of parameters and functions:
 $$
-\left\{ \alpha_\text{max}, q(d), t(n), t_0(n), W(n, d), L(n, d) \right\}
+\left\{ \alpha_\text{max}, q(d), t(n), t_0(n), W(n, d), L(n, d) \right\},
 $$
-where
-$\alpha_{\text{max}}$ (the limit bisector angle),
-$q(d)$ (quantization operator),
-$t(n)$ (transition length)
+where, as introduced in previous section, $\alpha_{\text{max}}$ is the limit bisector angle,
+$q(d)$ the quantization operator,
+$t(n)$ the transition length
 and
-$t_0(n)$ (transition anchor position) have already been defined above.
-We introduce here
-$W(n, d)$, which gives the sequence of bead widths $\left\{ w_i \right\}$ for each bead with index $i$
-and
-$L(n, d)$, which gives the sequence of radial locations $\left\{ l_i \right\}$ which map to each bead index $i$.
+$t_0(n)$ the transition anchor position. \jun{check whether this last one has been defined.}
+$W(n, d)$ and $L(n, d)$ give the sequence of bead widths $\left\{ w_i \right\}$ and radial locations $\left\{ l_i \right\}$, respectively.
 \end{definition}
 
 

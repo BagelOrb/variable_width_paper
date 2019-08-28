@@ -1,7 +1,7 @@
 \section{Method}
 \subsection{Overview}
 
-Given arbitrarily shaped polygons which represent the 2D outline of a layer of a 3D model, our method generates extrusion toolpaths with varying width, i.e. a set polylines where each site consists of a location and an extrusion width;
+Given arbitrarily shaped polygons which represent the 2D outline of a layer of a 3D model, our method generates extrusion toolpaths with varying width, i.e. a set of polylines where each site consists of a location and an extrusion width;
 in between the sites we linearly interpolate the position and extrusion width.
 
 Our method starts with computing the skeleton of the input polygon based on the medial axis transform (MAT), a strategy that has been commonly used for generating contour parallel toolpaths~\cite{eiamsa2003toward}. 
@@ -19,7 +19,7 @@ The union of cones corresponding to the smoothed skeleton is then sliced at regu
 % We then describe how to deal with heights in the periphery in \cref{sec_peripheral_height_adjustment}
 % and describe the toolpath extraction algorithm in \cref{sec_toolpath_extraction}.
 
-This section explains how we can generate toolpaths with uniform bead widths and evenly distributed locations between the center of the polygon and the outline.
+This section explains how we generate toolpaths with uniform bead widths and evenly distributed locations between the center of the polygon and the outline.
 In \cref{sec_generalization} we describe how to generalize our method for generating evenly distributed beads into a general framework for generating contour parallel toolpaths using an arbitrary beading distribution scheme and we show several such beading schemes.
 
 
@@ -231,11 +231,16 @@ The resulting skeleton decomposes the outline shape into trapezoids and triangle
 Considering the fact that the concept of trapezoidation conventionally allows for the degenerate case where a trapezoid resolves into a triangle~\cite{chazelle1984,fournier1984}, we call this shape decomposition the \emph{Skeletal Trapezoidation} (ST).
 
 
+The edges generated from MAT can be classified into three types: (a) straight edge generated from two line segments in the outline polygons, (b) parabolic edge resulting from an outline vertex and a line segment in the outline, and (c) straight edge resulting from two outline vertices.
+Type-b and type-c edges are discretized into pieces with a length up to $d^\text{discretization}$.
+This allows to approximate the feature radius in between two discretized nodes $v_0$ and $v_1$ by linear interpolation. 
+Again we connect the newly inserted nodes to their support, which results in vertex-line regions and vertex-vertex regions such as depicted in \cref{legend}.
 
-The ST contains all edges from the medial axis which are generated from two line segments in the outline polygons.
-The interaction between an outline vertex and a line segment results in a parabolic region, which is discretized into pieces with a length up to $d^\text{discretization}$ (see the middle of \cref{shape_decomposition_st}).
-Additionally medial axis edges which are generated from two outline vertices are also discretized, so that the feature radius $R$ in between two discretized nodes $v_0$ and $v_1$ can be approximated by linear interpolation between $R(v_0)$ and $R(v_1)$.
-Again we connect the nodes which are introduced by the discretization to their support, which results in vertex-line regions and vertex-vertex regions such as depicted in \cref{legend}.
+
+% The ST contains all edges from the medial axis which are generated from two line segments in the outline polygons.
+% The interaction between an outline vertex and a line segment results in a parabolic edge, which is discretized into pieces with a length up to $d^\text{discretization}$ (see the middle of \cref{shape_decomposition_st}).
+% Additionally medial axis edges which are generated from two outline vertices are also discretized, so that the feature radius $R$ in between two discretized nodes $v_0$ and $v_1$ can be approximated by linear interpolation between $R(v_0)$ and $R(v_1)$.
+% Again we connect the nodes which are introduced by the discretization to their support, which results in vertex-line regions and vertex-vertex regions such as depicted in \cref{legend}.
 
 
 
@@ -253,7 +258,7 @@ where $w^*$ is the nozzle size.
 %While the feature radii are measured along the support edges, the diameter is not measurable as such because the support edges are generally not collinear;
 We divide the diameter rather than the radius as this allows to deal with an odd number of beads while using integer logic.
 %The result is a mesh representing the union of cones (UoC) consisting entirely of quads and triangles.
-Note that although the overview of the method has been described geometrically in terms of the UoC, the actual method relies on the two-dimensional ST, while the use of the bead count as a height value is only a visualization aid.
+Note that although the overview of the method has been described geometrically in terms of the UoC, the actual toolpath generation relies on the two-dimensional ST, while the use of the bead count as a height value is only a visualization aid.
 
 
 
@@ -262,10 +267,10 @@ Note that although the overview of the method has been described geometrically i
 
 
 \paragraph{Implementation}
-The medial axis of a polygonal shape is a subset of the Voronoi Diagram (VD) generated from the line segments and vertices of the shape~\cite{lee1982medial}. 
+The medial axis of a polygonal shape is a subset of the Voronoi Diagram generated from the line segments and vertices of the shape~\cite{lee1982medial}. 
 The edges of the Voronoi diagram that fall outside of the outline shape are irrelevant for our purpose and thus discarded.
 Note that the Voronoi diagram contains, in addition to the medial axis, edges connecting to concave vertices in the outline shape (see \cref{shape_decomposition_vd}). 
-These extra edges are a subset of the edges connecting a node to its support, so we can leave them in.
+These extra edges are a subset of the edges connecting a node to its support, so we keep them in.
 From the Voronoi diagram we add nodes to discretize parabolic edges and edges formed by two concave outline vertices, and then connect all nodes to their supports, forming a skeletal trapezoidation. 
 We then assign each node the bead count values using \cref{eq:initialBeadCount}.
 We compute the Voronoi diagram using the Boost \verb!C++! libraries~\cite{schaling2011boost}, which implements the algorithm proposed by \citeauthor{fortune1986sascg}~\cite{fortune1986sascg}.
@@ -286,25 +291,22 @@ A half-edge data-structure is used to represent the Voronoi diagram (\cref{shape
 %These central regions present themselves as upper ridges in the mountains of the UoC surface.
 %In order to prevent the over- and underfill we will change the bead counts in the central regions.
 %This sections covers what parts of the UoC will be marked as being central.
-In order to prevent over- and underfill to occur in central, we mark parts of the UoC as being central.
+In order to prevent over- and underfill to occur in central, we mark parts of the UoC \jun{ST?} as being central.
 The remaining is called peripheral.
-Our framework will decide on a beading at all of the marked nodes in `the center' and apply the beading outward to the unmarked nodes.
+Our framework will decide on a beading at all of the marked nodes in `the center' and apply the beading outward to the unmarked nodes (\cref{sec_peripheral_height_adjustment}).
 
 We mark a node in the ST as central if its feature radius is larger than that of all its neighboring nodes, i.e. a local maxima.
 %That is: we mark the local maxima, i.e. the mountain tops of the UoC as being central.
 We also mark an edge as being central if it is significant according to a significance measure.
 
-\jun{TODO}
-
 %\subsubsection{Significance measure}\label{sec:significance_measure}
 \paragraph{Significance measure}
 We make use of the \emph{bisector angle} as an indicator of significance which is commonly used in shape analysis.
 %Centrality can be formalized by looking at a commonly used significance measure knows as the \emph{bisector angle}.
-The bisector angle $\alpha$ is the interior angle $\angle{p_0lp_1} \leq \SI{180}{\degree}$, between any location $l$ on an edge of the ST and its two supporting polygon points $ \{ p_0, p_1 \} = \text{sup}(l)$~\cite{attali1996modeling}. 
-Edges are significant if the bisector angle on any location on the edge exceeds $\alpha_\text{max}$ which is governed by the beading scheme. 
-For a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$, which corresponds to overfill areas and underfill areas the size of $\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using the simple technique of uniform bead width $w^*$.
-See \cref{naive_overfill_underfill}.
-The bisector angle is therefore an exact measure of the amount of overfill and underfill in the uniform toolpaths of constant width.
+The bisector angle $\alpha$ is the interior angle $\angle{p_0lp_1} \leq \SI{180}{\degree}$, between any location $l$ on an edge of the ST and its two supporting points $ \{ p_0, p_1 \} = \text{sup}(l)$~\cite{attali1996modeling}. 
+An edge is significant if the bisector angle on any location on the edge exceeds a prescribed $\alpha_\text{max}$. 
+As illustrated in See \cref{naive_overfill_underfill}, for a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$. This corresponds to overfill areas and underfill areas the size of $\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using the simple technique of uniform bead width $w^*$.
+The bisector angle is therefore an exact indicator of the amount of overfill and underfill in the uniform toolpaths of constant width.
 %Contrary to related literature we will \emph{keep} the non-significant regions of the skeleton.
 %We mark all significant edges as such and contrary to related literature we keep the unmarked edges of the ST.
 
@@ -323,6 +325,7 @@ The bisector angle $a = 180\degree - \beta$ is the angle between a location $v$ 
 % The significance evaluation is performed efficiently by checking the ratio between feature radius $R$ and the Euclidean distance:
 % if $ | R(v_1) - R(v_0) | / |v_1 - v_0| >  \cos(\alpha_\text{max} / 2)$ then $\alpha > \alpha_\text{max}$. See \cref{distance_based_angles}. This ratio has a clear geometrical interpretation as the slope of the ridge in the UoC surface.
 
+The significance of the three types of medial axis edges is 
 Because all locations along a line-line edge have the same bisector angle we can evaluate whether the edge is significant by checking whether 
 \begin{align}\label{simple_significance_measure}
 | R(v_1) - R(v_0) | / |v_1 - v_0| >  \cos(\alpha_\text{max} / 2)
@@ -585,6 +588,8 @@ $w_i$ and $l_i$ are the width and location of the $i$th bead,
 respectively, counting from the outline inward.
 An example beading is visualized in the top of \cref{beading_interpolation}:
 $B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the same width and radial locations $l$ evenly divided over the length $d$.
+
+
 
 
 The beading information will be used in the next phase to directly generate the sites of the toolpaths.
