@@ -28,8 +28,8 @@ $B(n,d)$ is the beading function consisting of $\left( W(n,d), L(n,d) \right)$.
 
 The following restrictions hold:
 \begin{enumerate}
-\item $\alpha_\text{max}$ is viable: $t_1(n) + t_0(n+1) < \frac{ q^{-1}(n + 1) - q^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$ for each $n \in \mathbb{N}$ (see \cref{transition_placement})
-\item $B$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$ and $L(n, d)_i = d - L(n, d)_{n-i-1}$
+\item Transitions shouldn't overlap each other: $t_1(n) + t_0(n+1) < \frac{ q^{-1}(n + 1) - q^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$ for each $n \in \mathbb{N}$ (see \cref{transition_placement})
+\item Beadings are symmetric from the center: $W(n, d)_i = W(n, d)_{n-i-1}$ and $L(n, d)_i = d - L(n, d)_{n-i-1}$
 %\item $W$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$
 %\item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
 \item $W_n$ is positive, monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} \leq 1$
