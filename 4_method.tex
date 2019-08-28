@@ -25,9 +25,9 @@ In \cref{sec_generalization} we describe how to generalize our method for genera
 
 % The simple technique consists of consecutive inward offsets from the outline using a uniform bead width.
 % These offsets can be generated from the medial axis transform (MAT).
-% The medial axis transform can be conceptualized as the skeleton of the mesh of the volume defined by the union of all cones (with the same incline) which are touching the input shape. \cite{blum1967transformation}
+% The medial axis transform can be conceptualized as the skeleton of the mesh of the volume defined by the union of all cones (with the same incline) which are touching the input shape~\cite{blum1967transformation}.
 % The constant width insets are the intersections between the Union of Cones (UoC) and horizontal planes at regular intervals.
-% We can therefore use the MAT to efficiently calculate the consecutive offsets which define the uniform toolpathing. \cite{eiamsa2003toward}
+% We can therefore use the MAT to efficiently calculate the consecutive offsets which define the uniform toolpathing~\cite{eiamsa2003toward}.
 
 % For the uniform offsetting technique the overfill and underfill problems arise in the center,
 % because constant widths inward steps might not resolve to the arbitrary diameter of the outline shape.
@@ -181,7 +181,7 @@ The shortest distance for a point on the skeleton is called its feature radius, 
 %See \cref{MAT_explanation_circles}.
 %We therefore represent the skeleton in a standard half-edge data-structure.
 %See \cref{shape_decomposition_datastructure}.
-%Alternatively the medial axis can be defined as the locations where the UoC surface is discontinuous \cite{blum1967transformation}
+%Alternatively the medial axis can be defined as the locations where the UoC surface is discontinuous~\cite{blum1967transformation}
 %The medial axis can therefore be seen as the space within which contour following toolpaths are generated.
 %See \cref{MAT_explanation}.
 The medial axis along with the feature radius values along the skeleton form a complete shape descriptor, known as the medial axis transform (MAT).
@@ -189,7 +189,7 @@ The medial axis along with the feature radius values along the skeleton form a c
 
 By vertically raising the center of an inscribed circle to a height that equals the center's feature radius, a cone is formed. 
 The union of all such cones forms a 3D solid volume. 
-The medial axis can thus also be interpreted as ribs of the surface of the union of cones.~\cite{blum1967transformation}
+The medial axis can thus also be interpreted as ribs of the surface of the union of cones~\cite{blum1967transformation}.
 
 
 

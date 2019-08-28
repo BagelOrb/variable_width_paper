@@ -5,7 +5,7 @@ Given a planar contour, representing the intersection of a plane and a 3D solid 
 The nozzle is then instructed to move along the path while extruding material.
 The deposited material covers the path with a certain width.
 Toolpath generation is an integral part of process planning for 3D printing.
-For an overview of the processing pipeline, we refer to the survey by \citeauthor{Livesu2017CGF}.~\cite{Livesu2017CGF} .
+For an overview of the processing pipeline, we refer to the survey by \citeauthor{Livesu2017CGF}~\cite{Livesu2017CGF}.
 For reducing printing time and material cost, sparse infill structures such as triangular and hexagonal patterns have been used to approximate the interior of 3D shapes.
 In this paper, we focus on generating toolpath that seamlessly fills the entire 2D contour.
 This is sometimes called dense infill~\cite{Livesu2017CGF}.
@@ -28,7 +28,7 @@ Direction parallel (or zig-zag) toolpath fills an arbitrarily shaped contour wit
 These parallel segments are linked at one of their extremities, to avoid frequent stop and restart.
 Contour parallel toolpath typically consists of a set of equally spaced offset contours from the slice boundary.
 A strategy to connect the parallel offsets was introduced in~\cite{KUIPERS2019CAD}. This approach however introduces sharp turns.
-To reduce the number of sharp turns, and thereby enable faster motions, \citeauthor{Zhao2016} proposed to use Fermat spiral to cover the contour ~\cite{Zhao2016}. 
+To reduce the number of sharp turns, and thereby enable faster motions, \citeauthor{Zhao2016} proposed to use Fermat spiral to cover the contour~\cite{Zhao2016}. 
 Spiral toolpaths have also been applied to machining~\cite{Held2009,Huang2017}.
 One of the problems with contour parallel toolpath is that it tends to leave gaps within the slices.
 This is due to the fact that the offset contour meets around the medial axis and the remaining space might not exactly match the (constant) deposition width.
@@ -55,7 +55,8 @@ Since the distance may vary considerably, this strategy leads to a toolpath with
 In this paper we propose an adaptive beading scheme to address this problem. 
 
 % the context where our method can be positioned, and some related problems in that context
-Under- and over-filling are especially problematic for thin geometric features. \citeauthor{Jin2017a} proposed the use of a wavy path pattern for thin-walled parts~\cite{Jin2017a}. 
+Under- and over-filling are especially problematic for thin geometric features.
+\citeauthor{Jin2017a} proposed the use of a wavy path pattern for thin-walled parts~\cite{Jin2017a}. 
 This pattern is intended to be sparse. 
 Besides under- and over-filling, there are a few other robustness issues in toolpath generation for thin geometric features.
 \citeauthor{Moesen2011} proposed a method to make beam compensation more reliable for thin geometric features~\cite{Moesen2011}.
@@ -64,27 +65,27 @@ Besides under- and over-filling, there are a few other robustness issues in tool
 
 
 % \subsection{Toolpath strategies}
-% Simple Zig-Zag toolpathing strategy. \cite{mcmains2000layered}
-% Patchwise Zig-Zag toolpathing strategy. \cite{Ding2014}
+% Simple Zig-Zag toolpathing strategy~\cite{mcmains2000layered}.
+% Patchwise Zig-Zag toolpathing strategy~\cite{Ding2014}.
 
-% Combining concentric toolpaths into continuous extrusion spirals. \cite{Held2009}
+% Combining concentric toolpaths into continuous extrusion spirals~\cite{Held2009}.
 
-% Fractal based toolpaths. \cite{Griffiths1994, mandal2016}
+% Fractal based toolpaths~\cite{Griffiths1994, mandal2016}.
 
 % \subsection{Space filling toolpaths}
 % \todo{find other literature which tries to minimize underfilling and overfilling which is not based on a skeletonization.}
 
 
 % \subsection{Medial axis based toolpaths}
-% Adjusted Medial Axis Transform (MAT) structure for only printing the outer wall, rest area to be filled using normal infill. \cite{Moesen2011}
+% Adjusted Medial Axis Transform (MAT) structure for only printing the outer wall, rest area to be filled using normal infill~\cite{Moesen2011}.
 % \Cref{moessen}
 % Problem: small grey areas which are too small for the second wall lines.
 
-% Figuring out underfilling and overfilling arteas in concentric fill and using single squigly lines to prevent overfilling. \cite{Jin2017JMS}
+% Figuring out underfilling and overfilling arteas in concentric fill and using single squigly lines to prevent overfilling~\cite{Jin2017JMS}.
 % \Cref{jin}
 
 % Using variable width lines to fit a precise amount of lines using the MAT.
-% \cite{Ding2016a} apply the method from \cite{kao1998optimal}.
+%~\cite{Ding2016a} apply the method from~\cite{kao1998optimal}.
 % \Cref{ding}
 
 % \begin{figure}
@@ -110,8 +111,8 @@ Besides under- and over-filling, there are a few other robustness issues in tool
 
 % \subsection{Variable extrusion width}
 
-% Changing extrusion rate and temperature to match a given velocity. \cite{Ertay2018}
+% Changing extrusion rate and temperature to match a given velocity~\cite{Ertay2018}.
 
 % Changing velocity in order to change extrusion rate.
-% Shortly discussed in \cite{Kuipers2018}.
+% Shortly discussed in~\cite{Kuipers2018}.
 % \todo{find another reference}
