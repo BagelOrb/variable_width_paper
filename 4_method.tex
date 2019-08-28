@@ -567,10 +567,10 @@ This helps to define an efficient slicing algorithm in \cref{sec_toolpath_extrac
 
 \paragraph{Beading} 
 We associate each central node $v$ with a set of radial distances for each bead along with the width of that bead, which we call the \emph{beading} $B$.
-For our distributed beading scheme we define the beading for a central node $v$ with $n = b^\wedge_v$ beads as:
+For our distributed beading scheme we define the beading for a central node $v$ with $n = b^\wedge_v$ beads and a diameter $d = 2R(v)$  as:
 \begin{align*}
     %B &= \left\{ \left( w_0 , l_0 \right), \dots, \left( w_{n-1}, l_{n-1} \right) \right\} \\
-    B &= \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right)\\
+    B(n,d) &= \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right)\\
     w_i &= 2R(v) / n  & \text{for all $i \leq n$}\\
     l_i &= 2R(v) / n (i + \nicefrac12) & \text{for all $i \leq n$}
 \end{align*}
@@ -582,7 +582,22 @@ $B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the sam
 
 
 
+\paragraph{Beading interpolation}
+The beading is defined in terms of an integer number of beads, while we have assigned a fractional bead count to nodes within a transition region.
+In order to generate a beading for a node $v$ with $n < b^*_v < n+1 $ we linearly interpolate the bead width and location of the first and last $n/2$ lines between a beading $B^V$ based on $n$ and a beading $B^W$ based on $n+1$ (see \cref{beading_interpolation}).
+Such interpolation is also used to deal with beading conflicts (see \cref{beading_conflict_problem}).
+We therefore also apply beading interpolation from a marked node $v_m$ upward along unmarked bones,
+and interpolate between $v_m$ and the beading at the top of the slope over some distance $t_\text{beading}$ from the lower marked node.
 
+\paragraph{Beading propagation}
+The beading information is then broadcasted throughout the ST from central regions outward,
+so that each unmarked node $v$ knows the beading of the marked node on top of the ramp on which $v$ is placed.
+We first broadcast the beading information upward from all marked nodes,
+so that we can then deal with beading conflicts in a downward phase.
+This the downward phase makes sure that all nodes have a beading associated with it, so that the slicing algorithm can efficiently slice the edges leading up to a marked or unmarked node.	
+
+
+\iffalse
 The beading information will be used in the next phase to directly generate the sites of the toolpaths.
 Note that a beading conceptually covers the whole diameter, while we only apply it along the radii;
 the upper half of the beading is therefore unused.
@@ -640,6 +655,7 @@ starting from the lower marked node and ending at a distance $t_\text{beading}$ 
 At the nodes in between we will apply the interpolation between the two beadings and propagate the interpolated beading outward from those nodes.
 This interpolation is performed during the beading propagation algorithm.
 
+\fi
 
 \begin{figure}\centering
 \setlength{\figheight}{.2\columnwidth}
@@ -661,6 +677,9 @@ the toolpaths (dashed) resulting from the beading propagated from above doesn't 
 }
 \label{beading_conflict_problem}
 \end{figure}
+
+
+\iffalse
 
 After each marked node is assigned a beading by the beading scheme, we propagate the beadings outward to all nodes in the ST.
 The beading propagation is performed in two stages: an upward and downward stage.
@@ -717,7 +736,7 @@ This is implemented in a flood-fill fashion: see \cref{alg_beading_propagation}.
 
 
 
-
+\fi
 
 
 
