@@ -149,30 +149,6 @@
 	\fi
 % ENd of TK's added packages and commands
 
-% ACM template
-%
-% Copyright
-%\setcopyright{none}
-%\setcopyright{acmcopyright}
-%\setcopyright{acmlicensed}
-%\setcopyright{rightsretained}
-%\setcopyright{usgov}
-%\setcopyright{usgovmixed}
-%\setcopyright{cagov}
-%\setcopyright{cagovmixed}
-%
-% DOI
-%\acmDOI{10.475/123_4}
-%
-% ISBN
-%\acmISBN{123-4567-24-567/08/06}
-%
-%Conference
-%\acmConference[WOODSTOCK'97]{ACM Woodstock conference}{July 1997}{El  Paso, Texas USA}
-%\acmYear{1997}
-%\copyrightyear{2016}
-%
-%\acmPrice{15.00}
 
 
 \begin{document}
@@ -198,26 +174,16 @@
 
 \begin{abstract}
 3D printing techniques such as Fused Deposition Modeling (FDM) have enabled the fabrication of complex geometry quickly and cheaply. 
-FDM builds up objects by depositing material along toolpaths which lie in horizontal layers.
-The outlines of each layer are filled using contour-following toolpaths approximately the size of the printing nozzle.
-Filling the outlines with extruded material densely is important for fabricating parts with high stiffness.
-An accurate dense filling is especially important for thin parts such as casings for electronics, blow molding prototypes, (architectural) models, and microstructures.
-
-A simple technique for densely filling the outlines of a layer determines the toolpaths by performing inward offsets from the outline shape of a uniform width.
-In the center of the outline shapes this simple technique can result in underfill regions and overfill regions as wide as the nozzle size.
-Existing techniques address these over- and underfill issues by locally extruding a small amount of material less or more in those regions.
-However, such methods inevitably generate extrusion toolpaths with widths wildly differing from the nozzle size, which are difficult to manufacture accurately.
-We propose a framework which allows to define beading schemes which distribute the overfill and underfill required in each region over nearby toolpaths, so that we considerably reduce the amount of extrusion toolpaths with extreme widths.
-
-Based on a skeletonization of the 2D outline shape of a single layer we generate a 3D surface mesh, the union of cones.
-By slicing the surface at regular heights we obtain contour parallel toolpaths which cover the 2D area of a single layer.
-The heights of the 3D mesh are first altered:
-the heights at central ridges in the 3D surface are quantized in order to prevent over- and underfill
-and the heights in other regions are modified in such a way that the deviation from the nominal extrusion width is distributed over several beads around the center of the shape.
-
-Our framework is shown to be able to emulate several methods discussed in related literature and it enables a wide range of other beading schemes.
-We show that we can define a scheme which reduces the amount of overfill and underfill compared to previous literature and we show that the extrusion widths have less deviation from the nozzle size.
-We show that our open source implementation exhibits computation times in the same order of magnitude as the state-of-the-art implementation of the uniform width technique.
+By densely filling consecutive 2D layers with contour-following extrusion toolpaths, FDM can produce parts with high stiffness,
+which is especially important for thin parts such as blow molding prototypes and microstructures.
+%
+Existing approaches using uniform inward offsets from the outline polygons produce over- and underfill regions in the center of the shape.
+Some existing approaches address this issue by making local alterations to the toolpaths locations and widths in the center.
+Our framework makes it possible to distribute the workload of the alterations over larger regions farther from the center.
+Based on the radial distances in the medial axis transform we decide on the number of beads and their widths from the center outward.
+By carefully formulating various beading schemes for our framework we can emulate existing approaches and we propose a novel approach which incluences a larger region of toolpaths so that the toolpaths are altered less severely.
+%
+This approach reduces the amount of over- and underfill while the extrusion widths deviate less from the nozzle size compared to existing approaches.
 \end{abstract}
 
 %
@@ -233,9 +199,8 @@ We show that our open source implementation exhibits computation times in the sa
 %\ccsdesc{Computer systems organization~Robotics}
 %\ccsdesc[100]{Networks~Network reliability}
 
-%\keywords{Space-filling Curve, Fractal, Dithering} % ACM
-\begin{keyword} % SPM
-Toolpath, 3D printing, adaptive width, underfill
+\begin{keyword} 
+Adaptive extrusion width, Tool path generation, Additive manufacturing, Geometrical accuracy, Medial axis transform, Polygon offsetting
 \end{keyword}
 
 \end{frontmatter}
