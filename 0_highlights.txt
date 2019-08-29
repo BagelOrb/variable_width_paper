@@ -4,5 +4,5 @@ The framework is robust against small changes in the layer outlines and local ch
 
 The evenly distributed beading scheme which generates extrusion paths as close to the nozzle size as possible while minimizing overfill and underfill.
 
-The inward distributed beading scheme which keeps the beads which are farther away from the center at exactly the nozzle size.
+The inward distributed beading scheme which keeps the beads which are close to the outline at exactly the nozzle size.
 
