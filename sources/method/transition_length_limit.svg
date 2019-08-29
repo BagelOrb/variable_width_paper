@@ -25,7 +25,7 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1145"
+     inkscape:window-height="1025"
      id="namedview106"
      showgrid="false"
      fit-margin-top="0"
@@ -33,12 +33,12 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="3.6875"
-     inkscape:cx="33.012649"
+     inkscape:cx="-14.038198"
      inkscape:cy="82.001207"
-     inkscape:window-x="1920"
-     inkscape:window-y="27"
+     inkscape:window-x="0"
+     inkscape:window-y="1080"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer3"
      showguides="false">
     <inkscape:grid
        type="xygrid"
@@ -54,7 +54,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -574,15 +574,6 @@
    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:FreeSerif;-inkscape-font-specification:FreeSerif;">½b</tspan><tspan
    id="tspan1410"
    style="font-size:64.99999762%;baseline-shift:super;-inkscape-font-specification:FreeSerif;font-family:FreeSerif;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;">-1</tspan>(3)</tspan></text>
-    <rect
-       transform="translate(-168.30508,-157.45763)"
-       style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="rect1195"
-       width="211.10338"
-       height="160.24257"
-       x="178.74243"
-       y="149.86974"
-       ry="5.1707998e-06" />
     <path
        id="path1314-0"
        style="display:inline;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
