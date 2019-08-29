@@ -1,27 +1,27 @@
 \section{Conclusion and future work}
 In this paper we have introduced a framework for computing contour parallel toolpaths employing adaptive bead width in order to minimize underfill and overfill areas.
-Our framework is shown to be flexible, since we have shown several beading schemes which emulate existing techniques and the computation times are on par with the state-of-the-art library for performing offsets of non-adaptive bead width.
-Our framework is robust and local, meaning that small changes in the toolpath are caused by small local changes in the outline shape.
+Our framework is flexible, demonstrated by the several beading schemes which emulate existing techniques.
+The computation times of our framework are on par with the state-of-the-art library for performing offsets of non-adaptive bead width.
+Our framework is robust and local, meaning that small local changes in the outline shape cause only small changes in the toolpath.
 
-We have introduced the inward distributed beading scheme which reduces the amount of beads with a width deviating from the nominal bead width by a large amount
-and instead distributes the deviation in bead width over several beads near the center of the shape.
-That way the impact of adaptive bead width on mechanical properties of the resulting print are limited.
-Moreover the outer toolpath is affected less by the deviation, meaning that the dimensional accuracy in the horizontal direction is affected less by inaccuracies in the mechanical system which realized adaptive bead width.
+We have introduced the inward distributed beading scheme.
+It reduces the amount of beads with a width deviating from the nominal bead width by a large amount \jun{by a large amount refers to the deviation or the number of beads which deviate?}, and thus is expected to limit the impact of adaptive bead width on mechanical properties of the resulting print.
+Furthermore, by distributing the deviation in bead width over several beads near the center of the shape, outer toolpath is affected less by the deviation, meaning that the dimensional accuracy in the horizontal direction is affected less by inaccuracies in the mechanical system which realizes adaptive bead width.
 
-The proposed beading scheme greatly improves the process planning for parts with thin contours, which often occur for exmaple in architectural models, prototypes for casings or microstructures.
-On the other hand it leaves most of the toolpaths the same as the uniform width technique in case of wide/large contours, which means that existing literature which relates process parameters with mechanical properties of the end part are still applicable.
+The proposed beading scheme greatly improves the process planning for parts with thin contours, which often occur for example in architectural models, prototypes for casings or microstructures.
+Meanwhile it leaves most of the toolpaths the same as the uniform width technique in case of wide/large contours, meaning that existing studies which relate process parameters with mechanical properties of the print are still applicable.
 
 
 \subsection{Future work}
-The work presented here is evaluated mostly on a theoretical level, because the effectiveness of a mechanical system to accurately print an adaptive bead width interferes with the validation of our techniques.
-Future research might be devoted to optimizing the distribution scheme to a specific hardware setup.
-If we can assign a loss function to several aspects (e.g. manufacturability, print speed, dimensional accuracy) of a toolpath we could deduce the optimal beading scheme.
+The work presented here is evaluated mostly on a computational level, because the effectiveness of a mechanical system to accurately print an adaptive bead width interferes with the physical validation of our techniques.
+Future research could be devoted to optimizing the distribution scheme to a specific hardware setup.
+An accurate model of manufacturability, print speed, and dimensional accuracy would be valuable to fine tune the beading scheme.
+% If we can assign a loss function to several aspects (e.g. manufacturability, print speed, dimensional accuracy) of a toolpath we could deduce the optimal beading scheme.
 
-In its current form the skeleton has been used to determine toolpaths based on the local feature size.
-One direction of future research could be devoted to incorporating other information.
-We could for example make the bead widths depend on properties on the outline, such as curvature or visibility.
-In general it might be interesting to incorporate more `horizontal' flow of information between different parts of a shape, rather than `vertically' between an outline location and a local peak or ridge.
-We could also take into account volumetric considerations such as the toolpathing of the previous layer or some volumetric constraint defined by a functionally graded material.
+Our framework uses the skeleton to determine toolpaths based on the local feature size.
+Another direction of future research could be devoted to incorporating other information, e.g. properties of the outline such as curvature or visibility, toolpaths of the previous layer, and volume constraint (e.g. for functionally graded material).
+It might be interesting to incorporate more `horizontal' flow of information between different parts of a shape, rather than `vertically' between an outline location and a local peak or ridge. \jun{could this be summarized in a few words and integrated into the previous sentence? otherwise we could leave it out}
+% Furthermore we could also take into account volumetric considerations such as the toolpathing of the previous layer or volume constraint defined by a functionally graded material.
 
 % Taking a broader perspective we note that the skeletonization decomposes a shape into trapezoids and these trapezoids are decomposed into quads by the toolpath segments which we generate for it.
 % It would be interesting to see if similar technique can be used to generate quad dominant meshings for finite element analysis.
