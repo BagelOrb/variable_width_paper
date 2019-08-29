@@ -532,19 +532,18 @@ Now that we have determined the bead counts in the central regions we will descr
 Determining bead count values for the unmarked nodes and interpolating linearly along the unmarked edges would mean that toolpath sites would be distributed evenly along each unmarked bone;
 while that would suffice for the evenly distributed beading scheme, it wouldn't allow for more sophisticated, non-linear schemes (see \cref{peripheral_heights}).
 Instead we determine the radial distance to the boundary at which each bead should occur.
-Each central node is associated with a sequence of radial distances $L$ which control the locations of the beads, startign from the outer bead and ending in the center.
+Each central node is associated with a sequence of radial distances $L$ which control the locations of the beads, starting from the outer bead and ending in the center.
 Together with a sequence of bead widths $W$ these form what we call a \emph{beading} $B$.
-For our distributed beading scheme we compute the beading for a central node $v$ with $n = \hat{b}_v$ beads and a diameter $d = 2R(v)$  as:
+For our distributed beading scheme we compute the beading for a central node $v$ with $n = \lfloor \hat{b}_v \rfloor$ beads and a diameter $r = R(v)$  as:
 \begin{align*}
-    B(n,d) &= \left( W(n,d), L(n,d) \right)   &=   \left( \left\{  w_0 , \dots, w_{n-1} \right\}, \left\{ l_0 , \dots, l_{n-1} \right\} \right) \\
-    w_i &= 2R(v) / n  & \text{for all $i < n$}\\
-    l_i &= 2R(v) / n (i + \nicefrac12) & \text{for all $i < n$}
+    B(n,r) &= \left( W(n,r), L(n,r) \right)   &=   \left( \left\{  w_0 , \dots, w_{\lceil n/2 \rceil-1} \right\}, \left\{ l_0 , \dots, l_{\lceil n/2 \rceil-1} \right\} \right) \\
+    w_i &= r / n  & \text{for all $i \in \mathbb{N} : i < n / 2 $}\\
+    l_i &= r / n (i + \nicefrac12) & \text{for all $i \in \mathbb{N} : i < n / 2 $}
 \end{align*}
 where
 $w_i$ and $l_i$ are the width and location of the $i$th bead,
 respectively, counting from the outline inward.
-An example beading is visualized in the top of \cref{beading_interpolation}:
-$B^V$ cover the total horizontal distance $d$ using $n=4$ beads all with the same width and radial locations $l$ evenly divided over the length $d$.
+Example beadings for an odd and even bead count with arbitrary widths are visualized in \cref{example_beading}.
 
 
 
@@ -568,9 +567,9 @@ Shallow corners will cause peripheral nodes for which the height should be deter
 
 \paragraph{Beading interpolation}
 The beading is defined in terms of an integer number of beads, while we have assigned a fractional bead count to nodes within a transition region.
-In order to generate a beading for a node $v$ with $n < b^*_v < n+1 $ we linearly interpolate the bead width and location of the first and last $n/2$ lines between a beading $B^V$ based on $n$ and a beading $B^W$ based on $n+1$ (see \cref{beading_interpolation}).
+In order to generate a beading for a node $v$ with $n < b^*_v < n+1 $ we linearly interpolate the bead widths and locations between a beading $B^1$ based on $n$ and a beading $B^2$ based on $n+1$ (see \cref{beading_interpolation}).
 Such interpolation is also used to deal with beading conflicts (see \cref{beading_conflict_problem}).
-We therefore also apply beading interpolation from a marked node $v_m$ upward along unmarked bones,
+There we also apply beading interpolation from a marked node $v_m$ upward along unmarked bones,
 and interpolate between $v_m$ and the beading at the top of the slope over some distance $t_\text{beading}$ from the lower marked node.
 
 \paragraph{Beading propagation}
@@ -584,13 +583,19 @@ This the downward phase makes sure that all nodes have a beading associated with
 
 \begin{figure}
 \centering
-\includegraphics[width=.8\columnwidth]{sources/method/beading_interpolation_v2.pdf}
+\setlength{\figheight}{.29\columnwidth}
+\begin{subfigure}{0.4\columnwidth}\centering
+\includegraphics[height=\figheight]{sources/method/trapezoid_beading_interpolation_beading.pdf}
+\caption{Example beadings}\label{example_beading}
+\end{subfigure}
+\begin{subfigure}{0.4\columnwidth}\centering
+\includegraphics[height=\figheight]{sources/method/trapezoid_beading_interpolation.pdf}
+\caption{Interpolation}
+\end{subfigure}
 \caption{
-Interpolation between two beadings $B^V$ and $B^W$ with a ratio $x$ results in a beading $B^x$.
-Distances between the thick black lines constitute diameters $d$,
-the toolpath locations are visualized as dots,
-the widths are visualized as bidirectional arrows
-and the middle is highlighted in red.
+Interpolation between two beadings $B^1$ and $B^2$ with odd and even bead count resulting in a beading $B^x$ at $n+\nicefrac23$.
+Bead indices are counted inward from the outline (thick black).
+Interpolation of locations in dots, interpolation of widths in dashes.
 }
 \label{beading_interpolation}
 \end{figure}
@@ -654,7 +659,7 @@ We store all sites of an edge in a mapping from edge to a list of sites.
 \end{subfigure}
 \caption{
 Applying beadings to generate sites along trapezoids.
-\subref{trapezoid_beading_beading} shows half of the locations $l_i$ and widths $w_i$ of two arbitrary different beadings.
+\subref{trapezoid_beading_beading} shows the locations $l_i$ and widths $w_i$ of two arbitrary different beadings.
 \subref{trapezoid_beading_propagated} shows the application of $B^1$ to the various types of trapezoid.
 \subref{trapezoid_beading_separate} shows how a trapezoid with a marked edge will have two different beadings assigned, which will generate their respective sites along the support edges.
 No sites will be generated along marked edges.

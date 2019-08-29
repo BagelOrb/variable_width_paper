@@ -9,7 +9,7 @@ The beading scheme is configured by the following set of functions and constants
 \begin{align*}
 \{
 &q(d),
-B(n, d),
+B(n, r),
 t(n),
 t_0(n),
 \\
@@ -23,7 +23,7 @@ d^\text{discretization}
 \end{align*}
 where, as introduced in previous section,
 $q(d)$ the quantization operator,
-$B(n,d)$ is the beading function consisting of $\left( W(n,d), L(n,d) \right)$,
+$B(n,r)$ is the beading function consisting of $\left( W(n,r), L(n,r) \right)$,
 $t(n)$ the transition length,
 $t_0(n)$ the transition anchor position,
 $\alpha_{\text{max}}$ is the limit bisector angle,
@@ -33,17 +33,15 @@ $d_\text{max}^\text{transition}$ is the filter distance for transition anchors,
 $d_\text{max}^\text{intersection}$ is the reduction ratio at 3-way intersections
 and
 $d^\text{discretization}$ is the discretization length in vertex-vertex VD edges and vertex-line VD edges.
-%$W(n, d)$ and $L(n, d)$ give the sequence of bead widths $\left\{ w_i \right\}$ and radial locations $\left\{ l_i \right\}$, respectively.
+%$W(n, r)$ and $L(n, r)$ give the sequence of bead widths $\left\{ w_i \right\}$ and radial locations $\left\{ l_i \right\}$, respectively.
 \end{definition}
 
 
 The following restrictions hold:
 \begin{enumerate}
 \item Transitions shouldn't overlap each other: $t_1(n) + t_0(n+1) < \frac{ q^{-1}(n + 1) - q^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$ for each $n \in \mathbb{N}$ (see \cref{transition_placement})
-\item Beadings are symmetric from the center: $W(n, d)_i = W(n, d)_{n-i-1}$ and $L(n, d)_i = d - L(n, d)_{n-i-1}$
-%\item $W$ is symmetric: $W(n, d)_i = W(n, d)_{n-i-1}$
-%\item $L$ is symmetric in $d$: $L(n, d)_i = d - L(n, d)_{n-i-1}$
-\item For toolpaths to be smooth and continuous we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, d)_n}{\partial d} \leq 1$
+\item An odd beading should produce an odd single toolpath exactly in the center: $B(n, r)_{\lfloor n/2 \rfloor} = r$ in case $n$ is odd
+\item For toolpaths to be smooth and continuous we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, r)_n}{\partial r} \leq 1$
 \end{enumerate}
 
 
@@ -71,11 +69,11 @@ A beading scheme is defined as a set of some particular variables and functions 
 Our beading schemes are based on a preferred width $w^* = \SI{0.4}{\milli\meter}$, which is equal to the diameter of the printing nozzle.
 Most of the beading schemes we introduce share a common ground:
 \begin{align*}
-L(n,d)_i = 
+L(n,r)_i = 
 \begin{cases}
--\frac12 W(n,d)_i + \sum_{j=0}^i W(n,d)_j & \text{ if } i < \frac12 (n -1) \\
-d/2 & \text{ if } i =  \frac12 (n -1) \\
-d - W(n,d)_{n-1-i} & \text{ otherwise }\\
+-\frac12 W(n,r)_i + \sum_{j=0}^i W(n,r)_j & \text{ if } i < \frac12 (n -1) \\
+r & \text{ if } i =  \frac12 (n -1) \\
+%d - W(n,r)_{n-1-i} & \text{ otherwise }\\
 \end{cases}
 \\
 \begin{array}{rlrl}
@@ -103,7 +101,7 @@ The toolpath locations $L$ ensure
 that the beads don't overlap,
 that beads are extruded from the center of where they end up
 and that the symmetry restrictions are met.
-The transition anchor position $t_0$ ensures that the transitions never overlap with the locations $v$ where $2 R(v) = n w^*$ for $n \in \mathbb{N}$.
+The transition anchor position $t_0$ ensures that the transitions never overlap with the locations $v$ where $R(v) = \nicefrac12 n w^*$ for $n \in \mathbb{N}$.
 The transition length $t$ ensures that the center beads don't overlap with the innermost transitioning beads, while keeping the amount of underfill low and keeping the toolpath smooth.
 The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths.
 
@@ -122,9 +120,9 @@ The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transi
 \begin{align*}
 \alpha_\text{max} &= \SI{180}{\degree} \\
 q^-(d) &= 2 \left\lfloor \frac{d}{ 2w^*} + \frac12 \right\rfloor \\
-W(n,d)_i &= w^* \text{ for all } i 
+W(n,r)_i &= w^* \text{ for all } i 
 %\\
-%L(n,d)_i &= w^* \left(i + \frac12 \right) \text{ for all } i < \frac12 n
+%L(n,r)_i &= w^* \left(i + \frac12 \right) \text{ for all } i < \frac12 n
 \end{align*}
 \caption{Uniform scheme}\label{formula_uniform}
 \end{subfigure}
@@ -140,15 +138,15 @@ q(d) &=
 2 & \text{ otherwise } \\
 \end{cases}
  \\
-W(n,d)_i &= 
+W(n,r)_i &= 
 \begin{cases}
-d & \text{ if } n = 1 \\
+2r & \text{ if } n = 1 \\
 w^* & \text{ otherwise } \\
 \end{cases}
 %\\
-%L(n,d)_i &= 
+%L(n,r)_i &= 
 %\begin{cases}
-%d / 2 & \text{ if } n = 1 \\
+%2r / 2 & \text{ if } n = 1 \\
 %w^* / 2 & \text{ otherwise } \\
 %\end{cases}
 \end{align*}
@@ -162,9 +160,9 @@ w^* & \text{ otherwise } \\
 \begin{align*}
 \alpha_\text{max} &= \SI{0}{\degree} \\
 q(d) &= C \\
-W(n,d)_i &= d / n \text{ for all } i 
+W(n,r)_i &= 2 r / n \text{ for all } i 
 %\\
-%L(n,d)_i &= d / n \left(i + \frac12 \right) \text{ for all } i < \frac12 n
+%L(n,r)_i &= 2r / n \left(i + \frac12 \right) \text{ for all } i < \frac12 n
 \end{align*}
 \caption{Constant bead count}\label{formula_constant_bead_count}
 \end{subfigure}
@@ -175,9 +173,9 @@ W(n,d)_i &= d / n \text{ for all } i
 \begin{subfigure}[b]{\figwidth}\centering
 \begin{align*}
 q(d) &= \left\lfloor \frac{d}{ w^*} + \frac12 \right\rfloor \\
-W(n,d)_i &= d / n \text{ for all } i 
+W(n,r)_i &= 2 r / n \text{ for all } i 
 %\\
-%L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
+%L(n,r)_i &= 2r / n (i + \frac12) \text{ for all } i < \frac12 n
 \end{align*}
 \caption{Evenly distributed}\label{formula_evenly_distributed}
 \end{subfigure}
@@ -196,15 +194,15 @@ q(d) &= q^-(d) +
 0 & \text{ otherwise}
 \end{cases}
 \\
-W(n,d)_i &= 
+W(n,r)_i &= 
 \begin{cases}
-d - (n-1) w^* &\text{ if } i = \frac12 (n-1) \\
+2 r - (n-1) w^* &\text{ if } i = \frac12 (n-1) \\
 w^* &\text{ otherwise }
 \end{cases}
 %\\
-%L(n,d)_i &= 
+%L(n,r)_i &= 
 %\begin{cases}
-%d / 2 & \text{ if } i = \frac12 (n-1) \\
+%2r / 2 & \text{ if } i = \frac12 (n-1) \\
 %w^* \left(i + \frac12 \right) & \text{ otherwise }
 %\end{cases}
 \end{align*}
@@ -217,10 +215,10 @@ w^* &\text{ otherwise }
 \begin{subfigure}[b]{\figwidth}\centering
 \begin{align*}
 q(d) &= \left\lfloor \frac{d}{ w^*} + \frac12 \right\rfloor \\
-E(n,d) &= d - n w^* \\
-W(n,d)_i &= w^* + E(n,d) \frac{M(n,d)_i}{\sum_{j=0}^{n-1} M(n,d)_j} \text{ for all } i \\
-%L(n,d)_i &= d / n (i + \frac12) \text{ for all } i < \frac12 n
-M(n,d)_i &= \max(0, 1 - \frac{1}{N^2} (i - (n-1)/2)^2 )
+E(n,r) &= 2r - n w^* \\
+W(n,r)_i &= w^* + E(n,r) \frac{\omega(n,r)_i}{\sum_{j=0}^{n-1} \omega(n,r)_j} \text{ for all } i \\
+%L(n,r)_i &= 2r / n (i + \frac12) \text{ for all } i < \frac12 n
+\omega(n,r)_i &= \max(0, 1 - N^{-2} (i - (n-1)/2)^2 )
 \end{align*}
 \caption{Inward distributed}\label{formula_inward_distributed}
 \end{subfigure}
@@ -284,14 +282,14 @@ The evenly distributed scheme can be conceptualized as calculating the total dis
 $w^* + E / n$.
 However, depending on the application we might want a different distribution of widths.
 We therefore supply a beading scheme which supports an arbitrary distribution of the discrepancy.
-The distribution is determined by some weighing function $M(n.d)$, which defines the portion of the discrepancy to distribute to each bead.
+The distribution is determined by some weighing function $\omega(n,r)$, which defines the portion of the discrepancy to distribute to each bead.
 %\paragraph{Inward distributed}
-For example, we can choose an $M$ which distributes the discrepancy over the innermost beads, and distribute most of it to the inner beads.
+See \cref{formula_inward_distributed}.
+For example, we can choose an $\omega$ which distributes the discrepancy over the innermost $N$ beads, and distribute most of it to the inner beads.
 See \cref{distributed_comparison}.
 That way we limit the region of impact of the distributed scheme to a central region and have the nominal bead width $w^*$ in regions farther away.
 This limits the impact of transitioning regions so that transitions keep the toolpaths smooth farther away from the central regions. % and it forces most of the beads to have exactly the prefered width.
 %Moreover, the bead widths equal the nominal bead width for large regions meaning that mechanical properties derived for prints using the uniform scheme will still hold approximately.
-See \cref{formula_inward_distributed}.
 
 
 
@@ -332,10 +330,10 @@ Complementary to any of these schemes we can enforce a minimum feature size at n
 Regions where the model is narrower than the nozzle size can be printed with a bead width larger than the model thickness.
 We can simply override
 \begin{align*}
-W'(n,d)_1 &=
+W'(n,r)_0 &=
 \begin{cases}
-\max \left( w_\text{nozzle}  ,  W(n,d)_1 \right) & \text{ if } n = 1 \\
-W(n,d)_1 & \text{ otherwise}
+\max \left( w^*  ,  W(n,r)_0 \right) & \text{ if } n = 1 \\
+W(n,r)_0 & \text{ otherwise}
 \end{cases}
 \end{align*}
 
