@@ -581,38 +581,6 @@ so that we can then deal with beading conflicts in a downward phase.
 This the downward phase makes sure that all nodes have a beading associated with it, so that the slicing algorithm can efficiently slice the edges leading up to a marked or unmarked node.	
 
 
-\iffalse
-The beading information will be used in the next phase to directly generate the sites of the toolpaths.
-Note that a beading conceptually covers the whole diameter, while we only apply it along the radii;
-the upper half of the beading is therefore unused.
-
-
-% \subsubsection{Beading interpolation}\label{section_beading_interpolation}
-\paragraph{Beading interpolation}
-Central nodes which are in the middle of a transition have obtained a fractional bead count, but the definition of a beading presupposed integer numbers.
-In order to generate a beading for a central node with a fractional bead count assigned we use the fractional part of the bead count to interpolate between two beadings defined on the fractional bead count rounded up and down.
-Suppose we want to interpolate between two beadings $B^V$ and $B^W$, for which $n^{B^V} < n^{B^W}$.
-We interpolate the diameter $d$, widths $w_i$ and locations $l_i$ for indices $i < \nicefrac12 n^{B^V}$ linearly and enforce the symmetry constraints on the upper indices.
-See \cref{beading_interpolation}.
-The linear interpolation enforces robustness against small perturbations in the outline shape which cause extra edges to appear in the ST inside of transition regions.
-
-In order to create an interpolated beading $B = xB^V + (1-x) B^W$, for some $0<x<1$
-we calculate:
-\begin{align*}
-n^{B} &= n^{B^W} \\
-d^B &= x d^{B^V} + (1-x) d^{B^W} \\
-w_i^{B} &= w_{n^B-i}^{B} = x w_i^{B^V} + (1-x) w_i^{B^W} \text{ for } i < \frac12 n^{B^V} \\
-%  w_{frac{n}{2}^B - frac12}  = something difficult \text{ if } n \mod 2 == 1
-w_i^{B} &= w_i^{B^W} \text{ otherwise}\\
-l_i^{B} &= 
-\begin{cases} 
-x l_i^{B^V} + (1-x) l_i^{B^W} & \text{ for } i < \frac12 (n^{B^V} - 1) \\
-d^B - x l_{i-n^{B^W}+n^{B^V}}^{B^V} + (1-x) l_i^{B^W} & \text{ for } i > n^B - 1 - \frac12 (n^{B^V} - 1) \\
-\frac12 d^B  & \text{ if $n^B$ is odd and } i = (n^B - 1) / 2 \\
-l_i^{B^W} - l_{n^{B^V}-1}^{B^W} + l_{n^{B^V}-1}^B & \text{ otherwise}
-\end{cases}
-\end{align*}
-\fi
 
 \begin{figure}
 \centering
@@ -626,19 +594,6 @@ and the middle is highlighted in red.
 }
 \label{beading_interpolation}
 \end{figure}
-
-\iffalse
-% \subsubsection{Beading propagation}\label{section_beading_conflicts}
-\paragraph{Beading propagation}
-The beading information associated with the central nodes is then propagated outward throughout the whole mesh.
-However, beading conflicts can arise where a marked edge has unmarked upward edges attached to them, since beading will also be propagated down from the local maxima or other higher marked regions.
-See \cref{beading_conflict_problem}.
-In such a case we interpolate between the lower beading and the beading propagated from above,
-starting from the lower marked node and ending at a distance $t_\text{beading}$ upward.
-At the nodes in between we will apply the interpolation between the two beadings and propagate the interpolated beading outward from those nodes.
-This interpolation is performed during the beading propagation algorithm.
-
-\fi
 
 \begin{figure}\centering
 \setlength{\figheight}{.2\columnwidth}
@@ -662,64 +617,9 @@ the toolpaths (dashed) resulting from the beading propagated from above doesn't 
 \end{figure}
 
 
-\iffalse
-
-After each marked node is assigned a beading by the beading scheme, we propagate the beadings outward to all nodes in the ST.
-The beading propagation is performed in two stages: an upward and downward stage.
-%First we sort all upward half-edges on the radial distance of their destination node, so that we can efficiently flood fill the beading information.
-In the upward phase we walk from each marked node upward along unmarked edges and map each node encountered to a pair consisting of the traversed distance and the bottom source beading.
-In the downward phase we walk from each marked node downward along unmarked edges and map each node to a pair consisting of the traversed distance and the upper source beading -
-however, if we encounter a node which was already mapped to an upward propagated beading we employ the interpolation scheme described above in order to define the beading, which is then further propagated downward.
-This is implemented in a flood-fill fashion: see \cref{alg_beading_propagation}.
-
-\jun{It is more logical to first explain the general case (the above paragraph), and then the special treatment -- beading conflict.}
-
-\begin{algorithm}
-\caption{Beading propagation}
-\label{alg_beading_propagation}
-\begin{algorithmic}
-\ForAll{$v \in$ nodes}
-	\If {marked($v$)} $\text{map}[v] = (0, B(\hat{b}_v, 2 R(v)))$ \EndIf
-\EndFor
-\ForAll{$e \in$ edges}
-	\If {$R(v_0^e) < R(v_1^e)$}
-		% \State 
-		upwardEdges.add($e$)
-	\EndIf
-\EndFor
-\State upwardEdges.sort($\uplambda e_1 e_2 . R(v_1^{e_1}) < R(v_1^{e_2})$) \Comment {low to high $v_1$}
-\ForAll{$e \in$ upwardEdges} \Comment{upward phase}
-	\If {$\text{map}[v_0^e] \land \neg \text{map}[v_1^e$]}
-    		\State $(d, B) = \text{map}[v_0^e]$
-    		\State $\text{map}[v_1^e] \leftarrow (d + |v_1^e - v_0^e|, B)$
-	\EndIf
-\EndFor
-\ForAll{$e \in$ reverse(upwardEdges)} \Comment{downward phase}
-	\If {$\text{map}[v_1^e]$}
-    		\State $(d, B) \leftarrow \text{map}[v_1^e]$
-    		% d + |v_1^e - v_0^e|
-    		\If {$\text{map}[v_0^e]$}
-    			\State $(d_0, B_0) = \text{map}[v_0^e]$
-    			\State $B \leftarrow \text{interpolate}(\min(1, d_0 /  t_\text{beading}), B_0, B)$
-    		\EndIf
-    		\State $\text{map}[v_1^e] \leftarrow (0, B)$
-	\EndIf
-\EndFor
-\end{algorithmic}
-\end{algorithm}
 
 
 
-
-
-
-
-
-
-
-
-
-\fi
 
 
 
