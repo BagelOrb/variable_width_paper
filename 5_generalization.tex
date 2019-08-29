@@ -244,9 +244,9 @@ See \cref{formula_outer_bead}.
 
 
 \paragraph{Constant bead count}
-We can emulate the method by \citeauthor{Ding2016a}, by dividing the feature diameter over the widths of a constant number of beads.
-Additionally in order to emulate their definition of branches we mark all ST edges and in a separate algorithm we unmark the outer edges connected to the outline shape.
-Note that this deviation from the proposed framework violates the robustness against small perturbations in the outline polygon, since the topology of the graph of the ST is not stable against those.
+We can emulate the method by \citeauthor{Ding2016a}, by dividing the feature radius over the widths of a constant number of beads.
+Additionally in order to emulate their definition of ``branches'' we mark all ST edges we unmark the outer edges connected to the outline shape in a separate algorithm.
+Note that this deviation from the proposed framework violates the robustness against small perturbations in the outline polygon, since this marking depends on the topology of the graph of the ST.
 See \cref{formula_constant_bead_count}.
 
 
