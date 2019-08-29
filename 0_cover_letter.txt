@@ -6,7 +6,7 @@ We are pleased to submit our manuscript entitled “A framework for adaptive wid
 When generating dense contour-parallel toolpaths using uniform-width offsets from the layer outlines,
 over- and underfill problems occur in the center of the shape.
 Solving this problem by altering the center-most extrusion paths leads to toolpaths with extreme widths, which are difficult to manufacture.
-We therefore propose a framework which makes it possible to distribute the alterations over all the toolpaths using an abitrary width distribution scheme.
+We therefore propose a framework which makes it possible to distribute the alterations over all the toolpaths using an arbitrary width distribution scheme.
 In particular, we present one distribution scheme which is shown to produce little over- and underfill, while keeping the bead width closer to the nozzle size than existing methods.
 
 We believe this research is highly relevant to the special issue, since the toolpath generation is a vital part of process planning for additive manufacturing.
