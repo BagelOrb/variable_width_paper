@@ -772,14 +772,8 @@ When the bead count $\hat{b}$ is odd, the ridge will coincide exactly with a sli
 In that case we should prevent the algorithm from generating the center extrusion segment twice from the trapezoids on either side of that segment.
 We therefore use some arbitrary condition to decide which one of the two to include based on the ordering of the coordinates of $v_0$ and $v_1$: $x_0 < x_1 \lor (x_0 = x_1 \land y_0 < y_1)$.
 
-\tim{Below is taken from an outdated paragraph in section 3.3 (?)}
-The trapezoids are classified as belonging to a specific domain following \citeauthor{Ding2016a}.
-Each polygon in the input shape acquires it's own domain.
-The domains of hole polygons are touching the domains of the outer polygon.
-See \cref{shape_decomposition_domains}.
-
-Each of the trapezoids is connecting to a single outline polygon.
-By traversing the trapezoids in the domain of each outline polygon in order we can efficiently connect all segments into polylines.
+All trapezoids in the ST can be assigned to separate domains, corresponding to which boundary polygon they are connected to (see \cref{shape_decomposition_domains})~\cite{Ding2016a}.
+By traversing the trapezoids in per domain in order we can efficiently connect all segments into polylines.
 See \cref{segment_generation}.
 In a final step we connect the ends of polylines together, so that the final toolpaths contain both polygons and polylines.
 
