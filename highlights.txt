@@ -1,0 +1,8 @@
+A geometric framework for generating densely filling contour-parallel layer toolpaths employing adaptive width according to any bead width distribution scheme.
+
+The framework is robust against small changes in the layer outlines and local changes in the layer outlines cause local changes in the output toolpaths.
+
+The evenly distributed beading scheme which generates extrusion paths as close to the nozzle size as possible while minimizing overfill and underfill.
+
+The inward distributed beading scheme which keeps the beads which are farther away from the center at exactly the nozzle size.
+
