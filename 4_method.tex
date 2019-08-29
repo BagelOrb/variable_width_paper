@@ -311,7 +311,8 @@ We make use of the \emph{bisector angle} as an indicator of significance which i
 The bisector angle $\alpha$ is the interior angle $\angle{p_0lp_1} \leq \SI{180}{\degree}$, between any location $l$ on an edge of the ST and its two supporting points $ \{ p_0, p_1 \} = \text{sup}(l)$~\cite{attali1996modeling}. 
 An edge is significant if the bisector angle on any location on the edge exceeds a prescribed $\alpha_\text{max}$. 
 As illustrated in See \cref{naive_overfill_underfill}, for a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$. This corresponds to overfill areas and underfill areas the size of $\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using the simple technique of uniform bead width $w^*$.
-The bisector angle is therefore an exact indicator of the amount of overfill and underfill in the uniform toolpaths of constant width.
+Although significance measures are commonly used as a heuristic for finding the parts of a skeleton which are in some sense relevant~\cite{attali1996modeling,Sud2007},
+we use the bisector angle as an \emph{exact} indicator of the amount of overfill and underfill in the uniform toolpaths of constant width.
 %Contrary to related literature we will \emph{keep} the non-significant regions of the skeleton.
 %We mark all significant edges as such and contrary to related literature we keep the unmarked edges of the ST.
 
@@ -482,10 +483,12 @@ The length of the transition is set to $t(n) = w^*$ and it is centered at the an
 $t_0(n) = \Delta(v_0v_x) = \nicefrac12 w^*$,
 where $\Delta$ is the total distance along the edges in between two nodes.
 We discard any transition anchor which is too close to the end of a chain of marked edges for the smoothed transition to fully fit within the marked region.
-In order to make the transition ramps robust against small perturbations in the outline shape, we modify the nodes $v_x$ which are in between the two ends $v_0$ and $v_1$ of the transition by (re-)assigning them a fractional bead count $\hat{b}$ which is linearly interpolated between the two ends of the transition (see \cref{beading_transitioning_filtering__transitions_applied}):
+In order to make the transition ramps robust against small perturbations in the outline shape which cause extra (support) edges in the skeleton,
+we modify the nodes $v_x$ which are in between the two ends $v_0$ and $v_1$ of the transition by (re-)assigning them a fractional bead count $\hat{b}$ which is linearly interpolated between the two ends of the transition (see \cref{beading_transitioning_filtering__transitions_applied}):
 \begin{equation}
 \hat{b}_{v_x} = n + {\Delta(v_0v_x)} / {\Delta(v_0v_1)}
 \end{equation}
+Note that although the ST is not stable against noise in the boundary shape, the distance field itself is, so by designing our algorithms such that they are stable against changes in the topology of the skeleton our method is stable against small perturbations in the outline.
 %This modification makes the transition ramps robust against small perturbations in the outline shape (to be explained in \cref{section_beading_interpolation});
 %compare the top and bottom of \cref{beading_transitioning_filtering}. 
 Finally we update the ST by adding support edges at the transition ends. 

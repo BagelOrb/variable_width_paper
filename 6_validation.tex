@@ -169,6 +169,7 @@ We also investigated the effect of the transition regions on the smoothness of t
 \subsubsection{Computational performance}
 \cref{computime} plots the computation time against the vertex count of the layer for the full data set, comparing the uniform technique~\cite{johnson2014clipper} to our framework with the inward distributed scheme.
 For polygonal shapes with as many as $10^4$ vertices, the computation for both approaches is less than 1 second, with our method being approximately five times that of the uniform technique.
+These results could be improved upon by utilizing the locality inherent in our algorithms for parallelization on the GPU.
 
 The algorithmic complexity is limited by the generation of the Voronoi Diagram, which is $O(n \log n)$, where $n$ is the number of vertices in the input shape.
 The other steps in our framework have a complexity of $O(m)$, where $m$ is the number of elements in the ST.

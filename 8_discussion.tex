@@ -29,46 +29,11 @@ Furthermore, we find that compared to evenly distributed, the inward distributed
 Therefore, when using the inward distributed scheme the surface of the 3D print is less affected by both width variation and jagged toolpaths, while overfill and underfill are kept at a low percentage.
 
 
-\subsection{Theoretical analysis}
-\jun{I suggest to dissolve this subsection. see comments and suggested changes below.}
-
-In this paper the significance measure is not used heuristically, as it is sometimes used in other literature.
-The significance measure is an exact measure of the relative size of gaps when using the uniform toolpathing method.
-See \cref{naive_overfill_underfill}
-\jun{this is in the method, and thus can be removed.}
-Note also that contrary to some literature we do not remove edges from the skeleton, but leave it intact.
-The final skeleton is still an exact and full feature descriptor.
-In that sense our framework provides an exact solution space.
-\jun{what is a solution space? what is the benefit of using an exact and full feature descriptor regarding toolpath accuracy, uniformity and smoothness?}
-
-Note also that our method is robust against small perturbations in the input shape.
-Geometrically small changes to the outline shape introduce extra edges and therefore change the topology of the graph of the ST.
-However, the significance measure and beading are defined in terms of radial distances so the robustness of the distance field against such perturbations means our method bypasses the instability of the skeleton. \jun{this could be mentioned somewhere in the method, shortly. The uniform approach can also be thought of using the distance field, is it less robust than ours?}
-Moreover, we have developed a method for dealing with edges within transition regions such that the toolpath is the same as if there was no such edge in that region.
-The toolpaths generated using our framework therefore remain the same when extra edges are added to the ST.
-\jun{this could be integrated in paragraph Smooth transitions to motivate the fractional bead count}
-
-Our framework is also local.
-The toolpathing around some section of the input polygons is independent of far away regions of the polygon.
-This means the toolpathing is stable against large perturbations of the input shape in far away regions
-and it also allows for some parallelism during the computation of the toolpaths.
-\jun{This could mentioned in paragraph Computational performance. This potentially could be parallelized for speeding up.}
-
-
-
-
-
-
-
-
-
 
 
 
 
 \input{10_applications}
-
-
 
 
 
