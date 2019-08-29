@@ -2,25 +2,18 @@
 
 
 \subsection{Comparison of beading schemes}
-%The uniform beading scheme and the outer bead scheme are of little use to FDM printers, but they show the flexibility of our algorithmic framework.
-
 We can see from \cref{TEST_naive_accuracy}(top) and~\ref{over_underfill} that the uniform technique causes a lot of overfills and underfills: on average approximately \SI{1}{\percent} of the total target area is covered by underfill and likewise for overfill.
 These defects are supposed to negatively influence the mechanical properties of the parts, and exceed the point that process parameters can be reliably correlated to mechanical properties of the part. 
 To our knowledge, the uniform beading scheme, as well as the outer beading scheme, is of little use to FDM printers.
 
-%The single bead scheme solves the underfill problem in regions where the model is more thin than the nozzle size.
-%However, the scheme doesn't deal with the remaining area.
-%In our visualization we print the outline of the remaining area which exposes an overextrusion problem.
-
 The constant bead count scheme effectively deals with underfills, but generates orders of magnitude more overfills compared to the other schemes. 
 Also, the scheme comes at the cost of greatly varying bead widths and an average bead width that is not close to the nominal bead width.
 Note that most overfill areas occur near regions of alternating bead width. 
-
-For an input outline shape which contains both very small and very large features, the algorithm \jun{which specific scheme, or our method in general?} produces bead widths which can fall outside of the range of manufacturable bead widths.
+For an input outline shape which contains both very small and very large features, the the constant bead count scheme produces bead widths which can fall outside of the range of manufacturable bead widths.
 Moreover the centrality marking is not robust against small perturbations in the outline; adding a small chamfer in a corner causes the unmarked ST to be very small at that location, which results in tiny bead widths.
 
 In \cref{TEST_Center_accuracy} we can see that
-the centered beading scheme effectively deals with both overfill and underfill and produces desired bead widths in all locations, except in the center the bead widths are within a factor 2 off from the desired bead width.
+the centered beading scheme effectively deals with both overfill and underfill and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths are within a factor 2 off from the desired bead width.
 According to \cref{over_underfill} the overfill and underfill for the centered, the evenly distributed and the inward distributed scheme are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the uniform technique.
 
 However, according to \cref{widthHistogram} the centered scheme exhibits a wider range of bead widths than the distributed schemes:
