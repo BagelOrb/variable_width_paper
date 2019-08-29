@@ -3,11 +3,12 @@ Toolpath with varying width is particularly meaningful for narrow parts, since t
 In extreme cases, thin features might not be filled at all.
 Therefore, our framework, while working for wide parts as well, shows most of its potential for objects which contain thin parts.
 
-\Cref{applications_overview} collectively shows the application of the proposed inward distributed scheme for various types of 3D model, including both thin parts (architectural models, casings, embossed text, gears and microstructures) and wide parts (larger regions (\cref{applications_case}) and organic shapes (\cref{applications_statue})).
+\Cref{applications_overview} collectively shows the application of the proposed inward distributed scheme for various types of 3D model, including both thin parts (architectural models, casings, embossed text, gears and microstructures) and wide parts (\cref{applications_case}) and organic shapes (\cref{applications_statue})).
 
 For architectural models and casings, the prevention of over- and underfill is expected to make them stronger. 
 For embossed text, the prevention of underfill reduces the various holes in the top surfaces, which is detrimental to the visual quality of those top surfaces.
-Gears benefit from the prevention of under- and overfill regions and the distributed bead width discrepancy in that the mechanical properties of the toolpath are more consistent throughout. \jun{I don't follow the benefit for gears}
+Gears benefit from the prevention of under- and overfill regions and the distributed bead widths because the more homogeneous extrusion widths cause the part to more closely match the predicted mechanical properties from some homogenization approach.
+\tim{Hopefully you understand now; could you correct the formulation of this sentence please?}
 
 Of particular interest are microstructures that could be uniquely fabricated by 3D printing.
 Microstructures which have layers with varying widths benefit from the prevention of under- and overfill, which will result in structures with mechanical properties closer to expectation.

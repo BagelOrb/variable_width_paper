@@ -77,23 +77,23 @@ and it also allows for some parallelism during the computation of the toolpaths.
 
 
 \subsection{Limitations}
-\jun{postpone this subsection to Applications}
-We note that printing with varying width is not the current standard in FDM printing.
-It calls for adaptations and developments in printers and the workflow.
+Note that the current industry standard in FDM printing employs little to no bead width variation.
+Properly performing bead width variation calls for adaptations and developments in printers and firmware.
 In the beading schemes we set a transition length of $t(n) = w^*$.
-That might demand \jun{can we say, "while it rarely happens, it may demand ..."} changes in cross-sectional area of the bead up to \SI{200}{\percent} over a small distance that is comparable to the nozzle size.
-This is challenging for some hardware.
-The effect of varying the movement speed to change the cross-sectional area is limited, since the movement speed is constrained by acceleration considerations around sites in the toolpath.
-Our schemes require a more accurate control of the volumetric flow rate (in \si{\milli\meter\cubed\per\second}).
-Using a filament feeder directly mounted on the print head (a.k.a. direct drive) is certainly a large improvement \jun{in terms of what? can we say, "... shall improve ... significantly"} over Bowden style FDM printers,
+That will demand changes in cross-sectional area of the bead up to \SI{200}{\percent} over a small distance that is comparable to the nozzle size, which is challenging for some hardware systems.
+Varying the movement speed can be utilised to change the cross-sectional area, but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath.
+Our schemes require a more accurate control of the volumetric flow rate in \si{\milli\meter\cubed\per\second}.
+Using a filament feeder directly mounted on the print head (a.k.a. direct drive) outperforms Bowden style FDM printers in terms of dynamic flow changes,
 but still requires some control system in order to accurately change the volumetric flow rate such as pressure advance algorithms~\cite{tronvoll2019investigating}.
 Yet inaccuracies in direct drive systems employing advance algorithms might arise due to the changes in back-pressure required by changing bead size.
-We expect the development in printing hardware will address these challenges in the future.
+We expect that developments in printing hardware and firmware will address these challenges in the future.
 
 
-Another limiting factor in the adoption of adaptive bead width is G-code which stores machine instructions. G-code does not support moves with varying cross-sectional area.
-A typical extrusion move \lstinline{G1 X$x$ Y$y$ E$v$} only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed across \jun{along?} the extrusion move.
-A workaround is to approximate a variable width extrusion segment by smaller segments with constant width. This, nevertheless, introduces errors.
+Another limiting factor in the adoption of adaptive bead width is the format of G-code which stores machine instructions.
+G-code does not support moves with varying cross-sectional area.
+A typical extrusion move \lstinline{G1 X$x$ Y$y$ E$v$} only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed along the extrusion move.
+A workaround is to approximate a variable width extrusion segment by smaller segments with constant width.
+However, this introduces errors nevertheless.
 Ideally the G-code language would be expanded in some way to allow for extrusion segments with varying cross-sectional area.
 
 
