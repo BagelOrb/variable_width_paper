@@ -215,7 +215,7 @@ The medial axis can thus also be interpreted as ribs of the surface of the union
 \caption{
 Skeletonization of an outline shape (black).
 Relation between the medial axis (red), the limited Voronoi Diagram (red and green) and the Skeletal Trapezoidation (red, green and gray): MAT $\subset$ Limited VD $\subset$ ST.
-\subref{shape_decomposition_datastructure} We can represent a skeleton using a half-edge data-structure.
+\subref{shape_decomposition_datastructure} The skeleton is represented using a half-edge data-structure.
 }
 \label{skeletonization_comparison}
 \end{figure}
@@ -416,9 +416,9 @@ and then introduce ramps to smoothly transition from $n$ to $n+1$ using fraction
 \end{subfigure}
 \caption{
 Applying bead counts and transitioning on a shape showing the difference between a simple ST (top) and a mirrored version with small perturbations in the outline (bottom).
-Outline in black, medial axis edges in red, radial edges in grey.
+Outline in black, central edges marked in blue, other edges in grey.
 \subref{beading_transitioning_filtering__bead_count} First we initialize the bead counts (black) in the marked regions (blue).
-\subref{beading_transitioning_filtering__transition_mids} We then extract the anchor locations (purple) of the transitions to a different bead count should be.
+\subref{beading_transitioning_filtering__transition_mids} We then extract the anchor locations (purple) where the bead count transitions.
 \subref{beading_transitioning_filtering__filtered} We then filter out regions of constant bead count.
 \subref{beading_transitioning_filtering__transition_ends} We then calculate the end locations (magenta, pink) of the transitions and modify the bead count at nodes in between to fractional values.
 \subref{beading_transitioning_filtering__transitions_applied} Finally we introduce nodes at the ends and introduce radial edges (purple) as per the trapezoidation constraint.
