@@ -25,7 +25,7 @@ These problems are exacerbated for models with layer outlines with small feature
 One promising direction to avoid over- and underfills is to employ toolpath with adaptive width. 
 This strategy has been mostly investigated for metal additive manufacturing using wire and arc~\cite{Ding2014}, where a wide range of widths could be realized by the hardware. 
 For instance, \citeauthor{Ding2016a} developed a toolpath with an (estimated) width variation by a factor of up to $3$.
-However, for FDM printing, it is challenging to realize varying width by extruding through a nozzle with a fixed size (i.e. nominal width), either by varying the movement speed or by dynamically adjusting the volumetric flow rate. 
+However, for FDM printing, it is challenging to realize varying width by extruding through a nozzle with a fixed size (the preferred width), either by varying the movement speed or by dynamically adjusting the volumetric flow rate. 
 Therefore, a much narrower range of widths is desirable for robust FDM fabrication.
 On the other hand, controlling the variation in width is beneficial for limiting the variation in mechanical properties of the resulting material fragments. 
 % The bead width has been associated with total print time, the roughness of top surfaces, printing resolution and the strength of a part, through the contact area it makes with neighboring beads~\cite{N.Turner2014,ahn2002anisotropic}.
@@ -53,22 +53,22 @@ The wedge shape can be read like a graph plot: for each model diameter we can re
 % There is a large body of literature on relating process parameters such as bead width to various mechanical properties of the end part.
 % The bead width has been associated with total print time, the roughness of top surfaces, printing resolution and the strength of a part, through the contact area it makes with neighboring beads~\cite{N.Turner2014,ahn2002anisotropic}.
 % In order to accurately fabricate a part restricted to prescribed mechanical properties, we need to generate toolpaths using the corresponding process parameters as close as possible.
-% We therefore develop a framework which can be used to generate toolpaths which not only avoid over- and underfill, but also keep the bead width closer to the nominal bead width compared to existing techniques.
+% We therefore develop a framework which can be used to generate toolpaths which not only avoid over- and underfill, but also keep the bead width closer to the preferred bead width compared to existing techniques.
 % See \cref{intro_wedge}(bottom).
 
 %\subsection{Contributions}
-% A polygonal shape with a width of a fractional multiple of the nominal bead width will always result in the bead widths deviating from the nominal bead width by the fractional part in total,
+% A polygonal shape with a width of a fractional multiple of the preferred bead width will always result in the bead widths deviating from the preferred bead width by the fractional part in total,
 % because the total of the widths of the beads must add up to the fractional width of the part in order to avoid under- or overfill.
-% We therefore propose a framework which makes it possible to distribute the fractional discrepancy over several beads, so that the beads are generally closer to the nominal width.
+% We therefore propose a framework which makes it possible to distribute the fractional discrepancy over several beads, so that the beads are generally closer to the preferred width.
 Our contributions are as follows:
 \begin{itemize}
 \item A geometric framework for generating densely filling contour-parallel toolpaths employing adaptive width, according to any beading scheme which maps a feature diameter to a number of beads and their widths.
-\item A specific beading scheme for FDM printing which reduces the amount of beads with greatly deviating width, and which promotes smooth toolpaths that are close to the nominal width toward the outline of the shape.
+\item A specific beading scheme for FDM printing which reduces the amount of beads with greatly deviating width, and which promotes smooth toolpaths that are close to the preferred width toward the outline of the shape.
 % \begin{itemize}
 % \item Accurately filling a 2D outline with extrusion beads
 % \item Reducing the overfill and underfill areas compared to the uniform width technique
 % \item Reducing the amount of beads with greatly deviating width compared to existing literature
-% \item Promoting smooth toolpaths which are close to the nominal width toward the outline of the shape.
+% \item Promoting smooth toolpaths which are close to the preferred width toward the outline of the shape.
 % \end{itemize}
 \end{itemize}
 
