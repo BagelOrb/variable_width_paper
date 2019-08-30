@@ -5,7 +5,7 @@ Recent developments have seen a rapid growth in both the use and capabilities of
 Fused Deposition Modeling (FDM) is one of the most common 3D printing techniques.
 It is widely used because of the versatility in the types of plastics which can be used and the relatively low running costs.
 FDM printers are used, for example, in showcasing scale models of buildings, casings for electronics, prototypes for blow molded parts, jigs and fixtures.
-Recent research developments have investigated manufacturing complex volumetric structures such as microstructures~\cite{bates2018compressive,Liu2019a,Al-Ketan2018,Maskery2018} and topology optimized structures~\cite{Zong2019,Wu2019a,Cheng2019}.
+Recent research developments have investigated manufacturing complex volumetric structures such as microstructures~\cite{bates2018compressive,Al-Ketan2018,Maskery2018} and topology optimized structures~\cite{Zegard2016SMO,Wu2019a,Cheng2019}.
 Many of these applications involve 3D models with detailed features within the order of magnitude of the printing resolution, which restrains the field of the process planning algorithms.
 
 FDM printers extrude semi-continuous beads of molten plastic through a nozzle, which moves along a planned toolpath within each layer of a 3D object.
@@ -23,8 +23,8 @@ Underfills on the other hand, can cause a drastic decrease in the part stiffness
 These problems are exacerbated for models with layer outlines with small features, because the over- and underfill areas are relatively large compared to the whole part.
 
 One promising direction to avoid over- and underfills is to employ toolpath with adaptive width. 
-This strategy has been mostly investigated for metal additive manufacturing using wire and arc~\cite{Ding2014}, where a wide range of widths could be realized by the hardware. 
-For instance, \citeauthor{Ding2016a} developed a toolpath with an (estimated) width variation by a factor of up to $3$.
+This strategy has been mostly investigated for metal additive manufacturing using wire and arc~\cite{Ding2014,Xiong2019}, where a wide range of widths could be realized by the hardware. 
+For instance, \citeauthor{Ding2016a} developed a toolpath with an (estimated) width variation by a factor of up to $3$~\cite{Ding2016a}.
 However, for FDM printing, it is challenging to realize varying width by extruding through a nozzle with a fixed size (the preferred width), either by varying the movement speed or by dynamically adjusting the volumetric flow rate. 
 Therefore, a much narrower range of widths is desirable for robust FDM fabrication.
 On the other hand, controlling the variation in width is beneficial for limiting the variation in mechanical properties of the resulting material fragments. 
@@ -32,7 +32,7 @@ On the other hand, controlling the variation in width is beneficial for limiting
 
 In this paper we propose a framework for planning toolpath with adaptive width for minimizing over- and underfill. 
 We show that this framework supports multiple schemes on deciding the bead locations and extrusion widths. 
-In particular for FDM printing, we propose a novel scheme which reduces the amount of over- and underfill while the extrusion widths deviate less from nozzle size compared to existing approaches (which are mostly designed for wire and arc additive manufacturing). 
+In particular for FDM printing, we propose a novel scheme which reduces the amount of over- and underfill while ensuring a small deviation of extrusion widths from the nozzle size (\cref{intro_wedge} bottom). 
 % In order to avoid over- and underfills in regions which are not as wide as an exact multiple of the nozzle size we need algorithms which produce toolpaths which employ adaptive bead width.
 % Some such toolpath generation techniques have already been developed.
 
@@ -41,9 +41,10 @@ In particular for FDM printing, we propose a novel scheme which reduces the amou
 \includegraphics[width=\columnwidth]{sources-intro-TEST-Center-widths.png}
 \includegraphics[width=\columnwidth]{sources-intro-TEST-InwardDistributed-widths.png}
 \caption{
-Toolpaths for a wedge shape using the uniform offsetting approach (top), the approach by \citeauthor{Jin2017JMS}(middle) and our approach (bottom).
-Overfill in orange, underfill in azure, narrow beads in blue and wide beads in red.
-The wedge shape can be read like a graph plot: for each model diameter we can read out the resulting over- or underfill if a model has thin features with that particular diameter.
+Illustration of different toolpath for a wedge shape.
+Top: Toolpath using uniform offsetting results in large overfill (orange) and underfill (azure).
+Middle: Toolpath with adaptive width~\cite{Jin2017JMS} where beads that are wider or narrower than the nozzle size are indicatd in red and blue, respectively.
+Bottom: Our approach minimizes over- and underfill with beads close to the nozzle size.
 }
 \label{intro_wedge}
 \end{figure}

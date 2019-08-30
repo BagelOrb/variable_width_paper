@@ -27,10 +27,11 @@ Direction parallel and contour parallel are two basic toolpath strategies.
 Direction parallel (or zig-zag) toolpath fills an arbitrarily shaped contour with a set of parallel, equally spaced line segments.
 These parallel segments are linked at one of their extremities, to avoid frequent stop and restart.
 Contour parallel toolpath typically consists of a set of equally spaced offset contours from the slice boundary.
+\citeauthor{steuben2016implicit} presented implicit slicing and made an interpretation of 2D contour computing as evaluating intersections in 3D~\cite{steuben2016implicit}.
 A strategy to connect the parallel offsets was introduced in~\cite{KUIPERS2019CAD}. This approach however introduces sharp turns.
 To reduce the number of sharp turns, and thereby enable faster motions, \citeauthor{Zhao2016} proposed to use Fermat spiral to cover the contour~\cite{Zhao2016}. 
 Spiral toolpaths have also been applied to machining~\cite{Held2009,Huang2017}.
-One of the problems with contour parallel toolpath is that it tends to leave gaps within the slices.
+One of the problems with contour parallel toolpath is that it tends to leave gaps within the slices (\cref{intro_wedge} top).
 This is due to the fact that the offset contour meets around the medial axis and the remaining space might not exactly match the (constant) deposition width.
 To avoid problems with such gaps, hybrid approaches that combine direction and contour parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}.
 Close to the slice boundary, there are a few contour parallel curves, while in the interior there is a zig-zag pattern.
@@ -51,9 +52,10 @@ An extension was proposed by \citeauthor{Ding2016a} to handle complex shapes~\ci
 For this purpose, they made use of the medial axis to decompose the slice into a set of simple geometries.
 This extension, however, inherits a problem in the original method.
 From any point in the geometry skeleton to the boundary, the number of contours is constant.
-Since the distance may vary considerably, this strategy leads to a toolpath with widths that may differ by a factor of two or more.
-Toolpath with varying width for 
-In this paper we propose an adaptive beading scheme to address this problem. 
+Since the distance may vary considerably, this strategy leads to a toolpath with widths that may differ by a factor of two or more, which is challenging for FDM prinring.
+\citeauthor{Jin2017JMS} proposed to add a toolpath with varying width along the skeleton, while leaving other paths unchanged.
+The variation of width in the central is pronounced (\cref{intro_wedge} middle).
+In this paper we propose a novel scheme to distribute the width variations from center to boundary, and thus limits the width variation (\cref{intro_wedge} bottom).
 
 % the context where our method can be positioned, and some related problems in that context
 Under- and over-filling are especially problematic for thin geometric features.
