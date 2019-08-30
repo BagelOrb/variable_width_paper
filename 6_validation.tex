@@ -185,14 +185,14 @@ Results in \cref{computime} confirm that both our framework and the uniform tech
 Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle and a filament extrusion drive directly mounted on the print head.
 The firmware of the printer employs \emph{linear advance} for accurately realizing adaptive deposition width:
 gaining the extra pressure required to change to a wider bead is realized by 'advancing' an extra amount of filament into the physical system~\cite{tronvoll2019investigating}.
-We set the preferred width to $w^* = \SI{0.6}{\milli\meter}$, to avoid fluttered printing of lines thinner than the nozzle size.
+We set the preferred width to $w^* = \SI{0.6}{\milli\meter}$, to avoid fluttered printing of lines narrower than the nozzle size.
 We used a layer thickness of \SI{0.2}{\milli\meter} and a movement speed of \SI{10}{\milli\meter\per\second}.
 
-The prints are shown in \cref{wedge_print} and \cref{prints}.
+The prints are shown in \cref{prints}.
 Because of inaccuracies in the deposition control system some of the prints show defects.
 Such defects are less prevalent for the inward distributed beading scheme than the other schemes.
-The prints which employ the uniform offsets technique clearly show a lot of underfill, which clearly impacts the visual quality of the print.
-Moreover, in the case of the regular honeycomb there are several disconnected hexagons, while the whole part is supposed to be a single connected solid.
+The prints which employ the uniform offsets technique show a lot of underfill, which impacts the visual quality of the print.
+Moreover, in the case of the regular honeycomb there are several fully disconnected hexagons, which means the object falls apart.
 The difference between the centered and the inward distributed schemes is less pronounced.
 We can still see some loosely connected extrusion segments in both, which is attributable to inaccuracies in the extrusion system.
 However, the middle of \cref{wedge_print} exhibits more defects in the regions where the centered scheme produces extremal bead widths.
@@ -206,17 +206,8 @@ The bottom print shows that the inward distributed beading scheme produces smoot
 \includegraphics[width=\figwidth]{sources-applications-P3-print-wedge-naive-edited.png}
 \includegraphics[width=\figwidth]{sources-applications-P3-print-wedge-center-edited.png}
 \includegraphics[width=\figwidth]{sources-applications-P3-print-wedge-inward-edited.png}
-\caption{Wedge}\label{print_wedge}
+\caption{Uniform (top), centered (mid) and inward distributed (bottom)}\label{wedge_print}
 \end{subfigure}
-\caption{
-A wedge shape printed using the uniform scheme, centered scheme and the inward distributed scheme.
-The uniform and centered scheme show problems around certain model diameters.
-}
-\label{wedge_print}
-\end{figure}
-
-\begin{figure}
-\centering
 \setlength{\figheight}{.38\columnwidth}
 \setlength{\figheightTwo}{.47\columnwidth}
 \setlength{\figwidth}{0.32\columnwidth}
