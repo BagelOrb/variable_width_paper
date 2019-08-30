@@ -5,24 +5,36 @@ Recent developments have seen a rapid growth in both the use and capabilities of
 Fused Deposition Modeling (FDM) is one of the most common 3D printing techniques.
 It is widely used because of the versatility in the types of plastics which can be used and the relatively low running costs.
 FDM printers are used, for example, in showcasing scale models of buildings, casings for electronics, prototypes for blow molded parts, jigs and fixtures.
-Recent research developments have investigated manufacturing complex volumetric structures such as microstructures~\cite{bates2018compressive,Liu2019a}, topology optimized structures~\cite{Zong2019,Wu2019a,Cheng2019} and regular honeycomb structures~\cite{Al-Ketan2018,Maskery2018}.
-Many of these applications require 3D models with detailed features within the order of magnitude of the printing resolution, which restrains the field of the process planning algorithms.
+Recent research developments have investigated manufacturing complex volumetric structures such as microstructures~\cite{bates2018compressive,Liu2019a,Al-Ketan2018,Maskery2018} and topology optimized structures~\cite{Zong2019,Wu2019a,Cheng2019}.
+Many of these applications involve 3D models with detailed features within the order of magnitude of the printing resolution, which restrains the field of the process planning algorithms.
 
 FDM printers extrude semi-continuous beads of molten plastic through a nozzle, which moves along a planned toolpath within each layer of a 3D object.
-A common strategy to accurately manufacture a given 3D model is to extrude a contour-following print path,
+A common strategy to accurately manufacture a given 3D model is to extrude along a contour-following path,
 because the position and shape of the toolpath can be controlled relatively accurately.
 Filling up a shape using parallel straight lines would expose defects of the size of the nozzle ($\pm 10^2 \mu$), which is generally an order of magnitude larger than the resolution of the positioning system ($\pm 10^1 \mu$).
 Contour parallel extrusion therefore leads to a less bumpy outline shape than direction parallel extrusion does.
 
 
-The simple technique for generating the shape filling toolpaths of a layer consists in performing uniform inward offsets with the radius of the the nozzle from the outline shape.
-However, for geometrical features which are not an exact multiple of the nozzle size this method produces areas where an extrusion bead is placed twice: \emph{overfill} areas; and other areas which are not filled at all: \emph{underfill} areas.
+The simple technique for generating the dense contour-parallel toolpaths of a layer consists in performing uniform inward offsets with the radius of the nozzle from the outline shape.
+However, for geometrical features which are not an exact multiple of the nozzle size this method produces areas where an extrusion bead is placed twice: \emph{overfill} areas; and areas which are not filled at all: \emph{underfill} areas.
 See \cref{intro_wedge}(top).
 Overfills cause a buildup of pressure in the mechanical extrusion system, which can result in bulges or even a full print failure.
 Underfills on the other hand, can cause a drastic decrease in the part stiffness or even for small features not to be printed at all.
 These problems are exacerbated for models with layer outlines with small features, because the over- and underfill areas are relatively large compared to the whole part.
-In order to avoid over- and underfills in regions which are not as wide as an exact multiple of the nozzle size we need algorithms which produce toolpaths which employ adaptive bead width.
-Some such toolpath generation techniques have already been developed.
+
+One promising direction to avoid over- and underfills is to employ toolpath with adaptive width. 
+This strategy has been mostly investigated for metal additive manufacturing using wire and arc~\cite{Ding2014}, where a wide range of widths could be realized by the hardware. 
+For instance, \citeauthor{Ding2016a} developed a toolpath with an (estimated) width variation by a factor of up to $3$.
+However, for FDM printing, it is challenging to realize varying width by extruding through a nozzle with a fixed size (i.e. nominal width), either by varying the movement speed or by dynamically adjusting the volumetric flow rate. 
+Therefore, a much narrower range of widths is desirable for robust FDM fabrication.
+On the other hand, controlling the variation in width is beneficial for limiting the variation in mechanical properties of the resulting material fragments. 
+% The bead width has been associated with total print time, the roughness of top surfaces, printing resolution and the strength of a part, through the contact area it makes with neighboring beads~\cite{N.Turner2014,ahn2002anisotropic}.
+
+In this paper we propose a framework for planning toolpath with adaptive width for minimizing over- and underfill. 
+We show that this framework supports multiple schemes on deciding the bead locations and extrusion widths. 
+In particular for FDM printing, we propose a novel scheme which reduces the amount of over- and underfill while the extrusion widths deviate less from nozzle size compared to existing approaches (which are mostly designed for wire and arc additive manufacturing). 
+% In order to avoid over- and underfills in regions which are not as wide as an exact multiple of the nozzle size we need algorithms which produce toolpaths which employ adaptive bead width.
+% Some such toolpath generation techniques have already been developed.
 
 \begin{figure}\centering
 \includegraphics[width=\columnwidth]{sources-intro-TEST-naive-accuracy.png}
@@ -38,26 +50,26 @@ The wedge shape can be read like a graph plot: for each model diameter we can re
 
 
 
-There is a large body of literature on relating process parameters such as bead width to various mechanical properties of the end part.
-The bead width has been associated with total print time, the roughness of top surfaces, printing resolution and the strength of a part, through the contact area it makes with neighboring beads~\cite{N.Turner2014,ahn2002anisotropic}.
-In order to accurately fabricate a part restricted to prescribed mechanical properties, we need to generate toolpaths using the corresponding process parameters as close as possible.
-We therefore develop a framework which can be used to generate toolpaths which not only avoid over- and underfill, but also keep the bead width closer to the nominal bead width compared to existing techniques.
-See \cref{intro_wedge}(bottom).
+% There is a large body of literature on relating process parameters such as bead width to various mechanical properties of the end part.
+% The bead width has been associated with total print time, the roughness of top surfaces, printing resolution and the strength of a part, through the contact area it makes with neighboring beads~\cite{N.Turner2014,ahn2002anisotropic}.
+% In order to accurately fabricate a part restricted to prescribed mechanical properties, we need to generate toolpaths using the corresponding process parameters as close as possible.
+% We therefore develop a framework which can be used to generate toolpaths which not only avoid over- and underfill, but also keep the bead width closer to the nominal bead width compared to existing techniques.
+% See \cref{intro_wedge}(bottom).
 
 %\subsection{Contributions}
-A polygonal shape with a width of a fractional multiple of the nominal bead width will always result in the bead widths deviating from the nominal bead width by the fractional part in total,
-because the total of the widths of the beads must add up to the fractional width of the part in order to avoid under- or overfill.
-We therefore propose a framework which makes it possible to distribute the fractional discrepancy over several beads, so that the beads are generally closer to the nominal width.
+% A polygonal shape with a width of a fractional multiple of the nominal bead width will always result in the bead widths deviating from the nominal bead width by the fractional part in total,
+% because the total of the widths of the beads must add up to the fractional width of the part in order to avoid under- or overfill.
+% We therefore propose a framework which makes it possible to distribute the fractional discrepancy over several beads, so that the beads are generally closer to the nominal width.
 Our contributions are as follows:
 \begin{itemize}
-\item A geometric framework for generating densely filling contour-parallel toolpaths employing adaptive width, according to any function which maps a model diameter to a number of beads and their widths.
-\item A specific beading scheme function for this framework for:
-\begin{itemize}
-\item Accurately filling a 2D outline with extrusion beads
-\item Reducing the overfill and underfill areas compared to the uniform width technique
-\item Reducing the amount of beads with greatly deviating width compared to existing literature
-\item Promoting smooth toolpaths which are close to the nominal width toward the outline of the shape.
-\end{itemize}
+\item A geometric framework for generating densely filling contour-parallel toolpaths employing adaptive width, according to any beading scheme which maps a feature diameter to a number of beads and their widths.
+\item A specific beading scheme for FDM printing which reduces the amount of beads with greatly deviating width, and which promotes smooth toolpaths that are close to the nominal width toward the outline of the shape.
+% \begin{itemize}
+% \item Accurately filling a 2D outline with extrusion beads
+% \item Reducing the overfill and underfill areas compared to the uniform width technique
+% \item Reducing the amount of beads with greatly deviating width compared to existing literature
+% \item Promoting smooth toolpaths which are close to the nominal width toward the outline of the shape.
+% \end{itemize}
 \end{itemize}
 
 
