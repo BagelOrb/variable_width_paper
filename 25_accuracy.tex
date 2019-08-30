@@ -2,9 +2,9 @@
 
 
 In order to estimate the overfill and underfill, we need to accurately calculate the area covered by a single extrusion path.
-If we would simply use an isosceles trapezoidal area with base lengths equal to the widths of the two end points of the extrusion segment, we would get artifacts at corners in the toolpath (\cref{segment_visualization}a).
-We therefore use a semi-circle (\cref{segment_visualization}b) with a diameter equal to the starting width in the one end of each segment, and exclude it at the other end, because it will be included in the next segment.
-For polyline extrusion paths which are not closed, we also include the semi-circle corresponding to the extrusion width of the end-position ( \cref{segment_visualization}c).
+If we would simply use an isosceles trapezoidal area, we would get overfill artifacts at corners in the toolpath (\cref{segment_visualization_blocky}).
+We therefore use a semi-circle (\cref{segment_visualization_rounded}) with a diameter equal to the starting width in the one end of each segment, and exclude it at the other end, because it will be included in the next segment.
+For polyline extrusion paths which are not closed, we also include the semi-circle of the destination location (\cref{segment_visualization_excluded}).
 
 %In order to print such extrusion paths accurately, we can modulate the amount of material flow per millimeter based on this visualization model.
 %See \cref{segment_visualization}.
@@ -14,15 +14,15 @@ For polyline extrusion paths which are not closed, we also include the semi-circ
 \setlength{\figwidth}{.25\columnwidth}
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[width=\columnwidth]{sources-validation-visualization-principle-blocky.pdf}
-\caption{Blocky}
+\caption{Blocky}\label{segment_visualization_blocky}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[width=\columnwidth]{sources-validation-visualization-principle-rounded.pdf}
-\caption{Rounded}
+\caption{Rounded}\label{segment_visualization_rounded}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[width=\columnwidth]{sources-validation-visualization-principle-rounded-excluded.pdf}
-\caption{Excluded}
+\caption{Excluded}\label{segment_visualization_excluded}
 \end{subfigure}
 \caption{
 Extruded area of two extrusion segments.
@@ -31,13 +31,7 @@ Red areas signify doubly extruded areas.
 \label{segment_visualization}
 \end{figure}
 
-We can then estimate the amount of underfill by unioning the rounded visualization of all extrusion segments and then taking the difference from the original outline shape.
-In order to deal with rounding errors, we perform a morphological close of \SI{5}{\micro\meter} before calculating the total area of the underfill regions.
-
-The overfill regions are calculated by adding the polygonal areas of each extrusion segment to a list.
-We then add the original outline shape in reverse and perform a Vatti clipping operation~\cite{Vatti2019clipping} which only keeps areas of positive winding number.
-Because the reverse outline shape reduces the winding number of all extruded segments by one, only the overfill areas are left with a positive winding number.
-In order to estimate the areas which are triply covered by extrusion segments, we repeat the process of adding the outline in reverse and performing Vatti's clipping operation.
-These triple extrusion areas count double toward the total amount of overfill.
-The resulting overfill and underfill areas are visualized for the different toolpath schemes in the top of \cref{visualized_accuracy}.
+Using boolean operations we can obtain the polygonal regions for overfill and those for underfill.
+In order to deal with rounding errors we perform a morphological close of \SI{5}{\micro\meter}, before calculating the total area in \si{\milli\meter\square}.
+We also calculate regions which are covered thrice by different extrusion segments and add twice its area to the total overfill area amount.
 
