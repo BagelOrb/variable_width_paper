@@ -18,13 +18,12 @@ According to \cref{over_underfill} the overfill and underfill for the centered, 
 
 However, according to \cref{widthHistogram} the centered scheme exhibits a wider range of bead widths than the distributed schemes:
 the standard deviation of the bead widths in the centered scheme is approximately \SI{39}{\micro\meter}, while that of the distributed schemes is approximately \SI{14}{\micro\meter}.
-We can therefore state that the distributed schemes result in bead widths closer to the preferred widths compared to the centered scheme.
+We therefore state that the distributed schemes result in bead widths closer to the preferred widths compared to the centered scheme.
 This is desirable for the manufacturability of the beads and can therefore have a positive effect on the mechanical properties and surface quality of the 3D prints. 
 
 The inward distributed scheme is introduced with the intention to limit the number of beads deviating from the preferred bead width and to limit the number of angled extrusion segments in transitioning regions.
 This expected effect is difficult to be confirmed when comparing \cref{TEST_Distributed_accuracy} with~\ref{TEST_InwardDistributed_accuracy}, because there are no large solid areas in that specific shape.
-
-However, when comparing the bead width of the outer toolpaths, \cref{distributed_comparison} and  \cref{widthIndexedHistogram}, we can clearly see that the these toolpaths have the preferred bead width more often, which means that errors from inaccuracies due to deviation from the preferred bead width are concentrated near the center of the shape, leaving the dimensional accuracy of the outline shape less affected, if at all. 
+However, when comparing the bead width of the outer toolpaths, \cref{distributed_comparison} and  \cref{widthIndexedHistogram}, we see that the these toolpaths have the preferred bead width more often, which means that errors from inaccuracies due to deviation from the preferred bead width are concentrated near the center of the shape, leaving the dimensional accuracy of the outline shape less affected, if at all. 
 Furthermore, we find that compared to evenly distributed, the inward distributed scheme produces smoother toolpaths overall (\cref{smoothness}), and with less jaggedness on the contour toolpaths (\cref{smoothness}). 
 Therefore, when using the inward distributed scheme the surface of the 3D print is less affected by both width variation and jagged toolpaths, while overfill and underfill are kept at a low percentage.
 

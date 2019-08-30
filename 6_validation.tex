@@ -142,14 +142,8 @@ Note the use of a logarithmic scale on the Y-axes and on some of the X-axes as w
 
 
 \subsubsection{Uniformity}
-Depending on the printer hardware configuration, some bead widths might be difficult to produce;
-too narrow beads might result in fluttered extrusion and too wide beads might require a pressure in the nozzle beyond the specifications of the machine or they might bulge upward on the sides.
-Moreover, bead widths deviating from the preferred bead width by a large amount may be hard to realize and may impact the mechanical properties of the print.
 We visualize the bead widths resulting from the different schemes in the bottom of \cref{visualized_accuracy}.
-
-
-To evaluate the uniformity of the width,
-we calculated the mean and standard deviation of the bead width, sampled at \SI{1}{\micro\meter} along the toolpaths.
+We calculated the mean and standard deviation of the bead width, sampled at \SI{1}{\micro\meter} along the toolpaths.
 \cref{widthHistogram} shows the distribution of extrusion width for each scheme binned at intervals of \SI{10}{\micro\meter}.
 We found that the mean width of the inward and evenly distributed schemes is close to preferred bead width of \SI{400}{\micro\meter}, while their standard deviation is lower than for the centered and constant bead count scheme. 
 These results indicate that, while causing less overfill and underfill, inwards distributed and evenly distributed schemes deviate less or less often from the preferred bead width compared to the other schemes.
