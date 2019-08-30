@@ -37,24 +37,29 @@ $d^\text{discretization}$ is the discretization length in vertex-vertex VD edges
 \end{definition}
 
 
+
 The following restrictions hold:
 \begin{enumerate}
-\item Transitions shouldn't overlap each other: $t_1(n) + t_0(n+1) < \frac{ q^{-1}(n + 1) - q^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$ for each $n \in \mathbb{N}$ (see \cref{transition_placement})
+	\begin{minipage}{\columnwidth}
+	\setlength\intextsep{0pt}
+	\begin{wrapfigure}[4]{o}{.4\columnwidth} %\centering
+	\includegraphics[width=.3\columnwidth,frame]{sources-method-transition-length-limit.pdf}
+	%\caption{
+	%%Transition ends (magenta and pink) shouldn't cross each other.
+	%Placement of transition ends (magenta and pink) with respect to the anchor positions of the transitions (purple) on a ST edge (blue) with bisector angle $\alpha \approx \SI{135}{\degree}$.
+	%The distance between the anchor position and the upper end ($t_1$) and the distance between the anchor position and the lower end of the transition ($t_0$) should add up to less than the total distance between the anchor positions, which is limited by $\alpha_\text{max}$.
+	%}
+	\label{transition_placement}
+	\end{wrapfigure}
+	\item Transitions shouldn't overlap each other: \\ $t_1(n) + t_0(n+1) < \frac{ q^{-1}(n + 1) - q^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$ \\ for each $n \in \mathbb{N}$ \\ (see \cref{transition_placement})
+\end{minipage}
 \item An odd beading should produce an odd single toolpath exactly in the center: $B(n, r)_{\lfloor n/2 \rfloor} = r$ in case $n$ is odd
 \item For toolpaths to be smooth and continuous we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, r)_n}{\partial r} \leq 1$
 \end{enumerate}
 
 
 
-\begin{figure}
-\centering
-\includegraphics[width=.4\columnwidth,frame]{sources-method-transition-length-limit.pdf}
-\caption{
-Placement of transition ends (magenta and pink) with respect to the anchor positions of the transitions (purple) on a ST edge (blue) with bisector angle $\alpha \approx \SI{135}{\degree}$.
-The distance between the anchor position and the upper end ($t_1$) and the distance between the anchor position and the lower end of the transition ($t_0$) should add up to less than the total distance between the anchor positions, which is limited by $\alpha_\text{max}$.
-}
-\label{transition_placement}
-\end{figure}
+
 
 
 
