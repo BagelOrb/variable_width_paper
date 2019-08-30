@@ -530,7 +530,7 @@ Discontinuities around regions where the bead count changes are prevented by tra
 \subsection{Beading}\label{sec_peripheral_height_adjustment}
 Now that we have determined the bead counts in the central regions we will describe how the peripheral regions are handled.
 Determining bead count values for the unmarked nodes and interpolating linearly along the unmarked edges would mean that toolpath sites would be distributed evenly along each unmarked bone;
-while that would suffice for the evenly distributed beading scheme, it wouldn't allow for more sophisticated, non-linear schemes (see \cref{peripheral_heights}).
+while that would suffice for the evenly distributed beading scheme, it wouldn't allow for more sophisticated, non-linear schemes.
 Instead we determine the radial distance to the boundary at which each bead should occur from the boundary to the center.
 Each central node is associated with a sequence of radial distances $L$ which control the locations of the beads, starting from the outer bead and ending in the center.
 Together with a sequence of bead widths $W$ these form what we call a \emph{beading} $B$.
@@ -547,22 +547,6 @@ Example beadings for an odd and even bead count with arbitrary widths are visual
 
 
 
-
-\begin{figure}\centering
-\setlength{\figheight}{.2\columnwidth}
-\begin{subfigure}{.55\columnwidth}\centering
-\includegraphics[height=\figheight]{sources-method-peripheral-heights-3D.png}
-\caption{Surface mesh}
-\end{subfigure}
-\begin{subfigure}{.4\columnwidth}\centering
-\includegraphics[height=\figheight]{sources-method-peripheral-heights.pdf}
-\caption{ST}
-\end{subfigure}
-\caption{
-Shallow corners will cause peripheral nodes for which the height should be determined based on the central node above it.
-}
-\label{peripheral_heights}
-\end{figure}
 
 
 \paragraph{Beading interpolation}
