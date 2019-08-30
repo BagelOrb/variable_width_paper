@@ -416,10 +416,10 @@ and then introduce ramps to smoothly transition from $n$ to $n+1$ using fraction
 \end{subfigure}
 \caption{
 Applying bead counts and transitioning on a shape showing the difference between a simple ST (top) and a mirrored version with small perturbations in the outline (bottom).
-Outline in black, central edges marked in blue, other edges in grey.
-\subref{beading_transitioning_filtering__bead_count} First we initialize the bead counts (black) in the marked regions (blue).
+Outline in black, central edges marked in blue, radial edges in grey.
+\subref{beading_transitioning_filtering__bead_count} First we initialize the bead counts (black) in the marked edges (blue).
 \subref{beading_transitioning_filtering__transition_mids} We then extract the anchor locations (purple) where the bead count transitions.
-\subref{beading_transitioning_filtering__filtered} We then filter out regions of constant bead count.
+\subref{beading_transitioning_filtering__filtered} We then filter out regions which exhibit frequent transition.
 \subref{beading_transitioning_filtering__transition_ends} We then calculate the end locations (magenta, pink) of the transitions and modify the bead count at nodes in between to fractional values.
 \subref{beading_transitioning_filtering__transitions_applied} Finally we introduce nodes at the ends and introduce radial edges (purple) as per the trapezoidation constraint.
 The symmetry in the result shows that transitioning is robust against small perturbations in the outline shape.
@@ -509,7 +509,7 @@ As shown in \cref{beading_transitioning_filtering__result_uoc}, the marked regio
 \caption{Transitioning}
 \end{subfigure}
 \caption{
-Discontinuities around regions where the bead count changes are prevented by transition regions (highlighted in cyan).
+Sharp turns around regions where the bead count changes are prevented by transition regions (highlighted in cyan).
 }
 \label{transitions}
 \end{figure}

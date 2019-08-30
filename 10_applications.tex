@@ -7,14 +7,12 @@ Therefore, our framework, while working for wide parts as well, shows most of it
 
 For architectural models and casings, the prevention of over- and underfill is expected to make them stronger. 
 For embossed text, the prevention of underfill reduces the various holes in the top surfaces, which is detrimental to the visual quality of those top surfaces.
-Gears and similar mechanical parts could benefit from the prevention of under- and overfill regions and the distributed bead widths because the more homogeneous extrusion widths cause the part to more closely 
-conform to the presumed homogenized material properties of FDM products.
+For gears and similar mechanical parts that are designed with finite element analysis, the less variation in extrusion widths is closer to the assumptions under fast analysis (e.g. using homogenization~\cite{Liu2016CAD}).
 
 Of particular interest are microstructures that could be uniquely fabricated by 3D printing.
-Microstructures which have layers with varying widths benefit from the prevention of under- and overfill, which will result in structures with mechanical properties closer to expectation.
 For example, topology optimized bone-like structures~\cite{wu2017infill} contain filaments of varying thickness that follow a varying stress direction (\cref{applications_bone}).
-An angled Gyroid structure with uniform thickness also results in outline shapes with varying width (\cref{applications_gyroid}), which are accurately densely filled using our framework.
-
+An angled Gyroid structure with uniform thickness also results in outline shapes with varying width (\cref{applications_gyroid}). 
+These structures are accurately densely filled using our framework.
 Another class of microstructures consists of parameterized patterns with varying thickness to achieve functional gradation.
 \Cref{applications_hex} shows the contour-parallel toolpath with varying width of a hexagonal grid neatly switches between different bead counts over the volume, preventing the jagged moves a direction-parallel toolpath would create for such a case~\cite{bates2018compressive}.
 
@@ -67,6 +65,7 @@ Another class of microstructures consists of parameterized patterns with varying
 Visualization of the widths for the output toolpaths of the inward distributed beading scheme applied to various example application objects.
 A legend for the colors can be found in \cref{visualized_accuracy}.
 From left to right and top to bottom: a house, a case for electronics, a statue, two common logos, a gear, a topologically optimized bone structure, a homogeneous lateral thickness tilted gyroid structure and a heterogeneous thickness hexagonal grid.
+\jun{is it easy to embed the color lengend here so readers don't have to flip}
 }
 \label{applications_overview}
 \end{figure*}

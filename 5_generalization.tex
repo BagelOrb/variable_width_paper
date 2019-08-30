@@ -65,7 +65,7 @@ The following restrictions hold:
 
 
 
-\subsection{Beading schemes}
+% \subsection{Beading schemes}
 We introduce several beading schemes which determine the bead count and their widths in various ways.
 We can emulate a variety of toolpath generation methods from related literature by defining new beading schemes.
 We also introduce new beading schemes which produce toolpaths with less extremal widths compared to techniques from existing literature.
@@ -261,7 +261,7 @@ See \cref{formula_constant_bead_count}.
 We can emulate the method by \citeauthor{Jin2017JMS}, by transcribing how they deviate from the uniform width toolpaths.
 We therefore base the beading scheme on the bead count $q^-(d)$ defined by the uniform beading scheme.
 \citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w^*$.
-Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w^*$.\cite{Jin2017JMS}
+Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w^*$~\cite{Jin2017JMS}.
 We emulate the rounded polygonal path rerouting they define by supplying a transition length which results in a discretized version of the rounded polygon segment.
 See \cref{formula_centered}.
 
