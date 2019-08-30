@@ -163,9 +163,10 @@
 
 \author[um,tud]{Tim Kuipers}
 \author[tud]{Eugeni L. Doubrovski}
-\author[tud]{Jun Wu}
-\author[cuhk]{Charlie Wang{\corref{cor1}}}
-\ead{cwang@mae.cuhk.edu.hk}
+\author[tud]{Jun Wu{\corref{cor1}}^*}
+\ead{j.wu-1@tudelft.nl}
+\author[cuhk]{Charlie Wang}
+% \ead{cwang@mae.cuhk.edu.hk}
 \cortext[cor1]{Corresponding author}
 \address[um]{Ultimaker, Utrecht, The Netherlands}
 \address[tud]{Department of Design Engineering, Delft University of Technology, The Netherlands}
@@ -175,7 +176,8 @@
 \begin{abstract}
 3D printing techniques such as Fused Deposition Modeling (FDM) have enabled the fabrication of complex geometry quickly and cheaply. 
 By densely filling consecutive 2D layers with contour-parallel extrusion toolpaths, FDM can produce parts with high stiffness and strength.
-Toolpath with uniform inward offsets from the outline polygons produce over- and underfill regions in the center of the shape, which are especially problematic for thin parts such as casings and microstructures. 
+Toolpath with uniform inward offsets from the outline polygons produce over- and underfill regions in the center of the shape, which are especially problematic for thin parts such as casings and microstructures.
+Existing approaches for generating toolpaths with adaptive width result in a large variation in width, which is beyond the capabilities of some hardware systems and difficult to manufacture accurately for others.
 Existing approaches for generating toolpath with adaptive width targeted mostly at wire and arc additive manufacturing, and resulted in a large variation in width which is not typically supported by FDM printing.
 %address this issue by making local alterations to the toolpaths locations and widths in the center of the part.
 %In this paper we present a framework which allows to distribute the alterations from the center to the boundary.
