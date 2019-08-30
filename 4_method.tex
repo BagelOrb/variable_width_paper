@@ -531,12 +531,12 @@ Discontinuities around regions where the bead count changes are prevented by tra
 Now that we have determined the bead counts in the central regions we will describe how the peripheral regions are handled.
 Determining bead count values for the unmarked nodes and interpolating linearly along the unmarked edges would mean that toolpath sites would be distributed evenly along each unmarked bone;
 while that would suffice for the evenly distributed beading scheme, it wouldn't allow for more sophisticated, non-linear schemes (see \cref{peripheral_heights}).
-Instead we determine the radial distance to the boundary at which each bead should occur.
+Instead we determine the radial distance to the boundary at which each bead should occur from the boundary to the center.
 Each central node is associated with a sequence of radial distances $L$ which control the locations of the beads, starting from the outer bead and ending in the center.
 Together with a sequence of bead widths $W$ these form what we call a \emph{beading} $B$.
 For our distributed beading scheme we compute the beading for a central node $v$ with $n = \lfloor \hat{b}_v \rfloor$ beads and a diameter $r = R(v)$  as:
 \begin{align*}
-    B(n,r) &= \left( W(n,r), L(n,r) \right)   &=   \left( \left\{  w_0 , \dots, w_{\lceil n/2 \rceil-1} \right\}, \left\{ l_0 , \dots, l_{\lceil n/2 \rceil-1} \right\} \right) \\
+    B(n,r) &= \left( W(n,r), L(n,r) \right)   &=   \left( \left\{  w_0  \dots w_{\lceil n/2 \rceil-1} \right\}, \left\{ l_0 \dots l_{\lceil n/2 \rceil-1} \right\} \right) \\
     w_i &= r / n  & \text{for all $i \in \mathbb{N} : i < n / 2 $}\\
     l_i &= r / n (i + \nicefrac12) & \text{for all $i \in \mathbb{N} : i < n / 2 $}
 \end{align*}
