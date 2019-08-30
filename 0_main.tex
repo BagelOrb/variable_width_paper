@@ -140,12 +140,13 @@
 
 	% deal with missing images which are not directly included in the repo
 	\iffalse
-	\newcommand{\noimage}{%
+	\newcommand{\noimage}[1]{%
 	  \setlength{\fboxsep}{-\fboxrule}%
-	  \fbox{\phantom{\rule{10pt}{10pt}}File missing\phantom{\rule{10pt}{10pt}}}% Framed box
+	  \fbox{\phantom{\rule{10pt}{10pt}} Missing file: \path{#1} \phantom{\rule{10pt}{10pt}}}% Framed box
 	}
 	\let\includegraphicsoriginal\includegraphics
-	\renewcommand{\includegraphics}[2][width=\textwidth]{\IfFileExists{#2}{\includegraphicsoriginal[#1]{#2}}{\noimage}}
+	\renewcommand{\includegraphics}[2][width=\textwidth]{\IfFileExists{#2}{\includegraphicsoriginal[#1]{#2}}{\noimage{#2}}}
+
 	\fi
 % ENd of TK's added packages and commands
 
