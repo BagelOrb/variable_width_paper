@@ -174,16 +174,13 @@
 
 
 \begin{abstract}
-3D printing techniques such as Fused Deposition Modeling (FDM) have enabled fabricating complex geometry quickly and cheaply. 
+3D printing techniques such as Fused Deposition Modeling (FDM) have enabled the fabrication of complex geometry quickly and cheaply. 
 By densely filling consecutive 2D layers with contour-parallel extrusion toolpaths, FDM can produce parts with high stiffness and strength.
 Toolpath with uniform inward offsets from the outline polygons produce over- and underfill regions in the center of the shape, which are especially problematic for thin parts such as casings and microstructures.
-Existing approaches for generating toolpaths with adaptive width result in a large variation in widths, which for some hardware systems is difficult to realize accurately, if not beyond their capabilities 
-%Existing approaches for generating toolpaths with adaptive width result in a large variation in widths, which is beyond the capabilities of some hardware systems and difficult to realize accurately for others.
-%Existing approaches for generating toolpath with adaptive width targeted mostly at wire and arc additive manufacturing, and resulted in a large variation in width which is not typically supported by FDM printing.
+Existing approaches for generating toolpaths with adaptive width result in a large variation in widths, which for some hardware systems is difficult to realize accurately, if not beyond their capabilities.
 In this paper we present a framework which supports multiple schemes to generate toolpaths with adaptive width, by using a function to decide the number of beads and their widths which are applied from the center outward.
 Furthermore, we propose a novel scheme for FDM printing which avoids extreme bead width deviation from the nozzle size, and limits the number of altered toolpaths.
 We validate the effectiveness of our framework and this novel scheme on a data set of 300 slices.
-%This scheme reduces the amount of over- and underfill while the extrusion widths deviate less from the nozzle size compared to existing approaches.
 \end{abstract}
 
 %
