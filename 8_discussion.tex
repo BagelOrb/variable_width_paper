@@ -23,7 +23,7 @@ We therefore conclude that the distributed schemes result in bead widths closer 
 It is hard to visually identify the difference between the evenly and the inward distributed scheme in \cref{visualized_accuracy}, because that particular example shape does not have wide features.
 However, \cref{distributed_comparison} and  \cref{widthIndexedHistogram} confirm that the outer toolpaths have the preferred bead width more often.
 Furthermore, from \cref{smoothness} we find that compared to evenly distributed, the inward distributed scheme produces smoother toolpaths overall.
-Thus the inward distributed scheme prevents over- and underfill, generates smooth toolpaths with more homogenous width and affects smaller more centered parts of the print than the other schemes. 
+Thus the inward distributed scheme prevents over- and underfill, generates smooth toolpaths with more homogeneous width and affects smaller more centered parts of the print than the other schemes. 
 
 
 
@@ -43,7 +43,7 @@ Note that the current industry standard in FDM printing employs little to no bea
 Properly performing bead width variation calls for adaptations and developments in printers and firmware.
 In the beading schemes we set a transition length of $t(n) = w^*$.
 That will demand changes in cross-sectional area of the bead up to \SI{200}{\percent} over a small distance that is comparable to the nozzle size, which is challenging for some hardware systems.
-Varying the movement speed can be utilised to change the cross-sectional area, but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath~\cite{Ertay2018,Kuipers2018}.
+Varying the movement speed can be utilized to change the cross-sectional area, but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath~\cite{Ertay2018,Kuipers2018}.
 Our schemes require a more accurate control of the volumetric flow rate in \si{\milli\meter\cubed\per\second}.
 Using a filament feeder directly mounted on the print head (a.k.a. direct drive) can control the flow more dynamicaly then FDM printers where the material is fed through a Bowden tube from a feeder mounted on the frame.
 Still direct drive printers require some control system in order to accurately change the volumetric flow rate such as pressure advance algorithms~\cite{tronvoll2019investigating}.

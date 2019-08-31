@@ -557,7 +557,7 @@ There we also apply beading interpolation from a marked node $v_m$ upward along 
 and interpolate between $v_m$ and the beading at the top of the slope over some distance $t_\text{beading}$ from the lower marked node.
 
 \paragraph{Beading propagation}
-The beading information is then broadcasted throughout the ST from central regions outward,
+The beading information is then broadcast throughout the ST from central regions outward,
 so that each unmarked node $v$ knows the beading of the marked node on top of the ramp on which $v$ is placed.
 We first broadcast the beading information upward from all marked nodes,
 so that we can then deal with beading conflicts in a downward phase.
@@ -692,7 +692,7 @@ the extrusion segments can efficiently be connected into existing polyline toolp
 
 Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
 Such intersections cause overfill because the nozzle passes the location multiple times.
-We deal with this special case by forcing a new polyline when traversing the trapezoids, and in the final polyline connection step we greadily connect the first two polylines ending in the same location and retreat all other polylines ending in that same location in order to prevent the overfill.
+We deal with this special case by forcing a new polyline when traversing the trapezoids, and in the final polyline connection step we greedily connect the first two polylines ending in the same location and retreat all other polylines ending in that same location in order to prevent the overfill.
 In order to retreat a polyline which ends in a site $S$ we remove part of the polyline paths up to the intersection by a distance of $w^S d_\text{max}^\text{intersection}$, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.
 This ratio effectively deals with the balance between overfill and underfill generated at that location after the retreat has been applied.
 See \cref{polyline_reduction}.

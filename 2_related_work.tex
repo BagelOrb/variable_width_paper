@@ -44,7 +44,7 @@ In order to increase the continuity of contour-parallel toolpaths, a strategy to
 \citeauthor{Jin2017RCIM} discusses several approaches for connecting direction-parallel and contour-parallel toolpaths into continuous paths~\cite{Jin2017RCIM}.
 Spiral toolpaths have also been applied to (CNC) machining~\cite{Held2009,Huang2017}.
 One of the problems with contour-parallel toolpath is that it tends to leave gaps between the toolpaths (see \cref{intro_wedge_uniform}).
-This is due to the fact that the diameter of the part is not exact multiple of the (cosntant) deposition width in those regions.
+This is due to the fact that the diameter of the part is not exact multiple of the (constant) deposition width in those regions.
 To avoid problems with such gaps, hybrid approaches that combine direction and contour-parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}.
 Close to the slice boundary, there are several contour-parallel curves, while in the interior is filled using a zig-zag pattern.
 For complex shapes, the entire cross-section could be decomposed into a set of patches, and for each of them, the basic strategies can be applied~\cite{Ding2014,Jin2017RCIM}.
@@ -62,7 +62,7 @@ from any point in the skeleton to the boundary, the number of toolpaths is const
 Since the distance may vary considerably for shapes with both large and small features, this strategy leads to a toolpath with widths that may differ by a factor beyond $3$, which is impossible for some FDM systems.
 \citeauthor{Jin2017JMS} proposed a strategy of adding a toolpath with varying width along the center edges of the skeleton, while leaving other paths unchanged~\cite{Jin2017JMS}.
 The resulting variation of width in the center is still up to a factor of $2$ (see \cref{intro_wedge_centered}).
-In this paper we propose a novel scheme to distribute the width alterations throughout a region around the center, and thus limit the occurence of extreme deviations in width (see \cref{intro_wedge_distributed}).
+In this paper we propose a novel scheme to distribute the width alterations throughout a region around the center, and thus limit the occurrence of extreme deviations in width (see \cref{intro_wedge_distributed}).
 
 
 % \subsection{Toolpath strategies}
