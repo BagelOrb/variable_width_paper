@@ -1,0 +1,59 @@
+\documentclass[a4paper,12pt]{letter}
+
+% Some of the article customisations are relevant for this class
+
+\name{} % To be used for the return address on the envelope
+\signature{
+} % Goes after the closing (ie at the end of the letter, with space for a signature)
+%\address{Address \\ of \\ Sender}
+% Alternatively, these may be set on an individual basis within each letter environment.
+
+\makelabels % this command prints envelope labels on the final page of the document
+
+\begin{document}
+\begin{letter}{}
+
+
+\vspace*{-8\baselineskip}% Correct for vertical displacement
+
+\opening{Dear  Dr. Nelaturi, dear Dr. Tsz-Ho, and dear reviewers,}
+
+
+
+We are pleased to submit our manuscript entitled ``A framework for adaptive width control of dense contour-parallel toolpaths in additive manufacturing'' for consideration for publication in the special issue on Process Planning for Additive/Hybrid Manufacturing of the Computer-Aided Design journal.
+
+3D models with thin parts are difficult to produce using additive manufacturing.
+When generating dense contour-parallel toolpaths using uniform-width offsets from the layer outlines,
+over- and underfill problems occur in the center of the shape.
+Solving this problem by altering the center-most extrusion paths leads to toolpaths with extreme widths, which are difficult to manufacture.
+We therefore propose a framework which makes it possible to distribute the alterations over all the toolpaths using an arbitrary width distribution scheme.
+In particular, we present one distribution scheme which is shown to produce little over- and underfill, while keeping the bead width closer to the nozzle size than existing methods.
+
+We believe this research is highly relevant to the special issue, since the toolpath generation is a vital part of process planning for additive manufacturing.
+Moreover, the accurate manufacturing of thin parts reduces design constraints and enables e.g. the production of microstructures with varying cross-sectional width.
+
+This manuscript describes original work and has not been published and is not under consideration for publication elsewhere.  All authors approved the manuscript and its submission. We have no conflicts of interest to disclose.
+
+It is worth mentioning that we are in the process of filing a patent on the techniques presented in this article. We appreciate your discretion. The implementation will be made open source. 
+
+Thank you for your consideration and we are looking forward to your response.
+
+\medskip
+
+Sincerely,
+
+\medskip 
+% PhD student at Delft University of Technology, 
+Tim Kuipers, Software engineer at Ultimaker \\
+Eugeni L. Doubrovski, Assistant professor at  Delft University of Technology \\
+Jun Wu, Assistant professor at Delft University of Technology \\
+Charlie C. L. Wang, Professor at Chinese University of Hong Kong
+
+%\closing{Sincerely,} % eg Regards,
+
+%\cc{} % people this letter is cc-ed to
+%\encl{} % list of anything enclosed
+%\ps{} % any post scriptums. ``PS'' labels must be put in manually
+
+\end{letter}
+\end{document}
