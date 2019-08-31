@@ -43,10 +43,10 @@ Note that the current industry standard in FDM printing employs little to no bea
 Properly performing bead width variation calls for adaptations and developments in printers and firmware.
 In the beading schemes we set a transition length of $t(n) = w^*$.
 That will demand changes in cross-sectional area of the bead up to \SI{200}{\percent} over a small distance that is comparable to the nozzle size, which is challenging for some hardware systems.
-Varying the movement speed can be utilised to change the cross-sectional area, but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath.
+Varying the movement speed can be utilised to change the cross-sectional area, but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath~\cite{Ertay2018,Kuipers2018}.
 Our schemes require a more accurate control of the volumetric flow rate in \si{\milli\meter\cubed\per\second}.
-Using a filament feeder directly mounted on the print head (a.k.a. direct drive) outperforms Bowden style FDM printers in terms of dynamic flow changes,
-but still requires some control system in order to accurately change the volumetric flow rate such as pressure advance algorithms~\cite{tronvoll2019investigating}.
+Using a filament feeder directly mounted on the print head (a.k.a. direct drive) can control the flow more dynamicaly then FDM printers where the material is fed through a Bowden tube from a feeder mounted on the frame.
+Still direct drive printers require some control system in order to accurately change the volumetric flow rate such as pressure advance algorithms~\cite{tronvoll2019investigating}.
 Yet inaccuracies in direct drive systems employing advance algorithms might arise due to the changes in back-pressure required by changing bead size.
 We expect that developments in printing hardware and firmware will address these challenges in the future.
 
