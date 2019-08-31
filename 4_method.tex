@@ -1,52 +1,3 @@
-\section{Method}
-\subsection{Overview}
-
-Given arbitrarily shaped polygons which represent the 2D outline of a layer of a 3D model, our method generates extrusion toolpaths with varying width, i.e. a set of polylines where each site consists of a location and an extrusion width;
-in between the sites we linearly interpolate the position and extrusion width.
-
-Our method starts with computing the skeleton of the input polygon based on the medial axis transform (MAT), a strategy that has been commonly used for generating contour-parallel toolpaths~\cite{eiamsa2003toward}. 
-We visualize the skeleton as the union of cones (UoC) (\cref{sec_surface_construction}), by raising each point in the domain to a height that equals the shortest distance from the point to the polygon boundary (\cref{overview_uoc}).
-Contour-parallel toolpath with uniform width can be interpreted as the intersection of the union of cones with a set of planar planes at equally spaced heights (\cref{3d_surface_overview}\subref{overview_outline}-\subref{overview_uniform_paths}).
-
-As depicted in \cref{3d_surface_overview_center}, our method first identifies edges and nodes of the skeleton in the center of the polygon, which correspond to ridges and peaks in the UoC  (\cref{sec_center_classification}).
-The heights $\tilde{b}$ at these elements are then quantized to an integer number of beads $\bar{b}$.
-To ensure a smooth toolpath between regions with quantized integer heights that differ, we add new nodes in the skeleton with quantized heights and interpolate the heights $\hat{b}$ in between (\cref{sec_central_height_adjustment}).
-The union of cones corresponding to the smoothed skeleton is then sliced at regular intervals to obtain toolpaths with varying spacing, which translates into varying width (\cref{sec_toolpath_extraction}).
-
-% We describe how to construct the mesh of the UoC in \cref{sec_surface_construction} and
-% explain how to identify central regions in \cref{sec_center_classification}.
-% Quantizing and smoothing the heights in the central mesh regions are handled in \cref{sec_central_height_adjustment}.
-% We then describe how to deal with heights in the periphery in \cref{sec_peripheral_height_adjustment}
-% and describe the toolpath extraction algorithm in \cref{sec_toolpath_extraction}.
-
-This section explains how we generate toolpaths using our framework with uniform bead widths and evenly distributed locations between the center of the polygon and the outline.
-In \cref{sec_generalization} we describe how to apply the framework to different beading schemes and we show several such beading schemes.
-
-
-% The simple technique consists of consecutive inward offsets from the outline using a uniform bead width.
-% These offsets can be generated from the medial axis transform (MAT).
-% The medial axis transform can be conceptualized as the skeleton of the mesh of the volume defined by the union of all cones (with the same incline) which are touching the input shape~\cite{blum1967transformation}.
-% The constant width insets are the intersections between the Union of Cones (UoC) and horizontal planes at regular intervals.
-% We can therefore use the MAT to efficiently calculate the consecutive offsets which define the uniform toolpathing~\cite{eiamsa2003toward}.
-
-% For the uniform offsetting technique the overfill and underfill problems arise in the center,
-% because constant widths inward steps might not resolve to the arbitrary diameter of the outline shape.
-% Our framework can be seen as a way to change the mesh of the UoC such that the heights at the center are aligned with the slicing planes.
-
-% Our framework can be thought of as following these steps:
-% \begin{itemize}
-% \item Compute the skeleton of the input shape
-% \item Assign each node a height in terms of bead count based on the local feature size
-% \item Identify central regions of the UoC
-% \item Quantize the height of central ridges and peaks
-% \item Smooth out sharp transitions between regions with different integer heights
-% \item Determine the heights in the periphery (non-central regions)
-% \item Slice the mesh at regular intervals to get the toolpaths to fill the input shape
-% \end{itemize}
-% See \cref{3d_surface_overview}.
-
-
-
 
 
 
@@ -133,24 +84,56 @@ The heights are then quantized in terms of number of beads (the integer values i
 For ease of reference we have included a legend showing the terms employed in this manuscript in \cref{legend}.
 These terms will be further explained as they first appear throughout this paper. 
 
-\begin{figure}\centering
-\includegraphics[width=.75\columnwidth]{sources-method-legend2.pdf}
-\caption{Illustrative explanation of terms and color coding that are consistently used in this paper.}
-\label{legend}
-\end{figure}
 
 
 
 
+\section{Method}
+\subsection{Overview}
+
+Given arbitrarily shaped polygons which represent the 2D outline of a layer of a 3D model, our method generates extrusion toolpaths with varying width, i.e. a set of polylines where each site consists of a location and an extrusion width;
+in between the sites we linearly interpolate the position and extrusion width.
+
+Our method starts with computing the skeleton of the input polygon based on the medial axis transform (MAT), a strategy that has been commonly used for generating contour-parallel toolpaths~\cite{eiamsa2003toward}. 
+We visualize the skeleton as the union of cones (UoC) (\cref{sec_surface_construction}), by raising each point in the domain to a height that equals the shortest distance from the point to the polygon boundary (\cref{overview_uoc}).
+Contour-parallel toolpath with uniform width can be interpreted as the intersection of the union of cones with a set of planar planes at equally spaced heights (\cref{3d_surface_overview}\subref{overview_outline}-\subref{overview_uniform_paths}).
+
+As depicted in \cref{3d_surface_overview_center}, our method first identifies edges and nodes of the skeleton in the center of the polygon, which correspond to ridges and peaks in the UoC  (\cref{sec_center_classification}).
+The heights $\tilde{b}$ at these elements are then quantized to an integer number of beads $\bar{b}$.
+To ensure a smooth toolpath between regions with quantized integer heights that differ, we add new nodes in the skeleton with quantized heights and interpolate the heights $\hat{b}$ in between (\cref{sec_central_height_adjustment}).
+The union of cones corresponding to the smoothed skeleton is then sliced at regular intervals to obtain toolpaths with varying spacing, which translates into varying width (\cref{sec_toolpath_extraction}).
+
+% We describe how to construct the mesh of the UoC in \cref{sec_surface_construction} and
+% explain how to identify central regions in \cref{sec_center_classification}.
+% Quantizing and smoothing the heights in the central mesh regions are handled in \cref{sec_central_height_adjustment}.
+% We then describe how to deal with heights in the periphery in \cref{sec_peripheral_height_adjustment}
+% and describe the toolpath extraction algorithm in \cref{sec_toolpath_extraction}.
+
+This section explains how we generate toolpaths using our framework with uniform bead widths and evenly distributed locations between the center of the polygon and the outline.
+In \cref{sec_generalization} we describe how to apply the framework to different beading schemes and we show several such beading schemes.
 
 
+% The simple technique consists of consecutive inward offsets from the outline using a uniform bead width.
+% These offsets can be generated from the medial axis transform (MAT).
+% The medial axis transform can be conceptualized as the skeleton of the mesh of the volume defined by the union of all cones (with the same incline) which are touching the input shape~\cite{blum1967transformation}.
+% The constant width insets are the intersections between the Union of Cones (UoC) and horizontal planes at regular intervals.
+% We can therefore use the MAT to efficiently calculate the consecutive offsets which define the uniform toolpathing~\cite{eiamsa2003toward}.
 
+% For the uniform offsetting technique the overfill and underfill problems arise in the center,
+% because constant widths inward steps might not resolve to the arbitrary diameter of the outline shape.
+% Our framework can be seen as a way to change the mesh of the UoC such that the heights at the center are aligned with the slicing planes.
 
-
-
-
-
-
+% Our framework can be thought of as following these steps:
+% \begin{itemize}
+% \item Compute the skeleton of the input shape
+% \item Assign each node a height in terms of bead count based on the local feature size
+% \item Identify central regions of the UoC
+% \item Quantize the height of central ridges and peaks
+% \item Smooth out sharp transitions between regions with different integer heights
+% \item Determine the heights in the periphery (non-central regions)
+% \item Slice the mesh at regular intervals to get the toolpaths to fill the input shape
+% \end{itemize}
+% See \cref{3d_surface_overview}.
 
 
 
@@ -240,6 +223,16 @@ The edges generated by the MAT are classified into three types:
 The vertex-line and vertex-vertex edges are discretized into pieces with a length up to $d^\text{discretization}$.
 This allows to approximate the feature radius between two discretized nodes $v_0$ and $v_1$ by linear interpolation. 
 Again we connect the newly inserted nodes to their support, which results in vertex-line regions and vertex-vertex regions such as depicted in \cref{legend}.
+
+
+
+\begin{figure}\centering
+\includegraphics[width=.75\columnwidth]{sources-method-legend2.pdf}
+\caption{Illustrative explanation of terms and color coding that are consistently used in this paper.}
+\label{legend}
+\end{figure}
+
+
 
 
 % The ST contains all edges from the medial axis which are generated from two line segments in the outline polygons.
