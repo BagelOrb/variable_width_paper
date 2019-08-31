@@ -27,12 +27,6 @@ Such overfill causes a pressure build up in the mechanical system, which leads t
 An analysis of under- and overfill from a vertical cross-section was presented in~\cite{Han2002JMSE}. 
 Our method is primarily concerned with minimizing under- and overfill within horizontal cross-sections.
 
-% the context where our method can be positioned, and some related problems in that context
-Under- and over-filling issues have a large proportional impact for thin geometric features.
-\citeauthor{Jin2017a} proposed a sparse wavy path pattern for thin-walled parts~\cite{Jin2017a}.
-Besides under- and over-filling, there are a few other robustness issues in toolpath generation for thin geometric features.
-\citeauthor{Moesen2011} proposed a method to make beam compensation more reliable for thin geometric features~\cite{Moesen2011}.
-\citeauthor{Behandish2019a} presented a method to characterize local- topological discrepancies due to material under- and over-deposition, and used this information to modify the as-manufactured outcomes~\cite{Behandish2019a}. 
 
 % basic toolpath strategies and their variations
 Two basic strategies for dense toolpath generation are direction-parallel and contour-parallel.
@@ -63,6 +57,13 @@ Since the distance may vary considerably for shapes with both large and small fe
 \citeauthor{Jin2017JMS} proposed a strategy of adding a toolpath with varying width along the center edges of the skeleton, while leaving other paths unchanged~\cite{Jin2017JMS}.
 The resulting variation of width in the center is still up to a factor of $2$ (see \cref{intro_wedge_centered}).
 In this paper we propose a novel scheme to distribute the width alterations throughout a region around the center, and thus limit the occurrence of extreme deviations in width (see \cref{intro_wedge_distributed}).
+
+% the context where our method can be positioned, and some related problems in that context
+Under- and over-filling issues have a large proportional impact for thin geometric features.
+\citeauthor{Jin2017a} proposed a sparse wavy path pattern for thin-walled parts~\cite{Jin2017a}.
+Besides under- and over-filling, there are a few other robustness issues in toolpath generation for thin geometric features.
+\citeauthor{Moesen2011} proposed a method to make beam compensation more reliable for thin geometric features~\cite{Moesen2011}.
+\citeauthor{Behandish2019a} presented a method to characterize local- topological discrepancies due to material under- and over-deposition, and used this information to modify the as-manufactured outcomes~\cite{Behandish2019a}. 
 
 
 % \subsection{Toolpath strategies}
