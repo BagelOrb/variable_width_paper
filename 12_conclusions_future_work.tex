@@ -5,11 +5,12 @@ The computation times of our framework are on par with the state-of-the-art libr
 Our framework is stable: small local changes in the outline shape cause only small changes in the toolpath.
 
 We presented the inward distributed beading scheme.
-It reduces the amount of beads with a width deviating extremely from the preferred bead width, and thus it is expected to limit the impact of adaptive bead width on mechanical properties of the resulting print.
-Furthermore, by distributing the deviation in bead width over several beads near the center of the shape, the outer toolpath is affected less by the deviation, meaning that the dimensional accuracy in the horizontal direction is affected less by inaccuracies in the mechanical system which realizes adaptive bead width.
+It reduces the amount of beads with a width deviating extremely from the preferred bead width, and thus it is expected to limit the impact of varying the bead width in terms of production accuracy and homogeneity of material properties,
+which in turn can be helpful to efficiently simulate an FDM manufactured part.
+Furthermore, by distributing the deviation in bead width over several beads near the center of the shape, the outer toolpath is affected less by the deviation, meaning that the dimensional accuracy of the shape of the outline contour is affected less by inaccuracies in the mechanical control system which realizes adaptive bead width.
 
 The proposed beading scheme greatly improves the process planning for parts with thin contours, which often occur for example in architectural models, prototypes for casings or microstructures.
-Meanwhile it leaves most of the toolpaths the same as the uniform width technique in case of wide contours, meaning that existing studies which relate process parameters with mechanical properties of the print are still applicable.
+Meanwhile it leaves most of the toolpaths the same as the uniform width technique in large features, meaning that existing studies which relate process parameters with mechanical properties of the print are still applicable.
 
 
 \subsection{Future work}
