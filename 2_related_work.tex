@@ -19,7 +19,7 @@ First, the extrusion path should be as continuous as possible.
 A discontinuous path requires to stop and restart material extrusion.
 For certain materials such as TPU, this could lead to printing defects or even print failure~\cite{KUIPERS2019CAD}.
 Second, the toolpath is preferred to be smooth.
-Sharp turns require to slow down the movement of the nozzle, and this consequently prolongs the printing process.
+Sharp turns require to reduce the movement speed of the nozzle, and so this prolongs the printing process.
 Third, the extruded path should cover a the region of the contour without gaps.
 Such underfill negatively influences the mechanical performance of the parts.
 Fourth, the extrusion paths should not overlap with one another.
@@ -29,7 +29,7 @@ Our method is primarily concerned with minimizing under- and overfill within hor
 
 % the context where our method can be positioned, and some related problems in that context
 Under- and over-filling issues have a large proportional impact for thin geometric features.
-\citeauthor{Jin2017a} proposed the use of a sparse wavy path pattern for thin-walled parts~\cite{Jin2017a}.
+\citeauthor{Jin2017a} proposed a sparse wavy path pattern for thin-walled parts~\cite{Jin2017a}.
 Besides under- and over-filling, there are a few other robustness issues in toolpath generation for thin geometric features.
 \citeauthor{Moesen2011} proposed a method to make beam compensation more reliable for thin geometric features~\cite{Moesen2011}.
 \citeauthor{Behandish2019a} presented a method to characterize local- topological discrepancies due to material under- and over-deposition, and used this information to modify the as-manufactured outcomes~\cite{Behandish2019a}. 
@@ -47,7 +47,7 @@ One of the problems with contour-parallel toolpath is that it tends to leave gap
 This is due to the fact that the diameter of the part is not exact multiple of the (constant) deposition width in those regions.
 To avoid problems with such gaps, hybrid approaches that combine direction and contour-parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}.
 Close to the slice boundary, there are several contour-parallel curves, while in the interior is filled using a zig-zag pattern.
-For complex shapes, the entire cross-section could be decomposed into a set of patches, and for each of them, the basic strategies can be applied~\cite{Ding2014,Jin2017RCIM}.
+For complex shapes, the entire cross-section could be decomposed into a set of patches, and for each of them the basic strategies can be applied~\cite{Ding2014,Jin2017RCIM}.
 Alternative toolpath patterns, seen also in CNC machining, include space-filling curves~\cite{Cox1994CAD,Griffiths1994,Shaikh2016}.
 
 % the idea, and (some of) the most related work

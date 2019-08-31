@@ -8,7 +8,7 @@ To our knowledge, the uniform beading scheme, as well as the outer beading schem
 The constant bead count scheme effectively deals with underfills, but generates orders of magnitude more overfills compared to the other schemes. 
 Also, the scheme comes at the cost of greatly varying bead widths and an average bead width that is not close to the preferred bead width.
 Note that most overfill areas occur near regions of alternating bead width. 
-For an input outline shape which contains both very small and very large features, the the constant bead count scheme produces bead widths which can fall outside of the range of manufacturable bead widths.
+For an input outline shape which contains both very small and very large features, the constant bead count scheme produces bead widths which can fall outside of the range of manufacturable bead widths.
 Moreover the centrality marking is not robust against small perturbations in the outline; adding a small chamfer in a corner causes the unmarked ST to be very small at that location, which results in tiny bead widths.
 
 In \cref{TEST_Center_accuracy} we can see that
@@ -51,7 +51,7 @@ Yet inaccuracies in direct drive systems employing advance algorithms might aris
 We expect that developments in printing hardware and firmware will address these challenges in the future.
 
 
-Another limiting factor in the adoption of adaptive bead width is the format of G-code which stores machine instructions.
+Another limiting factor for adopting adaptive bead width is the format of G-code which stores machine instructions.
 G-code does not support moves with varying cross-sectional area.
 A typical extrusion move \lstinline{G1 X$x$ Y$y$ E$v$} only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed along the extrusion move.
 A workaround is to approximate a variable width extrusion segment by smaller segments with constant width.

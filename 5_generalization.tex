@@ -1,6 +1,6 @@
 \section{Beading schemes}\label{sec_generalization}
 A critical component in toolpath generation is how to distribute the beads over the feature radius.
-While the framework presented in the previous section takes evenly distributed beads as an example, it allows to apply different beading schemes to configure the bead distribution to cater for specific requirements from the application, 3d printer or material.
+While the framework presented in the previous section takes evenly distributed beads as an example, it allows to apply different beading schemes to configure the bead distribution to cater for specific requirements from the application, 3D printer or material.
 
 
 
@@ -54,7 +54,7 @@ The following restrictions hold:
 	\item Transitions shouldn't overlap each other: \\ $t_1(n) + t_0(n+1) < \frac{ q^{-1}(n + 1) - q^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$ \\ for each $n \in \mathbb{N}$ \\ (see \cref{transition_placement})
 \end{minipage}
 \item An odd beading should produce an odd single toolpath exactly in the center: $B(n, r)_{\lfloor n/2 \rfloor} = r$ in case $n$ is odd
-\item For toolpaths to be smooth and continuous we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, r)_n}{\partial r} \leq 1$
+\item For the smoothness and continuity of toolpaths we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, r)_n}{\partial r} \leq 1$
 \end{enumerate}
 
 
@@ -68,7 +68,7 @@ The following restrictions hold:
 % \subsection{Beading schemes}
 We introduce several beading schemes which determine the bead count and their widths in various ways.
 We can emulate a variety of toolpath generation methods from related literature by defining new beading schemes.
-We also introduce new beading schemes which produce toolpaths with less extremal widths compared to techniques from existing literature.
+We also introduce new beading schemes which produce toolpaths with less extreme widths compared to techniques from existing literature.
 
 A beading scheme is defined as a set of some particular variables and functions (\cref{beading_scheme_definition}).
 Our beading schemes are based on a preferred width $w^* = \SI{0.4}{\milli\meter}$, which is equal to the diameter of the printing nozzle.
@@ -241,7 +241,7 @@ See \cref{formula_uniform}.
 
 
 \paragraph{Outer bead}
-We can emulate the method by \citeauthor{Moesen2011} by carefully choosing how the beading scheme functions deal with the outermost bead.
+We can emulate the method from \citeauthor{Moesen2011} by carefully choosing how the beading scheme functions deal with the outermost bead.
 Also we turn off the reduction of toolpaths near 3-way intersections $d_\text{max}^\text{intersection} = \SI{0}{\percent}$, so that the polygonal toolpaths emulate the remaining area to be filled by another path planning technique similar to their technique.
 We don't need transitioning, so we also set $t(n) = 0 $.
 See \cref{formula_outer_bead}.
@@ -249,7 +249,7 @@ See \cref{formula_outer_bead}.
 
 
 \paragraph{Constant bead count}
-We can emulate the method by \citeauthor{Ding2016a}, by dividing the feature radius over the widths of a constant number of beads.
+We can emulate the method from \citeauthor{Ding2016a} by dividing the feature radius over the widths of a constant number of beads.
 Additionally in order to emulate their definition of ``branches'' we mark all ST edges we unmark the outer edges connected to the outline shape in a separate algorithm.
 Note that this deviation from the proposed framework violates the robustness against small perturbations in the outline polygon, since this marking depends on the topology of the graph of the ST.
 See \cref{formula_constant_bead_count}.
@@ -258,7 +258,7 @@ See \cref{formula_constant_bead_count}.
 
 
 \paragraph{Centered}
-We can emulate the method by \citeauthor{Jin2017JMS}, by transcribing how they deviate from the uniform width toolpaths.
+We can emulate the method from \citeauthor{Jin2017JMS} by transcribing how they deviate from the uniform width toolpaths.
 We therefore base the beading scheme on the bead count $q^-(d)$ defined by the uniform beading scheme.
 \citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w^*$.
 Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w^*$~\cite{Jin2017JMS}.
