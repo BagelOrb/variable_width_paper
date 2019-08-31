@@ -28,7 +28,8 @@ However, the allowable width variation for FDM systems is much narrower.
 A nozzle of \SI{0.4}{\milli\meter} will typically start to cause fluttered extrusion around lines narrower than \SI{0.3}{\milli\meter} and lines will start to bulge upward if they are wider than the flat part of the nozzle, which is typically \SI{1.0}{\milli\meter}.
 %Therefore, a limited range of widths is required by the hardware system.
 
-The current state-of-the-art for FDM printing developed by \citeauthor{Jin2017JMS} employs a strategy which alters the widths of the centermost beads at most by a factor of $2$~\cite{Jin2017JMS}.
+The current state-of-the-art for FDM printing developed by \citeauthor{Jin2017JMS} employs a strategy which alters the widths of the centermost beads at most by a factor of $2$~\cite{Jin2017JMS},
+which is similar to the strategy employed by the open source industry standard software package Ultimaker Cura~\cite{cura}.
 See \cref{intro_wedge_centered}.
 Still, controlling the extrusion width through movement speed changes or through volumetric flow control (e.g. linear advance) yields diminishing accuracy for deposition widths farther away from the nozzle size,
 since process parameters such as nozzle temperature are optimized for beads with the nozzle size.
