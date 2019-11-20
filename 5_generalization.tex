@@ -113,30 +113,43 @@ The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transi
 
 
 
-%\fboxsep=10mm%padding thickness
-\begin{figure}%\centering
-\setlength{\figwidth}{.2\textwidth}
-\setlength{\abovedisplayskip}{0pt}
-\setlength{\belowdisplayskip}{0pt}
-\captionsetup[subfigure]{justification=justified,singlelinecheck=false}
-\fbox{
-\begin{subfigure}[b]{\figwidth}\centering
-%\frame{
-\begin{align*}
+\begin{table}%\centering
+\caption{
+\revise{Made figure into table}{
+Beading schemes.
+}
+} % revise
+\label{beading_schemes}
+%
+\setlength{\figwidth}{.45\linewidth}
+\captionsetup[subtable]{justification=justified,singlelinecheck=false}
+%
+%
+%
+\begin{tabular}{|l|l|}
+\hline
+%
+%
+\begin{subtable}[b]{\figwidth}
+\smallskip
+\caption{Uniform scheme}\label{formula_uniform}
+$\begin{aligned}
 \alpha_\text{max} &= \SI{180}{\degree} \\
 q^-(d) &= 2 \left\lfloor \frac{d}{ 2w^*} + \frac12 \right\rfloor \\
 W(n,r)_i &= w^* \text{ for all } i 
 %\\
 %L(n,r)_i &= w^* \left(i + \frac12 \right) \text{ for all } i < \frac12 n
-\end{align*}
-\caption{Uniform scheme}\label{formula_uniform}
-\end{subfigure}
-}
+\end{aligned}$
+\end{subtable}
 %
 %
-\fbox{
-\begin{subfigure}[b]{\figwidth}\centering
-\begin{align*}
+&
+%
+%
+\begin{subtable}[b]{\figwidth}
+\smallskip
+\caption{Outer bead}\label{formula_outer_bead}
+$\begin{aligned}
 q(d) &=
 \begin{cases}
 1 & \text{ if } d < w^* \\
@@ -154,42 +167,49 @@ w^* & \text{ otherwise } \\
 %2r / 2 & \text{ if } n = 1 \\
 %w^* / 2 & \text{ otherwise } \\
 %\end{cases}
-\end{align*}
-\caption{Outer bead}\label{formula_outer_bead}
-\end{subfigure}
-}
+\end{aligned}$
+\end{subtable}
 %
 %
-\fbox{
-\begin{subfigure}[b]{\figwidth}\centering
-\begin{align*}
+ \\ \hline
+%
+%
+\begin{subtable}[b]{\figwidth}
+\smallskip
+\caption{Constant bead count}\label{formula_constant_bead_count}
+$\begin{aligned}
 \alpha_\text{max} &= \SI{0}{\degree} \\
 q(d) &= C \\
 W(n,r)_i &= 2 r / n \text{ for all } i 
 %\\
 %L(n,r)_i &= 2r / n \left(i + \frac12 \right) \text{ for all } i < \frac12 n
-\end{align*}
-\caption{Constant bead count}\label{formula_constant_bead_count}
-\end{subfigure}
-}
+\end{aligned}$
+\end{subtable}
 %
 %
-\fbox{
-\begin{subfigure}[b]{\figwidth}\centering
-\begin{align*}
+&
+%
+%
+\begin{subtable}[b]{\figwidth}
+\smallskip
+\caption{Evenly distributed}\label{formula_evenly_distributed}
+$\begin{aligned}
 q(d) &= \left\lfloor \frac{d}{ w^*} + \frac12 \right\rfloor \\
 W(n,r)_i &= 2 r / n \text{ for all } i 
 %\\
 %L(n,r)_i &= 2r / n (i + \frac12) \text{ for all } i < \frac12 n
-\end{align*}
-\caption{Evenly distributed}\label{formula_evenly_distributed}
-\end{subfigure}
-}
+\end{aligned}$
+\end{subtable}
 %
 %
-\fbox{
-\begin{subfigure}[b]{\figwidth}\centering
-\begin{align*}
+ \\ \hline
+%
+%
+\multicolumn{2}{|l|}{
+\begin{subtable}[b]{\linewidth}
+\smallskip
+\caption{Centered}\label{formula_centered}
+$\begin{aligned}
 t(n) &= \frac12 w^* \\
 %q^-(d) &= 2 \left\lfloor \frac{d}{ 2w^*} + \frac12 \right\rfloor \\
 q(d) &= q^-(d) +
@@ -210,29 +230,32 @@ w^* &\text{ otherwise }
 %2r / 2 & \text{ if } i = \frac12 (n-1) \\
 %w^* \left(i + \frac12 \right) & \text{ otherwise }
 %\end{cases}
-\end{align*}
-\caption{Centered}\label{formula_centered}
-\end{subfigure}
+\end{aligned}$
+\end{subtable}
 }
 %
 %
-\fbox{
-\begin{subfigure}[b]{\figwidth}\centering
-\begin{align*}
+ \\ \hline
+%
+%
+\multicolumn{2}{|l|}{
+\begin{subtable}[b]{\linewidth}
+\smallskip
+\caption{Inward distributed}\label{formula_inward_distributed}
+$\begin{aligned}
 q(d) &= \left\lfloor \frac{d}{ w^*} + \frac12 \right\rfloor \\
 E(n,r) &= 2r - n w^* \\
 W(n,r)_i &= w^* + E(n,r) \frac{\omega(n,r)_i}{\sum_{j=0}^{n-1} \omega(n,r)_j} \text{ for all } i \\
 %L(n,r)_i &= 2r / n (i + \frac12) \text{ for all } i < \frac12 n
 \omega(n,r)_i &= \max(0, 1 - N^{-2} (i - (n-1)/2)^2 )
-\end{align*}
-\caption{Inward distributed}\label{formula_inward_distributed}
-\end{subfigure}
+\end{aligned}$
+\end{subtable}
 }
-\caption{
-Beading schemes.
-}
-\label{beading_schemes}
-\end{figure}
+ \\ \hline
+%
+%
+\end{tabular}
+\end{table}
 
 
 \paragraph{Uniform beading scheme}
