@@ -122,6 +122,17 @@
 %	\newcommand{\jun}[1]{\temp{\todo{[Jun: #1]}}}
 %	
 %	\newcommand{\old}[1]{\textcolor{gray}{#1}}
+	\usepackage[normalem]{ulem}
+	\newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
+	
+	% Revise macro (usage: \revise{old}{new})
+	% Version a) First arg red and striked out, second argument green
+	\newcommand{\revise}[2]{\textcolor{red}{\stkout{#1}}\textcolor{blue}{#2}}
+	% Version b) First arg ignored, second argument green
+	%\newcommand{\revise}[2]{\textcolor{blue}{#2}}
+	% Version c) First arg ignored, second argument unchanged (for final draft)
+	%\newcommand{\revise}[2]{#2}
+
 
 	\setulcolor{red}
 
