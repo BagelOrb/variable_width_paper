@@ -355,12 +355,19 @@ Colors represent bead widths.
 
 \paragraph{Widening}
 Complementary to any of these schemes we can enforce a minimum feature size at no extra cost in our framework.
-Regions where the model is narrower than the nozzle size can be printed with a bead width larger than the model thickness.
-We can simply override
+Regions where the model is narrower than some $r_\text{min}$ can be printed with a bead width $w_\text{min}$ larger than the model thickness.
+In order to get results such as in \cref{widening} we can override
 \begin{align*}
+q'(d) &= 
+\begin{cases}
+0 & \text{ if } 0 \leq d < 2 r_\text{min} \\
+1 & \text{ if }  2 r_\text{min} \leq d < w^*  \\
+q(d) & \text{ otherwise}
+\end{cases}
+\\
 W'(n,r)_0 &=
 \begin{cases}
-\max \left( w^*  ,  W(n,r)_0 \right) & \text{ if } n = 1 \\
+\max \left( w_\text{min}  ,  2 r \right) & \text{ if } 2 r < w^* \\
 W(n,r)_0 & \text{ otherwise}
 \end{cases}
 \end{align*}
