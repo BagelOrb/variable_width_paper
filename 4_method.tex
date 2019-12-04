@@ -96,7 +96,7 @@ in between the sites we linearly interpolate the position and extrusion width.
 
 Our method starts with computing \revise{the}{a type of} skeleton of the input polygon based on the medial axis transform (MAT), a strategy that has been commonly used for generating contour-parallel toolpaths~\cite{eiamsa2003toward}. 
 We visualize the skeleton as the union of cones (UoC) (\cref{sec_surface_construction}), by raising each point in the domain to a height that equals the shortest distance from the point to the polygon boundary (\cref{overview_uoc}).
-Contour-parallel toolpath with uniform width can be interpreted as the intersection of the union of cones with a set of planar planes at equally spaced heights (\cref{3d_surface_overview}\subref{overview_outline}-\subref{overview_uniform_paths}).
+Contour-parallel toolpath with uniform width can be interpreted as the intersection of the union of cones with a set of \revise{planar}{horizontal} planes at equally spaced heights (\cref{3d_surface_overview}\subref{overview_outline}-\subref{overview_uniform_paths}).
 
 As depicted in \cref{3d_surface_overview_center}, our method first identifies edges and nodes of the skeleton in the center of the polygon, which correspond to ridges and peaks in the UoC  (\cref{sec_center_classification}).
 The heights $\tilde{b}$ at these elements are then quantized to an integer number of beads $\bar{b}$.
