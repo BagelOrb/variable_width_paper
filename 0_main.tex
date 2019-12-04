@@ -184,11 +184,11 @@
 3D printing techniques such as Fused Deposition Modeling (FDM) have enabled the fabrication of complex geometry quickly and cheaply. 
 \revise{By densely filling consecutive 2D layers with contour-parallel extrusion toolpaths, FDM can produce parts with high stiffness and strength.}
 {High stiffness parts are produced by filling the 2D polygons of consecutive layers (partly) with contour-parallel extrusion toolpaths.}
-Toolpath with uniform inward offsets from the outline polygons produce over- and underfill regions in the center of the shape, which are especially problematic for thin parts such as casings and microstructures.
+\revise{Toolpath with uniform }{Toolpaths consisting of \emph{uniform}} inward offsets from the outline polygons produce over- and underfill regions in the center of the shape, which are especially \revise{problematic for }{detrimental to the mechanical performance of} thin parts such as casings and microstructures.
 Existing approaches for generating toolpaths with adaptive width result in a large variation in widths, which for some hardware systems is difficult to realize accurately, if not beyond their capabilities.
 In this paper we present a framework which supports multiple schemes to generate toolpaths with adaptive width, by using a function to decide the number of beads and their widths which are applied from the center outward.
-Furthermore, we propose a novel scheme for FDM printing which avoids extreme bead width deviation from the nozzle size, and limits the number of altered toolpaths.
-We validate the effectiveness of our framework and this novel scheme on a data set of 300 slices.
+Furthermore, we propose a novel scheme for FDM printing which \revise{avoids}{reduces} extreme bead width deviation\revise{ from the nozzle size}{}, \revise{and limits}{while limiting} the number of altered toolpaths.
+We validate the effectiveness of our framework and this novel scheme on a data set of 300 \revise{slices}{layer outlines}.
 \end{abstract}
 
 %
