@@ -266,14 +266,14 @@ Try to make a formula which predicts the amount of over- and underfill
 Tim: I actually think this question is mostly related to DfAM. I think we should add something like the following to the manuscript:
 }
 
-\Ans{
-Suppose that under some criterion of manufacturability we have established that we can attain bead widths within the range $[w_min, w_max]$.
-We can then conclude that in order for a model to be manufacturable its widths should be within the set of ranges $\cup_i([i w_min,i w_max])$.
-If $w_\text{max} > 2 w_\text{min}$ this reduces to $[w_min, \inf]$
-If $w_\text{max} = w_\text{min} = w*$ this reduces to $\{w^*, 2w^*, 3w^*, \dots\}$
-If for example $\nicefrac23 w_\text{min} < w_\text{max} < 2 w_\text{min}$, a manufacturable model should have widths in the ranges $\{[w_\text{min},w_\text{max}],[2 w_\text{min}, inf]\}$
+\revise{}{
+Suppose that under some criterion of manufacturability we have established that we can attain bead widths within the range $[w_\text{min}, w_\text{max}]$.
+We can then conclude that in order for a model to be manufacturable its widths should be within the set of ranges $\bigcup_{i\in \mathcal{N}}([i w_\text{min},i w_\text{max}])$.
+If $w_\text{max} > 2 w_\text{min}$ this reduces to $[w_\text{min}, \infty]$
+If $w_\text{max} = w_\text{min} = w^*$ this reduces to $\{w^*, 2w^*, 3w^* \dots\}$
+If for example $\nicefrac23 w_\text{min} < w_\text{max} < 2 w_\text{min}$, a manufacturable model should have widths in the ranges $\{[w_\text{min},w_\text{max}],[2 w_\text{min}, \infty]\}$
 
-However, we propose no such binary criterion of manufacturability; instead we assume that the manufacturability generally goes down as the requested bead width variation goes up. By keeping the bead widths closer to a nominal bead width we guarantee the manufacturability goes up for any system.
+However, we propose no such binary criterion of manufacturability; instead we assume that the manufacturability generally goes down as the requested bead width variation goes up. By keeping the bead widths closer to a nominal bead width we guarantee the manufacturability goes up for any manufacturability measure.
 }
 
 
