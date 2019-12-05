@@ -123,14 +123,17 @@
 	
 	% Revise macro (usage: \revise{old}{new})
 	% Version a) First arg red and striked out, second argument green
-	\newcommand{\revise}[2]{{\color{red}{{#1}}}{\color{blue}{#2}}}
+	\newcommand{\revise}[2]{\noindent{\color{red}{{#1}}}\par\noindent{\color{blue}{#2}}}
 	% Version b) First arg ignored, second argument green
 	%\newcommand{\revise}[2]{\textcolor{blue}{#2}}
 	% Version c) First arg ignored, second argument unchanged (for final draft)
 	%\newcommand{\revise}[2]{#2}
 
+	\usepackage{alltt}
+	
 	\newcommand{\question}[1]{{\bf#1}}
-	\newcommand{\todo}[1]{{\bf \color{orange}#1}}
+	\newcommand{\todo}[1]{\par\noindent{\bf \color{orange}#1}}
+	\newcommand{\commits}[1]{{\bf\begin{alltt} {#1}\end{alltt}}}
 	\newcommand{\response}[1]{{#1}}
 
 \newcommand\Que[1]{%
@@ -163,6 +166,7 @@
     \leavevmode\par\noindent
    {%\leftskip37pt
     {\bf Response:} \textbf{#1}#2\par}}
+
 
 
 
@@ -251,6 +255,8 @@ We have made various language fixes and improvements to images to address some o
 \Que{Example question by reviewer}
 \Ans{Example response}
 \revise{Old text in manuscript}{New text in manuscript}
+\todo{Comment for us internally (should be removed before this letter is sent).}
+\commits{123commit-hash}
 
 \section{Reviewer 1}
 Overall, the paper proposes some novel frameworks which are meaningful to additive manufacturing. Therefore, I suggest it for publication once the following major comments are addressed. 
@@ -275,7 +281,7 @@ If for example $\nicefrac23 w_\text{min} < w_\text{max} < 2 w_\text{min}$, a man
 
 However, we propose no such binary criterion of manufacturability; instead we assume that the manufacturability generally goes down as the requested bead width variation goes up. By keeping the bead widths closer to a nominal bead width we guarantee the manufacturability goes up for any manufacturability measure.
 }
-
+\todo{Actually add this to the manuscript!}
 
 
 
@@ -284,14 +290,22 @@ However, we propose no such binary criterion of manufacturability; instead we as
 \subQue{
 The authors should highlight their contributions compared to the existing approaches for generating toolpaths with adaptive width.
 }
-
+\Ans{
+afs
+}
+\commits{66d006d91d406c0064ee1f4f1e4df85fc0821994}
 
 \subQue{
 From Fig. 1(b) and (c), we can see that the approach in Jin et al (2017) can fill the sharp right end, but the proposed approach can not. 
 }
-
-
-Changed image. 
+\Ans{
+We now use the same minimal feature size in all approaches.
+This is now handled by the \emph{widening} meta-scheme.
+We have added a figure to show that functionality.
+See also our response to 1.6.
+}
+\todo{add widening changes; explain how widening is used in generating the results}
+\commits{a5ddf3a73e3df20e43f25eafb93e9ce3a1393b13, d3fe6c86ee887da0e33fefdc43a83d014bc6047b, 0ac1c930a7cd2d1d305da730c9d5db20f4a8ea3f}
 
 \todo{
 Tim:
@@ -339,36 +353,69 @@ Why the authors state the inward distributed beading scheme as new? Jin et al (2
 Tim: we should change the text to stress that we distribute the discrepancy over several beads rather than always over one bead.
 
 \Que{
+\label{fig1geometry}
 In Fig.1, how to justify the proposed approach as different geometries are used? I believe if the authors use the same geometries as in Fig 1. (a) and (b), there would be also underfill areas using the proposed approach. 
 }
+\Ans{
+There are two ways in which we can interpret this question, leading to two responses.
+The question can be interpreted as saying that Fig a has a different geometry than b or c.
+There is now a black outline to show that the shapes in Fig 1a, b and c are actually the same geometry, and the output is less confusing because we now use the same minimum feature size for b and c.
 
-There is now a black outline to show that the shapes used are indeed the same.
-
-Moreover we now use the same minimum feature size for b and c.
-
+The question can also be interpreted as saying that one might use a different shape than the geometry in Fig 1.
+We decided on this wedge shape because it shows how the techniques deal with a wide range of feature sizes;
+the wedge shape can be read as a graph where we can read out the resulting beading for any local feature size.
+}
 \todo{redo tests with min feature size}
+\commits{45853e8b30d93f60e9465cbb649e347f9cfc23b1, 53224c04ceff6c1b18a9eea6de8e7e33957b7797}
 
 \Que{
 Please double check the following sentences. ”Third, the extruded path should ...”(at the second paragraph of Section 2) ”This the downward phase...” (at the last paragraph of Section 3.5) 
 }
+Okay. Thanks.
+
+\commits{eb2a5207c83dfe069d3ab3fc37bf2149b8a51964}
+
 
 \Que{
 In Fig.4, the bead count should marked in another way. The ultra thick solid line conflicts with that for ”outline”. 
 }
+\Ans{
+Note that the bead count is the number, not the arrow from the number.
+The arrow is now a double thin line.
+}
+\commits{07df258c1fa618808ba9493384550021a03c83e1}
 
 \Que{
 What are the differences between the distributed and the inward scheme in Fig. 16(d) and (e)? Are they the same? 
 }
+\Ans{
+We have adjusted the range of the inward distributed scheme to $N=2$ in order to generate a bigger difference between these images.
+}
+\commits{735762b1e7daf31ae4465bf288ef867ded7da095}
 
 \Que{
 In Fig. 17(b), where is the curve for the ”uniform” case?
 }
+\Ans{
+Done.
+Note that the width of the uniform case is \SI{0.4}{\milli\meter} \emph{everywhere}, so the curve we now added to the graph is not really informative.
+}
+\commits{e5f3649455c73c8146e8d07cce13bc1e89d84cbb}
 
 \section{Reviewer 2}
 The paper is generally well written with clear illustrations. 
 \Que{
 There are occasional omissions, perhaps unintentional, such as the definition of a skeleton - see section 3.1, second paragraph. 
 }
+\Ans{
+Indeed we have intentionally not defined the term `skeleton'.
+It seems that there is no generally accepted \emph{intuitive} definition of `skeleton';
+the first occurance of the term was as synonymous with the medial axis and it was only defined \emph{mathematically}.
+However, the term is now used as an umbrella term for the various different types of skeleton.
+We have changes the wording a bit to make clear that `skeleton' refers to an undefined umbrella term.
+}
+\commits{5356492b5a9a690228ffdb6a6a26cf10d099a7d4}
+
 
 \stepcounter{question}
 \subQue{
@@ -386,7 +433,11 @@ Poor example, because as the degree goes to zero the parts ofo the parabola reve
 \Que{
 As the authors correctly point out, the MA is not piecewise linear even for polygonal boundaries. In 3.2, second paragraph, the authors state that "the medial axis is a compact and complete representation of the shape". First, the MA + the radius function can be considered a shape representation, which is not true for the MA by itself. Second, the statement that the authors is meant to be generic, but it is not clear what compact means for a medial axis that is not piecewise linear. One can argue that the polygon itself is a rather compact representation of the shapes considered in this manuscript. 
 }
-Rerword a bit
+\Ans{
+Indeed the statement was meant generically, but we agree it lacked substance.
+The wording is now changed to better describe the general role of the medial axis in research.
+}
+\commits{d3f19c04e3bb0d80c0b162531dbf576fc705d77c}
 
 \Que{
 More generally, the technique seems to effectively be a variable offset scheme, but there is little discussion about what is known about variable offsets. 
@@ -398,9 +449,16 @@ elber1991error,
 \Que{
 Moreover, the proposed technique seems to rely on rather accurate control of the width w of the deposited material, but it is not clear whether such control is achievable in practice. 
 }
-
-Show S5 results. 
-The proposed technique relies less on the accuracy of the control than existing techniques – as exemplified by Fig 17b.
+\Ans{
+The photos of our print results already showed that adaptive width control is possible up to some (insufficient) extent.
+We have developed a new method for actualizing adaptive width control which can readily be applied to unmodified FDM systems such as the Ultimaker S5: linear backpressure compensation.
+We show the results of linear backpressure compensation in a separate figure which clearly shows the achieved variance in bead width.
+}
+\todo{
+Show S5 prints. 
+The proposed technique relies \emph{less} on the accuracy of the control than existing techniques – as exemplified by Fig 17b.
+}
+\commits{3d7238e2787f17c4cff63804eb4b84439ff85f1b}
 
 \Que{
 At the same time, the scheme can potentially result in trajectories with many inflection points - this is slow and demanding for the machine. 
@@ -417,18 +475,27 @@ Discuss how much the over-fill / underfill and bead width variation depend on th
 
 
 
+
+
+
 \section{Reviewer 3}
 Paper is well written. It is mostly easy to follow but overall, I find the the contributions somewhat incremental and the motivation not convincing. The paper mostly feels like a technical report. I am not sure if the methods overall teach enough to the researchers in the field to open up new research possibilities. My specific comments are below: 
 
 \Que{
 The title is a little misleading that the presented approach may be used for general “Additive Manufacturing”. However, my understanding from the text is that it is designed particularly for FDM. I believe it is important to highlight this in the title. Otherwise, there should be enough evidence to prove that it can be applied to other kinds of printing processes, such as SLS, SLA, DMLS etc. 
 }
-Material Extrusion additive manufacturing (?)
+The title has changed.
+\revise{additive manufacturing}{fused deposition modeling}
+\commits{64eb2f2c1cbb28258a984b5f84ea6e3a039ee1f0}
+
 
 \Que{
 It would be nice to discuss why contour-parallel toolpaths are needed or selected. In what situations, these are required as opposed to zigzag style (or direction-parallel as referred in the text) patterns. Without such a discussion, the motivation seems a little weak. In the second paragraph of introduction, there is a short discussion about this but it sounds like the authors assume that even the perimeters (or outline) are printed with direction-parallel extrusion. However, common approach in FDM is to print the perimeters with contour parallel toolpaths and fill the inner region with direction-parallel paths only (as later acknowledged in the related work 3rd paragraph). I think the motivation for contour parallel toolpaths needs to be justified further. 
 }
-
+\Ans{
+The industry standard is to use a combination of contour-parallel and direction-parallel.
+We now clarify why contour-parallel is (partly) used and that in as much as contour-parallel is used, our approach improves on the industry standard.
+}
 \todo{
 Add some sentences to make it clear
 
@@ -437,16 +504,26 @@ Show LimitedBeadingStrategy or StrategyType::OutlineAccuracy
 explain this paper can be used in normal slicing
 }
 
+\commits{6b0f8c78d31bd0c6946885da96f73f1cfc1a21ae, ac800628951417dcb28bd6e3a0ed08801735acf4}
+
 \Que{
 Related work acknowledges the previous work sufficiently. However, the differences between the state of the art and the presented work are not clear. More discussion on where this work stands with respect to the state of the art is required. 
 }
+\todo{
 Add discussion points?
+}
+\commits{004894210fbc961f82b792fc702d1b67a1a8e8e8}
 
 \Que{
 Isn’t it possible to put bounds on the width in the existing methods, such as the approach described in [9]? More discussion on that would be helpful. 
 }
-Jins method is limited to $0.5 - 1.8 \times$ nozzle\_size
+\Ans{
+The bead width in Jin et al. is limited to $0.5 w^*$ to $1.8 w^*$ , which means the variation is a factor of $3.2$; this was already described in the related work section, but the factor was wrongly said to be $2$ instead of $3.2$.
+}
+\todo{
 Its not about bounds, its about how often the extremes happen
+}
+\commits{661d8f6766548c287cb174070432097e396d198f}
 
 \Que{
 Figure 4 and corresponding explanation in Section 3.2 are confusing. Why such decomposition is needed is not clear to me. 
@@ -458,17 +535,23 @@ Are you sure you mean figure 4? Maybe figure 3 or figure 2?
 \Que{
 In Figure 3, why some of the edges in (c) (the ones in the center area) disappear in (d)?
 }
-Fixed.
+Fixed. Fig 3 c and d now have the same discretization.
+\commits{43cadb352a6a276bbaaab53f9b5b217bec4b3a2e}
 
 \Que{
 It is unclear how some of the parameters are adjusted, such as $\alpha_\text{max}, d_\text{max}^\text{unmarked}, d_\text{transition}^\text{max}, t_\text{beading}, d_\text{intersection}^\text{max}$. What are their effects on the end result? Selections seem somewhat arbitrary. 
 }
 Make my resaons for choosing these more explicit
 
+
+
 \Que{
 Is this approach generalizable to sparse infill? It is very common in FDM to use a sparse infill and only use dense fill on surface regions.
 }
 The goal of this paper is to minimize underfill using a low variation in bead width; generalizing it to sparse infill makes no sense because there the ‘underfill’ is intentional.
+
+\commits{6b0f8c78d31bd0c6946885da96f73f1cfc1a21ae}
+
 
 \Que{
 If this is used for outer surface, what are the implications on the surface quality in comparison to other approaches? 
@@ -480,6 +563,7 @@ Discuss effect of this algorithm on the outline accuracy
 I think Figure 13 should be replaced with a table. 
 }
 Done.
+\commits{735762b1e7daf31ae4465bf288ef867ded7da095}
 
 \Que{
 In text, some references are missing, such as first sentence of “Outer bead” paragraph in Section 4 (Moesen et al [?]), first sentence of “Constant bead count” (Ding et al [?]) paragraph in Section 4 etc. 
@@ -498,6 +582,37 @@ What are the limitations of the presented algorithm? I do not see any discussion
 }
 Linear approximations 
 a lot of direction changes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Other changes}
+We have fixed some issues with positions and colors being swapped in the statistical analysis subfigures.
+Fig 17f colors are adjusted.
+Fig 17e and 17f are swapped.
+\commits{43cadb352a6a276bbaaab53f9b5b217bec4b3a2e}
+
+Improvements to abstract.
+\commits{c5ecf8f8c5c15266059278a6b4c26774446e7854}
+
+Fix double header of References.
+\commits{7597b176f6a88ae98c8c7a4c791475af356b3da6}
+
+Added patent notice and url to open source implementation.
+\commits{ff3c09037f05eba5028cb51bf8cd6c0bb77a0b0a}
+
+Lil
+\commits{5f5c4c640d94010816e6d6d5934a2dc016b4d172}
 
 
 
