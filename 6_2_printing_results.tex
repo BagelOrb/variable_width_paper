@@ -1,0 +1,59 @@
+Test prints were performed on an unmodified Ultimaker S5 system,
+with a standard  \SI{0.4}{\milli\meter} nozzle
+and PLA filament
+and a layer thickness of $h=\SI{0.1}{\milli\meter}$.
+In order to accurately realize a varying bead width we vary the movement speed, while keeping the internal pressure in the system constant.
+One approach would be to varying the speed such that we keep the filament inflow $f$ (in \si{\milli\meter\cubed\per\second}) constant.
+However, that doesn't result in the intended filament outflow variation - see \cref{zero_backpressure}.
+We conjecture that the filament outflow is related to the total pressure in the system,
+which depends not only on the amount of filament in between the feeder wheel and the nozzle (which we keep constant), 
+but also depends on the backpressure that the previous layer exerts on the filament protruding from the nozzle.
+We conjecture that the amount of backpressure is monotonically related to the requested line width and compensate for the backpressure using a simple linear model:
+
+\begin{align}
+ v(w) &= \frac{f(w)}{h w} \\ 
+% f &\sim p \\
+% p &= p_\text{in} + p_\text{ext} \\
+% p_\text{in} &= C \\
+% p_\text{ext} &\sim w \\
+% p_\text{ext} &= w / w^* - 1 \\
+% f &= f^* - k p_\text{ext} \\
+ f(w) &= f_0 - k \left( w / w_0 - 1 \right) \\
+ f_0 &= v_0 w_0 h 
+% v &= \frac{f^* - k p_\text{ext}}{h w} \\ 
+% v &= \frac{v^* w^* h - k (w / w^* - 1)}{h w}
+\end{align}
+where
+$v(w)$ is the movement speed as a function of requested bead width $w$,
+$f(w)$ is the filament outflow,
+$f_0$ is a constant reference flow
+and
+$k$ is the amount of backpressure compensation.
+Using increments of $0.1$ we established that using a factor of $k=1.1$ yields satisfactory bead width variation for our setup where
+$v_0=\SI{30}{\milli\meter\per\second}$, 
+$w_0=\SI{0.4}{\milli\meter}$.
+See \cref{backpressure}.
+
+\begin{figure}
+\centering
+\setlength{\figwidth}{0.32\columnwidth}
+\setlength{\figheight}{0.5\columnwidth}
+\begin{subfigure}[t]{\figwidth}\centering
+\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure-compensation-target.pdf}
+\caption{Target widths}\label{backpressure_target}
+\end{subfigure}
+\begin{subfigure}[t]{\figwidth}\centering
+\includegraphics[angle=90,height=\figheight]{sources-validation-zero-backpressure-compensation.png}
+\caption{Constant filament inflow (\si{\milli\meter\cubed\per\second})}\label{zero_backpressure}
+\end{subfigure}
+\begin{subfigure}[t]{\figwidth}\centering
+\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure-compensation.png}
+\caption{Backpressure compensation}\label{backpressure}
+\end{subfigure}
+\caption{
+Print results of varying width test on top of a dense white raft.
+Trying to reproduce \subref{backpressure_target} without backpressure compensation ($k=0$) yields worse results \subref{zero_backpressure} than with backpressure compensation $k=1.1$ \subref{backpressure}.
+}
+\label{backpressure_compensation}
+\end{figure}
+
