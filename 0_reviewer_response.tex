@@ -1,0 +1,471 @@
+\documentclass[5p,twocolumn,10pt,times]{elsarticle}
+\usepackage{amsmath}
+\usepackage{hyperref} % added [draft] to avoid compilation issues that happen if a link is split and appears in two pages
+%\modulolinenumbers[5]
+\addtolength{\textheight}{8mm}
+\addtolength{\textwidth}{4mm}
+\addtolength{\voffset}{-10mm}
+\addtolength{\hoffset}{-3mm}
+
+\bibliographystyle{elsarticle-num-names}
+
+
+% ACM template
+%
+%\documentclass[acmtog,anonymous,timestamp,review]{acmart}
+%
+%\usepackage{booktabs} % For formal tables
+%
+
+
+
+
+% My TK added packages and commands
+
+	% for for using hyperref and elsarticle-num-names together in order to get \citeauthor to work
+	\makeatletter
+	\providecommand{\doi}[1]{%
+	  \begingroup
+	    \let\bibinfo\@secondoftwo
+	    \urlstyle{rm}%
+	    \href{http://dx.doi.org/#1}{%
+	      doi:\discretionary{}{}{}%
+	      \nolinkurl{#1}%
+	    }%
+	  \endgroup
+	}
+	\makeatother
+
+	% have multiline subfigure captions be centered
+	\usepackage[labelformat=parens]{subcaption} % subfigures
+	\captionsetup[subfigure]{justification=centering}
+	\captionsetup{subrefformat=parens} % pure refernce subfigure with parentheses: fig.10a and (b)
+	%\renewcommand\thesubfigure{(\alph{subfigure})} % refernce subfigure always with parentheses: fig.10(a) and (b)
+
+	\captionsetup[figure]{labelfont={bf},name={Fig.},labelsep=period} % use `Fig.' for figure subscript instead of `Figure'
+	
+	\usepackage[export]{adjustbox} % [right] alignment for includegraphics
+	
+	\usepackage{rotating} % turn env for rotating text in figures
+
+	\usepackage{wrapfig} % inline figures
+
+	% tables
+	\usepackage{multirow} % multicolumn, multirow
+	\usepackage{colortbl} % \cellcolor{<color>}
+	\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}   %% centered
+	\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}}  %% right aligned
+
+	\usepackage[capitalise]{cleveref} % automatically add `Fig.'  etc before a reference.
+
+        \usepackage{ amssymb } % \therefore
+	
+	\newcommand{\degree}{^\circ}
+	
+	\usepackage[binary-units]{siunitx} % mm and stuff
+	\sisetup{per-mode = symbol}
+	\DeclareSIUnit\pixel{px}
+
+	\usepackage{units} % \nicefrac{3}{8}
+	
+	
+	
+	\DeclareMathOperator*{\argmax}{arg\,max}
+	\DeclareMathOperator*{\argmin}{arg\,min}
+	
+	\DeclareMathOperator{\abs}{abs} % absolute function
+
+	\usepackage{amsthm} % \begin{proof}
+	\newtheorem{lemma}{Lemma}[section]
+	\theoremstyle{definition}
+	\newtheorem{definition}{Definition}[section]
+
+	\usepackage[inline]{enumitem} % inline enumerate*
+
+	\usepackage[toc,page]{appendix} % appendicces
+	
+	\usepackage{pgfplots}
+	\usepackage{pgfplotstable} % tikzpicture table plots
+	\pgfplotsset{compat=1.15}
+	\usetikzlibrary{backgrounds}
+
+	\usepackage[noend]{algpseudocode} % algorithmic
+	\usepackage{algorithm} % wrapper for pseudocode to give a caption and label
+
+	\newcommand{\pluseq}{\mathrel{+}=} %pluseq symbol
+	\usepackage{upgreek} % \uplambda
+
+	\usepackage{listings} % for listing C++ code instead of pseudocode
+	\lstset{ 
+      breaklines=true,                 % sets automatic line breaking
+      basicstyle=\ttfamily,
+      mathescape
+    }
+
+
+
+
+    % \usepackage[disable]{todonotes} % notes not showed  
+    % \usepackage[draft]{todonotes}   % notes showed
+    \usepackage{color,soul} % caps, highlight (\hl)
+
+	\newcommand{\comment}[1]{}
+	
+%    \newcommand{\todo}[1]{\hl{#1}}
+%    
+%	\newcommand{\temp}[1]{\textcolor[rgb]{0, 0, 0.2}{#1}}
+%	\newcommand{\tim}[1]{\temp{\todo{[Tim: #1]}}}
+%	\newcommand{\jun}[1]{\temp{\todo{[Jun: #1]}}}
+%	
+%	\newcommand{\old}[1]{\textcolor{gray}{#1}}
+	\usepackage[normalem]{ulem}
+	\newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
+	
+	% Revise macro (usage: \revise{old}{new})
+	% Version a) First arg red and striked out, second argument green
+	\newcommand{\revise}[2]{{\color{red}{{#1}}}{\color{blue}{#2}}}
+	% Version b) First arg ignored, second argument green
+	%\newcommand{\revise}[2]{\textcolor{blue}{#2}}
+	% Version c) First arg ignored, second argument unchanged (for final draft)
+	%\newcommand{\revise}[2]{#2}
+
+	\newcommand{\question}[1]{{\bf#1}}
+	\newcommand{\todo}[1]{{\bf \color{orange}#1}}
+	\newcommand{\response}[1]{{#1}}
+
+\newcommand\Que[1]{%
+   \leavevmode\par
+   \stepcounter{question}
+   \noindent
+   \thequestion. Q --- {\bf#1}\par}
+
+\newcounter{question}
+\setcounter{question}{0}
+
+\numberwithin{question}{section}
+
+
+\usepackage{chngcntr}
+
+\newcommand\subQue[1]{%
+   \leavevmode\par
+   \stepcounter{subquestion}
+   \noindent
+   \thesubquestion. Q --- {\bf#1}\par}
+
+\newcounter{subquestion}
+\setcounter{subquestion}{0}
+
+\counterwithin{subquestion}{question}
+
+
+\newcommand\Ans[2][]{%
+    \leavevmode\par\noindent
+   {%\leftskip37pt
+    A --- \textbf{#1}#2\par}}
+
+
+
+	\setulcolor{red}
+
+	\usepackage[normalem]{ulem} % squigly underline
+
+	\renewcommand\floatpagefraction{.8}
+
+
+	\newlength{\figwidth}
+	\newlength{\figwidthTwo}
+	\newlength{\figwidthTree}
+	\newlength{\figheight}
+	\newlength{\figheightTwo}
+	\newlength{\tempheight}
+	\newlength{\tempheightTwo}
+
+	% deal with missing images which are not directly included in the repo
+	\iffalse
+	\newcommand{\noimage}[1]{%
+	  \setlength{\fboxsep}{-\fboxrule}%
+	  \fbox{\phantom{\rule{10pt}{10pt}} Missing file: \path{#1} \phantom{\rule{10pt}{10pt}}}% Framed box
+	}
+	\let\includegraphicsoriginal\includegraphics
+	\renewcommand{\includegraphics}[2][width=\textwidth]{\IfFileExists{#2}{\includegraphicsoriginal[#1]{#2}}{\noimage{#2}}}
+
+	\fi
+% ENd of TK's added packages and commands
+
+
+
+\begin{document}
+\baselineskip11pt 
+
+\begin{frontmatter} 
+
+\title{
+Response to reviewers}
+
+%\author{Paper ID: xxx}
+
+\author[um,tud]{Tim Kuipers}
+\author[tud]{Eugeni L. Doubrovski}
+\author[tud]{Jun Wu}
+\author[cuhk]{Charlie Wang}
+% \ead{cwang@mae.cuhk.edu.hk}
+\address[um]{Ultimaker, Utrecht, The Netherlands}
+\address[tud]{Department of Design Engineering, Delft University of Technology, The Netherlands}
+\address[cuhk]{Department of Mechanical and Automation Engineering, The Chinese University of Hong Kong, Hong Kong SAR, China}
+
+
+
+%
+% The code below should be generated by the tool at
+% http://dl.acm.org/ccs.cfm
+% Please copy and paste the code instead of the example below.
+%
+%\begin{CCSXML}
+%\end{CCSXML}
+
+%\ccsdesc[500]{Computer systems organization~Embedded systems}
+%\ccsdesc[300]{Computer systems organization~Redundancy}
+%\ccsdesc{Computer systems organization~Robotics}
+%\ccsdesc[100]{Networks~Network reliability}
+
+\end{frontmatter}
+
+\section{Reviewer 1}
+Overall, the paper proposes some novel frameworks which are meaningful to additive manufacturing. Therefore, I suggest it for publication once the following major comments are addressed. 
+
+\Que{
+Could the authors provide a mathematical foundation for the relationship between the underfill/overfill areas and the allowed variation of bead width? I believe the proposed beading scheme can reduce the underfill/overfill areas somehow. But we still lack a mathematical theory to guide the design.
+}
+
+\todo{
+Refer to fig 5 and comment about 3-way intersections and 3-way gaps
+Try to make a formula which predicts the amount of over- and underfill
+
+Tim: I actually think this question is mostly related to DfAM. I think we should add something like the following to the manuscript:
+}
+
+\Ans{
+Suppose that under some criterion of manufacturability we have established that we can attain bead widths within the range $[w_min, w_max]$.
+We can then conclude that in order for a model to be manufacturable its widths should be within the set of ranges $\cup_i([i w_min,i w_max])$.
+If $w_\text{max} > 2 w_\text{min}$ this reduces to $[w_min, \inf]$
+If $w_\text{max} = w_\text{min} = w*$ this reduces to $\{w^*, 2w^*, 3w^*, \dots\}$
+If for example $\nicefrac23 w_\text{min} < w_\text{max} < 2 w_\text{min}$, a manufacturable model should have widths in the ranges $\{[w_\text{min},w_\text{max}],[2 w_\text{min}, inf]\}$
+
+However, we propose no such binary criterion of manufacturability; instead we assume that the manufacturability generally goes down as the requested bead width variation goes up. By keeping the bead widths closer to a nominal bead width we guarantee the manufacturability goes up for any system.
+}
+
+
+
+
+\stepcounter{question}
+
+\subQue{
+The authors should highlight their contributions compared to the existing approaches for generating toolpaths with adaptive width.
+}
+
+
+\subQue{
+From Fig. 1(b) and (c), we can see that the approach in Jin et al (2017) can fill the sharp right end, but the proposed approach can not. 
+}
+
+
+Changed image. 
+
+\todo{
+Tim:
+Any beading scheme can easily be modified to change the minimal feature width, simply by supplying that $q(d) = 0$ if $d < w_\text{min}$ and that $q(d) = 1$ if $w_\text{min} < d < w^*$
+
+Tim: changed widening scheme to handle both minimal feature size and minimal bead width
+@others: The new widening scheme figure now shows a bug in widening, perhaps we should only control the min feature size and leave out widening.
+
+Note: our tests do compare beading schemes with different $w_\text{min}$.
+? Should we redo the tests?
+}
+
+\subQue{
+If there is no sharp corners exist, then the existing approaches such as Jin et al (2017) do not have to use bead widths of large variations. 
+}
+
+that’s not true
+
+\Que{
+How do the authors conduct path planning? Could the authors add a simple 2D geometry with multiple holes to explain the path planning process? As the proposed approach adds more disconnected toolpaths to minimize underfill areas, an improper path planning would significantly increase the fabrication time. 
+}
+
+Show results on printing time
+Mention that the path order is not optimized
+
+\Que{
+While the proposed approach can use adaptive bead width to minimize underfill and overfill areas, the generated toolpaths are disconnected compared to the traditional approaches. From my experience, a small overfill area does not have to lead to serious defects. But the disconnected filaments definitely have worse mechanical performances compared to the continuous ones. 
+}
+
+We don’t know the effect…
+
+Split overfill and underfill areas and compute the amount of components and make statistics
+
+Tim: get statistics on nuber of areas with a size larger than $0.1 w^*$
+
+Tim: That might be true, but the microgaps near 3-way intersections are not fillable using overfilling; the plastic cannot creap into those cravices.
+
+\Que{
+Why the authors state the inward distributed beading scheme as new? Jin et al (2017) has proposed the strategy to add a toolpath with varying width along the center edges of the skeleton, and with unchanging width outside. 1 
+}
+
+Tim: we should change the text to stress that we distribute the discrepancy over several beads rather than always over one bead.
+
+\Que{
+In Fig.1, how to justify the proposed approach as different geometries are used? I believe if the authors use the same geometries as in Fig 1. (a) and (b), there would be also underfill areas using the proposed approach. 
+}
+
+There is now a black outline to show that the shapes used are indeed the same.
+
+Moreover we now use the same minimum feature size for b and c.
+
+\Que{
+Please double check the following sentences. ”Third, the extruded path should ...”(at the second paragraph of Section 2) ”This the downward phase...” (at the last paragraph of Section 3.5) 
+}
+
+\Que{
+In Fig.4, the bead count should marked in another way. The ultra thick solid line conflicts with that for ”outline”. 
+}
+
+\Que{
+What are the differences between the distributed and the inward scheme in Fig. 16(d) and (e)? Are they the same? 
+}
+
+\Que{
+In Fig. 17(b), where is the curve for the ”uniform” case?
+}
+
+\section{Reviewer 2}
+The paper is generally well written with clear illustrations. 
+\Que{
+There are occasional omissions, perhaps unintentional, such as the definition of a skeleton - see section 3.1, second paragraph. 
+}
+
+\stepcounter{question}
+\subQue{
+The authors seem to use linear approximations of the medial axis - see Figure 2 (b), which is understandable given the fact that they compute the MA with the Boost library. If this is so, can the authors comment on the implications of this approximation?
+}
+
+Quantify the approximation error depending on discretization size
+
+
+\subQue{
+For example, what happens ifthe obtuse outside angle in Figure 2 goes to 0? 
+}
+Poor example, because as the degree goes to zero the parts ofo the parabola revealed are more accurately described by the discretization than the highly curved part in the middle.
+
+\Que{
+As the authors correctly point out, the MA is not piecewise linear even for polygonal boundaries. In 3.2, second paragraph, the authors state that "the medial axis is a compact and complete representation of the shape". First, the MA + the radius function can be considered a shape representation, which is not true for the MA by itself. Second, the statement that the authors is meant to be generic, but it is not clear what compact means for a medial axis that is not piecewise linear. One can argue that the polygon itself is a rather compact representation of the shapes considered in this manuscript. 
+}
+Rerword a bit
+
+\Que{
+More generally, the technique seems to effectively be a variable offset scheme, but there is little discussion about what is known about variable offsets. 
+Find more literature
+}
+
+elber1991error, 
+
+\Que{
+Moreover, the proposed technique seems to rely on rather accurate control of the width w of the deposited material, but it is not clear whether such control is achievable in practice. 
+}
+
+Show S5 results. 
+The proposed technique relies less on the accuracy of the control than existing techniques – as exemplified by Fig 17b.
+
+\Que{
+At the same time, the scheme can potentially result in trajectories with many inflection points - this is slow and demanding for the machine. 
+Show print time results
+}
+
+\Que{
+Finally, the examples provided depict the results obtained by the authors by "emulating" other techniques, but not with the actual results produced by the other techniques. While the reason behind this choice is easy to guess, it weakens the effectiveness of the claims. Adding careful discussions/extensions to support these questions would make the paper stronger.
+}
+Discuss how much the over-fill / underfill and bead width variation depend on the fact that our reimplementations are only approximations.
+
+
+
+
+
+
+\section{Reviewer 3}
+Paper is well written. It is mostly easy to follow but overall, I find the the contributions somewhat incremental and the motivation not convincing. The paper mostly feels like a technical report. I am not sure if the methods overall teach enough to the researchers in the field to open up new research possibilities. My specific comments are below: 
+
+\Que{
+The title is a little misleading that the presented approach may be used for general “Additive Manufacturing”. However, my understanding from the text is that it is designed particularly for FDM. I believe it is important to highlight this in the title. Otherwise, there should be enough evidence to prove that it can be applied to other kinds of printing processes, such as SLS, SLA, DMLS etc. 
+}
+Material Extrusion additive manufacturing (?)
+
+\Que{
+It would be nice to discuss why contour-parallel toolpaths are needed or selected. In what situations, these are required as opposed to zigzag style (or direction-parallel as referred in the text) patterns. Without such a discussion, the motivation seems a little weak. In the second paragraph of introduction, there is a short discussion about this but it sounds like the authors assume that even the perimeters (or outline) are printed with direction-parallel extrusion. However, common approach in FDM is to print the perimeters with contour parallel toolpaths and fill the inner region with direction-parallel paths only (as later acknowledged in the related work 3rd paragraph). I think the motivation for contour parallel toolpaths needs to be justified further. 
+}
+
+Add some sentences to make it clear
+
+\Que{
+Related work acknowledges the previous work sufficiently. However, the differences between the state of the art and the presented work are not clear. More discussion on where this work stands with respect to the state of the art is required. 
+}
+Add discussion points?
+
+\Que{
+Isn’t it possible to put bounds on the width in the existing methods, such as the approach described in [9]? More discussion on that would be helpful. 
+}
+Jins method is limited to something like $0.2-1.8 \times$ nozzle\_size
+Its not about bounds, its about how often the extremes happen
+
+\Que{
+Figure 4 and corresponding explanation in Section 3.2 are confusing. Why such decomposition is needed is not clear to me. 
+}
+Maybe put something like “this figure is for back-reference if you forgot what a thing is for”
+
+
+\Que{
+In Figure 3, why some of the edges in (c) (the ones in the center area) disappear in (d)?
+}
+Fixed.
+
+\Que{
+It is unclear how some of the parameters are adjusted, such as $\alpha_{max}, d_\text{max}^\text{unmarked}, d_\text{transition}^\text{max}, t_\text{beading}, d_\text{intersection}^\text{max}$. What are their effects on the end result? Selections seem somewhat arbitrary. 
+}
+Make my resaons for choosing these more explicit
+
+\Que{
+Is this approach generalizable to sparse infill? It is very common in FDM to use a sparse infill and only use dense fill on surface regions.
+}
+The goal of this paper is to minimize underfill using a low variation in bead width; generalizing it to sparse infill makes no sense because there the ‘underfill’ is intentional.
+
+\Que{
+If this is used for outer surface, what are the implications on the surface quality in comparison to other approaches? 
+}
+This is one of the usecases why this is a good method
+Discuss effect of this algorithm on the outline accuracy
+
+\Que{
+I think Figure 13 should be replaced with a table. 
+}
+Done.
+
+\Que{
+In text, some references are missing, such as first sentence of “Outer bead” paragraph in Section 4 (Moesen et al [?]), first sentence of “Constant bead count” (Ding et al [?]) paragraph in Section 4 etc. 
+}
+\Ans{
+We cannot reproduce this typesetting bug. Please inform the proofing department to take extra care of these references when preparing this manuscript for publication.
+}
+
+\Que{
+Evaluation in the results section is overall good but it is not clear what are the implications of the presented approach on the complete 3D result. A discussion on this would be helpful.
+}
+Perhaps discuss effect of width changes on amount of fusing between layers
+
+\Que{
+What are the limitations of the presented algorithm? I do not see any discussions of the limitations of the algorithm.
+}
+Linear approximations 
+a lot of direction changes
+
+
+
+\end{document}
