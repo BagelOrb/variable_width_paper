@@ -94,9 +94,9 @@ These terms will be further explained as they first appear throughout this paper
 Given arbitrarily shaped polygons which represent the 2D outline of a layer of a 3D model, our method generates extrusion toolpaths with varying width, i.e. a set of polylines where each site consists of a location and an extrusion width;
 in between the sites we linearly interpolate the position and extrusion width.
 
-Our method starts with computing the skeleton of the input polygon based on the medial axis transform (MAT), a strategy that has been commonly used for generating contour-parallel toolpaths~\cite{eiamsa2003toward}. 
+Our method starts with computing \revise{the}{a type of} skeleton of the input polygon based on the medial axis transform (MAT), a strategy that has been commonly used for generating contour-parallel toolpaths~\cite{eiamsa2003toward}. 
 We visualize the skeleton as the union of cones (UoC) (\cref{sec_surface_construction}), by raising each point in the domain to a height that equals the shortest distance from the point to the polygon boundary (\cref{overview_uoc}).
-Contour-parallel toolpath with uniform width can be interpreted as the intersection of the union of cones with a set of planar planes at equally spaced heights (\cref{3d_surface_overview}\subref{overview_outline}-\subref{overview_uniform_paths}).
+Contour-parallel toolpath with uniform width can be interpreted as the intersection of the union of cones with a set of \revise{planar}{horizontal} planes at equally spaced heights (\cref{3d_surface_overview}\subref{overview_outline}-\subref{overview_uniform_paths}).
 
 As depicted in \cref{3d_surface_overview_center}, our method first identifies edges and nodes of the skeleton in the center of the polygon, which correspond to ridges and peaks in the UoC  (\cref{sec_center_classification}).
 The heights $\tilde{b}$ at these elements are then quantized to an integer number of beads $\bar{b}$.
@@ -152,7 +152,7 @@ This decomposition constitutes an approximation of the UoC.
 
 %\subsubsection{Medial axis transform}
 \paragraph{Medial axis transform}
-The medial axis is a compact and complete representation of a shape.
+The medial axis is a \revise{compact and complete representation of}{representation commonly used to analyse} a shape.
 It is defined as the set of positions where the inscribed circle meets the boundary in at least two locations~\cite{blum1967transformation,lee1982medial}.
 The resulting skeleton consists of straight edges and parabolic edges.
 An example is illustrated in \cref{shape_decomposition_mat}.
@@ -555,7 +555,7 @@ The beading information is then broadcast throughout the ST from central regions
 so that each unmarked node $v$ knows the beading of the marked node on top of the ramp on which $v$ is placed.
 We first broadcast the beading information upward from all marked nodes,
 so that we can then deal with beading conflicts in a downward phase.
-This the downward phase makes sure that all nodes have a beading associated with it, so that the slicing algorithm can efficiently slice the edges leading up to a marked or unmarked node.	
+\revise{This the}{The} downward phase makes sure that all nodes have a beading associated with it, so that the slicing algorithm can efficiently slice the edges leading up to a marked or unmarked node.	
 
 
 

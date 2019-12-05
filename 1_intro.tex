@@ -12,7 +12,12 @@ FDM printers extrude semi-continuous beads of molten plastic through a nozzle, w
 A common strategy to accurately manufacture a given 3D model is to extrude along a contour-following path,
 because the position and shape of the toolpath can be controlled relatively accurately.
 Filling up a shape using parallel straight lines would expose defects of the size of the hole in the nozzle, which is generally an order of magnitude larger than the resolution of the positioning system.
+\revise{
 Contour-parallel extrusion therefore leads to a less bumpy outline shape than direction-parallel extrusion does.
+}{
+Because contour-parallel extrusion leads to a more accurate outline shape it is common practice to print either the whole layer or only a limited number of outer perimeters that way.
+This paper focusses on the contour-parallel toolpaths and addresses several issues which commonly occur in 3D models with geometry which is narrower than the typical number of perimeters.
+}
 
 
 The simple technique for generating the dense contour-parallel toolpaths of a layer consists in performing uniform inward offsets with the size of the nozzle from the outline shape.
@@ -28,7 +33,8 @@ However, the range of widths manufacturable by FDM systems is limited.
 A nozzle of \SI{0.4}{\milli\meter} will typically start to cause fluttered extrusion around lines narrower than \SI{0.3}{\milli\meter} and lines will start to bulge upward if they are wider than the flat part of the nozzle, which is typically \SI{1.0}{\milli\meter}.
 %Therefore, a limited range of widths is required by the hardware system.
 
-The current state-of-the-art for FDM printing developed by \citeauthor{Jin2017JMS} employs a strategy which alters the widths of the centermost beads at most by a factor of $2$~\cite{Jin2017JMS},
+The current state-of-the-art for FDM printing developed by \citeauthor{Jin2017JMS} employs a strategy which alters the widths of the centermost beads at most by a factor of \revise{$2$}{$3.2$}~\cite{Jin2017JMS},
+% (0.8 * 2) / (2* (1.25 - 1)), see rmin, rmax, Table 1e, Centered strategy
 which is similar to the strategy employed by the open source industry standard software package Ultimaker Cura~\cite{cura}.
 See \cref{intro_wedge_centered}.
 Still, controlling the extrusion width through movement speed changes or through volumetric flow control (e.g. linear advance) yields diminishing accuracy for deposition widths farther away from the nozzle size,
@@ -57,7 +63,7 @@ See \cref{intro_wedge_distributed}.
 \parbox[b]{\figwidthTwo}{\subcaption{}\label{intro_wedge_distributed}}\includegraphics[width=\figwidth]{sources-intro-TEST-Distributed-widths.png}
 \end{subfigure}
 \caption{
-Illustration of different toolpath for a wedge shape \revise{}{(black)}.
+Illustration of different toolpath\revise{}{s} for a \revise{wedge }{}shape \revise{}{showcasing a range of shape radii }\revise{}{(black)}.
 \subref{intro_wedge_uniform} Toolpath using uniform offsetting results in large overfill (orange) and underfill (azure).
 \subref{intro_wedge_centered} Toolpath with adaptive width~\cite{Jin2017JMS} where beads that are wider or narrower than the nozzle size are indicatd in red and blue, respectively.
 \subref{intro_wedge_distributed} Our approach minimizes over- and underfill with beads close to the nozzle size.
@@ -68,11 +74,11 @@ Illustration of different toolpath for a wedge shape \revise{}{(black)}.
 
 Our contributions are as follows:
 \begin{itemize}
-\item A geometric framework for generating densely filling contour-parallel toolpaths employing adaptive width, according to any beading scheme which decides on the bead spacing and widths.
-\item A specific beading scheme for FDM printing which reduces the amount of deviation in the extrusion widths, and which promotes smooth toolpaths that are equal to the preferred width toward the outline of the shape.
+\item A geometric framework \revise{for generating densely filling contour-parallel toolpaths employing adaptive width, according to any beading scheme which decides on the bead spacing and widths.}{allowing various adaptive bead width control schemes used to generate contour-parallel toolpaths which minimize under- and overfill.}
+\item A specific beading scheme for FDM printing which \revise{}{furthermore} reduces the amount of deviation in the extrusion widths compared to existing literature, and which \revise{promotes smooth toolpaths that are equal to the preferred width toward the outline of the shape.}{produces beads of exactly the preferred width outside of central regions of the outline shape.}
 \end{itemize}
 
-
+\revise{}{The presented framework is patented by Ultimaker and open source available at \url{github.com/Ultimaker/libArachne}.}
 
 %This work is patent pending, but the source code is available open source.
 

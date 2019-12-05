@@ -123,11 +123,13 @@
 	
 	% Revise macro (usage: \revise{old}{new})
 	% Version a) First arg red and striked out, second argument green
-	\newcommand{\revise}[2]{{\color{red}{{#1}}}{\color{blue}{#2}}}
+	%\newcommand{\revise}[2]{\textcolor{red}{\stkout{#1}}\textcolor{blue}{#2}}
+	%\newcommand{\revise}[2]{{\color{red}{#1}\color{blue}{#2}}}
 	% Version b) First arg ignored, second argument green
-	%\newcommand{\revise}[2]{\textcolor{blue}{#2}}
+	\newcommand{\revise}[2]{\textcolor{blue}{#2}}
 	% Version c) First arg ignored, second argument unchanged (for final draft)
 	%\newcommand{\revise}[2]{#2}
+	%\newcommand{\revise}[2]{#1}
 
 
 	\setulcolor{red}
@@ -164,7 +166,7 @@
 
 \begin{frontmatter} 
 
-\title{A framework for adaptive width control of dense contour-parallel toolpaths in additive manufacturing}
+\title{A framework for adaptive width control of dense contour-parallel toolpaths in \revise{additive manufacturing}{fused deposition modeling}}
 
 %\author{Paper ID: xxx}
 
@@ -182,12 +184,13 @@
 
 \begin{abstract}
 3D printing techniques such as Fused Deposition Modeling (FDM) have enabled the fabrication of complex geometry quickly and cheaply. 
-By densely filling consecutive 2D layers with contour-parallel extrusion toolpaths, FDM can produce parts with high stiffness and strength.
-Toolpath with uniform inward offsets from the outline polygons produce over- and underfill regions in the center of the shape, which are especially problematic for thin parts such as casings and microstructures.
+\revise{By densely filling consecutive 2D layers with contour-parallel extrusion toolpaths, FDM can produce parts with high stiffness and strength.}
+{High stiffness parts are produced by filling the 2D polygons of consecutive layers (partly) with contour-parallel extrusion toolpaths.}
+\revise{Toolpath with uniform }{Toolpaths consisting of \emph{uniform}} inward offsets from the outline polygons produce over- and underfill regions in the center of the shape, which are especially \revise{problematic for }{detrimental to the mechanical performance of} thin parts such as casings and microstructures.
 Existing approaches for generating toolpaths with adaptive width result in a large variation in widths, which for some hardware systems is difficult to realize accurately, if not beyond their capabilities.
 In this paper we present a framework which supports multiple schemes to generate toolpaths with adaptive width, by using a function to decide the number of beads and their widths which are applied from the center outward.
-Furthermore, we propose a novel scheme for FDM printing which avoids extreme bead width deviation from the nozzle size, and limits the number of altered toolpaths.
-We validate the effectiveness of our framework and this novel scheme on a data set of 300 slices.
+Furthermore, we propose a novel scheme for FDM printing which \revise{avoids}{reduces} extreme bead width deviation\revise{ from the nozzle size}{}, \revise{and limits}{while limiting} the number of altered toolpaths.
+We validate the effectiveness of our framework and this novel scheme on a data set of 300 \revise{slices}{layer outlines}.
 \end{abstract}
 
 %
@@ -230,7 +233,7 @@ Adaptive extrusion width, Toolpath generation, Additive manufacturing, Geometric
 
 \input{12_conclusions_future_work}
 
-\section*{References}
+%\section*{References}
 \bibliography{99_mybib}
 
 
