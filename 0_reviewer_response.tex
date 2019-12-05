@@ -293,8 +293,11 @@ that’s not true
 How do the authors conduct path planning? Could the authors add a simple 2D geometry with multiple holes to explain the path planning process? As the proposed approach adds more disconnected toolpaths to minimize underfill areas, an improper path planning would significantly increase the fabrication time. 
 }
 
+\todo{
 Show results on printing time
+
 Mention that the path order is not optimized
+}
 
 \Que{
 While the proposed approach can use adaptive bead width to minimize underfill and overfill areas, the generated toolpaths are disconnected compared to the traditional approaches. From my experience, a small overfill area does not have to lead to serious defects. But the disconnected filaments definitely have worse mechanical performances compared to the continuous ones. 
@@ -353,7 +356,7 @@ Quantify the approximation error depending on discretization size
 
 
 \subQue{
-For example, what happens ifthe obtuse outside angle in Figure 2 goes to 0? 
+For example, what happens if the obtuse outside angle in Figure 2 goes to 0? 
 }
 Poor example, because as the degree goes to zero the parts ofo the parabola revealed are more accurately described by the discretization than the highly curved part in the middle.
 
@@ -413,7 +416,7 @@ Add discussion points?
 \Que{
 Isn’t it possible to put bounds on the width in the existing methods, such as the approach described in [9]? More discussion on that would be helpful. 
 }
-Jins method is limited to something like $0.2-1.8 \times$ nozzle\_size
+Jins method is limited to $0.5 - 1.8 \times$ nozzle\_size
 Its not about bounds, its about how often the extremes happen
 
 \Que{
@@ -428,7 +431,7 @@ In Figure 3, why some of the edges in (c) (the ones in the center area) disappea
 Fixed.
 
 \Que{
-It is unclear how some of the parameters are adjusted, such as $\alpha_{max}, d_\text{max}^\text{unmarked}, d_\text{transition}^\text{max}, t_\text{beading}, d_\text{intersection}^\text{max}$. What are their effects on the end result? Selections seem somewhat arbitrary. 
+It is unclear how some of the parameters are adjusted, such as $\alpha_\text{max}, d_\text{max}^\text{unmarked}, d_\text{transition}^\text{max}, t_\text{beading}, d_\text{intersection}^\text{max}$. What are their effects on the end result? Selections seem somewhat arbitrary. 
 }
 Make my resaons for choosing these more explicit
 
