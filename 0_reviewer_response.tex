@@ -137,7 +137,7 @@
    \leavevmode\par
    \stepcounter{question}
    \noindent
-   \thequestion. Q --- {\bf#1}\par}
+   \thequestion. {\it#1}\par}
 
 \newcounter{question}
 \setcounter{question}{0}
@@ -151,7 +151,7 @@
    \leavevmode\par
    \stepcounter{subquestion}
    \noindent
-   \thesubquestion. Q --- {\bf#1}\par}
+   \thesubquestion. {\it#1}\par}
 
 \newcounter{subquestion}
 \setcounter{subquestion}{0}
@@ -162,7 +162,7 @@
 \newcommand\Ans[2][]{%
     \leavevmode\par\noindent
    {%\leftskip37pt
-    A --- \textbf{#1}#2\par}}
+    {\bf Response:} \textbf{#1}#2\par}}
 
 
 
@@ -201,7 +201,11 @@
 \begin{frontmatter} 
 
 \title{
-Response to reviewers}
+Response to reviewers
+\\
+\large{A framework for adaptive width control of dense contour-parallel toolpaths in additive manufacturing}
+}
+
 
 %\author{Paper ID: xxx}
 
@@ -230,6 +234,10 @@ Response to reviewers}
 %\ccsdesc[100]{Networks~Network reliability}
 
 \end{frontmatter}
+
+\Que{Example question by reviewer}
+\Ans{Example response}
+\revise{Old text in manuscript}{New text in manuscript}
 
 \section{Reviewer 1}
 Overall, the paper proposes some novel frameworks which are meaningful to additive manufacturing. Therefore, I suggest it for publication once the following major comments are addressed. 
