@@ -325,6 +325,8 @@ There is now a black outline to show that the shapes used are indeed the same.
 
 Moreover we now use the same minimum feature size for b and c.
 
+\todo{redo tests with min feature size}
+
 \Que{
 Please double check the following sentences. ”Third, the extruded path should ...”(at the second paragraph of Section 2) ”This the downward phase...” (at the last paragraph of Section 3.5) 
 }
@@ -406,7 +408,13 @@ Material Extrusion additive manufacturing (?)
 It would be nice to discuss why contour-parallel toolpaths are needed or selected. In what situations, these are required as opposed to zigzag style (or direction-parallel as referred in the text) patterns. Without such a discussion, the motivation seems a little weak. In the second paragraph of introduction, there is a short discussion about this but it sounds like the authors assume that even the perimeters (or outline) are printed with direction-parallel extrusion. However, common approach in FDM is to print the perimeters with contour parallel toolpaths and fill the inner region with direction-parallel paths only (as later acknowledged in the related work 3rd paragraph). I think the motivation for contour parallel toolpaths needs to be justified further. 
 }
 
+\todo{
 Add some sentences to make it clear
+
+Show LimitedBeadingStrategy or StrategyType::OutlineAccuracy
+
+explain this paper can be used in normal slicing
+}
 
 \Que{
 Related work acknowledges the previous work sufficiently. However, the differences between the state of the art and the presented work are not clear. More discussion on where this work stands with respect to the state of the art is required. 
@@ -424,6 +432,7 @@ Figure 4 and corresponding explanation in Section 3.2 are confusing. Why such de
 }
 Maybe put something like “this figure is for back-reference if you forgot what a thing is for”
 
+Are you sure you mean figure 4? Maybe figure 3 or figure 2?
 
 \Que{
 In Figure 3, why some of the edges in (c) (the ones in the center area) disappear in (d)?
