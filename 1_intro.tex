@@ -40,7 +40,10 @@ See \cref{intro_wedge_centered}.
 Still, controlling the extrusion width through movement speed changes or through volumetric flow control (e.g. linear advance) yields diminishing accuracy for deposition widths farther away from the nozzle size,
 since process parameters such as nozzle temperature are optimized for beads with the nozzle size.
 Moreover, reducing the variation in width is beneficial for limiting the variation in mechanical properties of the resulting product, meaning it conforms better to a simulation which employs a homogeneity assumption.
+\revise{
 Therefore, a narrower range of widths is desirable.
+}
+{We therefore reduce the bead width range by distributing the workload from the centermost bead over neighboring beads.}
 
 In this paper we propose a framework for planning toolpaths with control over the adaptive width for minimizing over- and underfill. 
 We show that this framework supports various control schemes for determining the bead spacing and extrusion widths. 
