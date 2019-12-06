@@ -266,20 +266,19 @@ Could the authors provide a mathematical foundation for the relationship between
 }
 
 \todo{
-Refer to fig 5 and comment about 3-way intersections and 3-way gaps
-Try to make a formula which predicts the amount of over- and underfill
-
-Tim: I actually think this question is mostly related to DfAM. I think we should add something like the following to the manuscript:
+I actually think this question is mostly related to DfAM. I think we should add something like the following to the manuscript:
 }
 
 \revise{}{
 Suppose that under some criterion of manufacturability we have established that we can attain bead widths within the range $[w_\text{min}, w_\text{max}]$.
 We can then conclude that in order for a model to be manufacturable its widths should be within the set of ranges $\bigcup_{i\in \mathcal{N}}([i w_\text{min},i w_\text{max}])$.
-If $w_\text{max} > 2 w_\text{min}$ this reduces to $[w_\text{min}, \infty]$
-If $w_\text{max} = w_\text{min} = w^*$ this reduces to $\{w^*, 2w^*, 3w^* \dots\}$
-If for example $\nicefrac23 w_\text{min} < w_\text{max} < 2 w_\text{min}$, a manufacturable model should have widths in the ranges $\{[w_\text{min},w_\text{max}],[2 w_\text{min}, \infty]\}$
+If $w_\text{min} = w_\text{max} = w^*$ this reduces to $\{w^*, 2w^*, 3w^* \dots\}$.
+On the other hand we assume that $w_\text{max} > 2 w_\text{min}$ and so a model is manufacturable if the feature size is within $[w_\text{min}, \infty]$ everywhere.
+%If for example $\nicefrac23 w_\text{min} < w_\text{max} < 2 w_\text{min}$, a manufacturable model should have widths in the ranges $\{[w_\text{min},w_\text{max}],[2 w_\text{min}, \infty]\}$
 
-However, we propose no such binary criterion of manufacturability; instead we assume that the manufacturability generally goes down as the requested bead width variation goes up. By keeping the bead widths closer to a nominal bead width we guarantee the manufacturability goes up for any manufacturability measure.
+However, we propose no such binary criterion of manufacturability;
+instead we assume that the manufacturability generally diminishes as the requested bead width variation widens.
+By keeping the bead widths closer to the preferred bead width any reasonable measure of manufacturability is higher than for alternative methods.
 }
 \todo{Actually add this to the manuscript!}
 
@@ -305,7 +304,7 @@ We have added a figure to show that functionality.
 See also our response to 1.6.
 }
 \todo{add widening changes; explain how widening is used in generating the results}
-\commits{a5ddf3a73e3df20e43f25eafb93e9ce3a1393b13, d3fe6c86ee887da0e33fefdc43a83d014bc6047b, 0ac1c930a7cd2d1d305da730c9d5db20f4a8ea3f}
+\commits{a5ddf3a73e3df20e43f25eafb93e9ce3a1393b13, d3fe6c86ee887da0e33fefdc43a83d014bc6047b, 0ac1c930a7cd2d1d305da730c9d5db20f4a8ea3f, 9281d8ae7350539102be0ead7b2ffc611591d2b4, a88ccd3309aef1233ed00ce9f22b244fe64668f4}
 
 \todo{
 Tim:
@@ -321,8 +320,20 @@ Note: our tests do compare beading schemes with different $w_\text{min}$.
 \subQue{
 If there is no sharp corners exist, then the existing approaches such as Jin et al (2017) do not have to use bead widths of large variations. 
 }
+\Ans{
+The wedge shape of Fig. 1 was chosen because it contains a wide range of feature sizes and is therefore representative for a wide range of models.
+Nearly every model induces the full range of $[0.5w^*,1.8w^*]$ using the centered approach by Jin et. al. 2017 JMS,
+because nearly all models have feature sizes which span any range $[iw^*,(i+1)w^*]$ for $i\in\mathcal{N}$.
+See Fig. 17 in the paper of Jin et al for an example shape.
+Only shapes without central regions (a circle) or shapes with central regions with an exact multiple of $w^*$ everywhere (a rectangle) don't require any variation in bead width, but that holds for any of the beading schemes.
 
-that’s not true
+Figure~\ref{no_corners} shows an example of a shape without sharp corners, and which also requires a large bead width variation when using the constant bead count approach by Ding et al.
+}
+\begin{figure} \centering
+\includegraphics[width=.5\linewidth]{response_no_corners}
+\caption{Example shape without sharp corners but with a large variation in feature size.}
+\label{no_corners}
+\end{figure}
 
 \Que{
 How do the authors conduct path planning? Could the authors add a simple 2D geometry with multiple holes to explain the path planning process? As the proposed approach adds more disconnected toolpaths to minimize underfill areas, an improper path planning would significantly increase the fabrication time. 
@@ -337,20 +348,19 @@ Mention that the path order is not optimized
 \Que{
 While the proposed approach can use adaptive bead width to minimize underfill and overfill areas, the generated toolpaths are disconnected compared to the traditional approaches. From my experience, a small overfill area does not have to lead to serious defects. But the disconnected filaments definitely have worse mechanical performances compared to the continuous ones. 
 }
-
-We don’t know the effect…
-
-Split overfill and underfill areas and compute the amount of components and make statistics
-
-Tim: get statistics on nuber of areas with a size larger than $0.1 w^*$
+\todo{
+Tim: count number of extrusion toolpaths
 
 Tim: That might be true, but the microgaps near 3-way intersections are not fillable using overfilling; the plastic cannot creap into those cravices.
-
-\Que{
-Why the authors state the inward distributed beading scheme as new? Jin et al (2017) has proposed the strategy to add a toolpath with varying width along the center edges of the skeleton, and with unchanging width outside. 1 
 }
 
+
+\Que{
+Why the authors state the inward distributed beading scheme as new? Jin et al (2017) has proposed the strategy to add a toolpath with varying width along the center edges of the skeleton, and with unchanging width outside.
+}
+\todo{
 Tim: we should change the text to stress that we distribute the discrepancy over several beads rather than always over one bead.
+}
 
 \Que{
 \label{fig1geometry}
@@ -371,8 +381,9 @@ the wedge shape can be read as a graph where we can read out the resulting beadi
 \Que{
 Please double check the following sentences. ”Third, the extruded path should ...”(at the second paragraph of Section 2) ”This the downward phase...” (at the last paragraph of Section 3.5) 
 }
+\Ans{
 Okay. Thanks.
-
+}
 \commits{eb2a5207c83dfe069d3ab3fc37bf2149b8a51964}
 
 
@@ -397,8 +408,8 @@ We have adjusted the range of the inward distributed scheme to $N=2$ in order to
 In Fig. 17(b), where is the curve for the ”uniform” case?
 }
 \Ans{
-Done.
-Note that the width of the uniform case is \SI{0.4}{\milli\meter} \emph{everywhere}, so the curve we now added to the graph is not really informative.
+We've added it back in.
+Note that the width of the uniform case is \SI{0.4}{\milli\meter} \emph{everywhere}, so the curve is not really informative.
 }
 \commits{e5f3649455c73c8146e8d07cce13bc1e89d84cbb}
 
@@ -421,14 +432,41 @@ We have changes the wording a bit to make clear that `skeleton' refers to an und
 \subQue{
 The authors seem to use linear approximations of the medial axis - see Figure 2 (b), which is understandable given the fact that they compute the MA with the Boost library. If this is so, can the authors comment on the implications of this approximation?
 }
+\Ans{
+We chose for linear approximations because they simplify the process,
+whereas we chose for Boost because it seemed more stable than alternative libraries.
 
-Quantify the approximation error depending on discretization size
+The discretization is handled in section 3.2. Skeletal trapezoidation, second paragraph.
+The discretization simplifies the algorithm, potentially at a slight computational cost.
+Because we used $d^\text{discretization} = \SI{0.2}{\milli\meter}$, we can expect the discretized skeleton to deviate from the real skeleton by approximately \SI{0.013}{\milli\meter}, which is within the range of accuracy of the hardware system used.
+The computation of this value is complicated by the fact that the discretization always introduces a sample point at the apex and at the boundaries of significant portions of the parabola.
+(See section 3.3 Significance measure, last paragraph.)
+See Figure~\ref{response_parabola_discretization}.
 
+We don't feel this type of discretization error is worth extending the manuscript with.
+}
+\begin{figure}\centering
+\includegraphics[width=.3\linewidth]{response_parabola_discretization}
+\caption{Parabola discretization.
+Thick black is part of the outline.
+Red is significant skeleton, violet is non-significant skeleton.
+}\label{response_parabola_discretization}
+\end{figure}
 
 \subQue{
 For example, what happens if the obtuse outside angle in Figure 2 goes to 0? 
 }
-Poor example, because as the degree goes to zero the parts ofo the parabola revealed are more accurately described by the discretization than the highly curved part in the middle.
+\Ans{
+That figure is reproduced here in Fig.~\ref{overview_outline}.
+As the rightmost two points move right the degree of the corner in the middle goes to zero which causes the parts of the parabola revealed are more accurately described by the discretization than the highly curved part in the middle.
+}
+\begin{figure}\centering
+\includegraphics[width=.3\linewidth,rotate=-90]{response_simple_example_1}
+\includegraphics[width=.3\linewidth,rotate=-90]{response_simple_example_2}
+\includegraphics[width=.3\linewidth,rotate=-90]{response_simple_example_3}
+\caption{Skeletal trapezoidation}\label{overview_outline}
+\end{figure}
+
 
 \Que{
 As the authors correctly point out, the MA is not piecewise linear even for polygonal boundaries. In 3.2, second paragraph, the authors state that "the medial axis is a compact and complete representation of the shape". First, the MA + the radius function can be considered a shape representation, which is not true for the MA by itself. Second, the statement that the authors is meant to be generic, but it is not clear what compact means for a medial axis that is not piecewise linear. One can argue that the polygon itself is a rather compact representation of the shapes considered in this manuscript. 
@@ -458,7 +496,7 @@ We show the results of linear backpressure compensation in a separate figure whi
 Show S5 prints. 
 The proposed technique relies \emph{less} on the accuracy of the control than existing techniques – as exemplified by Fig 17b.
 }
-\commits{3d7238e2787f17c4cff63804eb4b84439ff85f1b}
+\commits{3d7238e2787f17c4cff63804eb4b84439ff85f1b, }
 
 \Que{
 At the same time, the scheme can potentially result in trajectories with many inflection points - this is slow and demanding for the machine. 
@@ -504,7 +542,7 @@ Show LimitedBeadingStrategy or StrategyType::OutlineAccuracy
 explain this paper can be used in normal slicing
 }
 
-\commits{6b0f8c78d31bd0c6946885da96f73f1cfc1a21ae, ac800628951417dcb28bd6e3a0ed08801735acf4}
+\commits{6b0f8c78d31bd0c6946885da96f73f1cfc1a21ae, ac800628951417dcb28bd6e3a0ed08801735acf4, a88ccd3309aef1233ed00ce9f22b244fe64668f4}
 
 \Que{
 Related work acknowledges the previous work sufficiently. However, the differences between the state of the art and the presented work are not clear. More discussion on where this work stands with respect to the state of the art is required. 
