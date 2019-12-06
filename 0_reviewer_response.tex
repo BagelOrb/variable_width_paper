@@ -252,6 +252,11 @@ We have made various language fixes and improvements to images to address some o
 
 \end{frontmatter}
 
+We are very grateful for the feedback and contributions of the reviewers.
+We feel that their feedback has provoked a leap forward in quality of the presented manuscript.
+
+
+
 \Que{Example question by reviewer}
 \Ans{Example response}
 \revise{Old text in manuscript}{New text in manuscript}
@@ -261,12 +266,42 @@ We have made various language fixes and improvements to images to address some o
 \section{Reviewer 1}
 Overall, the paper proposes some novel frameworks which are meaningful to additive manufacturing. Therefore, I suggest it for publication once the following major comments are addressed. 
 
-\Que{
-Could the authors provide a mathematical foundation for the relationship between the underfill/overfill areas and the allowed variation of bead width? I believe the proposed beading scheme can reduce the underfill/overfill areas somehow. But we still lack a mathematical theory to guide the design.
+\stepcounter{question}
+\subQue{
+Could the authors provide a mathematical foundation for the relationship between the underfill/overfill areas and the allowed variation of bead width?
+I believe the proposed beading scheme can reduce the underfill/overfill areas somehow.
+}
+\Ans{
+There is not really a relationship between under-/overfill and the allowed variation in bead width,
+aside from the microgaps generated at 3-way intersections which play a minute role.
+The state-of-the-art (Jin et al 2017 JMS) does have a relationship: the ranges $[0,w_\text{min}]$ and $[w_\text{max},2w^*]$ produce underfill and overfill respectively, so making the allowed variation wider reduces the under-/overfill for their method and likewise for the centered beading scheme.
+However, the distributed beading schemes have no such limitation.
+They minimize under-/overfill with the requirement that the allowed variation in bead width is at least a factor of 2 ($[0.75w^*,1.5w^*]$).
+\todo{So...?}
+
+Because the beading scheme decides how to fill the full radial distance using some beading sequence, under-/overfill shouldn't be a problem anymore.
+However, because there are certain interactions in 2D, this doesn't always hold.
+For example a 3-way intersection in a 3D model which is a honeycomb pattern with a feature diameter of $w^*$ causes some over and underfill using \emph{any} possible technique.
+Our proposed beading schemes efectively deal with over- and underfill, and because the current state-of-the-art did not, the proposed beading scheme indeed reduces the undefill/overfill areas.
 }
 
 \todo{
-I actually think this question is mostly related to DfAM. I think we should add something like the following to the manuscript:
+fix wording
+
+Make changes in paper:
+Clarify in intro, explain when introducing the Centered approach and show in the results section!
+Repeat in the conclusion?
+}
+
+
+\subQue{
+But we still lack a mathematical theory to guide the design.
+}
+\Ans{
+We now clearly indicate in the conclusion that we expect this paper to contribute to the reduction of Design for Aadditive Manufacturing (DfAM) constraints.
+}
+\todo{
+Maybe we should add something like the following to the manuscript: (but where?)
 }
 
 \revise{}{
@@ -275,13 +310,14 @@ We can then conclude that in order for a model to be manufacturable its widths s
 If $w_\text{min} = w_\text{max} = w^*$ this reduces to $\{w^*, 2w^*, 3w^* \dots\}$.
 On the other hand we assume that $w_\text{max} > 2 w_\text{min}$ and so a model is manufacturable if the feature size is within $[w_\text{min}, \infty]$ everywhere.
 %If for example $\nicefrac23 w_\text{min} < w_\text{max} < 2 w_\text{min}$, a manufacturable model should have widths in the ranges $\{[w_\text{min},w_\text{max}],[2 w_\text{min}, \infty]\}$
-
+}
+\todo{
 However, we propose no such binary criterion of manufacturability;
 instead we assume that the manufacturability generally diminishes as the requested bead width variation widens.
 By keeping the bead widths closer to the preferred bead width any reasonable measure of manufacturability is higher than for alternative methods.
 }
-\todo{Actually add this to the manuscript!}
 
+\commits{2e1c40be93f92a8495c0d7fa379e983dd3ee7b98}
 
 
 \stepcounter{question}
@@ -299,23 +335,16 @@ From Fig. 1(b) and (c), we can see that the approach in Jin et al (2017) can fil
 }
 \Ans{
 We now use the same minimal feature size in all approaches.
-This is now handled by the \emph{widening} meta-scheme.
-We have added a figure to show that functionality.
-See also our response to 1.6.
+We have added this functionality to the \emph{widening} meta-scheme.
+We have also added a figure to show that functionality.
 }
-\todo{add widening changes; explain how widening is used in generating the results}
+\todo{
+Redo the tests with homogeneous $r_\text{min}$
+
+note value of $r_\text{min}$ in paper
+}
 \commits{a5ddf3a73e3df20e43f25eafb93e9ce3a1393b13, d3fe6c86ee887da0e33fefdc43a83d014bc6047b, 0ac1c930a7cd2d1d305da730c9d5db20f4a8ea3f, 9281d8ae7350539102be0ead7b2ffc611591d2b4, a88ccd3309aef1233ed00ce9f22b244fe64668f4}
 
-\todo{
-Tim:
-Any beading scheme can easily be modified to change the minimal feature width, simply by supplying that $q(d) = 0$ if $d < w_\text{min}$ and that $q(d) = 1$ if $w_\text{min} < d < w^*$
-
-Tim: changed widening scheme to handle both minimal feature size and minimal bead width
-@others: The new widening scheme figure now shows a bug in widening, perhaps we should only control the min feature size and leave out widening.
-
-Note: our tests do compare beading schemes with different $w_\text{min}$.
-? Should we redo the tests?
-}
 
 \subQue{
 If there is no sharp corners exist, then the existing approaches such as Jin et al (2017) do not have to use bead widths of large variations. 
@@ -348,8 +377,19 @@ Mention that the path order is not optimized
 \Que{
 While the proposed approach can use adaptive bead width to minimize underfill and overfill areas, the generated toolpaths are disconnected compared to the traditional approaches. From my experience, a small overfill area does not have to lead to serious defects. But the disconnected filaments definitely have worse mechanical performances compared to the continuous ones. 
 }
+\Ans{
+That is a difficult question.
+It might very well be true that discontinuous extrusion lines form a bigger problem than some over- or underfill areas - at least certainly for flexible filaments on a Bowden printer.
+However, it is quite hard to find a mathematical approach to balance discontinuity with the size of over-/underfill areas.
+
+It should be noted that even small underfill areas can be unfillable using an overextrusion approach.
+For example the microgaps at 3-way intersections.
+The viscocity if molten filament is too high to reach into those small crevices.
+}
 \todo{
-Tim: count number of extrusion toolpaths
+Tim: count number of extrusion toolpaths?
+
+mention as future work?
 
 Tim: That might be true, but the microgaps near 3-way intersections are not fillable using overfilling; the plastic cannot creap into those cravices.
 }
@@ -375,7 +415,6 @@ The question can also be interpreted as saying that one might use a different sh
 We decided on this wedge shape because it shows how the techniques deal with a wide range of feature sizes;
 the wedge shape can be read as a graph where we can read out the resulting beading for any local feature size.
 }
-\todo{redo tests with min feature size}
 \commits{45853e8b30d93f60e9465cbb649e347f9cfc23b1, 53224c04ceff6c1b18a9eea6de8e7e33957b7797}
 
 \Que{
@@ -402,7 +441,7 @@ What are the differences between the distributed and the inward scheme in Fig. 1
 \Ans{
 We have adjusted the range of the inward distributed scheme to $N=2$ in order to generate a bigger difference between these images.
 }
-\commits{735762b1e7daf31ae4465bf288ef867ded7da095}
+\commits{735762b1e7daf31ae4465bf288ef867ded7da095, 93352058a46fb391e323df16f45466adb8cad508}
 
 \Que{
 In Fig. 17(b), where is the curve for the ”uniform” case?
@@ -488,7 +527,7 @@ elber1991error,
 Moreover, the proposed technique seems to rely on rather accurate control of the width w of the deposited material, but it is not clear whether such control is achievable in practice. 
 }
 \Ans{
-The photos of our print results already showed that adaptive width control is possible up to some (insufficient) extent.
+The photos of our print results already showed that adaptive width control is possible up to some (admittedly insufficient) extent.
 We have developed a new method for actualizing adaptive width control which can readily be applied to unmodified FDM systems such as the Ultimaker S5: linear backpressure compensation.
 We show the results of linear backpressure compensation in a separate figure which clearly shows the achieved variance in bead width.
 }
@@ -533,35 +572,33 @@ It would be nice to discuss why contour-parallel toolpaths are needed or selecte
 \Ans{
 The industry standard is to use a combination of contour-parallel and direction-parallel.
 We now clarify why contour-parallel is (partly) used and that in as much as contour-parallel is used, our approach improves on the industry standard.
-}
-\todo{
-Add some sentences to make it clear
-
-Show LimitedBeadingStrategy or StrategyType::OutlineAccuracy
-
-explain this paper can be used in normal slicing
+We have also developed and presented a new meta-scheme for generating only a limited number of perimeters, which shows that our technique is compatible with the industry standard for FDM 3D printing.
 }
 
-\commits{6b0f8c78d31bd0c6946885da96f73f1cfc1a21ae, ac800628951417dcb28bd6e3a0ed08801735acf4, a88ccd3309aef1233ed00ce9f22b244fe64668f4}
+\commits{6b0f8c78d31bd0c6946885da96f73f1cfc1a21ae, ac800628951417dcb28bd6e3a0ed08801735acf4, a88ccd3309aef1233ed00ce9f22b244fe64668f4, 077c8ee138bb311a8ba9abf303af4b09e973637a}
 
 \Que{
 Related work acknowledges the previous work sufficiently. However, the differences between the state of the art and the presented work are not clear. More discussion on where this work stands with respect to the state of the art is required. 
 }
-\todo{
-Add discussion points?
+\Ans{
+We have tried to address this in response to several other reviewers' comments.
+See .
+We now clearly claim that our method produces a lower range of bead widths than the state-of-the-art.
 }
+\todo{link with other responses}
 \commits{004894210fbc961f82b792fc702d1b67a1a8e8e8}
+
+
 
 \Que{
 Isn’t it possible to put bounds on the width in the existing methods, such as the approach described in [9]? More discussion on that would be helpful. 
 }
 \Ans{
-The bead width in Jin et al. is limited to $0.5 w^*$ to $1.8 w^*$ , which means the variation is a factor of $3.2$; this was already described in the related work section, but the factor was wrongly said to be $2$ instead of $3.2$.
+The bead width in Jin et al. is limited to $0.5 w^*$ to $1.8 w^*$ , which means the variation is a factor of $3.2$;
+this was already described in the related work section, but the factor was wrongly said to be $2$ instead of $3.2$.
+We emphasized that our method (generally) results in a bead width deviation of $2$, rather than $3.2$ in the related work section and in the discussion section.
 }
-\todo{
-Its not about bounds, its about how often the extremes happen
-}
-\commits{661d8f6766548c287cb174070432097e396d198f}
+\commits{661d8f6766548c287cb174070432097e396d198f, 92217c04e118dcf6f65b16a1ffcdfa40b4d50c0d}
 
 \Que{
 Figure 4 and corresponding explanation in Section 3.2 are confusing. Why such decomposition is needed is not clear to me. 
