@@ -326,9 +326,12 @@ By keeping the bead widths closer to the preferred bead width any reasonable mea
 The authors should highlight their contributions compared to the existing approaches for generating toolpaths with adaptive width.
 }
 \Ans{
-afs
+See also our response to 1.5.
 }
-\commits{66d006d91d406c0064ee1f4f1e4df85fc0821994}
+\todo{
+Describe changes
+}
+\commits{66d006d91d406c0064ee1f4f1e4df85fc0821994, e806d40e5e6d2bbe450c6792b802f0fcce4df645}
 
 \subQue{
 From Fig. 1(b) and (c), we can see that the approach in Jin et al (2017) can fill the sharp right end, but the proposed approach can not. 
@@ -387,20 +390,23 @@ For example the microgaps at 3-way intersections.
 The viscocity if molten filament is too high to reach into those small crevices.
 }
 \todo{
-Tim: count number of extrusion toolpaths?
+count number of extrusion toolpaths?
 
 mention as future work?
 
-Tim: That might be true, but the microgaps near 3-way intersections are not fillable using overfilling; the plastic cannot creap into those cravices.
+That might be true, but the microgaps near 3-way intersections are not fillable using overfilling; the plastic cannot creap into those cravices.
 }
 
 
 \Que{
 Why the authors state the inward distributed beading scheme as new? Jin et al (2017) has proposed the strategy to add a toolpath with varying width along the center edges of the skeleton, and with unchanging width outside.
 }
-\todo{
-Tim: we should change the text to stress that we distribute the discrepancy over several beads rather than always over one bead.
+\Ans{
+The difference between the inward distributed beading scheme and the method by Jin et al 2017 JMS is already shown in Fig 1.b and c. 
+It is also shown in Fig. 16 c and e.
+In order to clearly address the difference early on we mention the difference in the description of Jin in the introduction.
 }
+\commits{b7c4d299a76e9fab6c233d572f3248c1350a2e8c}
 
 \Que{
 \label{fig1geometry}
@@ -521,7 +527,9 @@ More generally, the technique seems to effectively be a variable offset scheme, 
 Find more literature
 }
 
+\todo{
 elber1991error, 
+}
 
 \Que{
 Moreover, the proposed technique seems to rely on rather accurate control of the width w of the deposited material, but it is not clear whether such control is achievable in practice. 
@@ -539,14 +547,18 @@ The proposed technique relies \emph{less} on the accuracy of the control than ex
 
 \Que{
 At the same time, the scheme can potentially result in trajectories with many inflection points - this is slow and demanding for the machine. 
-Show print time results
+}
+\Ans{
+We have added statistics on fabrication time and discussed our findings.
+See our response to 1.3.
 }
 
 \Que{
 Finally, the examples provided depict the results obtained by the authors by "emulating" other techniques, but not with the actual results produced by the other techniques. While the reason behind this choice is easy to guess, it weakens the effectiveness of the claims. Adding careful discussions/extensions to support these questions would make the paper stronger.
 }
+\todo{
 Discuss how much the over-fill / underfill and bead width variation depend on the fact that our reimplementations are only approximations.
-
+}
 
 
 
@@ -582,7 +594,7 @@ Related work acknowledges the previous work sufficiently. However, the differenc
 }
 \Ans{
 We have tried to address this in response to several other reviewers' comments.
-See .
+See our response to 1.5, 1.1.1.
 We now clearly claim that our method produces a lower range of bead widths than the state-of-the-art.
 }
 \todo{link with other responses}
@@ -603,41 +615,52 @@ We emphasized that our method (generally) results in a bead width deviation of $
 \Que{
 Figure 4 and corresponding explanation in Section 3.2 are confusing. Why such decomposition is needed is not clear to me. 
 }
+\todo{
 Maybe put something like “this figure is for back-reference if you forgot what a thing is for”
 
 Are you sure you mean figure 4? Maybe figure 3 or figure 2?
+}
 
 \Que{
 In Figure 3, why some of the edges in (c) (the ones in the center area) disappear in (d)?
 }
+\Ans{
 Fixed. Fig 3 c and d now have the same discretization.
+}
 \commits{43cadb352a6a276bbaaab53f9b5b217bec4b3a2e}
 
 \Que{
 It is unclear how some of the parameters are adjusted, such as $\alpha_\text{max}, d_\text{max}^\text{unmarked}, d_\text{transition}^\text{max}, t_\text{beading}, d_\text{intersection}^\text{max}$. What are their effects on the end result? Selections seem somewhat arbitrary. 
 }
-Make my resaons for choosing these more explicit
-
+\todo{
+Make my reasons for choosing these more explicit
+}
 
 
 \Que{
 Is this approach generalizable to sparse infill? It is very common in FDM to use a sparse infill and only use dense fill on surface regions.
 }
-The goal of this paper is to minimize underfill using a low variation in bead width; generalizing it to sparse infill makes no sense because there the ‘underfill’ is intentional.
-
-\commits{6b0f8c78d31bd0c6946885da96f73f1cfc1a21ae}
+\Ans{
+The goal of sparse infill on the otherhand is to generate intentional spacing between lines; this is not reconcilable with the goal of preventing underfill.
+However, we did show that the contour-parallel toolpaths can be combined with sparse infill.
+See our response to 3.2.
+}
 
 
 \Que{
 If this is used for outer surface, what are the implications on the surface quality in comparison to other approaches? 
 }
+\todo{
 This is one of the usecases why this is a good method
 Discuss effect of this algorithm on the outline accuracy
+}
 
 \Que{
 I think Figure 13 should be replaced with a table. 
 }
-Done.
+\Ans{
+Indeed. Done.
+}
 \commits{735762b1e7daf31ae4465bf288ef867ded7da095}
 
 \Que{
@@ -650,14 +673,18 @@ We cannot reproduce this typesetting bug. Please inform the proofing department 
 \Que{
 Evaluation in the results section is overall good but it is not clear what are the implications of the presented approach on the complete 3D result. A discussion on this would be helpful.
 }
+\todo{
 Perhaps discuss effect of width changes on amount of fusing between layers
+}
 
 \Que{
 What are the limitations of the presented algorithm? I do not see any discussions of the limitations of the algorithm.
 }
+\todo{
 Linear approximations 
-a lot of direction changes
 
+a lot of direction changes (?)
+}
 
 
 
