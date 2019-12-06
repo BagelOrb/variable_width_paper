@@ -458,6 +458,7 @@ An illustration of the anchors is shown in \cref{beading_transitioning_filtering
 
 We perform a filtering step to prevent frequently changing the bead count back and forth within a short distance.
 For two consecutive anchors which transition to opposite directions, if the distance between them is smaller than some limit $d_\text{max}^\text{transition}$, the bead counts at all nodes in-between are set to the surrounding bead counts, and consequently these anchors are removed (See \cref{beading_transitioning_filtering__filtered}).
+This means that for some small regions we generate toolpaths with bead widths outside the typical range.
 
 % For each edge which contains a transition anchor we walk along the marked edges until we encounter another anchor.
 % If the other anchor is a transition in the opposite direction and the traversed distance is within some limit $d_\text{max}^\text{transition}$ we remove the transitions and set the bead counts at all nodes in the filtered region to the surrounding bead counts.
