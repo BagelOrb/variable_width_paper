@@ -1,13 +1,17 @@
 \section{Conclusion and future work}
-In this paper we have introduced a framework for computing contour-parallel toolpaths employing adaptive bead width in order to minimize underfill and overfill areas.
+In this paper we have introduced a framework for computing contour-parallel toolpaths employing adaptive bead width in order to minimize underfill and overfill areas\revise{.}{ and we introduced beading schemes which improve on the state-of-the-art.}
+
 Our framework is flexible, demonstrated by the several beading schemes which emulate existing techniques.
 The computation times of our framework are on par with the state-of-the-art library for performing offsets of non-adaptive bead width.
 Our framework is stable: small local changes in the outline shape cause only small changes in the toolpath.
 
-We presented the inward distributed beading scheme.
-It reduces the amount of beads with a width deviating extremely from the preferred bead width, and thus it is expected to limit the impact of varying the bead width in terms of production accuracy and homogeneity of material properties,
+\revise{We presented the}{The} inward distributed beading scheme
+\revise{It}{} reduces the amount of beads with a width deviating extremely from the preferred bead width \revise{}{by changing the width of several beads near the center instead of only the center-most bead}.
+\revise{, and thus it is}{It is therefore} expected to limit the impact of varying the bead width in terms of production accuracy and homogeneity of material properties,
 which in turn is helpful to efficiently simulate an FDM manufactured part.
+\revise{
 Furthermore, by distributing the deviation in bead width over several beads near the center of the shape, the outer toolpath is affected less by the deviation, meaning that the dimensional accuracy of the shape of the outline contour is affected less by inaccuracies in the mechanical control system which realizes adaptive bead width.
+}{}
 
 The proposed beading scheme greatly improves the process planning for parts with thin contours, which often occur for example in architectural models, prototypes for casings or microstructures.
 Meanwhile it leaves most of the toolpaths the same as the uniform width technique in large features, meaning that existing studies which relate process parameters with mechanical properties of the print are still applicable.
