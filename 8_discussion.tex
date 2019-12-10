@@ -38,7 +38,7 @@ Thus the inward distributed scheme prevents over- and underfill, generates smoot
 
 
 
-
+\revise{
 \subsection{Discussion on implications}
 Note that the current industry standard in FDM printing employs little to no bead width variation.
 Properly performing bead width variation calls for adaptations and developments in printers and firmware.
@@ -51,14 +51,13 @@ Still direct drive printers require some control system in order to accurately c
 Yet inaccuracies in direct drive systems employing advance algorithms might arise due to the changes in back-pressure required by changing bead size.
 We expect that developments in printing hardware and firmware will address these challenges in the future.
 
-
 Another limiting factor for adopting adaptive bead width is the format of G-code which stores machine instructions.
 G-code does not support moves with varying cross-sectional area.
 A typical extrusion move \lstinline{G1 X$x$ Y$y$ E$v$} only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed along the extrusion move.
 A workaround is to approximate a variable width extrusion segment by smaller segments with constant width.
 However, this introduces errors nevertheless.
 Ideally the G-code language would be expanded in some way to allow for extrusion segments with varying cross-sectional area.
-
+}{}
 
 % Taking a broader perspective, we note that our proposed inward distributed scheme is a pragmatic solution.
 % Rather than deriving some optimal beading scheme from a clear specification of the objective, we propose some arbitrary inward distributed beading scheme and show that it is better than the other beading schemes.

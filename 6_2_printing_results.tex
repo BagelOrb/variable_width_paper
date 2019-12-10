@@ -57,3 +57,39 @@ Trying to reproduce \subref{backpressure_target} without backpressure compensati
 \label{backpressure_compensation}
 \end{figure}
 
+
+% adapted from 5.5 Discussion on implications
+\todo{Reword the following paragraph, which is adapted from 5.5 Discussion on implications.}
+
+Note that the current industry standard in FDM printing employs little to no bead width variation.
+\revise{
+Properly performing bead width variation calls for adaptations and developments in printers and firmware.
+In the beading schemes we set a transition length of $t(n) = w^*$.
+That will demand changes in cross-sectional area of the bead up to \SI{200}{\percent} over a small distance that is comparable to the nozzle size, which is challenging for some hardware systems.
+Varying the movement speed can be utilized to change the cross-sectional area, 
+}{While some software packages generate toolpaths similar to the state-of-the-art,
+the naive constant width offset approach is still widely used.
+Our backpressure compensation algorithm effectively changes the speed to realize adaptive width,
+}
+but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath~\cite{Ertay2018,Kuipers2018}.
+\revise{
+Our schemes require a more accurate control of the volumetric flow rate in \si{\milli\meter\cubed\per\second}.
+}{}
+Using a filament feeder directly mounted on the print head (a.k.a. direct drive) can \revise{control the flow more dynamicaly}{provide more dynamic control over the flow} \revise{then}{than} FDM printers where the material is fed through a Bowden tube from a feeder mounted on the frame.
+\revise{
+Still direct drive printers require some control system in order to accurately change the volumetric flow rate such as pressure advance algorithms~\cite{tronvoll2019investigating}.
+Yet inaccuracies in direct drive systems employing advance algorithms might arise due to the changes in back-pressure required by changing bead size.
+We expect that developments in printing hardware and firmware will address these challenges in the future.
+}{Direct drive printers can benefit from \emph{pressure advance algorithms} which dynamically change the internal pressure \cite{tronvoll2019investigating},
+but presumably backpressure would still be a significant factor one might want to compensate for.
+}
+
+
+\todo{For super small layer heights it might be impossible to reach a bead width range with a factor of $2$.}
+
+Another limiting factor for adopting adaptive bead width is the format of G-code which stores machine instructions.
+G-code does not support moves with varying cross-sectional area.
+A typical extrusion move \lstinline{G1 X$x$ Y$y$ E$v$} only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed along the extrusion move.
+A workaround is to approximate a variable width extrusion segment by smaller segments with constant width.
+However, this introduces errors nevertheless.
+Ideally the G-code language would be expanded in some way to allow for extrusion segments with varying cross-sectional area.
