@@ -55,8 +55,8 @@ However, this extension inherits a problem in the original method:
 from any point in the skeleton to the boundary, the number of toolpaths is constant.
 Since the distance may vary considerably for shapes with both large and small features, this strategy leads to a toolpath with widths that may differ by a factor beyond $3$, which is impossible for some FDM systems.
 \citeauthor{Jin2017JMS} proposed a strategy of adding a toolpath with varying width along the center edges of the skeleton, while leaving other paths unchanged~\cite{Jin2017JMS}.
-The resulting variation of width in the center is still up to a factor of $2$ (see \cref{intro_wedge_centered}).
-In this paper we propose a novel scheme to distribute the width alterations throughout a region around the center, and thus limit the occurrence of extreme deviations in width (see \cref{intro_wedge_distributed}).
+The resulting variation of width in the center is still up to a factor of \revise{$2$}{$3.6$} (see \cref{intro_wedge_centered}).
+In this paper we propose a novel scheme to distribute the width alterations throughout a region around the center, and thus limit the occurrence of extreme \revise{deviations}{variation} in width (see \cref{intro_wedge_distributed}).
 
 % the context where our method can be positioned, and some related problems in that context
 Under- and over-filling issues have a large proportional impact for thin geometric features.

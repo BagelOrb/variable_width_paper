@@ -283,8 +283,8 @@ See \cref{formula_constant_bead_count}.
 \paragraph{Centered}
 We can emulate the method from \citeauthor{Jin2017JMS} by transcribing how they deviate from the uniform width toolpaths.
 We therefore base the beading scheme on the bead count $q^-(d)$ defined by the uniform beading scheme.
-\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w^*$.
-Conversely, they place an extra bead when the radius between the center and either of the innermost beads exceeds $r_\text{max} = 1.25 w^*$~\cite{Jin2017JMS}.
+\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w^*$\revise{}{, which gives us $w_\text{max}=1.8 w^*$}.
+Conversely, they place an extra bead when the radius \revise{between the center and either of the innermost beads }{}exceeds $r_\text{max} = 1.25 w^*$~\cite{Jin2017JMS}\revise{}{, which gives us $w_\text{min}=0.5 w^*$}.
 We emulate the rounded polygonal path rerouting they define by supplying a transition length which results in a discretized version of the rounded polygon segment.
 See \cref{formula_centered}.
 
