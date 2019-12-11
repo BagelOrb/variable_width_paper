@@ -123,7 +123,7 @@
 	
 	% Revise macro (usage: \revise{old}{new})
 	% Version a) First arg red and striked out, second argument green
-	\newcommand{\revise}[2]{\noindent{\color{red}{{#1}}}\noindent{\color{blue}{#2}}}
+	\newcommand{\revise}[2]{\noindent{\color{red}{\stkout{#1}}}\noindent{\color{blue}{#2}}}
 	% Version b) First arg ignored, second argument green
 	%\newcommand{\revise}[2]{\textcolor{blue}{#2}}
 	% Version c) First arg ignored, second argument unchanged (for final draft)
@@ -209,8 +209,8 @@
 
 \title{
 Response to reviewers
-\
-\large{A framework for adaptive width control of dense contour-parallel toolpaths in additive manufacturing}
+\\
+\large{A framework for adaptive width control of dense contour-parallel toolpaths in \revise{additive manufacturing}{fused deposition modeling}}
 }
 
 
