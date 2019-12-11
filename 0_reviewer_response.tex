@@ -273,66 +273,51 @@ We feel that their feedback has provoked a leap forward in quality of the presen
 \section{Reviewer 1}
 Overall, the paper proposes some novel frameworks which are meaningful to additive manufacturing. Therefore, I suggest it for publication once the following major comments are addressed. 
 
-\stepcounter{question}
 
 
 
 
-\subQue{
+%\stepcounter{question}
+\Que{
 Could the authors provide a mathematical foundation for the relationship between the underfill/overfill areas and the allowed variation of bead width?
 I believe the proposed beading scheme can reduce the underfill/overfill areas somehow.
-}
-\Ans{
-There is not really a relationship between under-/overfill and the allowed variation in bead width,
-aside from the microgaps generated at 3-way intersections which play a minute role.
-The state-of-the-art (Jin et al 2017 JMS) does have a relationship: the ranges $[0,w_\text{min}]$ and $[w_\text{max},2w^*]$ produce underfill and overfill respectively, so making the allowed variation wider reduces the under-/overfill for their method and likewise for the centered beading scheme.
-However, the distributed beading schemes have no such limitation.
-They minimize under-/overfill with the requirement that the allowed variation in bead width is at least a factor of 2 ($[0.75w^*,1.5w^*]$).
-\todo{So...?}
-
-Because the beading scheme decides how to fill the full radial distance using some beading sequence, under-/overfill shouldn't be a problem anymore.
-However, because there are certain interactions in 2D, this doesn't always hold.
-For example a 3-way intersection in a 3D model which is a honeycomb pattern with a feature diameter of $w^*$ causes some over and underfill using \emph{any} possible technique.
-Our proposed beading schemes efectively deal with over- and underfill, and because the current state-of-the-art did not, the proposed beading scheme indeed reduces the undefill/overfill areas.
-}
-
-\todo{
-fix wording
-
-Make changes in paper:
-Clarify in intro, explain when introducing the Centered approach and show in the results section!
-Repeat in the conclusion?
-}
-
-
-
-
-
-
-\subQue{
 But we still lack a mathematical theory to guide the design.
 }
 \Ans{
-We now clearly indicate in the conclusion that we expect this paper to contribute to the reduction of Design for Aadditive Manufacturing (DfAM) constraints.
-}
-\todo{
-Maybe we should add something like the following to the manuscript: (but where?)
+The relationship between under-/overfill and bead widths can be split into several components:
+\begin{enumerate*}
+\item depending on the feature size
+\item depending on the change in feature size
+\item depending on the topology
+\end{enumerate*}
+.
+In the first case we consider a part with a constant feature size, in the second we consider the rate of change of feature size and in the thirs we consider the influence of 3-way intersections.
+
+1. When considering a part with constant feature diameter $d$ we note that the beading only depends on the feature diameter: $B(n, r) = B(q(2r), r)$.
+From the beading function we can easily derive the under-/overfill by summing over the bead widths $W$.
+We can then derive that the naive scheme produces over-/underfill at all diameters except $d=2i w^*$, the center scheme for $(i + 0.8) w^* < d < (i+ 1.25) w^*$ and the constant and distributed schemes nowhere (except for features smaller than $w^*$).
+We have added a paragraph to the new section 5.1 Theoretical consideration to explain this and the implications for design for additive manufacturing.
+
+2. When the feature size changes the amount of over-/underfill is related to a bisector angle $\alpha < \alpha_\text{max}$ according to the formula already given in section 3.3, paragraph `Significance measure': 
+``This corresponds to overfill areas and underfill areas the size of $\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$''.
+This formula is also relevant for the other beading schemes because the nonsignificant regions are filled in a similar fashion to the naive technique.
+For small bisector angles these under-/overfill areas are considered to be permittably small.
+We hope that this explanation suffices for the reviewer and the existing text suffices for the general reader.
+
+3. The topology also has an influence on underfill. For example, a 3-way intersection in a 3D model which is a honeycomb pattern with a feature diameter of $w^*$ causes some over and underfill using \emph{any} possible technique, because 3 printed beads come together in the same point.
+Also a honeycomb of $2w^*$ diameter causes some underfill in the center;
+when 3 beads surround a single point there will always remain a micro-gap because of the high viscosity of the molten filament.
+This is handled in Fig. 12 and the last paragraph of section 3.6.
+
+As for `the allowed variation of bead width': our vision \emph{was} that there should be no binary criterion for manufacturability and instead there should only be a floating number evaluation of manufacturability of a given bead width.
+However, we have now put bounds on the induced bead widths, so that the reader could compare our method to any range of `allowed variation' according to any manufacturability criterion.
+See the answer to question 3.4.
 }
 
-\revise{}{
-Suppose that under some criterion of manufacturability we have established that we can attain bead widths within the range $[w_\text{min}, w_\text{max}]$.
-We can then conclude that in order for a model to be manufacturable its widths should be within the set of ranges $\bigcup_{i\in \mathcal{N}}([i w_\text{min},i w_\text{max}])$.
-If $w_\text{min} = w_\text{max} = w^*$ this reduces to $\{w^*, 2w^*, 3w^* \dots\}$.
-On the other hand we assume that $w_\text{max} > 2 w_\text{min}$ and so a model is manufacturable if the feature size is within $[w_\text{min}, \infty]$ everywhere.
-%If for example $\nicefrac23 w_\text{min} < w_\text{max} < 2 w_\text{min}$, a manufacturable model should have widths in the ranges $\{[w_\text{min},w_\text{max}],[2 w_\text{min}, \infty]\}$
+\commits{2e1c40be93f92a8495c0d7fa379e983dd3ee7b98
+3b13960e15c07f484ab641a2d941f6086eda571c
+5b8c5971d606089754ba118560e51ec6d7dfda0b % new section
 }
-\todo{
-However, we propose no such binary criterion of manufacturability;
-instead we assume that the manufacturability generally diminishes as the requested bead width variation widens.
-By keeping the bead widths closer to the preferred bead width any reasonable measure of manufacturability is higher than for alternative methods.
-}
-
-\commits{2e1c40be93f92a8495c0d7fa379e983dd3ee7b98}
 \paper{Conclusion}{
 \revise{}{It is expected that as distributed beading schemes are implemented in commercial software packages and bead width variation control become commonplace, the practice of design for additive manufacturing can disregards most of the nozzle size considerations.}
 }
