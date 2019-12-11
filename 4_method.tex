@@ -304,7 +304,8 @@ We make use of the \emph{bisector angle} as an indicator of significance which i
 %Centrality can be formalized by looking at a commonly used significance measure knows as the \emph{bisector angle}.
 The bisector angle $\alpha$ is the interior angle $\angle{p_0lp_1} \leq \SI{180}{\degree}$, between any location $l$ on an edge of the ST and its two supporting points $ \{ p_0, p_1 \} = \text{sup}(l)$~\cite{attali1996modeling}. 
 An edge is significant if the bisector angle on any location on the edge exceeds a prescribed $\alpha_\text{max}$. 
-As illustrated in See \cref{naive_overfill_underfill}, for a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$. This corresponds to overfill areas and underfill areas the size of $\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using the simple technique of uniform bead width $w^*$.
+As illustrated in \revise{See }{}\cref{naive_overfill_underfill}, for a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$.
+This corresponds to overfill areas and underfill areas the size of $\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$ when filled using the simple technique of uniform bead width $w^*$.
 Although significance measures are commonly used as a heuristic for finding the parts of a skeleton which are in some sense relevant~\cite{attali1996modeling,Sud2007},
 we use the bisector angle as an \emph{exact} indicator of the amount of overfill and underfill in the uniform toolpaths of constant width.
 %Contrary to related literature we will \emph{keep} the non-significant regions of the skeleton.
