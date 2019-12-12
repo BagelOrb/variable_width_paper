@@ -357,8 +357,9 @@ Colors represent bead widths.
 
 
 \paragraph{Widening \revise{}{meta-scheme}}
-Complementary to any of these schemes we can enforce a minimum feature size at no extra cost in our framework.
+Complementary to any of these schemes we can enforce a minimum feature size \revise{at no extra cost}{and minimum bead width} in our framework.
 Regions where the model is narrower than \revise{the nozzle size}{some $r_\text{min}$} can be printed with a bead width \revise{}{$w_\text{min}$} larger than the model thickness.
+See \cref{min_feature_size} and~\subref{widening}.
 We can simply override
 \begin{align*}
 q'(d) &= 
@@ -396,19 +397,43 @@ W(n,r)_i & \text{ otherwise}
 These meta-schemes introduce non-linearities in the quantization function.
 Because the beading is only evaluated at nodes in the skeleton, we need to make sure that there are nodes at the locations along the skeleton where the non-linearities happen.
 We therefore insert extra nodes along with their ribs at locations $v$ with a radial distance $R(v) = r_\text{min}$ for widening and at $R(v) \in \left\{ M w^*, q^{-1}(M), q^{-1}(M) + \nicefrac12 w^* \right\} $ for the transition from narrow shell to unconstrained shell.
-Combining all meta-schemes functionality we can generate results such as depicted in \cref{widening_shell}.
+Combining all meta-schemes functionality we can generate results such as depicted in \cref{shell}.
 
 \begin{figure}
 \centering
-\includegraphics[rotate=90,width=.6\columnwidth]{sources-validation-gMat_example_all_combined.png}
+\setlength{\figwidth}{.35\columnwidth}
+\setlength{\figwidthTwo}{.6\columnwidth}
+\begin{minipage}[b]{\figwidthTwo} \centering
+\begin{subfigure}[b]{\figwidthTwo}\centering
+\includegraphics[width=\columnwidth]{sources-validation-wedge-TEST-Distributed-feature-size.png}
+\caption{Widening meta-scheme using $w_\text{min} = 2 r_\text{min} = 0.1$
+\\ on top of the Distributed scheme}
+\label{min_feature_size}
+\end{subfigure}
+\begin{subfigure}[b]{\figwidthTwo}\centering
+\includegraphics[width=\columnwidth]{sources-validation-wedge-TEST-Center-widening.png}
+\caption{Widening meta-scheme using $w_\text{min} = 0.5$, $2 r_\text{min} = 0.2$ 
+\\ on top of the Center scheme}
+\label{widening}
+\end{subfigure}
+\end{minipage}
+\begin{subfigure}[b]{\figwidth}\centering
+\includegraphics[width=\figwidth]{sources-validation-gMat_example_all_combined.png}
+\caption{Shell and widening}
+\label{shell}
+\end{subfigure}
 \caption{
-Toolpath generated with the inward distributed strategy ($N=1.5$) in conjunction with the widening meta-scheme ($W_\text{min}=0.5, 2r_\text{min}=0.2$, see top left) and the shell meta-scheme ($M=4$, see middle).
+Toolpaths using the widening and shel meta-schemes.
+\subref{min_feature_size} and~\subref{widening} show widening.
+\subref{shell}
+show toolpaths generated with the inward distributed strategy ($N=1.5$) in conjunction with the shell meta-scheme ($M=4$) and the same widening as in~\subref{widening}.
 % -p test_geometry/gMAT_example.svg -b 4 -s i -n 1.5 -a --mins 0.2 --minw .5
 Widening and shell require extra edges (green) at key locations in the skeleton.
-The azure area is to be filled using some direction-parallel toolpath generation algorithm.
+The azure area is to be filled using some direction-parallel toolpaths.
 }
 \label{widening_shell}
 \end{figure}
+
 }
 
 
