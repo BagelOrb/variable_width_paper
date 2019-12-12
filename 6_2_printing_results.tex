@@ -38,6 +38,7 @@ Using increments of $0.1$ we established that using a factor of $k=1.1$ yields s
 $v_0=\SI{30}{\milli\meter\per\second}$, 
 $w_0=\SI{0.4}{\milli\meter}$.
 See \cref{back_pressure}.
+The fact that the printed lines are wider than intended is compensated for using a flow reduction to \SI{90}{\percent}.
 %
 Test prints were performed on an unmodified Ultimaker S5 system,
 with a standard  \SI{0.4}{\milli\meter} nozzle
@@ -53,20 +54,22 @@ The results can be viewed in \cref{prints}.
 \setlength{\figwidth}{0.32\columnwidth}
 \setlength{\figheight}{0.5\columnwidth}
 \begin{subfigure}[t]{\figwidth}\centering
-\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure-compensation-target.pdf}
-\caption{Target widths}\label{back_pressure_target}
+\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure_0_0}
+\caption{$k=0$}\label{zero_back_pressure}
 \end{subfigure}
 \begin{subfigure}[t]{\figwidth}\centering
-\includegraphics[angle=90,height=\figheight]{sources-validation-zero-backpressure-compensation.png}
-\caption{Constant filament inflow (\si{\milli\meter\cubed\per\second})}\label{zero_back_pressure}
+\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure_1_1}
+\caption{$k=1.1$}\label{back_pressure}
 \end{subfigure}
 \begin{subfigure}[t]{\figwidth}\centering
-\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure-compensation.png}
-\caption{Back pressure compensation}\label{back_pressure}
+\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure_2_0}
+\caption{$k=2.0$}\label{too_much_back_pressure}
 \end{subfigure}
 \caption{
-Print results of varying width test on top of a dense white raft.
-Trying to reproduce \subref{back_pressure_target} without back pressure compensation ($k=0$) yields worse results \subref{zero_back_pressure} than with back pressure compensation $k=1.1$ \subref{back_pressure}.
+Print results (black) of the varying width test on top of a dense white raft.
+Target widths in green.
+\subref{zero_back_pressure} Simple flow equalization without back pressure compensation results in nearly constant bead widths.
+\subref{back_pressure} A value of $k=1.1$ seems to produce good results.
 }
 \label{back_pressure_compensation}
 \end{figure}
