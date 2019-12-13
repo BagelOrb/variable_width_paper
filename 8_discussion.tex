@@ -55,7 +55,7 @@ We expect that developments in printing hardware and firmware will address these
 
 Another limiting factor for adopting adaptive bead width is the format of G-code which stores machine instructions.
 G-code does not support moves with varying cross-sectional area.
-A typical extrusion move \lstinline{G1 X$x$ Y$y$ E$v$} only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed along the extrusion move.
+A typical extrusion move \lstinline!G1 X$x$ Y$y$ E$v$! only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed along the extrusion move.
 A workaround is to approximate a variable width extrusion segment by smaller segments with constant width.
 However, this introduces errors nevertheless.
 Ideally the G-code language would be expanded in some way to allow for extrusion segments with varying cross-sectional area.
