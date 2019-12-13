@@ -306,6 +306,8 @@ The bisector angle $\alpha$ is the interior angle $\angle{p_0lp_1} \leq \SI{180}
 An edge is significant if the bisector angle on any location on the edge exceeds a prescribed $\alpha_\text{max}$. 
 As illustrated in \revise{See }{}\cref{naive_overfill_underfill}, for a polygon with a pointy wedge area of an angle $\beta$, we have $\alpha = 180\degree - \beta$.
 This corresponds to overfill areas and underfill areas the size of \revise{$\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$}{$\nicefrac14 (w^*)^2 \left( \tan ( \alpha / 2) - \alpha / 2 \right)$} when filled using the simple technique of uniform bead width $w^*$.
+\revise{}{A too large $\alpha_\text{max}$ leaves a lot of under-/overfill, while a too small value will introduce toolpaths to fill in negligibly small underfills.
+We therefore set $\alpha_\text{max} = \SI{135}{\degree}$.}
 Although significance measures are commonly used as a heuristic for finding the parts of a skeleton which are in some sense relevant~\cite{attali1996modeling,Sud2007},
 we use the bisector angle as an \emph{exact} indicator of the amount of overfill and underfill in the uniform toolpaths of constant width.
 %Contrary to related literature we will \emph{keep} the non-significant regions of the skeleton.
@@ -358,7 +360,7 @@ After initializing the marking at all edges and nodes, we filter out high freque
 The filtering is performed by additionally marking some unmarked elements, rather than the opposite since unmarking central regions reintroduce large over- and underfill areas.
 From each marked node $v_0$ with an upward unmarked edge attached we walk along the upward edges;
 if the total length traversed until we reach another marked node $v_1$ is shorter than some filter distance $d_\text{max}^\text{unmarked}$, we mark all edges encountered as being central.
-
+\revise{}{We use $d_\text{max}^\text{unmarked} = w^*$ in order to filter out high frequency oscillations in the order of magnitude of the nozzle size, while keeping close to significance measure.}
 
 
 
@@ -459,6 +461,7 @@ An illustration of the anchors is shown in \cref{beading_transitioning_filtering
 
 We perform a filtering step to prevent frequently changing the bead count back and forth within a short distance.
 For two consecutive anchors which transition to opposite directions, if the distance between them is smaller than some limit $d_\text{max}^\text{transition}$, the bead counts at all nodes in-between are set to the surrounding bead counts, and consequently these anchors are removed (See \cref{beading_transitioning_filtering__filtered}).
+\revise{}{A value of $d_\text{max}^\text{transition} = \SI{1}{\milli\meter}$ seems to produce satisfactory results.}
 \revise{}{This means that for some small regions we generate toolpaths with bead widths outside the typical range.}
 
 % For each edge which contains a transition anchor we walk along the marked edges until we encounter another anchor.
@@ -476,8 +479,13 @@ For two consecutive anchors which transition to opposite directions, if the dist
 A sharp transition from $n$ to $n+1$ beads at an anchor location creates sharp turns in the toolpath (see \cref{transitions} top).
 We introduce a transition length $t(n)$ to ensure a smooth transition (see \cref{transitions}). 
 The length of the transition is set to $t(n) = w^*$ and it is centered at the anchor, i.e. the distance from the lower end $v_0$ to the anchor position $v_x$ is set to
-$t_0(n) = \Delta(v_0v_x) = \nicefrac12 w^*$,
+\revise{$t_0(n) = \Delta(v_0v_x) = \nicefrac12 w^*$,}
+{$t_0(n) \equiv \Delta(v_0v_x) =  t(n) \left( q^{-1}(n) / w^*  - n \right)$,}
 where $\Delta$ is the total distance along the edges between two nodes.
+\revise{}{The transition length $t(n)$ ensures that the center beads don't overlap with the innermost transitioning beads, while keeping the amount of underfill low and the toolpath smooth.
+The transition anchor position $t_0(n)$ ensures that the transitions never overlap with each other or with locations where all beads have the preferred width $w^*$.}
+
+
 We discard any transition anchor which is too close to the end of a chain of marked edges for the smoothed transition to fully fit within the marked region.
 In order to make the transition ramps robust against small perturbations in the outline shape which cause extra (support) edges in the skeleton,
 we modify the nodes $v_x$ which are between the two ends $v_0$ and $v_1$ of the transition by (re-)assigning them a fractional bead count $\hat{b}$ which is linearly interpolated between the two ends of the transition (see \cref{beading_transitioning_filtering__transitions_applied}):
@@ -550,7 +558,7 @@ The beading is defined in terms of an integer number of beads, while we have ass
 In order to generate a beading for a node $v$ with $n < b^*_v < n+1 $ we linearly interpolate the bead widths and locations between a beading $B^1$ based on $n$ and a beading $B^2$ based on $n+1$ (see \cref{beading_interpolation}).
 Such interpolation is also used to deal with beading conflicts (see \cref{beading_conflict_problem}).
 There we also apply beading interpolation from a marked node $v_m$ upward along unmarked bones,
-and interpolate between $v_m$ and the beading at the top of the slope over some distance $t_\text{beading}$ from the lower marked node.
+and interpolate between $v_m$ and the beading at the top of the slope over some distance $t_\text{beading}$ from the lower marked node\revise{.}{, which we set to $t_\text{beading} = w^* $, so that the transition is not too swift.}
 
 \paragraph{Beading propagation}
 The beading information is then broadcast throughout the ST from central regions outward,
@@ -689,7 +697,8 @@ the extrusion segments can efficiently be connected into existing polyline toolp
 Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
 Such intersections cause overfill because the nozzle passes the location multiple times.
 We deal with this special case by forcing a new polyline when traversing the trapezoids, and in the final polyline connection step we greedily connect the first two polylines ending in the same location and retreat all other polylines ending in that same location in order to prevent the overfill.
-In order to retreat a polyline which ends in a site $S$ we remove part of the polyline paths up to the intersection by a distance of $w^S d_\text{max}^\text{intersection}$, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.
+In order to retreat a polyline which ends in a site $S$ we remove part of the polyline paths up to the intersection by a distance of $w^S d_\text{max}^\text{intersection}$\revise{, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.}{.
+We set $d_\text{max}^\text{intersection} = \SI{75}{\percent}$ in order to slightly favor overfilling over underfilling.}
 This ratio effectively deals with the balance between overfill and underfill generated at that location after the retreat has been applied.
 See \cref{polyline_reduction}.
 

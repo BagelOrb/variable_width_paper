@@ -10,7 +10,16 @@ For the distributed schemes however, there is no diameter at which the framework
 The design consideration therefore reduces to limiting the diameter of your parts to be within the range $[w_\text{min}, \infty)$,
 where $w_\text{min}$ is a configarable parameter when using the widening meta-scheme.
 
-\todo{limitations}
+
+The default limit bisector angle $\alpha_\text{max} = \SI{135}{\degree}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths;
+$\alpha_\text{max} = \SI{135}{\degree}$ corresponds to $w^* / \cos \nicefrac12 \alpha_\text{max} = \SI{0.4}{\milli\meter}$ long segments.
+
+\todo{
+limitations
+
+mention single bead points here?
+}
+
 }
 
 
