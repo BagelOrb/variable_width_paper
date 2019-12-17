@@ -5,7 +5,7 @@ we need a model which relates the required width to process parameters such as m
 A different approach might be appropriate depending on whether the filament feeder is mounted directly on the print head (a.k.a. \emph{direct drive}) or the filament fed from the back of the printer to the print head via a \emph{Bowden tube}.
 Because Bowden style 3D printing systems have the filament feeder relatively far away from the nozzle changing the internal pressure in the system requires a large amount of filament movement, which requires a prohibitive amount of time.
 
-\paragraph{Back pressure compensation}
+\subsubsection{Back pressure compensation}
 We therefore keep the internal pressure constant, and vary the movement speed instead.
 %In order to accurately realize a varying bead width we vary the movement speed, while keeping the internal pressure in the system constant.
 One approach would be keep the filament inflow $f$ (in \si{\milli\meter\cubed\per\second}) constant by varying movement speed accordingly \cite{Kuipers2018}.
@@ -23,8 +23,8 @@ We conjecture that the amount of back pressure is monotonically related to the r
 % p_\text{ext} &\sim w \\
 % p_\text{ext} &= w / w^* - 1 \\
 % f &= f^* - k p_\text{ext} \\
- f(w) &= f_0 - k \left( w / w_0 - 1 \right) \\
- f_0 &= v_0 w_0 h 
+ f(w) &= f_0 - k \left( w / w_0 - 1 \right)
+ % f_0 &= v_0 w_0 h 
 % v &= \frac{f^* - k p_\text{ext}}{h w} \\ 
 % v &= \frac{v^* w^* h - k (w / w^* - 1)}{h w}
 \end{align}
@@ -34,16 +34,32 @@ $f(w)$ is the filament outflow,
 $f_0$ is a constant reference flow
 and
 $k$ is the amount of back pressure compensation.
-Using increments of $0.1$ we established that using a factor of $k=1.1$ yields satisfactory bead width variation for our setup where
+
+% adapted from 5.5 Discussion on implications
+% limitations of back pressure compensation
+Our back pressure compensation method effectively changes the speed to realize adaptive width,
+but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath~\cite{Ertay2018}.
+Moreover, as the layer height is decreased the back pressure becomes larger compared to the internal pressure, which might cause the back pressure compensation method to demand prohibitively slow movement speeds.
+%
+% direct drive & pressure advance
+Accurate flow control can be further enhanced by using a direct drive hardware system and by employing \emph{pressure advance algorithms} which dynamically change the internal pressure \cite{tronvoll2019investigating}.
+Conversely such a setup might benefit from some form of back pressure compensation as well.
+
+\subsubsection{Prints}
+Using increments of $0.1$ we established that using a factor of $k=1.1$ yields satisfactory bead width variation for our setup where we use
+$f_0 = v_0 w_0 h $
+with
 $v_0=\SI{30}{\milli\meter\per\second}$, 
-$w_0=\SI{0.4}{\milli\meter}$.
+$w_0=\SI{0.4}{\milli\meter}$
+and
+$h=\SI{0.1}{\milli\meter}$.
 See \cref{back_pressure}.
 The fact that the printed lines are wider than intended is compensated for using a flow reduction to \SI{90}{\percent}.
 %
 Test prints were performed on an unmodified Ultimaker S5 system,
 with a standard  \SI{0.4}{\milli\meter} nozzle
-and PLA filament
-and a layer thickness of $h=\SI{0.1}{\milli\meter}$.
+and PLA filament.
+The printing order is determined greadily by choosing the closest point of a polygonal extrusion path, or the closest of either end point in case of an open polyline extrusion path.
 Because the machine instructions file format \emph{G-code} doesn't natively support adaptive width beads,
 we discretize adaptive width extrusions into \SI{0.2}{\milli\meter} long segments of the average width.
 The results can be viewed in \cref{prints}.
@@ -75,18 +91,15 @@ Target widths in green.
 \end{figure}
 
 % discussion of print results
-\todo{TODO: discuss printed results.}
-
-% adapted from 5.5 Discussion on implications
-% limitations of back pressure compensation
-Our back pressure compensation method effectively changes the speed to realize adaptive width,
-but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath~\cite{Ertay2018}.
-Moreover, as the layer height is decreased the back pressure becomes larger compared to the internal pressure, which might cause the back pressure compensation method to demand prohibitively slow movement speeds.
-%
-% direct drive & pressure advance
-Accurate flow control can be further enhanced by using a direct drive hardware system and by employing \emph{pressure advance algorithms} which dynamically change the internal pressure \cite{tronvoll2019investigating}.
-Conversely such a setup might benefit from some form of back pressure compensation as well.
-
+In \cref{print_naive} the underfill problem of the naive uniform offset approach is most prevalent for the Ultimaker word mark, which negatively impacts the visual quality and the stiffness of the part.
+Moreover, in the case of the spatially graded honeycomb there are several fully disconnected hexagons, which means the object falls apart when picked up.
+The honeycomb print is also missing all parts which are slightly more thin than the preferred bead width $w^*$.
+\Cref{print_center} still shows some underfill, but considerably less than the uniform approach.
+These prints also exhibit dark regions where the translucency of the layer is less because the bead is higher.
+This can be explained by inaccuracies in the back pressure compensation method, which arise for bead widths which deviate from the preferred width by a large amount.
+\Cref{print_inward} diminishes the underfill nearly completely and the visual quality of these prints is more homogenous than those of the other methods.
+Moreover, the absence of dark regions signifies that our proposed method is more robust against inaccuracies in the deposition system.
+However, both the centered and inward distributed approach introduce transitions to a different bead count in the word `Delft', which reduces the dimensional accuracy on the outline around those locations.
 
 \begin{figure}
 \centering
