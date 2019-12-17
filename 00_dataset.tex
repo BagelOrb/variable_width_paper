@@ -1,0 +1,199 @@
+\documentclass[5p,twocolumn,10pt,times]{elsarticle}
+\usepackage{amsmath}
+\usepackage{hyperref} % added [draft] to avoid compilation issues that happen if a link is split and appears in two pages
+%\modulolinenumbers[5]
+\addtolength{\textheight}{8mm}
+\addtolength{\textwidth}{4mm}
+\addtolength{\voffset}{-10mm}
+\addtolength{\hoffset}{-3mm}
+
+\bibliographystyle{elsarticle-num-names}
+
+
+% ACM template
+%
+%\documentclass[acmtog,anonymous,timestamp,review]{acmart}
+%
+%\usepackage{booktabs} % For formal tables
+%
+
+
+
+
+% My TK added packages and commands
+
+	% for for using hyperref and elsarticle-num-names together in order to get \citeauthor to work
+	\makeatletter
+	\providecommand{\doi}[1]{%
+	  \begingroup
+	    \let\bibinfo\@secondoftwo
+	    \urlstyle{rm}%
+	    \href{http://dx.doi.org/#1}{%
+	      doi:\discretionary{}{}{}%
+	      \nolinkurl{#1}%
+	    }%
+	  \endgroup
+	}
+	\makeatother
+
+	% have multiline subfigure captions be centered
+	\usepackage[labelformat=parens]{subcaption} % subfigures
+	\captionsetup[subfigure]{justification=centering}
+	\captionsetup{subrefformat=parens} % pure refernce subfigure with parentheses: fig.10a and (b)
+	%\renewcommand\thesubfigure{(\alph{subfigure})} % refernce subfigure always with parentheses: fig.10(a) and (b)
+
+	\captionsetup[figure]{labelfont={bf},name={Fig.},labelsep=period} % use `Fig.' for figure subscript instead of `Figure'
+	
+	\usepackage[export]{adjustbox} % [right] alignment for includegraphics
+	
+	\usepackage{rotating} % turn env for rotating text in figures
+
+	\usepackage{wrapfig} % inline figures
+
+	% tables
+	\usepackage{multirow} % multicolumn, multirow
+	\usepackage{colortbl} % \cellcolor{<color>}
+	\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}   %% centered
+	\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}m{#1}}  %% right aligned
+
+	\usepackage[capitalise]{cleveref} % automatically add `Fig.'  etc before a reference.
+
+        \usepackage{ amssymb } % \therefore
+	
+	\newcommand{\degree}{^\circ}
+	
+	\usepackage[binary-units]{siunitx} % mm and stuff
+	\sisetup{per-mode = symbol}
+	\DeclareSIUnit\pixel{px}
+
+	\usepackage{units} % \nicefrac{3}{8}
+	
+	
+	
+	\DeclareMathOperator*{\argmax}{arg\,max}
+	\DeclareMathOperator*{\argmin}{arg\,min}
+	
+	\DeclareMathOperator{\abs}{abs} % absolute function
+
+	\usepackage{amsthm} % \begin{proof}
+	\newtheorem{lemma}{Lemma}[section]
+	\theoremstyle{definition}
+	\newtheorem{definition}{Definition}[section]
+
+	\usepackage[inline]{enumitem} % inline enumerate*
+
+	\usepackage[toc,page]{appendix} % appendicces
+	
+	\usepackage{pgfplots}
+	\usepackage{pgfplotstable} % tikzpicture table plots
+	\pgfplotsset{compat=1.15}
+	\usetikzlibrary{backgrounds}
+
+	\usepackage[noend]{algpseudocode} % algorithmic
+	\usepackage{algorithm} % wrapper for pseudocode to give a caption and label
+
+	\newcommand{\pluseq}{\mathrel{+}=} %pluseq symbol
+	\usepackage{upgreek} % \uplambda
+
+	\usepackage{listings} % for listing C++ code instead of pseudocode
+	\lstset{ 
+      breaklines=true,                 % sets automatic line breaking
+      basicstyle=\ttfamily,
+      mathescape
+    }
+
+
+
+
+    % \usepackage[disable]{todonotes} % notes not showed  
+    % \usepackage[draft]{todonotes}   % notes showed
+    \usepackage{color,soul} % caps, highlight (\hl)
+
+	\newcommand{\comment}[1]{}
+	
+    \newcommand{\todo}[1]{\hl{#1}}
+    
+	\newcommand{\temp}[1]{\textcolor[rgb]{0, 0, 0.2}{#1}}
+	\newcommand{\tim}[1]{\temp{\todo{[Tim: #1]}}}
+	\newcommand{\jun}[1]{\temp{\todo{[Jun: #1]}}}
+	
+	\newcommand{\old}[1]{\textcolor{gray}{#1}}
+	\usepackage[normalem]{ulem}
+	\newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
+	
+	% Revise macro (usage: \revise{old}{new})
+	% Version a) First arg red and striked out, second argument green
+	%\newcommand{\revise}[2]{\textcolor{red}{\stkout{#1}}\textcolor{blue}{#2}}
+	%\newcommand{\revise}[2]{{\color{red}{#1}\color{blue}{#2}}}
+	% Version b) First arg ignored, second argument green
+	\newcommand{\revise}[2]{{\color{blue}{#2}}}
+	% Version c) First arg ignored, second argument unchanged (for final draft)
+	%\newcommand{\revise}[2]{#2}
+	%\newcommand{\revise}[2]{#1}
+
+
+	\setulcolor{red}
+
+	\usepackage[normalem]{ulem} % squigly underline
+
+	\renewcommand\floatpagefraction{.8}
+
+
+	\newlength{\figwidth}
+	\newlength{\figwidthTwo}
+	\newlength{\figwidthTree}
+	\newlength{\figheight}
+	\newlength{\figheightTwo}
+	\newlength{\tempheight}
+	\newlength{\tempheightTwo}
+
+	% deal with missing images which are not directly included in the repo
+	\iffalse
+	\newcommand{\noimage}[1]{%
+	  \setlength{\fboxsep}{-\fboxrule}%
+	  \fbox{\phantom{\rule{10pt}{10pt}} Missing file: \path{#1} \phantom{\rule{10pt}{10pt}}}% Framed box
+	}
+	\let\includegraphicsoriginal\includegraphics
+	\renewcommand{\includegraphics}[2][width=\textwidth]{\IfFileExists{#2}{\includegraphicsoriginal[#1]{#2}}{\noimage{#2}}}
+
+	\fi
+% ENd of TK's added packages and commands
+
+
+
+\begin{document}
+\baselineskip11pt 
+
+\begin{frontmatter} 
+
+\title{Data set}
+
+%\author{Paper ID: xxx}
+
+\author[um,tud]{Tim Kuipers}
+\address[um]{Ultimaker, Utrecht, The Netherlands}
+\address[tud]{Department of Design Engineering, Delft University of Technology, The Netherlands}
+
+
+%
+% The code below should be generated by the tool at
+% http://dl.acm.org/ccs.cfm
+% Please copy and paste the code instead of the example below.
+%
+%\begin{CCSXML}
+%\end{CCSXML}
+
+%\ccsdesc[500]{Computer systems organization~Embedded systems}
+%\ccsdesc[300]{Computer systems organization~Redundancy}
+%\ccsdesc{Computer systems organization~Robotics}
+%\ccsdesc[100]{Networks~Network reliability}
+
+
+\end{frontmatter}
+
+
+
+
+\input{20_dataset}
+
+\end{document}
