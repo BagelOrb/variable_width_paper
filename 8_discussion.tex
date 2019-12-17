@@ -51,6 +51,11 @@ Another limitation of our method is that in a location $v$ with locally maximal 
 This can be viewed in the bottom right of \cref{TEST_InwardDistributed_accuracy} for example.
 In order to print such a dot, we make it into a \SI{10}{\micro\meter} long extrusion segment, with an altered width such that the total volume remains correct.
 A more principled way of dealing with such a situation remains future work.
+
+Finally it should be noted that although our framework can accurately emulate the constant bead count approach by \citeauthor{Ding2016a}, its emulation of the centered approach by \citeauthor{Jin2017JMS} is imperfect.
+The transitions resulting from out framework introduce sharper corners and there is more width variation in those corners.
+Whereas the width of the connecting segment in the approach by \citeauthor{Jin2017JMS} is the preferred width $w^*$, the bead widths closer to the center resulting from our framework will be twice the local radius, which is larger than $w^*$.
+However, this inflated bead width variation is expected to have an insignificant impact on the measured bead width variation.
 }
 
 \input{6_2_printing_results}
