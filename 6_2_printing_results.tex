@@ -40,6 +40,7 @@ $k$ is the amount of back pressure compensation.
 Our back pressure compensation method effectively changes the speed to realize adaptive width,
 but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath~\cite{Ertay2018}.
 Moreover, as the layer height is decreased the back pressure becomes larger compared to the internal pressure, which might cause the back pressure compensation method to demand prohibitively slow movement speeds.
+Furthermore, the shape and filling of the previous layer might influence the amount of back pressure.
 %
 % direct drive & pressure advance
 Accurate flow control can be further enhanced by using a direct drive hardware system and by employing \emph{pressure advance algorithms} which dynamically change the internal pressure \cite{tronvoll2019investigating}.
