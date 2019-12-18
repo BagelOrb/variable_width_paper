@@ -123,7 +123,9 @@
 	
 	% Revise macro (usage: \revise{old}{new})
 	% Version a) First arg red and striked out, second argument green
-	\newcommand{\revise}[2]{\noindent{\color{red}{\stkout{#1}}}\noindent{\color{blue}{#2}}}
+	%\newcommand{\revise}[2]{\noindent{\color{red}{\stkout{#1}}}\noindent{\color{blue}{#2}}}
+	%\newcommand{\revise}[2]{{\textcolor{red}{#1}}{\textcolor{blue}{#2}}}
+	\newcommand{\revise}[2]{{\color{red}{#1}\color{blue}{#2}}}
 	% Version b) First arg ignored, second argument green
 	%\newcommand{\revise}[2]{\textcolor{blue}{#2}}
 	% Version c) First arg ignored, second argument unchanged (for final draft)
@@ -137,7 +139,7 @@
 	\renewcommand{\commits}[1]{}
 	\newcommand{\response}[1]{{#1}}
 \newcommand\paper[2]{\par changes to \emph{#1} --- ``#2'' }
-\renewcommand\paper[2]{\par changes to \emph{#1} --- ``\dots'' }
+%\renewcommand\paper[2]{\par changes to \emph{#1} --- ``\dots'' }
 
 \newcommand\Que[1]{%
    \leavevmode\par
@@ -265,9 +267,12 @@ and
 
 
 
-\Que{Example question by reviewer}
-\Ans{Example response}
-\revise{Old text in manuscript}{New text in manuscript}
+\Que{Example question by reviewer?}
+\Ans{Example response.}
+\paper{Section name}{
+Remaining text, followed by 
+\revise{outdated text in manuscript}{new text in manuscript}
+}
 \todo{Comment for us internally (should be removed before this letter is sent).}
 \commits{123commit-hash}
 
@@ -315,16 +320,28 @@ However, we have now put bounds on the induced bead widths, so that the reader c
 See the answer to question 3.4.
 }
 
-\commits{2e1c40be93f92a8495c0d7fa379e983dd3ee7b98
-3b13960e15c07f484ab641a2d941f6086eda571c
+\commits{
+2e1c40be93f92a8495c0d7fa379e983dd3ee7b98 % emphasize implication for DfAM in conclusion
 5b8c5971d606089754ba118560e51ec6d7dfda0b % new section `Theoretical considerations'
 7c2224fc713f5b68436f432a1ade506e9dacf500 % lil edit in above section
 420cf6886a8e248aec4aafc04d13abc693da8dd0 % fix for naive over-/underfill area formula
 }
-\paper{Conclusion}{
+\paper{6. Conclusion, last paragraph}{
 \revise{}{It is expected that as distributed beading schemes are implemented in commercial software packages and bead width variation control become commonplace, the practice of design for additive manufacturing can disregards some of the nozzle size considerations.}
 }
-
+\paper{5.3 Limitations, first paragraph}{
+\revise{}{
+Because the performance of the various toolpathing techniques depends on the geometry of a model, they have ramifications for the practice of design for additive manufacturing.
+Because the naive method produces under- or overfill for parts of an outline with a constant diameter $d \neq 2 i w^*$ it is best practice to design a model such that horizontal cross-sections have a feature diameter of an even integer multiple $i$ of the bead width.
+For the center scheme and for the current state of the art one should only avoid parts for which $(2i + 1.8) w^* < d < (2i + 0.5) w^*$ in order to avoid underfill.
+For the distributed schemes however, there is no diameter at which the framework produces under- or overfill for a part with a constant diameter $d$.
+The design consideration therefore reduces to limiting the diameter of your parts to be within the range $[w_\text{min}, \infty)$,
+where $w_\text{min}$ is a configarable parameter when using the widening meta-scheme.
+}
+}
+\paper{3.3 Method, Significance measure}{
+This corresponds to overfill areas and underfill areas the size of \revise{$\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$}{$\nicefrac14 (w^*)^2 \left( \tan ( \alpha / 2) - \alpha / 2 \right)$} when filled using the simple technique of uniform bead width $w^*$
+}
 
 
 
@@ -339,22 +356,43 @@ The contributions were already listed at the end of the introduction, but now we
 The focus on the comparison to existing techniques has also been applied to the conclusion.
 See also our response to question~\ref{difference_to_jin}.
 }
-\commits{66d006d91d406c0064ee1f4f1e4df85fc0821994 
-e806d40e5e6d2bbe450c6792b802f0fcce4df645 % hightlight contributions
+\commits{
+66d006d91d406c0064ee1f4f1e4df85fc0821994 % new contributions enumeration
+e806d40e5e6d2bbe450c6792b802f0fcce4df645 % lil typo
 86c5aa8fab91e326e658f79a0746462fb99ea2b0 % changes to conclusion
 }
 \paper{Intro}{
- \begin{itemize}
+In this paper we propose a framework for planning toolpaths with control over the adaptive width for minimizing over- and underfill
+\revise{}{and introduce a beading scheme which reduces the bead width variation compared to the state of the art.} 
+We show that this framework supports various control schemes for determining the bead spacing and extrusion widths. 
+\revise{
+For FDM printing in particular we propose a novel scheme which reduces the amount of over- and underfill while ensuring the extrusion beads deviate little from the nozzle size.
+}{Furthermore we present an approach to accurately realize adaptive bead width.
+}
+See \cref{intro_wedge_distributed}. 
+% In order to avoid over- and underfills in regions which are not as wide as an exact multiple of the nozzle size we need algorithms which produce toolpaths which employ adaptive bead width.
+% Some such toolpath generation techniques have already been developed.
+
+Our contributions are as follows:
+\begin{itemize}
 \item A geometric framework \revise{for generating densely filling contour-parallel toolpaths employing adaptive width, according to any beading scheme which decides on the bead spacing and widths.}{allowing various adaptive bead width control schemes used to generate contour-parallel toolpaths which minimize under- and overfill.}
-\item A specific beading scheme for FDM printing which \revise{}{furthermore} reduces the amount of deviation in the extrusion widths compared to existing literature, and which \revise{promotes smooth toolpaths that are equal to the preferred width toward the outline of the shape.}{produces beads of exactly the preferred width outside of central regions of the outline shape.}
- \end{itemize}}
- \paper{intro}{In this paper we propose a framework for planning toolpaths with control over the adaptive width \revise{for}{while} minimizing over- and underfill.}
+\item A specific beading scheme for FDM printing which
+\revise{}{furthermore} reduces the amount of \revise{deviation}{variation} in the extrusion widths compared to \revise{existing literature, }{the state of the art to be below a factor of 2.}
+\revise{and which promotes smooth toolpaths that are equal to the preferred width toward the outline of the shape.}{}
+\revise{}{
+\item A back pressure compensation approach to accurately realize adaptive bead width on Bowden style hardware systems.
+}
+\end{itemize}
+}
 \paper{Conclusion}{
-In this paper we have introduced a framework for computing contour-parallel toolpaths employing adaptive bead width in order to minimize underfill and overfill areas\revise{.}{ and we introduced beading schemes which improve on the state-of-the-art.}
+In this paper we have introduced a framework for computing contour-parallel toolpaths employing adaptive bead width in order to minimize underfilland overfill areas\revise{.}{,
+we introduced beading schemes which improve on the state of the art
+and we have introduced a backpressure compensation method for accurate fabrication of adaptive width.
+}
 
 [\dots]
 
-\revise{We presented the}{The} inward distributed beading scheme
+\revise{We presented}{Compared to the state of the art,} the inward distributed beading scheme
 \revise{It}{} reduces the amount of beads with a width deviating extremely from the preferred bead width \revise{}{by changing the width of several beads near the center instead of only the center-most bead}.
 \revise{, and thus it is}{It is therefore} expected to limit the impact of varying the bead width in terms of production accuracy and homogeneity of material properties,
 which in turn is helpful to efficiently simulate an FDM manufactured part.
@@ -369,7 +407,7 @@ Furthermore, by distributing the deviation in bead width over several beads near
 
 \subQue{
 From Fig. 1(b) and (c), we can see that the approach in Jin et al (2017) can fill the sharp right end, but the proposed approach can not. 
-}
+}\label{widening_question}
 \Ans{
 Note that this is not a limitation of the approach, but a consequence of the default parameters which were chosen.
 
@@ -385,14 +423,40 @@ note value of $r_\text{min}$ in paper
 %a5ddf3a73e3df20e43f25eafb93e9ce3a1393b13 
 d3fe6c86ee887da0e33fefdc43a83d014bc6047b 
 0ac1c930a7cd2d1d305da730c9d5db20f4a8ea3f 
-9281d8ae7350539102be0ead7b2ffc611591d2b4 
-a88ccd3309aef1233ed00ce9f22b244fe64668f4
+9281d8ae7350539102be0ead7b2ffc611591d2b4 % fix widening figure
+a88ccd3309aef1233ed00ce9f22b244fe64668f4 %  introduce shell meta-scheme and replace widening figure with widening+shell figure
 8a11aa0105d1c7f1f5690c8e1f932be85a90bcae % more changes to widening + shell fig
 }
-\paper{Beading schemes}{
+\paper{1. Introduction}
+{
+\begin{figure}\centering
+\setlength{\figwidth}{.9\columnwidth}
+\setlength{\figwidthTwo}{.05\columnwidth}
+\begin{subfigure}{\figwidth}\centering
+\parbox[b]{\figwidthTwo}{\subcaption{}\label{intro_wedge_uniform}}\includegraphics[width=\figwidth]{sources-intro-TEST-naive-accuracy.png}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\parbox[b]{\figwidthTwo}{\subcaption{}\label{intro_wedge_centered}}\includegraphics[width=\figwidth]{sources-intro-TEST-Center-widths.png}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\parbox[b]{\figwidthTwo}{\subcaption{}\label{intro_wedge_distributed}}\includegraphics[width=\figwidth]{sources-intro-TEST-Distributed-widths.png}
+\end{subfigure}
+\caption{
+Illustration of different toolpath\revise{}{s} for a \revise{wedge }{}shape \revise{}{showcasing a range of shape radii }\revise{}{(black)}.
+\revise{}{These results can be read as a graph with feature size on the horizontal axis and its corresponding beading along the vertical axis.}
+\subref{intro_wedge_uniform} Toolpath using uniform offsetting results in large overfill (orange) and underfill (azure).
+\subref{intro_wedge_centered} Toolpath with adaptive width~\cite{Jin2017JMS} where beads that are wider or narrower than the nozzle size are indicatd in red and blue, respectively.
+\subref{intro_wedge_distributed} Our approach minimizes over- and underfill with \revise{beads close to the nozzle size}{less extreme widths}.
+}
+\label{intro_wedge}
+\end{figure}
+\todo{See \cref{intro_wedge}.}
+}
+\paper{4. Beading schemes, end of section}{
 \paragraph{Widening \revise{}{meta-scheme}}
-Complementary to any of these schemes we can enforce a minimum feature size at no extra cost in our framework.
+Complementary to any of these schemes we can enforce a minimum feature size \revise{at no extra cost}{and minimum bead width} in our framework.
 Regions where the model is narrower than \revise{the nozzle size}{some $r_\text{min}$} can be printed with a bead width \revise{}{$w_\text{min}$} larger than the model thickness.
+See \cref{min_feature_size} and~\subref{widening}.
 We can simply override
 \begin{align*}
 q'(d) &= 
@@ -402,13 +466,14 @@ q'(d) &=
 q(d) & \text{ otherwise}
 \end{cases}
 \\
-\revise{}{
-W'(n,r)_0} &=
+W'(n,r)_0 &=
 \begin{cases}
 \max \left( w_\text{min}  ,  2 r \right) & \text{ if } 2 r < w^* \\
 W(n,r)_0 & \text{ otherwise}
 \end{cases}
 \end{align*}
+
+
 
 \revise{}{
 \paragraph{Shell meta-scheme}
@@ -429,21 +494,43 @@ W(n,r)_i & \text{ otherwise}
 These meta-schemes introduce non-linearities in the quantization function.
 Because the beading is only evaluated at nodes in the skeleton, we need to make sure that there are nodes at the locations along the skeleton where the non-linearities happen.
 We therefore insert extra nodes along with their ribs at locations $v$ with a radial distance $R(v) = r_\text{min}$ for widening and at $R(v) \in \left\{ M w^*, q^{-1}(M), q^{-1}(M) + \nicefrac12 w^* \right\} $ for the transition from narrow shell to unconstrained shell.
-Combining all meta-schemes functionality we can generate results such as depicted in \cref{widening_shell}.
+Combining all meta-schemes functionality we can generate results such as depicted in \cref{shell}.
 
 \begin{figure}
 \centering
-\includegraphics[rotate=90,width=.6\columnwidth]{sources-validation-gMat_example_all_combined.png}
+\setlength{\figwidth}{.35\columnwidth}
+\setlength{\figwidthTwo}{.6\columnwidth}
+\begin{minipage}[b]{\figwidthTwo} \centering
+\begin{subfigure}[b]{\figwidthTwo}\centering
+\includegraphics[width=\columnwidth]{sources-validation-wedge-TEST-Distributed-feature-size.png}
+\caption{Widening meta-scheme using $w_\text{min} = 2 r_\text{min} = 0.1$
+\\ on top of the Distributed scheme}
+\label{min_feature_size}
+\end{subfigure}
+\begin{subfigure}[b]{\figwidthTwo}\centering
+\includegraphics[width=\columnwidth]{sources-validation-wedge-TEST-Center-widening.png}
+\caption{Widening meta-scheme using $w_\text{min} = 0.5$, $2 r_\text{min} = 0.2$ 
+\\ on top of the Center scheme}
+\label{widening}
+\end{subfigure}
+\end{minipage}
+\begin{subfigure}[b]{\figwidth}\centering
+\includegraphics[width=\figwidth]{sources-validation-gMat_example_all_combined.png}
+\caption{Shell and widening}
+\label{shell}
+\end{subfigure}
 \caption{
-Toolpath generated with the inward distributed strategy ($N=1.5$) in conjunction with the widening meta-scheme ($W_\text{min}=0.5, 2r_\text{min}=0.2$, see top left) and the shell meta-scheme ($M=4$, see middle).
+Toolpaths using the widening and shel meta-schemes.
+\subref{min_feature_size} and~\subref{widening} show widening.
+\subref{shell}
+show toolpaths generated with the inward distributed strategy ($N=1.5$) in conjunction with the shell meta-scheme ($M=4$) and the same widening as in~\subref{widening}.
 % -p test_geometry/gMAT_example.svg -b 4 -s i -n 1.5 -a --mins 0.2 --minw .5
 Widening and shell require extra edges (green) at key locations in the skeleton.
-The azure area is to be filled using some direction-parallel toolpath generation algorithm.
+The azure area is to be filled using some direction-parallel toolpaths.
 }
 \label{widening_shell}
 \end{figure}
 }
-
 }
 
 
@@ -536,7 +623,7 @@ In order to clearly address the difference early on we mention the difference in
 \commits{b7c4d299a76e9fab6c233d572f3248c1350a2e8c}
 \paper{Intro}{
 \revise{
- Therefore, a narrower range of widths is desirable.
+Therefore, a narrower range of widths is desirable.
 }
 {We therefore reduce the bead width range by distributing the workload from the centermost bead over neighboring beads.}
 }
@@ -559,10 +646,7 @@ the wedge shape can be read as a graph where we can read out the resulting beadi
 }
 \commits{45853e8b30d93f60e9465cbb649e347f9cfc23b1 53224c04ceff6c1b18a9eea6de8e7e33957b7797}
 \paper{Intro}{
-Illustration of different toolpath\revise{}{s} for a \revise{wedge }{}shape \revise{}{showcasing a range of shape radii }\revise{}{(black)}.
-}
-\paper{Intro wedge figure}{
-\revise{}{These results can be read as a graph with feature size on the horizontal axis and its corresponding beading along the vertical axis.}
+\todo{See caption of \cref{intro_wedge}.}
 }
 
 
@@ -596,7 +680,7 @@ The arrow is now a double thin line.
 \commits{07df258c1fa618808ba9493384550021a03c83e1}
 \paper{Fig 4}
 {
-See \cref{legend}.
+\todo{See \cref{legend}.}
 \begin{figure}\centering
 \includegraphics[width=.75\columnwidth]{sources-method-legend2.pdf}
 \caption{Illustrative explanation of terms and color coding that are consistently used in this paper.}
@@ -618,7 +702,7 @@ We have adjusted the range of the inward distributed scheme to $N=2$ in order to
 }
 \paper{Beading schemes}
 {
-See \cref{distributed_comparison}.
+\todo{See \cref{distributed_comparison}.}
 \begin{figure}
 \centering
 \setlength{\figwidth}{.8\columnwidth}
@@ -644,7 +728,18 @@ Colors represent bead widths.
 \label{distributed_comparison}
 \end{figure}
 }
-
+\paper{Fig. 16}
+{
+\todo{New shape contains pointy wedge to see impact on minimal feature size.}
+}
+\paper{Caption of Fig. 16}
+{
+\revise{}{In order to distinguish clearly from the Distributed scheme the Inward is limited to $N=2$.}
+}
+\paper{Caption of Fig. 20}
+{
+Visualization of the widths for the output toolpaths of the inward distributed beading scheme \revise{}{($N=3$) }applied to various example application objects.
+}
 
 
 
@@ -657,7 +752,9 @@ We've added it back in.
 Note that the width of the uniform case is \SI{0.4}{\milli\meter} \emph{everywhere}, so the curve is not really informative.
 }
 \commits{e5f3649455c73c8146e8d07cce13bc1e89d84cbb}
-
+\paper{Fig. 17b}{
+\todo{Figure now has the uniform curve}
+}
 
 
 
@@ -699,10 +796,10 @@ Seeing as there are multiple possible skeletonizations we use the term `skeleton
 We have added a clarification in the overview section for the readers who don't know what the umbrella term would refer to.
 }
 \commits{
-5356492b5a9a690228ffdb6a6a26cf10d099a7d4
-98af7981a67e9d54b3c47db5a2a41035e1278aeb % lil edit to the above
+98af7981a67e9d54b3c47db5a2a41035e1278aeb % lil explanation of 'skeleton' (reviewer 2.1)
+5356492b5a9a690228ffdb6a6a26cf10d099a7d4 % make clear that a skeleton is an undefined term (reviewer 2.1)
 }
-\paper{Method overview}{
+\paper{3.1 Method overview}{
 Our method starts with computing \revise{the}{a type of} skeleton \revise{}{(a graph representing the topology) }of the input polygon based on the medial axis transform (MAT), a strategy that has been commonly used for generating contour-parallel toolpaths~\cite{eiamsa2003toward}. 
 }
 
@@ -715,7 +812,7 @@ Our method starts with computing \revise{the}{a type of} skeleton \revise{}{(a g
 The authors seem to use linear approximations of the medial axis - see Figure 2 (b), which is understandable given the fact that they compute the MA with the Boost library. If this is so, can the authors comment on the implications of this approximation?
 }
 \Ans{
-We chose for linear approximations because they simplify the process,
+We chose for linear approximations because they simplify the algorithms,
 whereas we chose for Boost because it seemed more stable than alternative libraries.
 
 The discretization is handled in section 3.2. Skeletal trapezoidation, second paragraph.
@@ -736,6 +833,15 @@ Red is significant skeleton, violet is non-significant skeleton.
 \commits{
 64029a6ef57cf8044c521075ebc70cddfb52156b % mention 0.01mm in paper
 }
+\paper{3.2 Union of cones, Skeletal trapezoidation}
+{
+The vertex-line and vertex-vertex edges are discretized into pieces with a length up to \revise{$d^\text{discretization}$}{\SI{0.2}{\milli\meter}, which gives an approximation error of only $\pm$\SI{0.01}{\milli\meter}}.
+}
+
+
+
+
+
 
 
 
@@ -744,7 +850,7 @@ For example, what happens if the obtuse outside angle in Figure 2 goes to 0?
 }
 \Ans{
 That figure is reproduced here in Fig.~\ref{overview_outline}.
-As the rightmost two points move right the degree of the corner in the middle goes to zero which causes the parts of the parabola revealed are more accurately described by the discretization than the highly curved part in the middle.
+As the rightmost two points move right, the degree of the corner in the middle goes to zero, which causes the parts of the parabola revealed to be more accurately described by the discretization than the highly curved part in the middle.
 }
 \begin{figure}\centering
 \includegraphics[width=.3\linewidth,rotate=-90]{response_simple_example_1}
@@ -752,6 +858,9 @@ As the rightmost two points move right the degree of the corner in the middle go
 \includegraphics[width=.3\linewidth,rotate=-90]{response_simple_example_3}
 \caption{Skeletal trapezoidation}\label{overview_outline}
 \end{figure}
+
+
+
 
 
 
@@ -773,16 +882,23 @@ The medial axis is a \revise{compact and complete representation of}{representat
 
 
 
+
+
+
+
 \Que{
 More generally, the technique seems to effectively be a variable offset scheme, but there is little discussion about what is known about variable offsets. 
 }
+\Ans{
+Indeed the locations of the junctions in the toolpaths are at variable offsets from the outline, but that doesn't make our framework a variable offset scheme, because the junction locations are determined both by the radius in the central regions and the location of the outline.
+Computing the same toolpaths using some variable offset scheme would still require the computation of the radial distances in central regions and relate those to outline locations, which means that we would still need to use the skeleton.
+Therefore a variable offset scheme is not an alternative to our framework.
 
+We have not found any variable offset scheme literature which is specifically on toolpath generation, so it wouldn't fit in the related work section.
+The method section, however, doesn't go into variable offset schemes because offset schemes apply offset values given at the outline, while our framework principally relates the outline and the skeleton.
+}
 \todo{
-elber1991error, 
-
-add to related work? Tim doesn't feel this belongs there because the whole related work section is on toolpath generation.
-Adaptive offset techniques are only related to the technical contribution of this paper, so they don't belong in the related work section.
-However, when discussing the union of cones there is no logical place to discuss
+elber1991error
 }
 
 
@@ -811,94 +927,23 @@ d375878a8a6d01c53436aeb9c473dbedd8f3edcf % prints discussion
 125162ad9878c0fb5a054f1bab34aa7b1353b86c % better var width test figure
 }
 \paper{5.2 Printing results}{
-\revise{}{
 
-\revise{}{
-\subsection{Printing results}
-In order to accurately manufacture adaptive width toolpaths using an off-the-shelf 3D printing system.
-we need a model which relates the required width to process parameters such as movement speed and filament extrusion speed.
-A different approach might be appropriate depending on whether the filament feeder is mounted directly on the print head (a.k.a. \emph{direct drive}) or the filament fed from the back of the printer to the print head via a \emph{Bowden tube}.
-Because Bowden style 3D printing systems have the filament feeder relatively far away from the nozzle changing the internal pressure in the system requires a large amount of filament movement, which requires a prohibitive amount of time.
+\revise{
+Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle and a filament extrusion drive directly mounted on the print head.
+The firmware of the printer employs \emph{linear advance} for accurately realizing adaptive deposition width:
+gaining the extra pressure required to change to a wider bead is realized by 'advancing' an extra amount of filament into the physical system~\cite{tronvoll2019investigating}.
+We set the preferred width to $w^* = \SI{0.6}{\milli\meter}$, to avoid fluttered printing of lines narrower than the nozzle size.
+We used a layer thickness of \SI{0.2}{\milli\meter} and a movement speed of \SI{10}{\milli\meter\per\second}.
 
-\paragraph{Back pressure compensation}
-We therefore keep the internal pressure constant, and vary the movement speed instead.
-%In order to accurately realize a varying bead width we vary the movement speed, while keeping the internal pressure in the system constant.
-One approach would be keep the filament inflow $f$ (in \si{\milli\meter\cubed\per\second}) constant by varying movement speed accordingly \cite{Kuipers2018}.
-However, that doesn't result in the intended filament outflow variation - see \cref{zero_back_pressure}.
-We conjecture that the filament outflow is related to the total pressure in the system,
-which depends not only on the amount of filament in between the feeder wheel and the nozzle (which we keep constant), 
-but also depends on the back pressure that the previous layer exerts on the filament protruding from the nozzle.
-We conjecture that the amount of back pressure is monotonically related to the requested line width and compensate for the back pressure using a simple linear model:
-
-\begin{align}
- v(w) &= \frac{f(w)}{h w} \\ 
-% f &\sim p \\
-% p &= p_\text{in} + p_\text{ext} \\
-% p_\text{in} &= C \\
-% p_\text{ext} &\sim w \\
-% p_\text{ext} &= w / w^* - 1 \\
-% f &= f^* - k p_\text{ext} \\
- f(w) &= f_0 - k \left( w / w_0 - 1 \right) \\
- f_0 &= v_0 w_0 h 
-% v &= \frac{f^* - k p_\text{ext}}{h w} \\ 
-% v &= \frac{v^* w^* h - k (w / w^* - 1)}{h w}
-\end{align}
-where
-$v(w)$ is the movement speed as a function of requested bead width $w$,
-$f(w)$ is the filament outflow,
-$f_0$ is a constant reference flow
-and
-$k$ is the amount of back pressure compensation.
-Using increments of $0.1$ we established that using a factor of $k=1.1$ yields satisfactory bead width variation for our setup where
-$v_0=\SI{30}{\milli\meter\per\second}$, 
-$w_0=\SI{0.4}{\milli\meter}$.
-See \cref{back_pressure}.
-%
-Test prints were performed on an unmodified Ultimaker S5 system,
-with a standard  \SI{0.4}{\milli\meter} nozzle
-and PLA filament
-and a layer thickness of $h=\SI{0.1}{\milli\meter}$.
-Because the machine instructions file format \emph{G-code} doesn't natively support adaptive width beads,
-we discretize adaptive width extrusions into \SI{0.2}{\milli\meter} long segments of the average width.
-The results can be viewed in \cref{prints}.
-
-
-\begin{figure}
-\centering
-\setlength{\figwidth}{0.32\columnwidth}
-\setlength{\figheight}{0.5\columnwidth}
-\begin{subfigure}[t]{\figwidth}\centering
-\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure-compensation-target.pdf}
-\caption{Target widths}\label{back_pressure_target}
-\end{subfigure}
-\begin{subfigure}[t]{\figwidth}\centering
-\includegraphics[angle=90,height=\figheight]{sources-validation-zero-backpressure-compensation.png}
-\caption{Constant filament inflow (\si{\milli\meter\cubed\per\second})}\label{zero_back_pressure}
-\end{subfigure}
-\begin{subfigure}[t]{\figwidth}\centering
-\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure-compensation.png}
-\caption{Back pressure compensation}\label{back_pressure}
-\end{subfigure}
-\caption{
-Print results of varying width test on top of a dense white raft.
-Trying to reproduce \subref{back_pressure_target} without back pressure compensation ($k=0$) yields worse results \subref{zero_back_pressure} than with back pressure compensation $k=1.1$ \subref{back_pressure}.
-}
-\label{back_pressure_compensation}
-\end{figure}
-
-% discussion of print results
-\todo{TODO: discuss printed results.}
-
-% adapted from 5.5 Discussion on implications
-% limitations of back pressure compensation
-Our back pressure compensation method effectively changes the speed to realize adaptive width,
-but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath~\cite{Ertay2018}.
-Moreover, as the layer height is decreased the back pressure becomes larger compared to the internal pressure, which might cause the back pressure compensation method to demand prohibitively slow movement speeds.
-%
-% direct drive & pressure advance
-Accurate flow control can be further enhanced by using a direct drive hardware system and by employing \emph{pressure advance algorithms} which dynamically change the internal pressure \cite{tronvoll2019investigating}.
-Conversely such a setup might benefit from some form of back pressure compensation as well.
-
+The prints are shown in \cref{prints_old}.
+Because of inaccuracies in the deposition control system some of the prints show defects.
+Such defects are less prevalent for the inward distributed beading scheme than the other schemes.
+The prints which employ the uniform offsets technique show a lot of underfill, which impacts the visual quality of the print.
+Moreover, in the case of the regular honeycomb there are several fully disconnected hexagons, which means the object falls apart.
+The difference between the centered and the inward distributed schemes is less pronounced.
+We can still see some loosely connected extrusion segments in both, which is attributable to inaccuracies in the extrusion system.
+However, the middle of \cref{wedge_print} exhibits more defects in the regions where the centered scheme produces extreme bead widths.
+The bottom print shows that the inward distributed beading scheme produces smoother prints with less defects.
 
 
 \begin{figure}
@@ -937,14 +982,160 @@ The uniform technique produces distinct underfill areas.
 The centered scheme shows some defects due to inaccurate control of extreme deposition widths.
 The inward distributed scheme produces the least defects.
 }
-\label{prints}
+\label{prints_old}
+\end{figure}
+}{
+\subsection{Fabrication}
+In order to accurately manufacture adaptive width toolpaths using an off-the-shelf 3D printing system.
+we need a model which relates the required width to process parameters such as movement speed and filament extrusion speed.
+A different approach might be appropriate depending on whether the filament feeder is mounted directly on the print head (a.k.a. \emph{direct drive}) or the filament fed from the back of the printer to the print head via a \emph{Bowden tube}.
+Because Bowden style 3D printing systems have the filament feeder relatively far away from the nozzle changing the internal pressure in the system requires a large amount of filament movement, which requires a prohibitive amount of time.
+
+\subsubsection{Back pressure compensation}
+We therefore keep the internal pressure constant, and vary the movement speed instead.
+%In order to accurately realize a varying bead width we vary the movement speed, while keeping the internal pressure in the system constant.
+One approach would be keep the filament inflow $f$ (in \si{\milli\meter\cubed\per\second}) constant by varying movement speed accordingly \cite{Kuipers2018}.
+However, that doesn't result in the intended filament outflow variation - see \cref{zero_back_pressure}.
+We conjecture that the filament outflow is related to the total pressure in the system,
+which depends not only on the amount of filament in between the feeder wheel and the nozzle (which we keep constant), 
+but also depends on the back pressure that the previous layer exerts on the filament protruding from the nozzle.
+We conjecture that the amount of back pressure is monotonically related to the requested line width and compensate for the back pressure using a simple linear model:
+
+\begin{align}
+ v(w) &= \frac{f(w)}{h w} \\ 
+% f &\sim p \\
+% p &= p_\text{in} + p_\text{ext} \\
+% p_\text{in} &= C \\
+% p_\text{ext} &\sim w \\
+% p_\text{ext} &= w / w^* - 1 \\
+% f &= f^* - k p_\text{ext} \\
+ f(w) &= f_0 - k \left( w / w_0 - 1 \right)
+ % f_0 &= v_0 w_0 h 
+% v &= \frac{f^* - k p_\text{ext}}{h w} \\ 
+% v &= \frac{v^* w^* h - k (w / w^* - 1)}{h w}
+\end{align}
+where
+$v(w)$ is the movement speed as a function of requested bead width $w$,
+$f(w)$ is the filament outflow,
+$f_0$ is a constant reference flow
+and
+$k$ is the amount of back pressure compensation.
+
+% adapted from 5.5 Discussion on implications
+% limitations of back pressure compensation
+Our back pressure compensation method effectively changes the speed to realize adaptive width,
+but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath~\cite{Ertay2018}.
+Moreover, as the layer height is decreased the back pressure becomes larger compared to the internal pressure, which might cause the back pressure compensation method to demand prohibitively slow movement speeds.
+Furthermore, the shape and filling of the previous layer might influence the amount of back pressure.
+%
+% direct drive & pressure advance
+Accurate flow control can be further enhanced by using a direct drive hardware system and by employing \emph{pressure advance algorithms} which dynamically change the internal pressure \cite{tronvoll2019investigating}.
+Conversely such a setup might benefit from some form of back pressure compensation as well.
+
+\subsubsection{Print results}
+Using increments of $0.1$ we established that using a factor of $k=1.1$ yields satisfactory bead width variation for our setup where we use
+$f_0 = v_0 w_0 h $
+with
+$v_0=\SI{30}{\milli\meter\per\second}$, 
+$w_0=\SI{0.4}{\milli\meter}$
+and
+$h=\SI{0.1}{\milli\meter}$.
+See \cref{back_pressure}.
+The fact that the printed lines are wider than intended is compensated for using a flow reduction to \SI{90}{\percent}.
+%
+Test prints were performed on an unmodified Ultimaker S5 system,
+with a standard  \SI{0.4}{\milli\meter} nozzle
+and PLA filament.
+The printing order is determined greadily by choosing the closest point of a polygonal extrusion path, or the closest of either end point in case of an open polyline extrusion path.
+Because the machine instructions file format \emph{G-code} doesn't natively support adaptive width beads,
+we discretize adaptive width extrusions into \SI{0.2}{\milli\meter} long segments of the average width.
+The results can be viewed in \cref{prints}.
+
+
+\begin{figure}
+\centering
+\setlength{\figwidth}{0.32\columnwidth}
+\setlength{\figheight}{0.5\columnwidth}
+\begin{subfigure}[t]{\figwidth}\centering
+\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure_0_0}
+\caption{$k=0$}\label{zero_back_pressure}
+\end{subfigure}
+\begin{subfigure}[t]{\figwidth}\centering
+\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure_1_1}
+\caption{$k=1.1$}\label{back_pressure}
+\end{subfigure}
+\begin{subfigure}[t]{\figwidth}\centering
+\includegraphics[angle=90,height=\figheight]{sources-validation-backpressure_2_0}
+\caption{$k=2.0$}\label{too_much_back_pressure}
+\end{subfigure}
+\caption{
+Print results (black) of the varying width test on top of a dense white raft.
+Target widths in green.
+\subref{zero_back_pressure} Simple flow equalization without back pressure compensation results in nearly constant bead widths.
+\subref{back_pressure} A value of $k=1.1$ seems to produce good results.
+}
+\label{back_pressure_compensation}
 \end{figure}
 
+% discussion of print results
+In \cref{print_naive} the underfill problem of the naive uniform offset approach is most prevalent for the Ultimaker word mark, which negatively impacts the visual quality and the stiffness of the part.
+Moreover, in the case of the spatially graded honeycomb there are several fully disconnected hexagons, which means the object falls apart when picked up.
+The honeycomb print is also missing all parts which are slightly more thin than the preferred bead width $w^*$.
+\Cref{print_center} still shows some underfill, but considerably less than the uniform approach.
+These prints also exhibit dark regions where the translucency of the layer is less because the bead is higher.
+This can be explained by inaccuracies in the back pressure compensation method, which arise for bead widths which deviate from the preferred width by a large amount.
+\Cref{print_inward} diminishes the underfill nearly completely and the visual quality of these prints is more homogenous than those of the other methods.
+Moreover, the absence of dark regions signifies that our proposed method is more robust against inaccuracies in the deposition system.
+However, both the centered and inward distributed approach introduce transitions to a different bead count in the word `Delft', which reduces the dimensional accuracy on the outline around those locations.
 
+\begin{figure}
+\centering
+\setlength{\figwidth}{\columnwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figwidth]{sources-applications-result-prints-target}
+\caption{Outlines}\label{print_outlines}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figwidth]{sources-applications-result-prints-naive-bw.png}
+\caption{Uniform}\label{print_naive}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figwidth]{sources-applications-result-prints-center-bw.png}
+\caption{Centered}\label{print_center}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[width=\figwidth]{sources-applications-result-prints-inward-bw.png}
+\caption{Inward distributed}\label{print_inward}
+\end{subfigure}
+\caption{
+Test shapes printed using the uniform scheme, centered scheme and the inward distributed scheme.
+The uniform technique produces distinct underfill areas.
+The centered scheme shows some defects due to inaccurate control of extreme deposition widths.
+The inward distributed scheme produces the least defects.
 }
-
-
+\label{prints}
+\end{figure}
 }
+\revise{
+\subsection{Discussion on implications}
+Note that the current industry standard in FDM printing employs little to no bead width variation.
+Properly performing bead width variation calls for adaptations and developments in printers and firmware.
+In the beading schemes we set a transition length of $t(n) = w^*$.
+That will demand changes in cross-sectional area of the bead up to \SI{200}{\percent} over a small distance that is comparable to the nozzle size, which is challenging for some hardware systems.
+Varying the movement speed can be utilized to change the cross-sectional area, but this approach is limited, since the movement speed is constrained by acceleration considerations near bends in the toolpath~\cite{Ertay2018,Kuipers2018}.
+Our schemes require a more accurate control of the volumetric flow rate in \si{\milli\meter\cubed\per\second}.
+Using a filament feeder directly mounted on the print head (a.k.a. direct drive) can control the flow more dynamicaly then FDM printers where the material is fed through a Bowden tube from a feeder mounted on the frame.
+Still direct drive printers require some control system in order to accurately change the volumetric flow rate such as pressure advance algorithms~\cite{tronvoll2019investigating}.
+Yet inaccuracies in direct drive systems employing advance algorithms might arise due to the changes in back-pressure required by changing bead size.
+We expect that developments in printing hardware and firmware will address these challenges in the future.
+
+Another limiting factor for adopting adaptive bead width is the format of G-code which stores machine instructions.
+G-code does not support moves with varying cross-sectional area.
+A typical extrusion move \lstinline!G1 X$x$ Y$y$ E$v$! only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed along the extrusion move.
+A workaround is to approximate a variable width extrusion segment by smaller segments with constant width.
+However, this introduces errors nevertheless.
+Ideally the G-code language would be expanded in some way to allow for extrusion segments with varying cross-sectional area.
+}{}
 }
 
 
@@ -971,6 +1162,15 @@ We've added a paragraph to section 5.3. Limitations, which discusses these emula
 \commits{
 639dccad8e97fa1f0bdbb28e16b64f587572792d % paragraph in limitations
 }
+\paper{5.3 Limitations}
+{
+\revise{}{
+Finally it should be noted that although our framework can accurately emulate the constant bead count approach by \citeauthor{Ding2016a}, its emulation of the centered approach by \citeauthor{Jin2017JMS} is imperfect.
+The transitions resulting from out framework introduce sharper corners and there is more width variation in those corners.
+Whereas the width of the connecting segment in the approach by \citeauthor{Jin2017JMS} is the preferred width $w^*$, the bead widths closer to the center resulting from our framework will be twice the local radius, which is larger than $w^*$.
+However, this inflated bead width variation is expected to have an insignificant impact on the measured bead width variation.
+}
+}
 
 
 
@@ -989,9 +1189,12 @@ Paper is well written. It is mostly easy to follow but overall, I find the the c
 \Que{
 The title is a little misleading that the presented approach may be used for general “Additive Manufacturing”. However, my understanding from the text is that it is designed particularly for FDM. I believe it is important to highlight this in the title. Otherwise, there should be enough evidence to prove that it can be applied to other kinds of printing processes, such as SLS, SLA, DMLS etc. 
 }
+\Ans{
 The title has changed.
-\revise{additive manufacturing}{fused deposition modeling}
-\commits{64eb2f2c1cbb28258a984b5f84ea6e3a039ee1f0}
+}
+\commits{
+64eb2f2c1cbb28258a984b5f84ea6e3a039ee1f0
+}
 \paper{Title}{
 A framework for adaptive width control of dense contour-parallel toolpaths in \revise{additive manufacturing}{fused deposition modeling}
 }
@@ -1007,6 +1210,7 @@ It would be nice to discuss why contour-parallel toolpaths are needed or selecte
 The industry standard is to use a combination of contour-parallel and direction-parallel.
 We now clarify why contour-parallel is (partly) used and that in as much as contour-parallel is used, our approach improves on the industry standard.
 We have also developed and presented a new meta-scheme for generating only a limited number of perimeters, which shows that our technique is compatible with the industry standard for FDM 3D printing.
+See also the changes to the paper presented under question~\ref{widening_question}.
 }
 
 \commits{
@@ -1016,6 +1220,11 @@ a88ccd3309aef1233ed00ce9f22b244fe64668f4 % introduce shell meta-scheme and repla
 077c8ee138bb311a8ba9abf303af4b09e973637a % improve introduction of contour-parallel (reviewer 3.2)
 8a11aa0105d1c7f1f5690c8e1f932be85a90bcae % more changes to shell + widening fig
 }
+\paper{Abstract}{
+\revise{By densely filling consecutive 2D layers with contour-parallel extrusion toolpaths, FDM can produce parts with high stiffness and strength.}
+{High stiffness parts are produced by filling the 2D polygons of consecutive layers (partly) with contour-parallel extrusion toolpaths.}
+}
+
 \paper{Intro}{
 \revise{
 Contour-parallel extrusion therefore leads to a less bumpy outline shape than direction-parallel extrusion does.
@@ -1024,11 +1233,6 @@ Because contour-parallel extrusion leads to a more accurate outline shape it is 
 This paper improves on those contour-parallel toolpaths and addresses several issues which commonly occur in 3D models with narrow geometry.
 }
 }
-\paper{Abstract}{
-\revise{By densely filling consecutive 2D layers with contour-parallel extrusion toolpaths, FDM can produce parts with high stiffness and strength.}
-{High stiffness parts are produced by filling the 2D polygons of consecutive layers (partly) with contour-parallel extrusion toolpaths.}
-}
-
 
 
 
@@ -1039,8 +1243,12 @@ Related work acknowledges the previous work sufficiently. However, the differenc
 We have tried to address this in response to several other reviewers' comments.
 See our response to question~\ref{difference_to_jin} and question~\ref{contributions}.
 We now clearly claim that our method produces a lower range of bead widths than the state-of-the-art.
+See also our response to question~\ref{widening_question} for clarification in the difference between Fig 1b and 1c.
 }
-\commits{004894210fbc961f82b792fc702d1b67a1a8e8e8}
+\commits{
+004894210fbc961f82b792fc702d1b67a1a8e8e8 lil lang improvement (reviewer 3.3)
+9ac2c005c2eb1c0696e2582963353b038fa71072 use limited distributed strategy in fig 1 (reviewer 1.6, 3.3)
+}
 \paper{Fig 1}{
 \subref{intro_wedge_distributed} Our approach minimizes over- and underfill with \revise{beads close to the nozzle size}{less extreme widths}.
 }
@@ -1054,27 +1262,37 @@ We now clearly claim that our method produces a lower range of bead widths than 
 Isn’t it possible to put bounds on the width in the existing methods, such as the approach described in [9]? More discussion on that would be helpful. 
 }
 \Ans{
-The bead width in Jin et al. is limited to $0.5 w^*$ to $1.8 w^*$ , which means the variation is a factor of $3.2$;
-this was already described in the related work section, but the factor was wrongly said to be $2$ instead of $3.2$.
-We emphasized that our method (generally) results in a bead width deviation of $2$, rather than $3.2$ in the related work section and in the discussion section.
+The bead width in Jin et al. is limited to $0.5 w^*$ to $1.8 w^*$ , which means the variation is a factor of $3.6$;
+this was already described in the related work section, but the factor was wrongly said to be $2$ instead of $3.6$.
+We emphasized that our method results in a bead width variation of $2$, rather than $3.6$ in the related work section and in the discussion section.
+This factor comes from the transition from a single bead to two beads.
+(The transition from zero beads to one is disregarded; it is controlled separately by the Widening meta-scheme.)
 }
 \commits{
 661d8f6766548c287cb174070432097e396d198f 
-92217c04e118dcf6f65b16a1ffcdfa40b4d50c0d
-2f230ea9f26f9870027e80db89eae8774f19d339
+92217c04e118dcf6f65b16a1ffcdfa40b4d50c0d give bounds on width variation (reviewer 3.4)
+2f230ea9f26f9870027e80db89eae8774f19d339 fix bounds of width variation in Jin (reviewer 3.4)
 acf8bbed0e530a3038d6fea064c33e7df6f0f933 % deviation > variation
 }
 \paper{Intro}{
-The current state-of-the-art for FDM printing developed by \citeauthor{Jin2017JMS} employs a strategy which alters the widths of the centermost beads at most by a factor of \revise{$2$}{$3.2$}~\cite{Jin2017JMS},
+The current \revise{state-of-the-art}{state of the art} for FDM printing developed by \citeauthor{Jin2017JMS} employs a strategy which alters the widths of the centermost beads \revise{at most by a factor of $2$}{within a range of widths with a factor of $3.6$}~\cite{Jin2017JMS},
 }
-\paper{Discussion}{
+\paper{3.4. Central height adjustment, Transition anchors, filtering paragraph}
+{
+\revise{}{This means that for some small regions we generate toolpaths with bead widths outside the typical range.}
+}
+\paper{5.2 Comparison of beading schemes, paragraph 3, 4}{
 In \cref{TEST_Center_accuracy} we can see that
-the centered beading scheme effectively deals with both overfill and underfill and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.5 w^*$ and $1.8w^*$, i.e. the deviation is within a factor of $3.2$.}
+the centered beading scheme \revise{effectively }{}deals with both overfill and underfill and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.5 w^*$ and $1.8w^*$, i.e. the variation is within a factor of $3.6$.}
+
+[\dots]
+
+\revise{}{Moreover, because the quantization operator rounds to the nearest number of beads, in the worst case where we switch from a single to two beads the widths switch from $0.75w^*$ to $1.5w^*$, i.e. the variation is within a factor $2$, which is considerably lower the than factor of $3.6$ in the centered scheme.}
+We therefore conclude that the distributed schemes \revise{result in bead widths closer to the preferred widths}{exhibit a lower bead width variation} compared to the centered scheme.
 }
-\paper{Discussion}{
-\revise{}{Moreover, because the quantization operator rounds to the nearest number of beads the bead widths range from $0.75w^*$ to $1.5w^*$, i.e. the deviation is within a factor $2$, which is considerably lower than in the centered scheme.}
-We therefore conclude that the distributed schemes \revise{result in bead widths closer to the preferred widths}{exhibit a lower bead width deviation} compared to the centered scheme.
-}
+
+
+
 
 
 
@@ -1086,6 +1304,8 @@ Fig. 4 shows a legend of terms and color coding scheme used throughout the paper
 it doesn't show a decomposition.
 It is unclear to us what this review comment is asking for.
 }
+
+
 
 
 
@@ -1115,6 +1335,208 @@ Making these framework parameters independent of the beading schemes simplifies 
 64029a6ef57cf8044c521075ebc70cddfb52156b % d^discretization
 1ea800d0b4f68963befff90e535d5c82748df5e2 % big rework
 }
+\paper{3.2 Union of cones, Skeletal trapezoidation}
+{
+The vertex-line and vertex-vertex edges are discretized into pieces with a length up to \revise{$d^\text{discretization}$}{\SI{0.2}{\milli\meter}, which gives an approximation error of only $\pm$\SI{0.01}{\milli\meter}}.
+}
+\paper{3.3 Center classification, Significance measure}
+{
+\revise{}{A too large $\alpha_\text{max}$ leaves a lot of under-/overfill, while a too small value will introduce toolpaths to fill in negligibly small underfills.
+We therefore set $\alpha_\text{max} = \SI{135}{\degree}$.}
+}
+\paper{3.3 Center classification, Marking filtering}
+{
+\revise{}{We use $d_\text{max}^\text{unmarked} = w^*$ in order to filter out high frequency oscillations in the order of magnitude of the nozzle size, while keeping close to significance measure.}
+}
+\paper{3.4 Central height adjustment, Transition anchors}
+{
+\revise{}{A value of $d_\text{max}^\text{transition} = \SI{1}{\milli\meter}$ seems to produce satisfactory results.}
+}
+\paper{3.4 Central height adjustment, Smooth transitions}
+{
+ The length of the transition is set to $t(n) = w^*$ and it is centered at the anchor, i.e. the distance from the lower end $v_0$ to the anchor position $v_x$ is set to
+\revise{$t_0(n) = \Delta(v_0v_x) = \nicefrac12 w^*$,}
+{$t_0(n) \equiv \Delta(v_0v_x) =  t(n) \left( q^{-1}(n) / w^*  - n \right)$,}
+ where $\Delta$ is the total distance along the edges between two nodes.
+\revise{}{The transition length $t(n)$ ensures that the center beads don't overlap with the innermost transitioning beads, while keeping the amount of underfill low and the toolpath smooth.
+The transition anchor position $t_0(n)$ ensures that the transitions never overlap with each other or with locations where all beads have the preferred width $w^*$.}
+}
+\paper{3.5 Beading, Beading interpolation}{
+There we also apply beading interpolation from a marked node $v_m$ upward along unmarked bones,
+and interpolate between $v_m$ and the beading at the top of the slope over some distance $t_\text{beading}$ from the lower marked node\revise{.}{, which we set to $t_\text{beading} = w^* $, so that the transition is not too swift.}
+ }
+\paper{3.6 Toolpath extraction, last paragraph}{
+In order to retreat a polyline which ends in a site $S$ we remove part of the polyline paths up to the intersection by a distance of $w^S d_\text{max}^\text{intersection}$\revise{, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.}{.
+We set $d_\text{max}^\text{intersection} = \SI{75}{\percent}$ in order to slightly favor overfilling over underfilling.}
+}
+\paper{4. Beading schemes}
+{
+\revise{
+\begin{definition}\label{beading_scheme_definition}
+The beading scheme is configured by the following set of functions and constants:
+\begin{align*}
+\{
+&q(d),
+B(n, r),
+t(n),
+t_0(n),
+\\
+&\alpha_\text{max}, 
+t_\text{beading}, 
+d_\text{max}^\text{transition}, 
+d_\text{max}^\text{unmarked}, 
+d_\text{max}^\text{intersection},
+d^\text{discretization}
+ \}
+\end{align*}
+where, as introduced in previous section,
+$q(d)$ the quantization operator,
+$B(n,r)$ is the beading function consisting of $\left( W(n,r), L(n,r) \right)$,
+$t(n)$ the transition length,
+$t_0(n)$ the transition anchor position,
+$\alpha_{\text{max}}$ is the limit bisector angle,
+$t_\text{beading}$ is the beading conflict transition length,
+$d_\text{max}^\text{unmarked}$ is the filter distance for unmarked regions,
+$d_\text{max}^\text{transition}$ is the filter distance for transition anchors,
+$d_\text{max}^\text{intersection}$ is the reduction ratio at 3-way intersections
+and
+$d^\text{discretization}$ is the discretization length in vertex-vertex VD edges and vertex-line VD edges.
+%$W(n, r)$ and $L(n, r)$ give the sequence of bead widths $\left\{ w_i \right\}$ and radial locations $\left\{ l_i \right\}$, respectively.
+\end{definition}
+}{}
+
+\revise{
+The following restrictions hold:
+\begin{enumerate}
+	\begin{minipage}{\columnwidth}
+	\setlength\intextsep{0pt}
+	\begin{wrapfigure}[4]{o}{.4\columnwidth} %\centering
+	\includegraphics[width=.3\columnwidth,frame]{sources-method-transition-length-limit.pdf}
+	%\caption{
+	%%Transition ends (magenta and pink) shouldn't cross each other.
+	%Placement of transition ends (magenta and pink) with respect to the anchor positions of the transitions (purple) on a ST edge (blue) with bisector angle $\alpha \approx \SI{135}{\degree}$.
+	%The distance between the anchor position and the upper end ($t_1$) and the distance between the anchor position and the lower end of the transition ($t_0$) should add up to less than the total distance between the anchor positions, which is limited by $\alpha_\text{max}$.
+	%}
+	\label{transition_placement}
+	\end{wrapfigure}
+	\item Transitions shouldn't overlap each other: \\ $t_1(n) + t_0(n+1) < \frac{ q^{-1}(n + 1) - q^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$ \\ for each $n \in \mathbb{N}$ \\ (see \cref{transition_placement})
+\end{minipage}
+\item An odd beading should produce an odd single toolpath exactly in the center: $B(n, r)_{\lfloor n/2 \rfloor} = r$ in case $n$ is odd
+\item For the smoothness and continuity of toolpaths we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, r)_n}{\partial r} \leq 1$
+\end{enumerate}
+}{}
+
+\revise{}{
+\begin{definition}\label{beading_scheme_definition}
+A beading scheme is defined by the quatization operator $q$ and the beading operator $B$: $\{q(d), B(n ,r)\}$.
+The beading function $B(n,r)$ consists of $\left( W(n,r), L(n,r) \right)$,
+which provides sequences of $n$ bead widths and of $n$ distances from the outline to fill up a radial distance $r$.
+\end{definition}
+}
+% the condition that transitions don't overlap is already caught by the way in which we defined $t_0$ in section 3.4 Smooth transitions
+
+\revise{}{
+For the smoothness and continuity of toolpaths we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, r)_n}{\partial r} \leq 1$.
+We further ensure
+that beads don't overlap,
+that beads are extruded from the center of where they end up
+and that odd bead counts produce a single polyline toolpath exactly in the center
+by determining the bead locations from the widths:
+}
+\begin{align*}
+L(n,r)_i = 
+\begin{cases}
+-\frac12 W(n,r)_i + \sum_{j=0}^i W(n,r)_j & \text{ if } i < \frac12 (n -1) \\
+r & \text{ if } i =  \frac12 (n -1) \\
+%d - W(n,r)_{n-1-i} & \text{ otherwise }\\
+\end{cases}
+\end{align*}
+
+% \subsection{Beading schemes}
+We introduce several beading schemes which determine the bead count and their widths in various ways.
+We can emulate a variety of toolpath generation methods from related literature by defining new beading schemes.
+We also introduce new beading schemes which produce toolpaths with less extreme widths compared to techniques from existing literature.
+
+\revise{
+A beading scheme is defined as a set of some particular variables and functions (\cref{beading_scheme_definition}).
+Our beading schemes are based on a preferred width $w^* = \SI{0.4}{\milli\meter}$, which is equal to the diameter of the printing nozzle.
+Most of the beading schemes we introduce share a common ground:
+\begin{align*}
+L(n,r)_i = 
+\begin{cases}
+-\frac12 W(n,r)_i + \sum_{j=0}^i W(n,r)_j & \text{ if } i < \frac12 (n -1) \\
+r & \text{ if } i =  \frac12 (n -1) \\
+%d - W(n,r)_{n-1-i} & \text{ otherwise }\\
+\end{cases}
+\\
+\begin{array}{rlrl}
+t_\text{beading} &= w^* 
+&
+d_\text{max}^\text{transition} &= \SI{1}{\milli\meter}
+\\
+t(n) &= w^*
+&
+d_\text{max}^\text{unmarked} &= w^*
+\\
+t_0(n) &=  t(n) \left( q^{-1}(n) / w^*  - n \right)
+&
+d^\text{discretization} &= \SI{0.2}{\milli\meter}
+\\
+\alpha_\text{max} &= \SI{135}{\degree} 
+&
+d_\text{max}^\text{intersection} &= \SI{75}{\percent}
+\end{array}
+%\end{align*}
+%\begin{align*}
+\end{align*}
+}{}
+
+\revise{
+The toolpath locations $L$ ensure 
+that the beads don't overlap,
+that beads are extruded from the center of where they end up
+and that the symmetry restrictions are met.
+The transition anchor position $t_0$ ensures that the transitions never overlap with the locations $v$ where $R(v) = \nicefrac12 n w^*$ for $n \in \mathbb{N}$.
+The transition length $t$ ensures that the center beads don't overlap with the innermost transitioning beads, while keeping the amount of underfill low and keeping the toolpath smooth.
+The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths.
+}{}
+
+\paragraph{Uniform beading scheme}
+[\dots]
+\revise{See}{We can simply set $\alpha_\text{max} = \SI{180}{\degree}$ and supply a simple beading scheme given by} \cref{formula_uniform}.
+
+[\dots]
+
+\paragraph{Constant bead count}
+[\dots]
+Additionally in order to emulate their definition of ``branches'' we mark all ST edges \revise{}{($\alpha_\text{max} = \SI{0}{\degree}$) and }we unmark the outer edges connected to the outline shape in a separate algorithm.
+[\dots]
+
+\paragraph{Centered}
+[\dots]
+\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w^*$\revise{}{, which gives us $w_\text{max}=1.8 w^*$}.
+Conversely, they place an extra bead when the radius \revise{between the center and either of the innermost beads }{}exceeds $r_\text{max} = 1.25 w^*$~\cite{Jin2017JMS}\revise{}{, which gives us $w_\text{min}=0.5 w^*$}.
+We emulate the rounded polygonal path rerouting they define by supplying a transition length \revise{}{$t(n) = \frac12 w^*$} which results in a discretized version of their rounded polygon segment.
+}
+\paper{5.3 Limitations, second paragraph}
+{
+\revise{}{
+The default limit bisector angle $\alpha_\text{max} = \SI{135}{\degree}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths;
+$\alpha_\text{max} = \SI{135}{\degree}$ corresponds to $w^* / \cos \nicefrac12 \alpha_\text{max} \approx \SI{0.4}{\milli\meter}$ long segments
+and under-/overfill areas of $\nicefrac14 (w^*)^2 \left( \tan ( \alpha / 2) - \alpha / 2 \right) \approx \SI{0.05}{\milli\meter\squared}$.
+However, future work might be aimed at reducing under-/overfill in regions with a low bisector angle without the introduction of short single polyline extrusion segments.
+If the over-/underfill problem is also solved for non-significant regions we might be able to increase $\alpha_\text{max}$ and reduce the discontinuity introduced by short extrusion segments.
+}
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1141,7 +1563,13 @@ If this is used for outer surface, what are the implications on the surface qual
 The visual quality in terms of a homogenous surface are discussed in the section on the new printing results.
 See our response to question ~\ref{s5_prints}.
 }
-
+\commits{
+6b0f8c78d31bd0c6946885da96f73f1cfc1a21ae clarify widespread use of concentric toolpaths in abstract (reviewer 3.9)
+}
+\paper{Abstract}{
+\revise{By densely filling consecutive 2D layers with contour-parallel extrusion toolpaths, FDM can produce parts with high stiffness and strength.}
+{High stiffness parts are produced by filling the 2D polygons of consecutive layers (partly) with contour-parallel extrusion toolpaths.}
+}
 
 
 
@@ -1176,15 +1604,21 @@ We have discussed several implications of our method and in a sense they are all
 In our revision we address several new implications;
 we address the influence of layers in each other and the implications of underfill on stiffness.
 We hope that these suffice.
+% See answers to question~\ref{contributions}
 }
 \commits{
-3b13960e15c07f484ab641a2d941f6086eda571c dd293c060baae147ad1a217cf6ab68d8c4cb00c8
+3b13960e15c07f484ab641a2d941f6086eda571c describe implications on full model (reviewer 3.12)
+dd293c060baae147ad1a217cf6ab68d8c4cb00c8 lil reformulation in conclusion (reviewer 3.12)
 2f83d078036e267195431a7b077201eef0352e19 % influence of layers on back pressure
 }
-\paper{Conclusion}{
+\paper{6. Conclusion and future work, last paragraph}{
 \revise{}{Compared to the naive approach of constant width toolpaths our beading scheme is expected to improve the stiffness, dimensional accuracy and visual qualities of the manufactured model.}
+\revise{}{It is expected that as distributed beading schemes are implemented in commercial software packages and bead width variation control become commonplace, the practice of design for additive manufacturing can disregards some of the nozzle size considerations.}
 }
-
+\paper{5.4.1 Back pressure compensation}
+{
+\revise{}{Furthermore, the shape and filling of the previous layer might influence the amount of back pressure.}
+}
 
 
 
@@ -1192,14 +1626,27 @@ We hope that these suffice.
 What are the limitations of the presented algorithm? I do not see any discussions of the limitations of the algorithm.
 }
 \Ans{
-The limitations are now handled in section 5.3 Theoretical considerations, together with an analysis of the relation between feature size and bead width range.
-Some more general limitations are discussed in the Conclusions section.
+The limitations are now handled in a new section, together with an analysis of the relation between feature size and bead width range.
+%Some more general limitations are discussed in the Conclusions section.
 }
 \commits{
 5b8c5971d606089754ba118560e51ec6d7dfda0b % extrusion width range considerations
-ecf99f47dadf9973f527c1d471d662d87f6a5f51 % Limitations
+ecf99f47dadf9973f527c1d471d662d87f6a5f51 move Theoretical considerations to 5.3 and discuss limitations (reviewer 3.13)
 }
+\paper{5.3 Limitations}
+{
+\revise{}{
+Another limitation of our method is that in a location $v$ with locally maximal $R(v) \approx (i + \nicefrac12) w^*$ the odd bead count will result in a single polyline extrusion segment consisting of only a single point.
+This can be viewed in the bottom right of \cref{TEST_InwardDistributed_accuracy} for example.
+In order to print such a dot, we make it into a \SI{10}{\micro\meter} long extrusion segment, with an altered width such that the total volume remains correct.
+A more principled way of dealing with such a situation remains future work.
 
+Finally it should be noted that although our framework can accurately emulate the constant bead count approach by \citeauthor{Ding2016a}, its emulation of the centered approach by \citeauthor{Jin2017JMS} is imperfect.
+The transitions resulting from out framework introduce sharper corners and there is more width variation in those corners.
+Whereas the width of the connecting segment in the approach by \citeauthor{Jin2017JMS} is the preferred width $w^*$, the bead widths closer to the center resulting from our framework will be twice the local radius, which is larger than $w^*$.
+However, this inflated bead width variation is expected to have an insignificant impact on the measured bead width variation.
+}
+}
 
 
 
@@ -1243,8 +1690,17 @@ Lil
 \commits{5f5c4c640d94010816e6d6d5934a2dc016b4d172
 1662d3c4c3aa977bddd730ac59f1bc874b9eb574 % -''See ``
 b108d7de4f1e1e9676d45cf24eea263af6b8b9c7 % width => widths
+9d9f02edc43689c0970a74118e44a196cc11c729 % typos
 }
 
+Our department has changed its name:
+\commits{
+442a5df5a4f27f1ce94a5ef298a1f7bcc3df934d
+}
 
+Removed confusing red parts from beading figure:
+\commits{
+1196bad1c2bf4fb41e7d28985938cfe678384e5a
+}
 
 \end{document}
