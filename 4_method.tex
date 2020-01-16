@@ -292,7 +292,7 @@ A half-edge data-structure is used to represent the Voronoi diagram (\cref{shape
 %In order to prevent the over- and underfill we will change the bead counts in the central regions.
 %This sections covers what parts of the UoC will be marked as being central.
 In order to prevent over- and underfill to occur in central, we mark parts of the ST as being central.
-The remainder is called peripheral.
+\revise{The remainder is called peripheral.}{}
 Our framework will decide on a beading at all the marked nodes in `the center' and apply the beading outward to the unmarked nodes (\cref{sec_peripheral_height_adjustment}).
 
 We mark a node in the ST as central if its feature radius is larger than that of all its neighboring nodes, i.e. a local maxima.
