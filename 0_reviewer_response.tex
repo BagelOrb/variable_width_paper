@@ -141,6 +141,9 @@
 \newcommand\paper[2]{\par changes to \emph{#1} --- ``#2'' }
 %\renewcommand\paper[2]{\par changes to \emph{#1} --- ``\dots'' }
 
+\newcommand\Summary[1]{
+   \noindent\emph{Summary.} {\bf#1}\par}
+
 \newcommand\Que[1]{%
    \leavevmode\par
    \refstepcounter{question}
@@ -267,7 +270,7 @@ and
 
 
 
-\Que{Example question by reviewer?}
+\Que{Example text by reviewer.}
 \Ans{Example response.}
 \paper{Section name}{
 Remaining text, followed by 
@@ -277,8 +280,13 @@ Remaining text, followed by
 \commits{123commit-hash}
 
 \section{Reviewer 1}
+\Summary{
 Overall, the paper proposes some novel frameworks which are meaningful to additive manufacturing. Therefore, I suggest it for publication once the following major comments are addressed. 
-
+}
+\Ans{
+We agree with this summary, although it does not stress the contribution of a novel beading scheme in the framework which improves on the state of the art.
+We have made various changes to highlight those as separate contributions.
+}
 
 
 
@@ -782,8 +790,12 @@ Note that the width of the uniform case is \SI{0.4}{\milli\meter} \emph{everywhe
 
 
 \section{Reviewer 2}
+\Summary{
 The paper is generally well written with clear illustrations. 
-
+}
+\Ans{
+Thank you.
+}
 
 
 
@@ -1180,8 +1192,13 @@ However, this inflated bead width variation is expected to have an insignificant
 
 
 \section{Reviewer 3}
+\Summary{
 Paper is well written. It is mostly easy to follow but overall, I find the the contributions somewhat incremental and the motivation not convincing. The paper mostly feels like a technical report. I am not sure if the methods overall teach enough to the researchers in the field to open up new research possibilities. My specific comments are below: 
+}
+\Ans{
+Thank you for your feedback.
 
+}
 
 
 
@@ -1702,5 +1719,10 @@ Removed confusing red parts from beading figure:
 \commits{
 1196bad1c2bf4fb41e7d28985938cfe678384e5a
 }
+
+
+
+\bibliography{99_mybib}
+
 
 \end{document}
