@@ -22,6 +22,16 @@
 
 % My TK added packages and commands
 
+    \usepackage{censor}
+	\def\censorcolor{black}
+	\let\svcensorrule\censorrule
+	\renewcommand\censorrule[1]{%
+	\textcolor{\censorcolor}{\svcensorrule{#1}}}
+	
+	\newcommand{\censoromit}[1]{}
+	%\newcommand{\censoromit}[1]{#1}
+    % \StopCensoring
+
 	% for for using hyperref and elsarticle-num-names together in order to get \citeauthor to work
 	\makeatletter
 	\providecommand{\doi}[1]{%
@@ -170,16 +180,16 @@
 
 %\author{Paper ID: xxx}
 
-\author[um,tud]{Tim Kuipers}
-\author[tud]{Eugeni L. Doubrovski}
-\author[tud]{Jun Wu\corref{cor1}}
-\ead{j.wu-1@tudelft.nl}
+\author[um,tud]{\censor{Tim Kuipers}}
+\author[tud]{\censor{Eugeni L. Doubrovski}}
+\author[tud]{\censor{Jun Wu}\corref{cor1}}
+\censoromit{\ead{j.wu-1@tudelft.nl}}
 \cortext[cor1]{Corresponding author}
-\author[cuhk]{Charlie Wang}
+\author[cuhk]{\censor{Charlie Wang}}
 % \ead{cwang@mae.cuhk.edu.hk}
-\address[um]{Ultimaker, Utrecht, The Netherlands}
-\address[tud]{Department of Sustainable Design Engineering, Delft University of Technology, The Netherlands}
-\address[cuhk]{Department of Mechanical and Automation Engineering, The Chinese University of Hong Kong, Hong Kong SAR, China}
+\address[um]{\censor{Ultimaker, Utrecht, The Netherlands}}
+\address[tud]{\censor{Department of Sustainable Design Engineering, Delft University of Technology, The Netherlands}}
+\address[cuhk]{\censor{Department of Mechanical and Automation Engineering, The Chinese University of Hong Kong, Hong Kong SAR, China}}
 
 
 \begin{abstract}

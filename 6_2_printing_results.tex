@@ -93,7 +93,7 @@ Target widths in green.
 \end{figure}
 
 % discussion of print results
-In \cref{print_naive} the underfill problem of the naive uniform offset approach is most prevalent for the Ultimaker word mark, which negatively impacts the visual quality and the stiffness of the part.
+In \cref{print_naive} the underfill problem of the naive uniform offset approach is most prevalent for \xblackout{the Ultimaker word mark}, which negatively impacts the visual quality and the stiffness of the part.
 Moreover, in the case of the spatially graded honeycomb there are several fully disconnected hexagons, which means the object falls apart when picked up.
 The honeycomb print is also missing all parts which are slightly more thin than the preferred bead width $w^*$.
 \Cref{print_center} still shows some underfill, but considerably less than the uniform approach.
@@ -101,25 +101,33 @@ These prints also exhibit dark regions where the translucency of the layer is le
 This can be explained by inaccuracies in the back pressure compensation method, which arise for bead widths which deviate from the preferred width by a large amount.
 \Cref{print_inward} diminishes the underfill nearly completely and the visual quality of these prints is more homogenous than those of the other methods.
 Moreover, the absence of dark regions signifies that our proposed method is more robust against inaccuracies in the deposition system.
-However, both the centered and inward distributed approach introduce transitions to a different bead count in the word `Delft', which reduces the dimensional accuracy on the outline around those locations.
+However, both the centered and inward distributed approach introduce transitions to a different bead count in \xblackout{the word `Delft'}, which reduces the dimensional accuracy on the outline around those locations.
 
 \begin{figure}
 \centering
 \setlength{\figwidth}{\columnwidth}
 \begin{subfigure}{\figwidth}\centering
+\censorbox{
 \includegraphics[width=\figwidth]{sources-applications-result-prints-target}
+}
 \caption{Outlines}\label{print_outlines}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
+\censorbox{
 \includegraphics[width=\figwidth]{sources-applications-result-prints-naive-bw.png}
+}
 \caption{Uniform}\label{print_naive}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
+\censorbox{
 \includegraphics[width=\figwidth]{sources-applications-result-prints-center-bw.png}
+}
 \caption{Centered}\label{print_center}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
+\censorbox{
 \includegraphics[width=\figwidth]{sources-applications-result-prints-inward-bw.png}
+}
 \caption{Inward distributed}\label{print_inward}
 \end{subfigure}
 \caption{
