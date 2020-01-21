@@ -96,50 +96,52 @@ and wide beads in red.
 
 \begin{figure*}
 \centering
-\setlength{\figheight}{0.22\textwidth}
-\setlength{\figwidth}{0.31\textwidth}
+\setlength{\figheight}{0.25\textwidth}
+\setlength{\figwidth}{0.32\textwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-over-underfill.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-overunderfill.pdf}
+\caption{\revise{}{Over- and underfill}}
+\label{over_underfill}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-print-time.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-smoothness.pdf}
+\caption{\revise{}{Print time}}
+\label{printtime}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-path-counts.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-widthHistogram.pdf}
+\caption{\revise{}{Path counts}}
+\label{pathcounts}
+\end{subfigure}
+
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-widths.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-widthHistogram.pdf}
+\caption{\revise{}{Extrusion widths}}
+\label{widthHistogram}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-angles.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-smoothnessNoTransition.pdf}
+\caption{\revise{}{Site angles}}
+\label{smoothness}
+\end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[height=\figheight]{sources-validation-computime2.pdf}
 %\includegraphics[width=\figwidth]{sources-validation-computime2.pdf}
 \caption{Computation time}
 \label{computime}
 \end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[height=\figheight]{sources-validation-widthHistogram.pdf}
-%\includegraphics[width=\figwidth]{sources-validation-widthHistogram.pdf}
-\caption{Extrusion widths}
-\label{widthHistogram}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[height=\figheight]{sources-validation-indexedwidths2.pdf}
-%\includegraphics[width=\figwidth]{sources-validation-widthHistogram.pdf}
-\caption{Extrusion width per index}
-\label{widthIndexedHistogram}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[height=\figheight]{sources-validation-overunderfill.pdf}
-%\includegraphics[width=\figwidth]{sources-validation-overunderfill.pdf}
-\caption{Over- and underfill}
-\label{over_underfill}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[height=\figheight]{sources-validation-smoothness.pdf}
-%\includegraphics[width=\figwidth]{sources-validation-smoothness.pdf}
-\caption{Site angles}
-\label{smoothness}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-\includegraphics[height=\figheight]{sources-validation-smoothnessNoTransition.pdf}
-%\includegraphics[width=\figwidth]{sources-validation-smoothnessNoTransition.pdf}
-\caption{Site angles (inward distributed)}
-\label{smoothnessNoTransition}
-\end{subfigure}
 
 
 \caption{
 Statistical analysis of the toolpaths from applying the uniform width technique and various beading schemes using our framework to a data set of 300 slices.
-Note the use of a logarithmic scale on the Y-axes and on some of the X-axes as well.
+Note the use of a logarithmic scale \revise{}{in the bottom graphs }on the Y-axes and \revise{on some of}{for \subref{computime} on} the X-axes as well.
 }
+\label{statisticsfig}
 \end{figure*}
 
 
