@@ -141,16 +141,21 @@ Note the use of a logarithmic scale \revise{}{in the bottom graphs }on the Y-axe
 
 
 
-
-
 \subsubsection{Uniformity}
 We visualize the bead widths resulting from the different schemes in the bottom of \cref{visualized_accuracy}.
+\revise{
 We calculated the mean and standard deviation of the bead width, sampled at \SI{1}{\micro\meter} along the toolpaths.
 \cref{widthHistogram} shows the distribution of extrusion width for each scheme binned at intervals of \SI{10}{\micro\meter}.
+}{
+We binned the tool paths into width bins at \SI{0.01}{\milli\meter} increments and determine the total tool path length pertaining to each bin.
+From these statistics we calculate the mean and standard deviation and report them in \cref{widthHistogram}.
+}
 We found that the mean width of the inward and evenly distributed schemes is close to preferred bead width of \SI{400}{\micro\meter}, while their standard deviation is lower than for the centered and constant bead count scheme. 
 These results show that, while causing less overfill and underfill, inwards distributed and evenly distributed schemes deviate less or less often from the preferred bead width compared to the other schemes.
+\revise{
 We compared the width uniformity of the 6 outer beads for the inward and evenly distributed schemes, the distribution of these extrusion widths is shown in \cref{widthIndexedHistogram}. 
 The outer beads of the inward distributed scheme deviate less from the preferred width compared to the evenly distributed scheme.
+}{}
 
 \subsubsection{Smoothness of toolpaths}
 In order to maintain a high printing speed, it is desirable that toolpaths have fewer and less sharp corners. 
