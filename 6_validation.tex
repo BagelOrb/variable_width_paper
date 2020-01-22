@@ -22,20 +22,11 @@ The tests were performed on a desktop PC equipped with an Intel Core i7-7500U CP
 
 \subsubsection{Accuracy}
 We first evaluate the accuracy of different beading schemes in terms of the relative amount of the overfill and underfill. 
-\begin{wrapfigure}{r}{.3\columnwidth}
-\centering
-\includegraphics[width=.25\columnwidth]{sources-validation-visualization-principle-rounded-excluded-single.pdf}
-\caption{
-Extrusion segments coverage.
-The hole at the end will be filled by the next extrusion segment.
-}
-\label{segment_visualization_simple}
-\end{wrapfigure}
-We construct the over- and underfill area by comparing the shapes covered by each extrusion move (\cref{segment_visualization_simple}) with each other and with the total shape of the boundary polygons. (For implementation details see Appendix~\ref{accuracy_calculation}.)
+We construct the over- and underfill area by comparing the shapes covered by each extrusion move \revise{(\cref{segment_visualization_simple})}{} with each other and with the total shape of the boundary polygons. (For implementation details see Appendix~\ref{accuracy_calculation}.)
 This results in polygonal shapes such as visualized in the top half of \cref{visualized_accuracy}:
 there are orange shapes where the beads overlap and azure shapes in the voids in between the beads.
-
-
+%
+%
 We compare the total area in \si{\milli\meter\squared} of these overfill and underfill shapes to the total area of the boundary for each sample in the data set
 and report the average percentages in see \cref{over_underfill}.
 The inward distributed scheme has a calculated overfill of \SI{0.24}{\percent} and an underfill of \SI{0.17}{\percent}.
