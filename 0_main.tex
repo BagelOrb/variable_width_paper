@@ -22,15 +22,26 @@
 
 % My TK added packages and commands
 
+	\newif\ifcensor
+	\newif\ifcolorrevise
+	
+	\censortrue
+	\colorrevisefalse
+
     \usepackage{censor}
 	\def\censorcolor{black}
 	\let\svcensorrule\censorrule
 	\renewcommand\censorrule[1]{%
 	\textcolor{\censorcolor}{\svcensorrule{#1}}}
 	
-	\newcommand{\censoromit}[1]{}
-	%\newcommand{\censoromit}[1]{#1}
-    % \StopCensoring
+    \newcommand{\censoromit}[1]{}
+	\newcommand{\censornotice}{}
+	\ifcensor
+		\renewcommand{\censornotice}{\\Anonymized 2020 (under revision)}
+	\else
+		\renewcommand{\censoromit}[1]{#1}
+		\StopCensoring
+    \fi
 
 	% for for using hyperref and elsarticle-num-names together in order to get \citeauthor to work
 	\makeatletter
@@ -132,11 +143,14 @@
 	\newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
 	
 	% Revise macro (usage: \revise{old}{new})
+	\newcommand{\revise}[2]{#2}
 	% Version a) First arg red and striked out, second argument green
 	%\newcommand{\revise}[2]{\textcolor{red}{\stkout{#1}}\textcolor{blue}{#2}}
 	%\newcommand{\revise}[2]{{\color{red}{#1}\color{blue}{#2}}}
 	% Version b) First arg ignored, second argument green
-	\newcommand{\revise}[2]{{\color{blue}{#2}}}
+	\ifcolorrevise
+	\renewcommand{\revise}[2]{{\color{blue}{#2}}}
+	\fi
 	% Version c) First arg ignored, second argument unchanged (for final draft)
 	%\newcommand{\revise}[2]{#2}
 	%\newcommand{\revise}[2]{#1}
@@ -176,7 +190,7 @@
 
 \begin{frontmatter} 
 
-\title{A framework for adaptive width control of dense contour-parallel toolpaths in \revise{additive manufacturing}{fused deposition modeling}}
+\title{A framework for adaptive width control of dense contour-parallel toolpaths in \revise{additive manufacturing}{fused deposition modeling}\censornotice}
 
 %\author{Paper ID: xxx}
 
