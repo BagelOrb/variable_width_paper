@@ -28,9 +28,15 @@ there are orange shapes where the beads overlap and azure shapes in the voids in
 %
 %
 We compare the total area in \si{\milli\meter\squared} of these overfill and underfill shapes to the total area of the boundary for each sample in the data set
-and report the average percentages in see \cref{over_underfill}.
-The inward distributed scheme has a calculated overfill of \SI{0.24}{\percent} and an underfill of \SI{0.17}{\percent}.
-This is lower compared to the uniform scheme, which results in \SI{1.2}{\percent} overfill and \SI{1.7}{\percent} underfill in the data set.
+and report the average percentages in \revise{see }{}\cref{over_underfill}.
+The inward distributed scheme has a calculated overfill of \revise{\SI{0.24}{\percent}}{\SI{0.30}{\percent}} and an underfill of \revise{\SI{0.17}{\percent}}{\SI{0.24}{\percent}}.
+This is lower compared to the uniform scheme, which results in \revise{\SI{1.2}{\percent}}{\SI{1.63}{\percent}} overfill and \revise{\SI{1.7}{\percent}}{\SI{1.62}{\percent}} underfill in the data set.
+\iffalse
+names ['naive', 'Constant', 'Center', 'Distributed', 'InwardDistributed']
+overfill [  1.63223926  22.21073295   0.37059604   0.45119725   0.30226112]
+outer_underfill [ 0.04664107  0.03232884  0.04357603  0.03494708  0.03475748]
+underfill [ 1.62009421  0.0712721   0.76886316  0.2440984   0.24461937]
+\fi
 
 \begin{figure*}
 \centering
