@@ -201,6 +201,9 @@ changes to \emph{#1} --- ``#2''
 
 
 
+	\newlength{\mycolumnwidth}
+\setlength{\mycolumnwidth}{.5\columnwidth}
+
 	\newlength{\figwidth}
 	\newlength{\figwidthTwo}
 	\newlength{\figwidthTree}
@@ -451,8 +454,8 @@ ca322806c80ddc82c6f0c01d9ea5096b37ffcf8e % use smae rmin and N=2 in statistics
 \paper{1. Introduction}
 {
 \begin{figure}\centering
-\setlength{\figwidth}{.9\columnwidth}
-\setlength{\figwidthTwo}{.05\columnwidth}
+\setlength{\figwidth}{.9\mycolumnwidth}
+\setlength{\figwidthTwo}{.05\mycolumnwidth}
 \begin{subfigure}{\figwidth}\centering
 \parbox[b]{\figwidthTwo}{\subcaption{}\label{intro_wedge_uniform}}\includegraphics[width=\figwidth]{sources-intro-TEST-naive-accuracy.png}
 \end{subfigure}
@@ -519,17 +522,17 @@ Combining all meta-schemes functionality we can generate results such as depicte
 
 \begin{figure}
 \centering
-\setlength{\figwidth}{.35\columnwidth}
-\setlength{\figwidthTwo}{.6\columnwidth}
+\setlength{\figwidth}{.35\mycolumnwidth}
+\setlength{\figwidthTwo}{.6\mycolumnwidth}
 \begin{minipage}[b]{\figwidthTwo} \centering
 \begin{subfigure}[b]{\figwidthTwo}\centering
-\includegraphics[width=\columnwidth]{sources-validation-wedge-TEST-Distributed-feature-size.png}
+\includegraphics[width=\figwidthTwo]{sources-validation-wedge-TEST-Distributed-feature-size.png}
 \caption{Widening meta-scheme using $w_\text{min} = 2 r_\text{min} = 0.1$
 \\ on top of the Distributed scheme}
 \label{min_feature_size}
 \end{subfigure}
 \begin{subfigure}[b]{\figwidthTwo}\centering
-\includegraphics[width=\columnwidth]{sources-validation-wedge-TEST-Center-widening.png}
+\includegraphics[width=\figwidthTwo]{sources-validation-wedge-TEST-Center-widening.png}
 \caption{Widening meta-scheme using $w_\text{min} = 0.5$, $2 r_\text{min} = 0.2$ 
 \\ on top of the Center scheme}
 \label{widening}
@@ -575,7 +578,7 @@ Only shapes without central regions (a circle) or shapes with central regions wi
 Figure~\ref{no_corners} shows an example of a shape without sharp corners, and which also requires a large bead width variation when using the constant bead count approach by Ding et al.
 }
 \begin{figure} \centering
-\setlength{\figwidth}{.45\columnwidth}
+\setlength{\figwidth}{.45\mycolumnwidth}
 \begin{subfigure}[b]{\figwidth} \centering
 \includegraphics[rotate=-90,width=\linewidth]{response_rects_Center_accuracy.png}
 \caption{Problematic for center, i.e. Jin et al 2017 JMS, exhibiting $4.5w^*$ and $5.8w^*$}
@@ -775,7 +778,7 @@ The arrow is now a double thin line.
 {
 \todo{See \cref{legend}.}
 \begin{figure}\centering
-\includegraphics[width=.75\columnwidth]{sources-method-legend2.pdf}
+\includegraphics[width=.75\mycolumnwidth]{sources-method-legend2.pdf}
 \caption{Illustrative explanation of terms and color coding that are consistently used in this paper.}
 \label{legend}
 \end{figure}
@@ -801,8 +804,8 @@ b4d03f0d8ea92ac9800794e154dc5b53e4448cab % don't compute graph for widths of out
 \todo{See \cref{distributed_comparison}.}
 \begin{figure}
 \centering
-\setlength{\figwidth}{.8\columnwidth}
-\setlength{\figheight}{.3\columnwidth}
+\setlength{\figwidth}{.8\mycolumnwidth}
+\setlength{\figheight}{.3\mycolumnwidth}
 \begin{minipage}[b]{0.8\linewidth}
 % -p test_geometry/wedge.svg -o wedge -s nrdi -n 1.5 -a --scale 1.5
 \begin{subfigure}[t]{\figwidth}\centering
@@ -814,7 +817,7 @@ b4d03f0d8ea92ac9800794e154dc5b53e4448cab % don't compute graph for widths of out
 \caption{Inward distributed}
 \end{subfigure}
 \end{minipage}
-\begin{subfigure}[t]{.1\columnwidth}\centering
+\begin{subfigure}[t]{.1\mycolumnwidth}\centering
 \includegraphics[height=\figheight]{sources-validation-widths-legend-small.pdf}
 \end{subfigure}
 \caption{
@@ -935,14 +938,6 @@ Because we used $d^\text{discretization} = \SI{0.2}{\milli\meter}$, we can expec
 The computation of this value is complicated by the fact that the discretization always introduces a sample point at the apex and at the boundaries of significant portions of the parabola.
 (See section 3.3 Significance measure, last paragraph.)
 See Figure~\ref{response_parabola_discretization}.
-
-\begin{figure}\centering
-\includegraphics[width=.3\linewidth]{response_parabola_discretization}
-\caption{Parabola discretization.
-Thick black is part of the outline.
-Red is significant skeleton, violet is non-significant skeleton.
-}\label{response_parabola_discretization}
-\end{figure}
 }
 \commits{
 64029a6ef57cf8044c521075ebc70cddfb52156b % mention 0.01mm in paper
@@ -953,6 +948,13 @@ The vertex-line and vertex-vertex edges are discretized into pieces with a lengt
 }
 
 
+\begin{figure}\centering
+\includegraphics[width=.3\mycolumnwidth]{response_parabola_discretization}
+\caption{Parabola discretization.
+Thick black is part of the outline.
+Red is significant skeleton, violet is non-significant skeleton.
+}\label{response_parabola_discretization}
+\end{figure}
 
 
 
@@ -1064,16 +1066,16 @@ The bottom print shows that the inward distributed beading scheme produces smoot
 
 \begin{figure}
 \centering
-\begin{subfigure}{\columnwidth}\centering
-\setlength{\figwidth}{\columnwidth}
+\begin{subfigure}{\mycolumnwidth}\centering
+\setlength{\figwidth}{\mycolumnwidth}
 \includegraphics[width=\figwidth]{sources-applications-P3-print-wedge-naive-edited.png}
 \includegraphics[width=\figwidth]{sources-applications-P3-print-wedge-center-edited.png}
 \includegraphics[width=\figwidth]{sources-applications-P3-print-wedge-inward-edited.png}
 \caption{Uniform (top), centered (mid) and inward distributed (bottom)}\label{wedge_print}
 \end{subfigure}
-\setlength{\figheight}{.38\columnwidth}
-\setlength{\figheightTwo}{.47\columnwidth}
-\setlength{\figwidth}{0.32\columnwidth}
+\setlength{\figheight}{.38\mycolumnwidth}
+\setlength{\figheightTwo}{.47\mycolumnwidth}
+\setlength{\figwidth}{0.32\mycolumnwidth}
 \begin{subfigure}{\figwidth}\centering
 %\includegraphics[height=\figheightTwo]{sources-applications-gMAT-naive.png}
 \includegraphics[height=\figheight]{sources-applications-P3-print-hex-naive-edited.png}
@@ -1171,8 +1173,8 @@ The results can be viewed in \cref{prints}.
 
 \begin{figure}
 \centering
-\setlength{\figwidth}{0.32\columnwidth}
-\setlength{\figheight}{0.5\columnwidth}
+\setlength{\figwidth}{0.32\mycolumnwidth}
+\setlength{\figheight}{0.5\mycolumnwidth}
 \begin{subfigure}[t]{\figwidth}\centering
 \includegraphics[angle=90,height=\figheight]{sources-validation-backpressure_0_0}
 \caption{$k=0$}\label{zero_back_pressure}
@@ -1207,7 +1209,7 @@ However, both the centered and inward distributed approach introduce transitions
 
 \begin{figure}
 \centering
-\setlength{\figwidth}{\columnwidth}
+\setlength{\figwidth}{\mycolumnwidth}
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[width=\figwidth]{sources-applications-result-prints-target}
 \caption{Outlines}\label{print_outlines}
@@ -1534,10 +1536,10 @@ $d^\text{discretization}$ is the discretization length in vertex-vertex VD edges
 \revise{
 The following restrictions hold:
 \begin{enumerate}
-	\begin{minipage}{\columnwidth}
+	\begin{minipage}{\mycolumnwidth}
 	\setlength\intextsep{0pt}
-	\begin{wrapfigure}[4]{o}{.4\columnwidth} %\centering
-	\includegraphics[width=.3\columnwidth,frame]{sources-method-transition-length-limit.pdf}
+	\begin{wrapfigure}[4]{o}{.4\mycolumnwidth} %\centering
+	\includegraphics[width=.3\mycolumnwidth,frame]{sources-method-transition-length-limit.pdf}
 	%\caption{
 	%%Transition ends (magenta and pink) shouldn't cross each other.
 	%Placement of transition ends (magenta and pink) with respect to the anchor positions of the transitions (purple) on a ST edge (blue) with bisector angle $\alpha \approx \SI{135}{\degree}$.
