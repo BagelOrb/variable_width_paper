@@ -684,6 +684,125 @@ Thus the inward distributed scheme prevents over- and underfill, generates smoot
 
 
 
+
+
+
+
+
+
+\begin{figure*}
+\centering
+\setlength{\figwidth}{0.19\textwidth}
+\setlength{\figheight}{0.283\textwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-naive-accuracy.png}
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-naive-widths.png}
+\caption{Uniform}\label{TEST_naive_accuracy}
+\end{subfigure}
+%\begin{subfigure}{\figwidth}\centering
+%\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-SingleBead-accuracy.png}
+%\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-SingleBead-widths.png}
+%\caption{Single}\label{TEST_SingleBead_accuracy}
+%\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-Constant-accuracy.png}
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-Constant-widths.png}
+\caption{Constant}\label{TEST_Constant_accuracy}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-Center-accuracy.png}
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-Center-widths.png}
+\caption{Centered}\label{TEST_Center_accuracy}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-Distributed-accuracy.png}
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-Distributed-widths.png}
+\caption{Distributed}\label{TEST_Distributed_accuracy}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-InwardDistributed-accuracy.png}
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-InwardDistributed-widths.png}
+\caption{Inward \revise{}{($N=2$)}}\label{TEST_InwardDistributed_accuracy}
+\end{subfigure}
+\begin{subfigure}{.04\mycolumnwidth}\centering
+\vspace{4.7cm}
+\includegraphics[height=\figheight]{sources-validation-gMAT-example-widths-legend.pdf}
+\end{subfigure}
+\caption{
+Visualization of the overfills and underfills (top) and the widths (bottom) for various beading schemes.
+Extrusion beads in gray tones,
+overfill in orange,
+underfill in azure,
+narrow beads in blue
+and wide beads in red.
+\revise{New shape contains pointy wedge to see impact on minimal feature size}{In order to distinguish clearly from the Distributed scheme the Inward is limited to $N=2$.}
+}
+\label{visualized_accuracy}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+\centering
+\setlength{\figheight}{0.25\textwidth}
+\setlength{\figwidth}{0.32\textwidth}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-over-underfill.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-overunderfill.pdf}
+\caption{\revise{}{Over- and underfill}}
+\label{over_underfill}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-print-time.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-smoothness.pdf}
+\caption{\revise{}{Print time}}
+\label{printtime}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-path-counts.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-widthHistogram.pdf}
+\caption{\revise{}{Path counts}}
+\label{pathcounts}
+\end{subfigure}
+
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-widths.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-widthHistogram.pdf}
+\caption{\revise{}{Extrusion widths}}
+\label{widthHistogram}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-angles.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-smoothnessNoTransition.pdf}
+\caption{\revise{}{Site angles}}
+\label{smoothness}
+\end{subfigure}
+\begin{subfigure}{\figwidth}\centering
+\includegraphics[height=\figheight]{sources-validation-computime2.pdf}
+%\includegraphics[width=\figwidth]{sources-validation-computime2.pdf}
+\caption{Computation time}
+\label{computime}
+\end{subfigure}
+
+
+\caption{
+Statistical analysis of the toolpaths from applying the uniform width technique and various beading schemes using our framework to a data set of 300 slices.
+Note the use of a logarithmic scale \revise{}{in the bottom graphs }on the Y-axes and \revise{on some of}{for \subref{computime} on} the X-axes as well.
+}
+\label{statisticsfig}
+\end{figure*}
+
+
+
+
+
+
+
+
+
+
+
 \Que{
 While the proposed approach can use adaptive bead width to minimize underfill and overfill areas, the generated toolpaths are disconnected compared to the traditional approaches. From my experience, a small overfill area does not have to lead to serious defects. But the disconnected filaments definitely have worse mechanical performances compared to the continuous ones. 
 }
