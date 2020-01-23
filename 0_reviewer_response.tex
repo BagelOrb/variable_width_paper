@@ -602,18 +602,19 @@ How do the authors conduct path planning? Could the authors add a simple 2D geom
 We now included a description of the path order algorithm, which is naive and greedy.
 Although an optimal path order algorithm might influence the travel time, such an algorithm is slow and not generally used in the industry.
 The software package Cura currently employs a similarly greedy algorithm.
-%Some preliminary (unpublished) tests have indicated that Cura's path planning deviates from the optimal paths by only \SI{1}{\percent} of the total print time on average.
+Travel times are approximately \SI{2}{\percent} of the total print time in our current setup, so the effect of improper path planning is negligible compared to the differences in extrusion time.
 
-We also include statistics on print time and path counts.
-These new statistics are now reflected upon in the comparison of the beading schemes.
+We now include statistics on extrusion time, travel time and path counts.
+These new statistics are now also reflected upon in the comparison of the beading schemes.
 
-Because the print time depends on the actual printing setup we have moved the section on print results to before the statistics section.
+Because the extrusion time depends on the actual printing setup we have moved the section on print results to before the statistics section.
 }
 \commits{
 d375878a8a6d01c53436aeb9c473dbedd8f3edcf % path order algorithm
 e2c940f2362556ae8d017cff63c81b4bbcb77286 % print time, path count statistics
 7f567012b409445fc120968e995f861cab56e776 % new beading schemes comparison
 bf403fe797193e40b004c2cae806935f699271e5 % move print results to before statistics 
+b106dd1e0067114756bf96a7dc10458202380f2e % new print time pdf graph
 }
 \paper{5.1.2 Print results}{\revise{}{The printing order is determined greedily by choosing the closest point of a polygonal extrusion path, or the closest of either end point in case of an open polyline extrusion path.}} 
 \paper{5.2.3 Print time}
