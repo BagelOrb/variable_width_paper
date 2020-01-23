@@ -1,4 +1,4 @@
-\documentclass[5p,10pt,times]{elsarticle}
+\documentclass[3p,10pt,times]{elsarticle}
 \usepackage{amsmath}
 \usepackage{hyperref} % added [draft] to avoid compilation issues that happen if a link is split and appears in two pages
 %\modulolinenumbers[5]
@@ -138,17 +138,29 @@
 	\newcommand{\commits}[1]{{\bf\begin{alltt} {#1}\end{alltt}}}
 	\renewcommand{\commits}[1]{}
 	\newcommand{\response}[1]{{#1}}
-\newcommand\paper[2]{\par changes to \emph{#1} --- ``#2'' }
+
+\newcommand\paper[2]{
+\par
+changes to \emph{#1} --- ``#2'' 
+}
 %\renewcommand\paper[2]{\par changes to \emph{#1} --- ``\dots'' }
 
 \newcommand\Summary[1]{
-   \noindent\emph{Summary.} {\bf#1}\par}
+   \noindent\emph{\qq{Summary}{#1}}\par}
+
+\usepackage{tcolorbox}
+
+\newcommand\qq[2]{
+\begin{tcolorbox}[]
+  #1 \indent {\bf #2}
+\end{tcolorbox}
+}
 
 \newcommand\Que[1]{%
    \leavevmode\par
    \refstepcounter{question}
    \noindent
-   \thequestion. {\bf#1}\par}
+   {\qq{\thequestion.}{#1}}\par}
 
 \newcounter{question}
 \setcounter{question}{0}
@@ -162,7 +174,7 @@
    \leavevmode\par
    \refstepcounter{subquestion}
    \noindent
-   \thesubquestion. {\bf#1}\par}
+   {\qq{\thesubquestion.}{#1}}\par}
 
 \newcounter{subquestion}
 \setcounter{subquestion}{0}
@@ -171,9 +183,13 @@
 
 
 \newcommand\Ans[2][]{%
+	\begin{tcolorbox}[colback=white, arc=0mm]
     \leavevmode\par\noindent
    {%\leftskip37pt
-    {\it Response:} \textbf{#1}#2\par}}
+    %{\it Response:} 
+    \textbf{#1}#2\medskip\par}
+    \end{tcolorbox}
+    }
 
 
 
