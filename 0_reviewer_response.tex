@@ -336,6 +336,10 @@ and
 \paper{Section name}{
 Remaining text, followed by 
 \revise{outdated text in manuscript}{new text in manuscript}
+\revisepar{
+Old paragraph which might contain various i.e. multiple lines, which makes the LaTeX macro for strikout text fail, because the soul package doesn't work well enough for our purposes.
+}
+{Revised paragraph is better.}
 }
 \todo{Comment for us internally (should be removed before this letter is sent).}
 \commits{123commit-hash}
