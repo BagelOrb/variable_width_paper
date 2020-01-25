@@ -3,66 +3,15 @@ A critical component in toolpath generation is how to distribute the beads over 
 While the framework presented in the previous section takes evenly distributed beads as an example, it allows to apply different beading schemes to configure the bead distribution to cater for specific requirements from the application, 3D printer or material.
 
 
-\revise{
-\begin{definition}\label{beading_scheme_definition}
-The beading scheme is configured by the following set of functions and constants:
-\begin{align*}
-\{
-&q(d),
-B(n, r),
-t(n),
-t_0(n),
-\\
-&\alpha_\text{max}, 
-t_\text{beading}, 
-d_\text{max}^\text{transition}, 
-d_\text{max}^\text{unmarked}, 
-d_\text{max}^\text{intersection},
-d^\text{discretization}
- \}
-\end{align*}
-where, as introduced in previous section,
-$q(d)$ the quantization operator,
-$B(n,r)$ is the beading function consisting of $\left( W(n,r), L(n,r) \right)$,
-$t(n)$ the transition length,
-$t_0(n)$ the transition anchor position,
-$\alpha_{\text{max}}$ is the limit bisector angle,
-$t_\text{beading}$ is the beading conflict transition length,
-$d_\text{max}^\text{unmarked}$ is the filter distance for unmarked regions,
-$d_\text{max}^\text{transition}$ is the filter distance for transition anchors,
-$d_\text{max}^\text{intersection}$ is the reduction ratio at 3-way intersections
-and
-$d^\text{discretization}$ is the discretization length in vertex-vertex VD edges and vertex-line VD edges.
-%$W(n, r)$ and $L(n, r)$ give the sequence of bead widths $\left\{ w_i \right\}$ and radial locations $\left\{ l_i \right\}$, respectively.
-\end{definition}
-}{}
-
-\revise{
-The following restrictions hold:
-\begin{enumerate}
-	\begin{minipage}{\columnwidth}
-	\setlength\intextsep{0pt}
-	\begin{wrapfigure}[4]{o}{.4\columnwidth} %\centering
-	\includegraphics[width=.3\columnwidth,frame]{sources-method-transition-length-limit.pdf}
-	%\caption{
-	%%Transition ends (magenta and pink) shouldn't cross each other.
-	%Placement of transition ends (magenta and pink) with respect to the anchor positions of the transitions (purple) on a ST edge (blue) with bisector angle $\alpha \approx \SI{135}{\degree}$.
-	%The distance between the anchor position and the upper end ($t_1$) and the distance between the anchor position and the lower end of the transition ($t_0$) should add up to less than the total distance between the anchor positions, which is limited by $\alpha_\text{max}$.
-	%}
-	\label{transition_placement}
-	\end{wrapfigure}
-	\item Transitions shouldn't overlap each other: \\ $t_1(n) + t_0(n+1) < \frac{ q^{-1}(n + 1) - q^{-1}(n) }{ \cos \nicefrac12 \alpha_\text{max}}$ \\ for each $n \in \mathbb{N}$ \\ (see \cref{transition_placement})
-\end{minipage}
-\item An odd beading should produce an odd single toolpath exactly in the center: $B(n, r)_{\lfloor n/2 \rfloor} = r$ in case $n$ is odd
-\item For the smoothness and continuity of toolpaths we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, r)_n}{\partial r} \leq 1$
-\end{enumerate}
-}{}
 
 
 
 
 
-\revise{}{
+
+
+
+{
 \begin{definition}\label{beading_scheme_definition}
 A beading scheme is defined by the quantization operator $q$ and the beading operator $B$: $\{q(d), B(n ,r)\}$.
 The beading function $B(n,r)$ consists of $\left( W(n,r), L(n,r) \right)$,
@@ -74,7 +23,7 @@ which provides sequences of $n$ bead widths and of $n$ distances from the outlin
 
 
 
-\revise{}{
+{
 For the smoothness and continuity of toolpaths we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, r)_n}{\partial r} \leq 1$.
 We further ensure
 that beads don't overlap,
@@ -104,56 +53,16 @@ We also introduce new beading schemes which produce toolpaths with less extreme 
 
 
 
-\revise{
-A beading scheme is defined as a set of some particular variables and functions (\cref{beading_scheme_definition}).
-Our beading schemes are based on a preferred width $w^* = \SI{0.4}{\milli\meter}$, which is equal to the diameter of the printing nozzle.
-Most of the beading schemes we introduce share a common ground:
-\begin{align*}
-L(n,r)_i = 
-\begin{cases}
--\frac12 W(n,r)_i + \sum_{j=0}^i W(n,r)_j & \text{ if } i < \frac12 (n -1) \\
-r & \text{ if } i =  \frac12 (n -1) \\
-%d - W(n,r)_{n-1-i} & \text{ otherwise }\\
-\end{cases}
-\\
-\begin{array}{rlrl}
-t_\text{beading} &= w^* 
-&
-d_\text{max}^\text{transition} &= \SI{1}{\milli\meter}
-\\
-t(n) &= w^*
-&
-d_\text{max}^\text{unmarked} &= w^*
-\\
-t_0(n) &=  t(n) \left( q^{-1}(n) / w^*  - n \right)
-&
-d^\text{discretization} &= \SI{0.2}{\milli\meter}
-\\
-\alpha_\text{max} &= \SI{135}{\degree} 
-&
-d_\text{max}^\text{intersection} &= \SI{75}{\percent}
-\end{array}
-%\end{align*}
-%\begin{align*}
-\end{align*}
-}{}
 
-\revise{
-The toolpath locations $L$ ensure 
-that the beads don't overlap,
-that beads are extruded from the center of where they end up
-and that the symmetry restrictions are met.
-The transition anchor position $t_0$ ensures that the transitions never overlap with the locations $v$ where $R(v) = \nicefrac12 n w^*$ for $n \in \mathbb{N}$.
-The transition length $t$ ensures that the center beads don't overlap with the innermost transitioning beads, while keeping the amount of underfill low and keeping the toolpath smooth.
-The limit bisector angle $\alpha_\text{max}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths.
-}{}
+
+
 
 
 
 
 \begin{table}%\centering
 \caption{
-\revise{Made figure into table}{
+{
 Beading schemes.
 }
 } % revise
@@ -295,7 +204,7 @@ E(n,r) &= 2r - n w^* \\
 
 \paragraph{Uniform beading scheme}
 We can define a beading scheme which emulates the uniform width offsetting technique by disabling the marking of edges, so that we never employ transitioning.
-\revise{See}{We can simply set $\alpha_\text{max} = \SI{180}{\degree}$ and supply a simple beading scheme given by} \cref{formula_uniform}.
+{We can simply set $\alpha_\text{max} = \SI{180}{\degree}$ and supply a simple beading scheme given by} \cref{formula_uniform}.
 
 
 \paragraph{Outer bead}
@@ -308,7 +217,7 @@ See \cref{formula_outer_bead}.
 
 \paragraph{Constant bead count}
 We can emulate the method from \citeauthor{Ding2016a} by dividing the feature radius over the widths of a constant number of beads.
-Additionally in order to emulate their definition of ``branches'' we mark all ST edges \revise{}{($\alpha_\text{max} = \SI{0}{\degree}$) and }we unmark the outer edges connected to the outline shape in a separate algorithm.
+Additionally in order to emulate their definition of ``branches'' we mark all ST edges {($\alpha_\text{max} = \SI{0}{\degree}$) and }we unmark the outer edges connected to the outline shape in a separate algorithm.
 Note that this deviation from the proposed framework violates the robustness against small perturbations in the outline polygon, since this marking depends on the topology of the graph of the ST.
 See \cref{formula_constant_bead_count}.
 
@@ -318,9 +227,9 @@ See \cref{formula_constant_bead_count}.
 \paragraph{Centered}
 We can emulate the method from \citeauthor{Jin2017JMS} by transcribing how they deviate from the uniform width toolpaths.
 We therefore base the beading scheme on the bead count $q^-(d)$ defined by the uniform beading scheme.
-\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w^*$\revise{}{, which gives us $w_\text{max}=1.8 w^*$}.
-Conversely, they place an extra bead when the radius \revise{between the center and either of the innermost beads }{}exceeds $r_\text{max} = 1.25 w^*$~\cite{Jin2017JMS}\revise{}{, which gives us $w_\text{min}=0.5 w^*$}.
-We emulate the rounded polygonal path rerouting they define by supplying a transition length \revise{}{$t(n) = \frac12 w^*$} which results in a discretized version of their rounded polygon segment.
+\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w^*${, which gives us $w_\text{max}=1.8 w^*$}.
+Conversely, they place an extra bead when the radius exceeds $r_\text{max} = 1.25 w^*$~\cite{Jin2017JMS}{, which gives us $w_\text{min}=0.5 w^*$}.
+We emulate the rounded polygonal path rerouting they define by supplying a transition length {$t(n) = \frac12 w^*$} which results in a discretized version of their rounded polygon segment.
 See \cref{formula_centered}.
 
 
@@ -378,7 +287,7 @@ This limits the impact of transitioning regions so that transitions keep the too
 \includegraphics[height=\figheight]{sources-validation-widths-legend-small.pdf}
 \end{subfigure}
 \caption{
-Closeup of toolpaths generated with the distributed \revise{}{and inward ($N=1.5$)} beading schemes for a large wedge shape.
+Closeup of toolpaths generated with the distributed {and inward ($N=1.5$)} beading schemes for a large wedge shape.
 Colors represent bead widths.
 }
 \label{distributed_comparison}
@@ -391,9 +300,9 @@ Colors represent bead widths.
 
 
 
-\paragraph{Widening \revise{}{meta-scheme}}
-Complementary to any of these schemes we can enforce a minimum feature size \revise{at no extra cost}{and minimum bead width} in our framework.
-Regions where the model is narrower than \revise{the nozzle size}{some $r_\text{min}$} can be printed with a bead width \revise{}{$w_\text{min}$} larger than the model thickness.
+\paragraph{Widening {meta-scheme}}
+Complementary to any of these schemes we can enforce a minimum feature size {and minimum bead width} in our framework.
+Regions where the model is narrower than {some $r_\text{min}$} can be printed with a bead width {$w_\text{min}$} larger than the model thickness.
 See \cref{min_feature_size,widening}.
 We can simply override
 \begin{align*}
@@ -413,7 +322,7 @@ W(n,r)_0 & \text{ otherwise}
 
 
 
-\revise{}{
+{
 \paragraph{Shell meta-scheme}
 The industry standard of FDM is to generate only a limited contour-parallel perimeters and to fill the remainder using a direction-parallel strategy.
 We therefore provide a meta-scheme to generate adaptive bead width toolpaths only in narrow regions and generate the limited number of perimeters $M$ using the preferred width in regions which are wide enough.

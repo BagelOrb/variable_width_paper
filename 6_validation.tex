@@ -4,7 +4,7 @@
 
 
 
-\revise{}
+
 {
 \subsection{Computational results}\label{sec_computational_results}
 } % tew
@@ -12,9 +12,9 @@ We evaluate the proposed framework and the various beading schemes on a set of d
 The data set is described in Appendix~\ref{dataset}.
 We sliced all models in the data set and selected 300 random slices for analysis.
 Toolpaths of these 300 outline shapes are generated using the uniform technique as implemented by Clipper~\cite{johnson2014clipper} -- a state-of-the-art polygon offset library,
-and by our framework using four beading schemes, i.e. the constant bead count scheme with a bead count of $C=4$, the centered, the evenly distributed, and the inward distributed beading scheme using \revise{$N=3$}{$N=2$}, all with a preferred bead width\revise{s}{} of \revise{$w^* = \SI{0.4}{\milli\meter}$}{$w^* = \SI{0.5}{\milli\meter}$ and using the widening meta-scheme to enforce a minimum printed feature size of $w_\text{min}=2r_\text{min}=\SI{0.3}{\milli\meter}$}.
+and by our framework using four beading schemes, i.e. the constant bead count scheme with a bead count of $C=4$, the centered, the evenly distributed, and the inward distributed beading scheme using {$N=2$}, all with a preferred bead width{} of {$w^* = \SI{0.5}{\milli\meter}$ and using the widening meta-scheme to enforce a minimum printed feature size of $w_\text{min}=2r_\text{min}=\SI{0.3}{\milli\meter}$}.
 The tests were performed on a desktop PC equipped with an Intel Core i7-7500U CPU @ \SI{2.70}{\giga\hertz} (a single core is used) and \SI{16.3}{\giga\byte} memory.
-\revise{}{We report on the total statistics summed over the whole data set, because averaging would be biased.}
+{We report on the total statistics summed over the whole data set, because averaging would be biased.}
 
 
 
@@ -23,15 +23,15 @@ The tests were performed on a desktop PC equipped with an Intel Core i7-7500U CP
 
 \subsubsection{Accuracy}
 We first evaluate the accuracy of different beading schemes in terms of the relative amount of the overfill and underfill. 
-We construct the over- and underfill area by comparing the shapes covered by each extrusion move \revise{(\cref{segment_visualization_simple})}{} with each other and with the total shape of the boundary polygons. (For implementation details see Appendix~\ref{accuracy_calculation}.)
+We construct the over- and underfill area by comparing the shapes covered by each extrusion move  with each other and with the total shape of the boundary polygons. (For implementation details see Appendix~\ref{accuracy_calculation}.)
 This results in polygonal shapes such as visualized in the top half of \cref{visualized_accuracy}:
 there are orange shapes where the beads overlap and azure shapes in the voids in between the beads.
 %
 %
 We compare the total area in \si{\milli\meter\squared} of these overfill and underfill shapes to the total area of the boundary for each sample in the data set
-and report the average percentages in \revise{see }{}\cref{over_underfill}.
-The inward distributed scheme has a calculated overfill of \revise{\SI{0.24}{\percent}}{\SI{0.30}{\percent}} and an underfill of \revise{\SI{0.17}{\percent}}{\SI{0.24}{\percent}}.
-This is lower compared to the uniform scheme, which results in \revise{\SI{1.2}{\percent}}{\SI{1.63}{\percent}} overfill and \revise{\SI{1.7}{\percent}}{\SI{1.62}{\percent}} underfill in the data set.
+and report the average percentages in \cref{over_underfill}.
+The inward distributed scheme has a calculated overfill of {\SI{0.30}{\percent}} and an underfill of {\SI{0.24}{\percent}}.
+This is lower compared to the uniform scheme, which results in {\SI{1.63}{\percent}} overfill and {\SI{1.62}{\percent}} underfill in the data set.
 \iffalse
 names ['naive', 'Constant', 'Center', 'Distributed', 'InwardDistributed']
 overfill [  1.63223926  22.21073295   0.37059604   0.45119725   0.30226112]
@@ -71,7 +71,7 @@ underfill [ 1.62009421  0.0712721   0.76886316  0.2440984   0.24461937]
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-InwardDistributed-accuracy.png}
 \includegraphics[height=\figheight]{sources-validation-gMAT-example-TEST-InwardDistributed-widths.png}
-\caption{Inward \revise{}{($N=2$)}}\label{TEST_InwardDistributed_accuracy}
+\caption{Inward {($N=2$)}}\label{TEST_InwardDistributed_accuracy}
 \end{subfigure}
 \begin{subfigure}{.04\columnwidth}\centering
 \vspace{4.7cm}
@@ -84,7 +84,7 @@ overfill in orange,
 underfill in azure,
 narrow beads in blue
 and wide beads in red.
-\revise{New shape contains pointy wedge to see impact on minimal feature size}{In order to distinguish clearly from the Distributed scheme the Inward is limited to $N=2$.}
+{In order to distinguish clearly from the Distributed scheme the Inward is limited to $N=2$.}
 }
 \label{visualized_accuracy}
 \end{figure*}
@@ -99,32 +99,32 @@ and wide beads in red.
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[height=\figheight]{sources-validation-over-underfill.pdf}
 %\includegraphics[width=\figwidth]{sources-validation-overunderfill.pdf}
-\caption{\revise{}{Over- and underfill}}
+\caption{{Over- and underfill}}
 \label{over_underfill}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[height=\figheight]{sources-validation-print-time.pdf}
 %\includegraphics[width=\figwidth]{sources-validation-smoothness.pdf}
-\caption{\revise{}{Print time}}
+\caption{{Print time}}
 \label{printtime}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[height=\figheight]{sources-validation-path-counts.pdf}
 %\includegraphics[width=\figwidth]{sources-validation-widthHistogram.pdf}
-\caption{\revise{}{Path counts}}
+\caption{{Path counts}}
 \label{pathcounts}
 \end{subfigure}
 
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[height=\figheight]{sources-validation-widths.pdf}
 %\includegraphics[width=\figwidth]{sources-validation-widthHistogram.pdf}
-\caption{\revise{}{Extrusion widths}}
+\caption{{Extrusion widths}}
 \label{widthHistogram}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
 \includegraphics[height=\figheight]{sources-validation-angles.pdf}
 %\includegraphics[width=\figwidth]{sources-validation-smoothnessNoTransition.pdf}
-\caption{\revise{}{Site angles}}
+\caption{{Site angles}}
 \label{smoothness}
 \end{subfigure}
 \begin{subfigure}{\figwidth}\centering
@@ -137,7 +137,7 @@ and wide beads in red.
 
 \caption{
 Statistical analysis of the toolpaths from applying the uniform width technique and various beading schemes using our framework to a data set of 300 slices.
-Note the use of a logarithmic scale \revise{}{in the bottom graphs }on the Y-axes and \revise{on some of}{for \subref{computime} on} the X-axes as well.
+Note the use of a logarithmic scale {in the bottom graphs }on the Y-axes and {for \subref{computime} on} the X-axes as well.
 }
 \label{statisticsfig}
 \end{figure*}
@@ -150,31 +150,15 @@ Note the use of a logarithmic scale \revise{}{in the bottom graphs }on the Y-axe
 
 \subsubsection{Uniformity}
 We visualize the bead widths resulting from the different schemes in the bottom of \cref{visualized_accuracy}.
-\revise{
-We calculated the mean and standard deviation of the bead width, sampled at \SI{1}{\micro\meter} along the toolpaths.
-\cref{widthHistogram} shows the distribution of extrusion width for each scheme binned at intervals of \SI{10}{\micro\meter}.
-}{
+{
 We binned the toolpaths into width bins at \SI{0.01}{\milli\meter} increments and determine the total toolpath length pertaining to each bin.
 From these statistics we calculate the mean and standard deviation and report them in \cref{widthHistogram}.
 }
 We found that the mean width of the inward and evenly distributed schemes is close to preferred bead width of \SI{400}{\micro\meter}, while their standard deviation is lower than for the centered and constant bead count scheme. 
 These results show that, while causing less overfill and underfill, inwards distributed and evenly distributed schemes deviate less or less often from the preferred bead width compared to the other schemes.
-\revise{
-We compared the width uniformity of the 6 outer beads for the inward and evenly distributed schemes, the distribution of these extrusion widths is shown in \cref{widthIndexedHistogram}. 
-The outer beads of the inward distributed scheme deviate less from the preferred width compared to the evenly distributed scheme.
-}{}
 
-\revise{
-\subsubsection{Smoothness of toolpaths}
-In order to maintain a high printing speed, it is desirable that toolpaths have fewer and less sharp corners. 
-We therefore measured the angle between consecutive extrusion segments generated by each scheme
-and report on the occurrence of each angle in \cref{smoothness}.
-All schemes show a higher number of corners for smaller angles with a peak towards \SI{180}{\degree} (straight).
-We observe that compared to the uniform method our framework produces less acute angles which, but more obtuse angles.
-The inward distributed scheme produces an order of magnitude less corners around \SI{150}{\degree}, compared to evenly distributed. 
-We also investigated the effect of the transition regions on the smoothness of the toolpaths. 
-\cref{smoothnessNoTransition} shows that introducing the transitions greatly reduces the number of corners around \SI{90}{\degree}. 
-}{
+
+{
 \subsubsection{Print time}
 The total time it takes to print a part is influenced not only by our back pressure compensation scheme, but also by the geometry of the toolpaths.
 In order to separate these effects we report on the total print time when using back pressure compensation and when using a constant (maximum) movement speed in \cref{printtime}.
@@ -203,63 +187,7 @@ Results in \cref{computime} confirm that both our framework and the uniform tech
 
 
 
-\revise{
-Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle and a filament extrusion drive directly mounted on the print head.
-The firmware of the printer employs \emph{linear advance} for accurately realizing adaptive deposition width:
-gaining the extra pressure required to change to a wider bead is realized by 'advancing' an extra amount of filament into the physical system~\cite{tronvoll2019investigating}.
-We set the preferred width to $w^* = \SI{0.6}{\milli\meter}$, to avoid fluttered printing of lines narrower than the nozzle size.
-We used a layer thickness of \SI{0.2}{\milli\meter} and a movement speed of \SI{10}{\milli\meter\per\second}.
 
-The prints are shown in \cref{prints}.
-Because of inaccuracies in the deposition control system some of the prints show defects.
-Such defects are less prevalent for the inward distributed beading scheme than the other schemes.
-The prints which employ the uniform offsets technique show a lot of underfill, which impacts the visual quality of the print.
-Moreover, in the case of the regular honeycomb there are several fully disconnected hexagons, which means the object falls apart.
-The difference between the centered and the inward distributed schemes is less pronounced.
-We can still see some loosely connected extrusion segments in both, which is attributable to inaccuracies in the extrusion system.
-However, the middle of \cref{wedge_print} exhibits more defects in the regions where the centered scheme produces extreme bead widths.
-The bottom print shows that the inward distributed beading scheme produces smoother prints with less defects.
-
-
-\begin{figure}
-\centering
-\begin{subfigure}{\columnwidth}\centering
-\setlength{\figwidth}{\columnwidth}
-\includegraphics[width=\figwidth]{sources-applications-P3-print-wedge-naive-edited.png}
-\includegraphics[width=\figwidth]{sources-applications-P3-print-wedge-center-edited.png}
-\includegraphics[width=\figwidth]{sources-applications-P3-print-wedge-inward-edited.png}
-\caption{Uniform (top), centered (mid) and inward distributed (bottom)}\label{wedge_print}
-\end{subfigure}
-\setlength{\figheight}{.38\columnwidth}
-\setlength{\figheightTwo}{.47\columnwidth}
-\setlength{\figwidth}{0.32\columnwidth}
-\begin{subfigure}{\figwidth}\centering
-%\includegraphics[height=\figheightTwo]{sources-applications-gMAT-naive.png}
-\includegraphics[height=\figheight]{sources-applications-P3-print-hex-naive-edited.png}
-\includegraphics[width=\figwidth]{sources-applications-P3-print-UM-naive-edited.png}
-\caption{Uniform}\label{print_naive}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-%\includegraphics[height=\figheightTwo]{sources-applications-gMAT-center.png}
-\includegraphics[height=\figheight]{sources-applications-P3-print-hex-center-edited.png}
-\includegraphics[width=\figwidth]{sources-applications-P3-print-UM-center-edited.png}
-\caption{Centered}\label{print_center}
-\end{subfigure}
-\begin{subfigure}{\figwidth}\centering
-%\includegraphics[height=\figheightTwo]{sources-applications-gMAT-inward.png}
-\includegraphics[height=\figheight]{sources-applications-P3-print-hex-inward-edited.png}
-\includegraphics[width=\figwidth]{sources-applications-P3-print-UM-inward-edited.png}
-\caption{Inward distributed}\label{print_inward}
-\end{subfigure}
-\caption{
-Test shapes printed using the uniform scheme, centered scheme and the inward distributed scheme.
-The uniform technique produces distinct underfill areas.
-The centered scheme shows some defects due to inaccurate control of extreme deposition widths.
-The inward distributed scheme produces the least defects.
-}
-\label{prints}
-\end{figure}
-}{}
 
 
 

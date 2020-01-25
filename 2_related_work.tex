@@ -20,7 +20,7 @@ A discontinuous path requires to stop and restart material extrusion.
 For certain materials such as TPU, this could lead to printing defects or even print failure~\cite{KUIPERS2019CAD}.
 Second, the toolpath is preferred to be smooth.
 Sharp turns require to reduce the movement speed of the nozzle, and so this prolongs the printing process.
-Third, the extruded path should cover \revise{a }{}the region of the contour without gaps.
+Third, the extruded path should cover the region of the contour without gaps.
 Such underfill negatively influences the mechanical performance of the parts.
 Fourth, the extrusion paths should not overlap with one another.
 Such overfill causes a pressure build up in the mechanical system, which leads to overextrusion in further paths and in extreme cases cause print failure~\cite{KUIPERS2019CAD}.
@@ -45,7 +45,7 @@ For complex shapes, the entire cross-section could be decomposed into a set of p
 Alternative toolpath patterns, seen also in CNC machining, include space-filling curves~\cite{Cox1994CAD,Griffiths1994,Shaikh2016}.
 
 % the idea, and (some of) the most related work
-Reducing under- and over-filling can be accurately achieved by making use over adaptive \revise{depisition}{deposition} width.
+Reducing under- and over-filling can be accurately achieved by making use over adaptive {deposition} width.
 Adaptive width can be used to locally match the nonuniform space between adjacent paths, and thus to ensure a better filling of the area.
 %Material extrusion with a varying width can be realized by changing the extrusion rate or the nozzle travel velocity~\cite{Ertay2018,Kuipers2018}.
 \citeauthor{kao1998optimal} propose smooth adaptive toolpaths based on the medial axis skeleton of the boundary contour~\cite{kao1998optimal}.
@@ -55,8 +55,8 @@ However, this extension inherits a problem in the original method:
 from any point in the skeleton to the boundary, the number of toolpaths is constant.
 Since the distance may vary considerably for shapes with both large and small features, this strategy leads to a toolpath with widths that may differ by a factor beyond $3$, which is impossible for some FDM systems.
 \citeauthor{Jin2017JMS} proposed a strategy of adding a toolpath with varying width along the center edges of the skeleton, while leaving other paths unchanged~\cite{Jin2017JMS}.
-The resulting variation of width in the center is still up to a factor of \revise{$2$}{$3.6$} (see \cref{intro_wedge_centered}).
-In this paper we propose a novel scheme to distribute the width alterations throughout a region around the center, and thus limit the occurrence of extreme \revise{deviations}{variation} in width (see \cref{intro_wedge_distributed}).
+The resulting variation of width in the center is still up to a factor of {$3.6$} (see \cref{intro_wedge_centered}).
+In this paper we propose a novel scheme to distribute the width alterations throughout a region around the center, and thus limit the occurrence of extreme {variation} in width (see \cref{intro_wedge_distributed}).
 
 % the context where our method can be positioned, and some related problems in that context
 Under- and over-filling issues have a large proportional impact for thin geometric features.

@@ -12,9 +12,7 @@ FDM printers extrude semi-continuous beads of molten plastic through a nozzle, w
 A common strategy to accurately manufacture a given 3D model is to extrude along a contour-following path,
 because the position and shape of the toolpath can be controlled relatively accurately.
 Filling up a shape using parallel straight lines would expose defects of the size of the hole in the nozzle, which is generally an order of magnitude larger than the resolution of the positioning system.
-\revise{
-Contour-parallel extrusion therefore leads to a less bumpy outline shape than direction-parallel extrusion does.
-}{
+{
 Because contour-parallel extrusion leads to a more accurate outline shape it is common practice to print either the whole layer or only a limited number of outer perimeters that way.
 This paper improves on those contour-parallel toolpaths and addresses several issues which commonly occur in 3D models with narrow geometry.
 }
@@ -28,29 +26,25 @@ Underfills on the other hand, can cause a drastic decrease in the part stiffness
 These problems are exacerbated for models with layer outlines with small features, because the over- and underfill areas are relatively large compared to the whole part.
 
 One promising direction to avoid over- and underfills is to employ toolpath with adaptive width.
-\citeauthor{Ding2016a} developed a toolpath strategy for wire and arc additive manufacturing which produces a width variation typically lower than a factor of $3$, but is \revise{sometimes}{} far greater\revise{}{ for some parts}~\cite{Ding2016a,Xiong2019}.
+\citeauthor{Ding2016a} developed a toolpath strategy for wire and arc additive manufacturing which produces a width variation typically lower than a factor of $3$, but is  far greater{ for some parts}~\cite{Ding2016a,Xiong2019}.
 However, the range of widths manufacturable by FDM systems is limited.
 A nozzle of \SI{0.4}{\milli\meter} will typically start to cause fluttered extrusion around lines narrower than \SI{0.3}{\milli\meter} and lines will start to bulge upward if they are wider than the flat part of the nozzle, which is typically \SI{1.0}{\milli\meter}.
 %Therefore, a limited range of widths is required by the hardware system.
 
-The current \revise{state-of-the-art}{state of the art} for FDM printing developed by \citeauthor{Jin2017JMS} employs a strategy which alters the widths of the centermost beads \revise{at most by a factor of $2$}{within a range of widths with a factor of $3.6$}~\cite{Jin2017JMS},
+The current {state of the art} for FDM printing developed by \citeauthor{Jin2017JMS} employs a strategy which alters the widths of the centermost beads {within a range of widths with a factor of $3.6$}~\cite{Jin2017JMS},
 % (0.8 + 1) / (2* (1.25 - 1)), see rmin, rmax, Table 1e, Centered strategy
 which is similar to the strategy employed by the open source industry standard software package Ultimaker Cura~\cite{cura}.
 See \cref{intro_wedge_centered}.
 Still, controlling the extrusion width through movement speed changes or through volumetric flow control (e.g. linear advance) yields diminishing accuracy for deposition widths farther away from the nozzle size,
 since process parameters such as nozzle temperature are optimized for beads with the nozzle size.
 Moreover, reducing the variation in width is beneficial for limiting the variation in mechanical properties of the resulting product, meaning it conforms better to a simulation which employs a homogeneity assumption.
-\revise{
-Therefore, a narrower range of widths is desirable.
-}
+
 {We therefore reduce the bead width range by distributing the workload from the centermost bead over neighboring beads.}
 
 In this paper we propose a framework for planning toolpaths with control over the adaptive width for minimizing over- and underfill
-\revise{}{and introduce a beading scheme which reduces the bead width variation compared to the state of the art.} 
+{and introduce a beading scheme which reduces the bead width variation compared to the state of the art.} 
 We show that this framework supports various control schemes for determining the bead spacing and extrusion widths. 
-\revise{
-For FDM printing in particular we propose a novel scheme which reduces the amount of over- and underfill while ensuring the extrusion beads deviate little from the nozzle size.
-}{Furthermore we present an approach to accurately realize adaptive bead width.
+{Furthermore we present an approach to accurately realize adaptive bead width.
 }
 See \cref{intro_wedge_distributed}. 
 % In order to avoid over- and underfills in regions which are not as wide as an exact multiple of the nozzle size we need algorithms which produce toolpaths which employ adaptive bead width.
@@ -70,11 +64,11 @@ See \cref{intro_wedge_distributed}.
 \parbox[b]{\figwidthTwo}{\subcaption{}\label{intro_wedge_distributed}}\includegraphics[width=\figwidth]{sources-intro-TEST-Distributed-widths.png}
 \end{subfigure}
 \caption{
-Illustration of different toolpath\revise{}{s} for a \revise{wedge }{}shape \revise{}{showcasing a range of shape radii }\revise{}{(black)}.
-\revise{}{These results can be read as a graph with feature size on the horizontal axis and its corresponding beading along the vertical axis.}
+Illustration of different toolpath{s} for a shape {showcasing a range of shape radii }{(black)}.
+{These results can be read as a graph with feature size on the horizontal axis and its corresponding beading along the vertical axis.}
 \subref{intro_wedge_uniform} Toolpath using uniform offsetting results in large overfill (orange) and underfill (azure).
-\subref{intro_wedge_centered} Toolpath with adaptive width~\cite{Jin2017JMS} where beads that are wider or narrower than the nozzle size are \revise{indicatd}{indicated} in red and blue, respectively.
-\subref{intro_wedge_distributed} Our approach minimizes over- and underfill with \revise{beads close to the nozzle size}{less extreme widths}.
+\subref{intro_wedge_centered} Toolpath with adaptive width~\cite{Jin2017JMS} where beads that are wider or narrower than the nozzle size are {indicated} in red and blue, respectively.
+\subref{intro_wedge_distributed} Our approach minimizes over- and underfill with {less extreme widths}.
 }
 \label{intro_wedge}
 \end{figure}
@@ -82,11 +76,11 @@ Illustration of different toolpath\revise{}{s} for a \revise{wedge }{}shape \rev
 
 Our contributions are as follows:
 \begin{itemize}
-\item A geometric framework \revise{for generating densely filling contour-parallel toolpaths employing adaptive width, according to any beading scheme which decides on the bead spacing and widths.}{allowing various adaptive bead width control schemes used to generate contour-parallel toolpaths which minimize under- and overfill.}
-\item A specific beading scheme \revise{for FDM printing}{} which
-\revise{}{furthermore} reduces the amount of \revise{deviation}{variation} in the extrusion widths compared to \revise{existing literature, }{the state of the art to be below a factor of 2.}
-\revise{and which promotes smooth toolpaths that are equal to the preferred width toward the outline of the shape.}{}
-\revise{}{
+\item A geometric framework {allowing various adaptive bead width control schemes used to generate contour-parallel toolpaths which minimize under- and overfill.}
+\item A specific beading scheme  which
+{furthermore} reduces the amount of {variation} in the extrusion widths compared to {the state of the art to be below a factor of 2.}
+
+{
 \item A back pressure compensation approach to accurately realize adaptive bead width on Bowden style hardware systems.
 }
 \end{itemize}
