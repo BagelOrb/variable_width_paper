@@ -498,6 +498,8 @@ ca322806c80ddc82c6f0c01d9ea5096b37ffcf8e % use smae rmin and N=2 in statistics
 }
 \paper{1. Introduction}
 {
+[See \cref{intro_wedge}.]
+}
 \begin{figure}\centering
 \setlength{\figwidth}{.9\mycolumnwidth}
 \setlength{\figwidthTwo}{.05\mycolumnwidth}
@@ -519,8 +521,7 @@ Illustration of different toolpath\revise{}{s} for a \revise{wedge }{}shape \rev
 }
 \label{intro_wedge}
 \end{figure}
-\todo{See \cref{intro_wedge}.}
-}
+
 \paper{4. Beading schemes, end of section}{
 \paragraph{Widening \revise{}{meta-scheme}}
 Complementary to any of these schemes we can enforce a minimum feature size \revise{at no extra cost}{and minimum bead width} in our framework.
@@ -910,7 +911,7 @@ the wedge shape can be read as a graph where we can read out the resulting beadi
 }
 \commits{45853e8b30d93f60e9465cbb649e347f9cfc23b1 53224c04ceff6c1b18a9eea6de8e7e33957b7797}
 \paper{Intro}{
-\todo{See caption of \cref{intro_wedge}.}
+[See caption of \cref{intro_wedge}.]
 }
 
 
@@ -944,13 +945,13 @@ The arrow is now a double thin line.
 \commits{07df258c1fa618808ba9493384550021a03c83e1}
 \paper{Fig 4}
 {
-\todo{See \cref{legend}.}
+[See \cref{legend}.]
+}
 \begin{figure}\centering
 \includegraphics[width=.75\mycolumnwidth]{sources-method-legend2.pdf}
 \caption{Illustrative explanation of terms and color coding that are consistently used in this paper.}
 \label{legend}
 \end{figure}
-}
 
 
 
@@ -969,7 +970,8 @@ b4d03f0d8ea92ac9800794e154dc5b53e4448cab % don't compute graph for widths of out
 }
 \paper{Beading schemes}
 {
-\todo{See \cref{distributed_comparison}.}
+[See \cref{distributed_comparison}.]
+}
 \begin{figure}
 \centering
 \setlength{\figwidth}{.8\mycolumnwidth}
@@ -994,7 +996,6 @@ Colors represent bead widths.
 }
 \label{distributed_comparison}
 \end{figure}
-}
 \paper{Caption of Fig. 18}
 {
 \revise{}{In order to distinguish clearly from the Distributed scheme the Inward is limited to $N=2$.}
@@ -1003,7 +1004,6 @@ Colors represent bead widths.
 {
 Visualization of the widths for the output toolpaths of the inward distributed beading scheme \revise{}{($N=3$) }applied to various example application objects.
 }
-\todo{redo all experiments with N=2}
 \paper{5.2 Computational results}
 {
 Toolpaths of these 300 outline shapes are generated using the uniform technique as implemented by Clipper~\cite{johnson2014clipper} -- a state-of-the-art polygon offset library,
@@ -1027,9 +1027,6 @@ We've added it back in.
 Note that the width of the uniform case is \SI{0.4}{\milli\meter} \emph{everywhere}, so the curve is not really informative.
 }
 \commits{e5f3649455c73c8146e8d07cce13bc1e89d84cbb}
-\paper{Fig. 19b}{
-\todo{Figure now has the uniform curve}
-}
 
 
 
