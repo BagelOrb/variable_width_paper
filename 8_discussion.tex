@@ -8,7 +8,7 @@ To our knowledge, the uniform beading scheme, as well as the outer beading schem
 The constant bead count scheme effectively deals with underfills, but generates orders of magnitude more overfills compared to the other schemes. 
 Also, the scheme comes at the cost of greatly varying bead widths and an average bead width that is not close to the preferred bead width.
 Note that most overfill areas occur near regions of alternating bead width. 
-\revise{}{While the scheme results in short tool paths, as indicated by the idealized print time, it also results in a wide range of bead widths, which cause the back pressure compensation print time to be very large.
+\revise{}{While the scheme results in short toolpaths, as indicated by the idealized print time, it also results in a wide range of bead widths, which cause the back pressure compensation print time to be very large.
 See \cref{statisticsfig}.}
 For an input outline shape which contains both very small and very large features, the constant bead count scheme produces bead widths which can fall outside of the range of manufacturable bead widths.
 Moreover the centrality marking is not robust against small perturbations in the outline; adding a small chamfer in a corner causes the unmarked ST to be very small at that location, which results in tiny bead widths.
@@ -20,7 +20,7 @@ the centered beading scheme effectively deals with \revise{both }{}overfill \rev
 \revise{
 According to \cref{over_underfill} the overfill and underfill for the centered, the evenly distributed and the inward distributed scheme are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the uniform technique.
 }{
-Compared to the uniform technique the centered technique increases the (open) path count, but considerably reduces over- and underfill and decimates the number of tool path angles below \SI{45}{\degree}.
+Compared to the uniform technique the centered technique increases the (open) path count, but considerably reduces over- and underfill and decimates the number of toolpath angles below \SI{45}{\degree}.
 See \cref{statisticsfig}.
 }
 
@@ -32,7 +32,7 @@ We therefore conclude that the distributed schemes \revise{result in bead widths
 %This is desirable for the manufacturability of the beads and can therefore have a positive effect on the mechanical properties and surface quality of the 3D prints. 
 
 \revise{It is hard to visually identify the difference between the evenly and the inward distributed scheme in \cref{visualized_accuracy}, because that particular example shape does not have wide features.}
-{\Cref{distributed_comparison,TEST_Distributed_accuracy,TEST_InwardDistributed_accuracy} show that in the inward distributed scheme the outer toolpaths have the preferred width more often than in the evenly distributed scheme, which means that the outline acuracy of the inward distributed beading is less affected by inaccuracies in the adaptive width control system.}
+{\Cref{distributed_comparison,TEST_Distributed_accuracy,TEST_InwardDistributed_accuracy} show that in the inward distributed scheme the outer toolpaths have the preferred width more often than in the evenly distributed scheme, which means that the outline accuracy of the inward distributed beading is less affected by inaccuracies in the adaptive width control system.}
 %{\Cref{TEST_InwardDistributed_accuracy} shows that in the inward distributed scheme the outer beads are more often equal to the preferred width compared to the evenly distributed scheme in \cref{TEST_Distributed_accuracy}, but that effect is more pronounced for wider geometry such as in \cref{distributed_comparison}.}
 %While the difference between the evenly and inward distributed scheme in \cref{visualized_accuracy} results only in the outer bead being the preferred width in some locations, the effect of the inward distributed scheme is more pronounced in larger geometry, as can be seen in \cref{distributed_comparison}.}
 \revise{However, \cref{distributed_comparison} and  \cref{widthIndexedHistogram} confirm that the outer toolpaths have the preferred bead width more often.}{} % _

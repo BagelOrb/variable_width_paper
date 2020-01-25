@@ -154,7 +154,7 @@ We visualize the bead widths resulting from the different schemes in the bottom 
 We calculated the mean and standard deviation of the bead width, sampled at \SI{1}{\micro\meter} along the toolpaths.
 \cref{widthHistogram} shows the distribution of extrusion width for each scheme binned at intervals of \SI{10}{\micro\meter}.
 }{
-We binned the tool paths into width bins at \SI{0.01}{\milli\meter} increments and determine the total tool path length pertaining to each bin.
+We binned the toolpaths into width bins at \SI{0.01}{\milli\meter} increments and determine the total toolpath length pertaining to each bin.
 From these statistics we calculate the mean and standard deviation and report them in \cref{widthHistogram}.
 }
 We found that the mean width of the inward and evenly distributed schemes is close to preferred bead width of \SI{400}{\micro\meter}, while their standard deviation is lower than for the centered and constant bead count scheme. 
@@ -176,15 +176,15 @@ We also investigated the effect of the transition regions on the smoothness of t
 \cref{smoothnessNoTransition} shows that introducing the transitions greatly reduces the number of corners around \SI{90}{\degree}. 
 }{
 \subsubsection{Print time}
-The total time it takes to print a part is influenced not only by our back pressure compensation scheme, but also by the geometry of the tool paths.
+The total time it takes to print a part is influenced not only by our back pressure compensation scheme, but also by the geometry of the toolpaths.
 In order to separate these effects we report on the total print time when using back pressure compensation and when using a constant (maximum) movement speed in \cref{printtime}.
 We estimate print times using a simulation of the Marlin firmware using the default movement settings of the setup described in \cref{print_results_section}.
-While the idealized print time is predominantly determined by the total tool path length, the print time using back pressure compensation is predominantly determined by the occurrence of wide beads, because they have a reduced the flow in \si{\milli\meter\cubed\per\second}.
+While the idealized print time is predominantly determined by the total toolpath length, the print time using back pressure compensation is predominantly determined by the occurrence of wide beads, because they have a reduced the flow in \si{\milli\meter\cubed\per\second}.
 Because of acceleration constraints imposed by the hardware the maximum movement speed is not reached near sharp corners.
 We therefore also report on the angles of the bends in the toolpaths in \cref{smoothness}.
 Furthermore, the print time is negatively affected by discontinuities in the extrusion process.
 Between extrusions the printer needs to stop extrusion, travel to the next extrusion path and restart the extrusion process, which all take time.
-For closed polygonal tool paths we can start anywhere within the path, so we can optimize the starting location so as to minimize the travel time.
+For closed polygonal toolpaths we can start anywhere within the path, so we can optimize the starting location so as to minimize the travel time.
 We therefore report both on the open and closed path count in \cref{pathcounts}.
 }
 

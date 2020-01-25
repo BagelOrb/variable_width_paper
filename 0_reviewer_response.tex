@@ -460,7 +460,7 @@ Our contributions are as follows:
 \end{itemize}
 }
 \paper{Conclusion}{
-In this paper we have introduced a framework for computing contour-parallel toolpaths employing adaptive bead width in order to minimize underfilland overfill areas\revise{.}{,
+In this paper we have introduced a framework for computing contour-parallel toolpaths employing adaptive bead width in order to minimize \revise{underfilland}{underfill and} overfill areas\revise{.}{,
 we introduced beading schemes which improve on the state of the art
 and we have introduced a backpressure compensation method for accurate fabrication of adaptive width.
 }
@@ -598,7 +598,7 @@ Combining all meta-schemes functionality we can generate results such as depicte
 \label{shell}
 \end{subfigure}
 \caption{
-Toolpaths using the widening and shel meta-schemes.
+Toolpaths using the widening and shell meta-schemes.
 \subref{min_feature_size} and~\subref{widening} show widening.
 \subref{shell}
 show toolpaths generated with the inward distributed strategy ($N=1.5$) in conjunction with the shell meta-scheme ($M=4$) and the same widening as in~\subref{widening}.
@@ -684,15 +684,15 @@ We also investigated the effect of the transition regions on the smoothness of t
 \cref{smoothnessNoTransition} shows that introducing the transitions greatly reduces the number of corners around \SI{90}{\degree}. 
 }{
 \subsubsection{Print time}
-The total time it takes to print a part is influenced not only by our back pressure compensation scheme, but also by the geometry of the tool paths.
+The total time it takes to print a part is influenced not only by our back pressure compensation scheme, but also by the geometry of the toolpaths.
 In order to separate these effects we report on the total print time when using back pressure compensation and when using a constant (maximum) movement speed in \cref{printtime}.
 We estimate print times using a simulation of the Marlin firmware using the default movement settings of the setup described in \cref{print_results_section}.
-While the idealized print time is predominantly determined by the total tool path length, the print time using back pressure compensation is predominantly determined by the occurrence of wide beads, because they have a reduced the flow in \si{\milli\meter\cubed\per\second}.
+While the idealized print time is predominantly determined by the total toolpath length, the print time using back pressure compensation is predominantly determined by the occurrence of wide beads, because they have a reduced the flow in \si{\milli\meter\cubed\per\second}.
 Because of acceleration constraints imposed by the hardware the maximum movement speed is not reached near sharp corners.
 We therefore also report on the angles of the bends in the toolpaths in \cref{smoothness}.
 Furthermore, the print time is negatively affected by discontinuities in the extrusion process.
 Between extrusions the printer needs to stop extrusion, travel to the next extrusion path and restart the extrusion process, which all take time.
-For closed polygonal tool paths we can start anywhere within the path, so we can optimize the starting location so as to minimize the travel time.
+For closed polygonal toolpaths we can start anywhere within the path, so we can optimize the starting location so as to minimize the travel time.
 We therefore report both on the open and closed path count in \cref{pathcounts}.
 }
 }
@@ -704,7 +704,7 @@ To our knowledge, the uniform beading scheme, as well as the outer beading schem
 The constant bead count scheme effectively deals with underfills, but generates orders of magnitude more overfills compared to the other schemes. 
 Also, the scheme comes at the cost of greatly varying bead widths and an average bead width that is not close to the preferred bead width.
 Note that most overfill areas occur near regions of alternating bead width. 
-\revise{}{While the scheme results in short tool paths, as indicated by the idealized print time, it also results in a wide range of bead widths, which cause the back pressure compensation print time to be very large.
+\revise{}{While the scheme results in short toolpaths, as indicated by the idealized print time, it also results in a wide range of bead widths, which cause the back pressure compensation print time to be very large.
 See \cref{statisticsfig}.}
 For an input outline shape which contains both very small and very large features, the constant bead count scheme produces bead widths which can fall outside of the range of manufacturable bead widths.
 Moreover the centrality marking is not robust against small perturbations in the outline; adding a small chamfer in a corner causes the unmarked ST to be very small at that location, which results in tiny bead widths.
@@ -716,7 +716,7 @@ the centered beading scheme effectively deals with \revise{both }{}overfill \rev
 \revise{
 According to \cref{over_underfill} the overfill and underfill for the centered, the evenly distributed and the inward distributed scheme are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the uniform technique.
 }{
-Compared to the uniform technique the centered technique increases the (open) path count, but considerably reduces over- and underfill and decimates the number of tool path angles below \SI{45}{\degree}.
+Compared to the uniform technique the centered technique increases the (open) path count, but considerably reduces over- and underfill and decimates the number of toolpath angles below \SI{45}{\degree}.
 See \cref{statisticsfig}.
 }
 
@@ -1734,7 +1734,7 @@ The following restrictions hold:
 
 \revise{}{
 \begin{definition}\label{beading_scheme_definition}
-A beading scheme is defined by the quatization operator $q$ and the beading operator $B$: $\{q(d), B(n ,r)\}$.
+A beading scheme is defined by the quantization operator $q$ and the beading operator $B$: $\{q(d), B(n ,r)\}$.
 The beading function $B(n,r)$ consists of $\left( W(n,r), L(n,r) \right)$,
 which provides sequences of $n$ bead widths and of $n$ distances from the outline to fill up a radial distance $r$.
 \end{definition}
@@ -2045,7 +2045,7 @@ Change width histogram calculation so that we use accurate statistics instead of
 We calculated the mean and standard deviation of the bead width, sampled at \SI{1}{\micro\meter} along the toolpaths.
 \cref{widthHistogram} shows the distribution of extrusion width for each scheme binned at intervals of \SI{10}{\micro\meter}.
 }{
-We binned the tool paths into width bins at \SI{0.01}{\milli\meter} increments and determine the total tool path length pertaining to each bin.
+We binned the toolpaths into width bins at \SI{0.01}{\milli\meter} increments and determine the total toolpath length pertaining to each bin.
 From these statistics we calculate the mean and standard deviation and report them in \cref{widthHistogram}.
 }
 }
