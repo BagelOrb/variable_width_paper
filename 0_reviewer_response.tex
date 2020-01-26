@@ -700,12 +700,11 @@ Only shapes without central regions (a circle) or shapes with central regions wi
 
 \Que{
 How do the authors conduct path planning? Could the authors add a simple 2D geometry with multiple holes to explain the path planning process? As the proposed approach adds more disconnected toolpaths to minimize underfill areas, an improper path planning would significantly increase the fabrication time. 
-}
+}\label{printtime_question}
 \Ans{
-We now included a description of the path order algorithm, which is naive and greedy.
-Although an optimal path order algorithm might influence the travel time, such an algorithm is slow and not generally used in the industry.
-The software package Cura currently employs a similarly greedy algorithm.
-Travel times are approximately \SI{2}{\percent} of the total print time in our current setup, so the effect of improper path planning is negligible compared to the differences in extrusion time.
+We now included a description of the path order algorithm, which is naive and greedy -- similar to the one employed by the software package Ultimaker Cura.
+A suboptimal path planning is preferred because of a reduced computation time.
+Travel times are only \SI{2}{\percent} of the total print time in our current setup, so the effect of improper path planning is negligible compared to the differences in extrusion time.
 
 We now include statistics on extrusion time, travel time and path counts.
 These new statistics are now also reflected upon in the comparison of the beading schemes.
@@ -949,6 +948,10 @@ An accurate model of manufacturability, \revise{}{which relates }print speed, \r
 Why the authors state the inward distributed beading scheme as new? Jin et al (2017) has proposed the strategy to add a toolpath with varying width along the center edges of the skeleton, and with unchanging width outside.
 }\label{difference_to_jin}
 \Ans{
+Evidently it is not the case that the method we introduce is the same as the current state-of-the-art.
+In order to clearly mention the output of our method as a novel technique we now adjusted the contributions and made several changes throughout the introduction, results and conclusion.
+See also our response to question~\ref{contributions}.
+
 The difference between the inward distributed beading scheme and the method by \citeauthor{Jin2017JMS} is already shown in Figs.~1c and 1b respectively. 
 It is also shown in Figs.~17c and 17e (old Figs.~16c and 16e, \cref{TEST_Center_accuracy,TEST_InwardDistributed_accuracy} here).
 In order to clearly address the difference early on we mention the difference in the description of \citeauthor{Jin2017JMS} in the introduction.
@@ -1197,7 +1200,8 @@ For example, what happens if the obtuse outside angle in Fig.~2 goes to 0?
 }
 \Ans{
 That figure is reproduced here in \cref{overview_outline}.
-As the rightmost two points move right, the degree of the corner in the middle goes to zero, which causes the parts of the parabola revealed to be more accurately described by the discretization than the highly curved part in the middle.
+As the rightmost two points move right, the degree of the corner in the middle goes to zero, which reveals parts of the parabola which are more accurately described by the discretization than the highly curved part in the middle.
+The discretization error for this specific example is even smaller than the discretization error in the middle of the parabola.
 }
 \begin{figure}\centering
 \includegraphics[width=.3\linewidth,rotate=-90]{response_simple_example_1}
@@ -1251,18 +1255,21 @@ The method section, however, doesn't go into variable offset schemes because off
 Moreover, the proposed technique seems to rely on rather accurate control of the width w of the deposited material, but it is not clear whether such control is achievable in practice. 
 }\label{s5_prints}
 \Ans{
-The proposed technique relies \emph{less} on the accuracy of the control than existing techniques, seeing as the extrusion widths of the inward and evely distributed schemes exhibit less variation than the state-of-the-art centered technique.
+On the contrary,
+the proposed technique relies \emph{less} on the accuracy of the control than existing techniques, seeing as the extrusion widths of the inward and evely distributed schemes exhibit less variation than the state-of-the-art centered technique.
 See Fig.~18d (old Fig.~17b, \cref{widthHistogram} here).
 
-The photos of our print results already showed that adaptive width control is possible up to an admittedly insufficient extent.
-We have developed a new method for actualizing adaptive width control which can readily be applied to unmodified FDM systems such as the Ultimaker S5: \emph{back pressure compensation}.
-We show the results of back pressure compensation in a separate figure which clearly shows the achieved variance in bead width.
+The old photos (old Fig. 18, here \cref{prints_old}) of our print results already showed that adaptive width control is possible up to an admittedly insufficient extent.
 
-All paragraphs on the physical realization have been put together and moved to after the theoretical analysis:
-we moved the section on limitations of linear advance algorithms (5.5 Discussion on implications) together with the section on Printing results to after the comparison of beading schemes (now 5.2).
+Because it was insufficient, we have now developed a new method for actualizing adaptive width control which can readily be applied to unmodified FDM systems such as the Ultimaker S5: \emph{back pressure compensation}.
+We show the results of back pressure compensation in a new figure (Fig. 15, reproduced here in \cref{back_pressure_compensation}) which clearly shows the achieved variance in bead width.
+
+All paragraphs on the physical realization, i.e. on linear advance and its limitations and on gcode limitations, have been assembled together and moved to 5.1. Fabrication.
+Because the print time statistics use our back pressure compensation approach we moved the fabrication results to before the statistical analysis.
 }
+
 \commits{
-%3d7238e2787f17c4cff63804eb4b84439ff85f1b  % initial printing results section 5.2
+%3d7238e2787f17c4cff63804eb4b84439ff85f1b  % initial printing results section~5.2
 %b5abdd980240cd4ca964ed0f4751c207baa09b85 % move 5.5 to 5.2
 a0e98d1079b3ab3b262908ea056939813fc49c73 % move 5.2 to 5.3 and overhaul
 6362bb7f1ff11e15efc6667fc7863ca12a29a8a9 % mention in intro and conclusion
@@ -1578,11 +1585,13 @@ A specific beading scheme \revise{for FDM printing}{} which [\dots]
 
 \Que{
 It would be nice to discuss why contour-parallel toolpaths are needed or selected. In what situations, these are required as opposed to zigzag style (or direction-parallel as referred in the text) patterns. Without such a discussion, the motivation seems a little weak. In the second paragraph of introduction, there is a short discussion about this but it sounds like the authors assume that even the perimeters (or outline) are printed with direction-parallel extrusion. However, common approach in FDM is to print the perimeters with contour parallel toolpaths and fill the inner region with direction-parallel paths only (as later acknowledged in the related work 3rd paragraph). I think the motivation for contour parallel toolpaths needs to be justified further. 
-}
+}\label{outline_question}
 \Ans{
 The industry standard is to use a combination of contour-parallel and direction-parallel.
-We now clarify why contour-parallel is (partly) used and that in as much as contour-parallel is used, our approach improves on the industry standard.
-We have also developed and presented a new meta-scheme for generating only a limited number of perimeters, which shows that our technique is compatible with the industry standard for FDM 3D printing.
+Our approach was developed to improve on the former part while keeping the latter intact -- not to replace the latter by the former.
+
+We now clarify why contour-parallel is (partly) used and that \emph{in as much as contour-parallel is used}, our approach improves on the industry standard.
+We have also developed and presented a new meta-scheme for generating only a limited number of perimeters, which shows that our technique is compatible with generating direction-parallel toolpaths for internal areas.
 See also the changes to the paper presented under question~\ref{widening_question}.
 }
 
@@ -1622,9 +1631,6 @@ See also our response to question~\ref{widening_question} for clarification in t
 004894210fbc961f82b792fc702d1b67a1a8e8e8 lil lang improvement (reviewer 3.3)
 9ac2c005c2eb1c0696e2582963353b038fa71072 use limited distributed strategy in Fig.~1 (reviewer 1.6, 3.3)
 }
-\paper{Fig.~1}{
-\subref{intro_wedge_distributed} Our approach minimizes over- and underfill with \revise{beads close to the nozzle size}{less extreme widths}.
-}
 
 
 
@@ -1635,11 +1641,17 @@ See also our response to question~\ref{widening_question} for clarification in t
 Isn’t it possible to put bounds on the width in the existing methods, such as the approach described in [9]? More discussion on that would be helpful. 
 }
 \Ans{
-The bead width in \citeauthor{Jin2017JMS} is limited to $0.5 w^*$ to $1.8 w^*$ , which means the variation is a factor of $3.6$;
-this was already described in the related work section, but the factor was wrongly said to be $2$ instead of $3.6$.
-We emphasized that our method results in a bead width variation of $2$, rather than $3.6$ in the related work section and in the discussion section.
+The bead width in \citeauthor{Jin2017JMS} is limited to the interval $[0.5 w^*,1.8 w^*]$ , which means the variation is a factor of $\text{max} / \text{min} = 1.8 / 0.5 = 3.6$. 
+\footnote{
+This new statistic replaces the old statistic of deviation from the preferred nozzle size: $\text{max} / w^*$.
+This old statistic is odd because it cannot take the min into account.
+Also the old statistic of $2.0$ had been computed using the hypothetical max of $2.0 w^*$ rather than the actually used $1.8w^*$.
+}
+
+We now emphasize that our method results in a bead width variation of $2$ (which is less than $3.6$) in the related work section and in the discussion section.
 This factor comes from the transition from a single bead to two beads.
-(The transition from zero beads to one is disregarded; it is controlled separately by the Widening meta-scheme.)
+It is not possible to generate toolpaths with a lower interval of bead widths if you consider geometry with arbitrary feature radius.
+%(The transition from zero beads to one is disregarded; it is controlled separately by the Widening meta-scheme.)
 }
 \commits{
 661d8f6766548c287cb174070432097e396d198f 
@@ -1673,9 +1685,10 @@ We therefore conclude that the distributed schemes \revise{result in bead widths
 Fig.~4 and corresponding explanation in Section~3.2 are confusing. Why such decomposition is needed is not clear to me. 
 }
 \Ans{
-Fig.~4 shows a legend of terms and color coding scheme used throughout the paper;
-it doesn't show a decomposition.
-It is unclear to us what this review comment is asking for.
+Fig.~4 shows a legend of terms and color coding scheme used throughout the paper.
+It does also exhibit the skeletal trapezoidation decomposition, which is the starting point of our method.
+We have tried to explain our method clearly.
+We are unsure how we should further improve the method section in order to address this question.
 }
 
 
@@ -1936,13 +1949,7 @@ If this is used for outer surface, what are the implications on the surface qual
 The visual quality in terms of a homogenous surface are discussed in the section on the new printing results.
 See our response to question~\ref{s5_prints}.
 }
-\commits{
-6b0f8c78d31bd0c6946885da96f73f1cfc1a21ae clarify widespread use of concentric toolpaths in abstract (reviewer 3.9)
-}
-\paper{Abstract}{
-\revise{By densely filling consecutive 2D layers with contour-parallel extrusion toolpaths, FDM can produce parts with high stiffness and strength.}
-{High stiffness parts are produced by filling the 2D polygons of consecutive layers (partly) with contour-parallel extrusion toolpaths.}
-}
+
 
 
 
@@ -2032,11 +2039,27 @@ However, this inflated bead width variation is expected to have an insignificant
 
 
 \section{Other changes}
-We have fixed some issues with positions and colors being swapped in the statistical analysis subfigures.
-Fig.~18 colors are adjusted.
-\commits{43cadb352a6a276bbaaab53f9b5b217bec4b3a2e}
+Several other issues have caught our attention during the revision process and were addressed in the current manuscript.
 
-Improvements to abstract.
+We removed the angles graph of old Fig.~17e.
+The effect that transitioning reduces sharp angles in the toolpath is apparent and doesn't require empirical proof.
+
+We fixed a mistake when performing the statistical analysis. In the first submitted version we used a minimum bead width half of what it should have been for the centered scheme. The extrusion width statistics figure (now Fig.~18d, old Fig.~17b, \cref{widthHistogram} here) now shows little beads below \SI{0.2}{\milli\meter} instead of below \SI{0.1}{\milli\meter}.
+
+We changed the width histogram calculation so that we use accurate statistics instead of sampling the width along the path.
+\commits{d402ba3a47d35bc9a040b6ed4ccdfb85e911bedf}
+\paper{5.2.2 Uniformity}
+{
+\revise{
+We calculated the mean and standard deviation of the bead width, sampled at \SI{1}{\micro\meter} along the toolpaths.
+\cref{widthHistogram} shows the distribution of extrusion width for each scheme binned at intervals of \SI{10}{\micro\meter}.
+}{
+We binned the toolpaths into width bins at \SI{0.01}{\milli\meter} increments and determine the total toolpath length pertaining to each bin.
+From these statistics we calculate the mean and standard deviation and report them in \cref{widthHistogram}.
+}
+}
+
+We have made some improvements on the abstract.
 \commits{c5ecf8f8c5c15266059278a6b4c26774446e7854}
 \paper{Abstract}{
 Toolpath with uniform inward offsets from the outline polygons produce over- and underfill regions in the center of the shape, which are especially problematic for thin parts such as casings and microstructures.
@@ -2047,21 +2070,14 @@ Furthermore, we propose a novel scheme for FDM printing which \revise{avoids}{re
 We validate the effectiveness of our framework and this novel scheme on a data set of 300 \revise{slices}{layer outlines}.
 }
 
-
-Remove Fig.~17e.
-The effect that transitioning reduces sharp angles in the toolpath is apparent and doesn't require empirical proof.
-
-
-Fix double header of References.
-\commits{7597b176f6a88ae98c8c7a4c791475af356b3da6}
-
-Added patent notice and url to open source implementation.
+We added a patent notice and an url to the open source implementation.
 \commits{
 ff3c09037f05eba5028cb51bf8cd6c0bb77a0b0a
 }
 \paper{1. Introduction}{
 \revise{}{The presented framework is patented by Ultimaker and open source available at \url{github.com/Ultimaker/libArachne}.}
 }
+
 
 Remove reference to the concept of `periphery' seeing as it was not really used.
 \commits{
@@ -2076,7 +2092,28 @@ a5c0d134c106876ae0edcb201eb270b66c11462f % typo near these^ commits
 Now that we have determined the bead counts in the \revise{}{marked }central regions we will describe how the \revise{peripheral}{unmarked} regions are handled.
 }
 
-Lil
+
+Explain why and how statistics are gathered over the whole data set.
+\commits{17135b010f5ac51fda77357136a19f67a80dbc33}
+\paper{5.2 Computational results}
+{
+\revise{}{We report on the total statistics summed over the whole data set, because averaging would be biased.}
+}
+
+
+
+Furthermore:
+\begin{itemize*}
+\item Remove wrapfigure explaining the area covered by a single extrusion move (in section~5.2.1~Accuracy), since that is already explained in the appendix.
+\commits{d402ba3a47d35bc9a040b6ed4ccdfb85e911bedf}
+\item Fig.~10 and Fig.~18 colors are adjusted.
+\commits{
+1196bad1c2bf4fb41e7d28985938cfe678384e5a % fig 10
+43cadb352a6a276bbaaab53f9b5b217bec4b3a2e
+}
+\item Fix double header of References.
+\commits{7597b176f6a88ae98c8c7a4c791475af356b3da6}
+\item Fixed some typos.
 \commits{5f5c4c640d94010816e6d6d5934a2dc016b4d172
 1662d3c4c3aa977bddd730ac59f1bc874b9eb574 % -''See ``
 b108d7de4f1e1e9676d45cf24eea263af6b8b9c7 % width => widths
@@ -2084,41 +2121,15 @@ b108d7de4f1e1e9676d45cf24eea263af6b8b9c7 % width => widths
 87bed1e663ea831d8f52b0ccf4ef5eebaab32ade % typo
 2e21687731d95a9a1315206531f0474fb924c6eb % spell check
 }
-
-Our department has changed its name:
+\item Our department has changed its name to \emph{Sustainable} Design Engineering.
 \commits{
 442a5df5a4f27f1ce94a5ef298a1f7bcc3df934d
 }
+\end{itemize*}
 
-Removed confusing red parts from beading figure:
-\commits{
-1196bad1c2bf4fb41e7d28985938cfe678384e5a
-}
 
-We fixed a mistake when performing the statistical analysis. In the first submitted version we used a minimum bead width half of what it should have been for the centered scheme. The extrusion width statistics figure (now Fig.~18d, old Fig.~17b, \cref{widthHistogram} here) now shows little beads below \SI{0.2}{\milli\meter} instead of below \SI{0.1}{\milli\meter}.
 
-Explain why and how statistics are gathered over the whole data set:
-\commits{17135b010f5ac51fda77357136a19f67a80dbc33}
-\paper{5.2 Computational results}
-{
-\revise{}{We report on the total statistics summed over the whole data set, because averaging would be biased.}
-}
 
-Remove wrapfigure explaining the area covered by a single extrusion move (in section 5.2.1 `Accuracy'), since that is already explained in the appendix.
-\commits{d402ba3a47d35bc9a040b6ed4ccdfb85e911bedf}
-
-Change width histogram calculation so that we use accurate statistics instead of sampling the width along the path:
-\commits{d402ba3a47d35bc9a040b6ed4ccdfb85e911bedf}
-\paper{5.2.2 Uniformity}
-{
-\revise{
-We calculated the mean and standard deviation of the bead width, sampled at \SI{1}{\micro\meter} along the toolpaths.
-\cref{widthHistogram} shows the distribution of extrusion width for each scheme binned at intervals of \SI{10}{\micro\meter}.
-}{
-We binned the toolpaths into width bins at \SI{0.01}{\milli\meter} increments and determine the total toolpath length pertaining to each bin.
-From these statistics we calculate the mean and standard deviation and report them in \cref{widthHistogram}.
-}
-}
 
 
 \section*{References}
