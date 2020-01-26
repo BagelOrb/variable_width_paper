@@ -1215,9 +1215,9 @@ The firmware of the printer employs \emph{linear advance} for accurately realizi
 gaining the extra pressure required to change to a wider bead is realized by 'advancing' an extra amount of filament into the physical system~\cite{tronvoll2019investigating}.
 We set the preferred width to $w^* = \SI{0.6}{\milli\meter}$, to avoid fluttered printing of lines narrower than the nozzle size.
 We used a layer thickness of \SI{0.2}{\milli\meter} and a movement speed of \SI{10}{\milli\meter\per\second}.
-}{}
-
-\revisepar{
+%}{}
+\par
+%\revisepar{
 The prints are shown in \cref{prints_old}.
 Because of inaccuracies in the deposition control system some of the prints show defects.
 Such defects are less prevalent for the inward distributed beading scheme than the other schemes.
@@ -1425,9 +1425,9 @@ Using a filament feeder directly mounted on the print head (a.k.a. direct drive)
 Still direct drive printers require some control system in order to accurately change the volumetric flow rate such as pressure advance algorithms~\cite{tronvoll2019investigating}.
 Yet inaccuracies in direct drive systems employing advance algorithms might arise due to the changes in back-pressure required by changing bead size.
 We expect that developments in printing hardware and firmware will address these challenges in the future.
-}{}
-
-\revisepar{
+%}{}
+\par
+%\revisepar{
 Another limiting factor for adopting adaptive bead width is the format of G-code which stores machine instructions.
 G-code does not support moves with varying cross-sectional area.
 A typical extrusion move \lstinline!G1 X$x$ Y$y$ E$v$! only specifies the total amount of volume $v$ to be extruded in the move, not how that total amount should be distributed along the extrusion move.
@@ -1711,9 +1711,9 @@ and
 $d^\text{discretization}$ is the discretization length in vertex-vertex VD edges and vertex-line VD edges.
 %$W(n, r)$ and $L(n, r)$ give the sequence of bead widths $\left\{ w_i \right\}$ and radial locations $\left\{ l_i \right\}$, respectively.
 \end{definition}
-}{}
-
-\revisepar{
+%}{}
+\par
+%\revisepar{
 The following restrictions hold:
 \begin{enumerate}
 	\begin{minipage}{\mycolumnwidth}
@@ -1797,9 +1797,9 @@ d_\text{max}^\text{intersection} &= \SI{75}{\percent}
 %\end{align*}
 %\begin{align*}
 \end{align*}
-}{}
-
-\revisepar{
+%}{}
+\par
+%\revisepar{
 The toolpath locations $L$ ensure 
 that the beads don't overlap,
 that beads are extruded from the center of where they end up
