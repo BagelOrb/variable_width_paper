@@ -25,7 +25,7 @@
 \newif\ifIncludeTextChanges
 
 
-\IncludeTextChangesfalse
+\IncludeTextChangestrue
 
 
 
@@ -383,7 +383,7 @@ The following explains the formatting using in this response to reviewers:
 
 \Que{Example text by reviewer.}
 \Ans{Example response.}
-\paper{Section name}{
+\paper{New section name}{
 Remaining text, followed by 
 \revise{outdated text in manuscript}{new text in manuscript}
 \revisepar{
@@ -425,9 +425,9 @@ In the first case we consider a part with a constant feature size, in the second
 1. When considering a part with constant feature diameter $d$ we note that the beading only depends on the feature diameter: $B(n, r) = B(q(2r), r)$.
 From the beading function we can easily derive the under-/overfill by summing over the bead widths $W$.
 We can then derive that the naive scheme produces over-/underfill at all diameters except $d=2i w^*$, the center scheme for $(i + 0.8) w^* < d < (i+ 1.25) w^*$ and the constant and distributed schemes nowhere (except for features smaller than $w^*$).
-We have added a paragraph to the new section 5.1 Theoretical consideration to explain this and the implications for design for additive manufacturing.
+We have added a paragraph to the new section~5.1~Theoretical consideration to explain this and the implications for design for additive manufacturing.
 
-2. When the feature size changes the amount of over-/underfill is related to a bisector angle $\alpha < \alpha_\text{max}$ according to the formula already given in section 3.3, paragraph `Significance measure': 
+2. When the feature size changes the amount of over-/underfill is related to a bisector angle $\alpha < \alpha_\text{max}$ according to the formula already given in section~3.3, paragraph `Significance measure': 
 ``This corresponds to overfill areas and underfill areas the size of \revise{$\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$}{$\nicefrac14 (w^*)^2 \left( \tan ( \alpha / 2) - \alpha / 2 \right)$}''.
 This formula is also relevant for the other beading schemes because the nonsignificant regions are filled in a similar fashion to the naive technique.
 For small bisector angles these under-/overfill areas are considered to be permittably small.
@@ -436,7 +436,7 @@ We hope that this explanation suffices for the reviewer and the existing text su
 3. The topology also has an influence on underfill. For example, a 3-way intersection in a 3D model which is a honeycomb pattern with a feature diameter of $w^*$ causes some over and underfill using \emph{any} possible technique, because 3 printed beads come together in the same point.
 Also a honeycomb of $2w^*$ diameter causes some underfill in the center;
 when 3 beads surround a single point there will always remain a micro-gap because of the high viscosity of the molten filament.
-This is handled in Fig. 12 and the last paragraph of section 3.6.
+This is handled in Fig.~12 and the last paragraph of section~3.6.
 
 As for `the allowed variation of bead width': our vision \emph{was} that there should be no binary criterion for manufacturability and instead there should only be a floating number evaluation of manufacturability of a given bead width.
 However, we have now put bounds on the induced bead widths, so that the reader could compare our method to any range of `allowed variation' according to any manufacturability criterion.
@@ -445,7 +445,7 @@ See the answer to question 3.4.
 
 \commits{
 2e1c40be93f92a8495c0d7fa379e983dd3ee7b98 % emphasize implication for DfAM in conclusion
-5b8c5971d606089754ba118560e51ec6d7dfda0b % new section `Theoretical considerations'
+5b8c5971d606089754ba118560e51ec6d7dfda0b % new section~`Theoretical considerations'
 7c2224fc713f5b68436f432a1ade506e9dacf500 % lil edit in above section
 420cf6886a8e248aec4aafc04d13abc693da8dd0 % fix for naive over-/underfill area formula
 86cd8dd7f2112696f650736a81b24b63af739639 % lil typo
@@ -531,15 +531,15 @@ Furthermore, by distributing the deviation in bead width over several beads near
 
 
 \subQue{
-From Figs. 1b and 1c, we can see that the approach in Jin et al (2017) can fill the sharp right end, but the proposed approach can not. 
+From Figs.~1b and 1c, we can see that the approach in Jin et al (2017) can fill the sharp right end, but the proposed approach can not. 
 }\label{widening_question}
 \Ans{
-Note that this is not a limitation of the approach, but a consequence of the default parameters which were chosen.
+Note that this is not a limitation of the approach, but a consequence of the default parameters which had been chosen.
 
-We have introduced a new parameter in the widening meta-scheme which can be used specificly to tune the minimal diameter starting from which we generate a toolpath.
-This minimum feature size is now used in the new computational test results and in Fig. 1.
+We have now introduced a new parameter in the widening meta-scheme which can be used specificly to tune the minimal diameter starting from which we generate a toolpath.
+This minimum feature size is now used in the new computational test results and in Fig.~1.
 
-We have also changed the example shape of Fig. 16 (Now Fig. 17, reproduced here in \cref{visualized_accuracy}) to include a pointy wedge shape similar to Fig. 1.
+We have also changed the example shape of Fig.~17 (old Fig.~16, reproduced here in \cref{visualized_accuracy}) to include a pointy wedge shape similar to Fig.~1.
 }
 \commits{
 %a5ddf3a73e3df20e43f25eafb93e9ce3a1393b13 
@@ -672,23 +672,23 @@ and by our framework using four beading schemes, i.e. the constant bead count sc
 If there is no sharp corners exist, then the existing approaches such as Jin et al (2017) do not have to use bead widths of large variations. 
 }
 \Ans{
-The wedge shape of Fig. 1 was chosen because it contains a wide range of feature sizes and is therefore representative for a wide range of models.
-Nearly every model induces the full range of $[0.5w^*,1.8w^*]$ using the centered approach by Jin et. al. 2017 JMS,
+The wedge shape of Fig.~1 was chosen because it contains a wide range of feature sizes and is therefore representative for a wide range of models.
+Nearly every model induces the full range of $[0.5w^*,1.8w^*]$ using the centered approach by \citeauthor{Jin2017JMS},
 because nearly all models have feature sizes which span any range $[iw^*,(i+1)w^*]$ for $i\in\mathcal{N}$.
-See Fig. 17 in the paper of Jin et al for an example shape.
+The shape of Fig.~17 from the paper of \citeauthor{Jin2017JMS} itself already shows this.
 Only shapes without central regions (a circle) or shapes with central regions with an exact multiple of $w^*$ everywhere (a rectangle) don't require any variation in bead width, but that holds for any of the beading schemes.
 
-\Cref{no_corners} (of this document) shows an example of a shape without sharp corners, and which also requires a large bead width variation when using the constant bead count approach by Ding et al.
+\Cref{no_corners} (of this document) shows an example of a shape without sharp corners, and which also requires a large bead width variation when using the constant bead count approach by \citeauthor{Ding2016a}.
 }
 \begin{figure} \centering
 \setlength{\figwidth}{.45\mycolumnwidth}
 \begin{subfigure}[b]{\figwidth} \centering
 \includegraphics[rotate=-90,width=\linewidth]{response_rects_Center_accuracy.png}
-\caption{Problematic for center, i.e. Jin et al 2017 JMS, exhibiting $4.5w^*$ and $5.8w^*$}
+\caption{Problematic for center, i.e. \citeauthor{Jin2017JMS}, exhibiting $4.5w^*$ and $5.8w^*$}
 \end{subfigure}
 \begin{subfigure}[b]{\figwidth} \centering
 \includegraphics[width=\linewidth]{response_no_corners}
-\caption{Problematic for constant, i.e. Ding et al}
+\caption{Problematic for constant, i.e. \citeauthor{Ding2016a}}
 \end{subfigure}
 \caption{Example shapes without sharp corners.}
 \label{no_corners}
@@ -912,7 +912,7 @@ While the proposed approach can use adaptive bead width to minimize underfill an
 }
 \Ans{
 Indeed the discontinuities are both relevant to print time and introduce defects.
-We now address these facts in text and show statistics on the number of discontinuities in Fig. 18c.
+We now address these facts in text and show statistics on the number of discontinuities in Fig.~18c (\cref{printtime} here).
 The evenly and inward distributed schemes cause approximately \SI{20}{\percent} more discontinuities compared to the uniform method, but the print time is not significantly increased.
 
 We have not performed a physical tests which informs on the influence of discontinuities or of overfill on the mechanical performance of any 3D printer.
@@ -949,9 +949,9 @@ An accurate model of manufacturability, \revise{}{which relates }print speed, \r
 Why the authors state the inward distributed beading scheme as new? Jin et al (2017) has proposed the strategy to add a toolpath with varying width along the center edges of the skeleton, and with unchanging width outside.
 }\label{difference_to_jin}
 \Ans{
-The difference between the inward distributed beading scheme and the method by Jin et al 2017 JMS is already shown in Figs. 1c and 1b respectively. 
-It is also shown in Figs. 17c and 17e (old Figs. 16c and 16e).
-In order to clearly address the difference early on we mention the difference in the description of Jin in the introduction.
+The difference between the inward distributed beading scheme and the method by \citeauthor{Jin2017JMS} is already shown in Figs.~1c and 1b respectively. 
+It is also shown in Figs.~17c and 17e (old Figs.~16c and 16e, \cref{TEST_Center_accuracy,TEST_InwardDistributed_accuracy} here).
+In order to clearly address the difference early on we mention the difference in the description of \citeauthor{Jin2017JMS} in the introduction.
 }
 \commits{b7c4d299a76e9fab6c233d572f3248c1350a2e8c}
 \paper{1. Introduction}{
@@ -966,14 +966,14 @@ Therefore, a narrower range of widths is desirable.
 
 
 \Que{
-In Fig. 1, how to justify the proposed approach as different geometries are used? I believe if the authors use the same geometries as in Figs. 1a and 1b, there would be also underfill areas using the proposed approach. 
+In Fig.~1, how to justify the proposed approach as different geometries are used? I believe if the authors use the same geometries as in Figs.~1a and 1b, there would be also underfill areas using the proposed approach. 
 }\label{fig1geometry}
 \Ans{
 There are two ways in which we can interpret this question, leading to two responses.
-The question can be interpreted as saying that Fig. 1a has a different geometry than Figs. 1b and/or 1c.
-There is now a black outline to show that the shapes in Figs. 1a, b and c are actually the same geometry, and the output is less confusing because we now use the same minimum feature size for b and c.
+The question can be interpreted as saying that Fig.~1a has a different geometry than Figs.~1b and/or 1c.
+There is now a black outline to show that the shapes in Figs.~1a, b and c are actually the same geometry, and the output is less confusing because we now use the same minimum feature size for b and c.
 
-The question can also be interpreted as saying that one might use a different shape than the geometry in Fig. 1.
+The question can also be interpreted as saying that one might use a different shape than the geometry in Fig.~1.
 We decided on this wedge shape because it shows how the techniques deal with a wide range of feature sizes;
 the wedge shape can be read as a graph where we can read out the resulting beading for any local feature size.
 }
@@ -985,7 +985,7 @@ the wedge shape can be read as a graph where we can read out the resulting beadi
 
 
 \Que{
-Please double check the following sentences. ”Third, the extruded path should ...”(at the second paragraph of Section 2) ”This the downward phase...” (at the last paragraph of Section 3.5) 
+Please double check the following sentences. ”Third, the extruded path should ...”(at the second paragraph of Section~2) ”This the downward phase...” (at the last paragraph of Section~3.5) 
 }
 \Ans{
 Okay. Thanks.
@@ -1004,14 +1004,14 @@ Third, the extruded path should cover \revise{a }{}the region of the contour wit
 
 
 \Que{
-In Fig. 4, the bead count should marked in another way. The ultra thick solid line conflicts with that for ”outline”. 
+In Fig.~4, the bead count should marked in another way. The ultra thick solid line conflicts with that for ”outline”. 
 }
 \Ans{
 Note that the bead count is the number, not the arrow from the number.
 The arrow is now a double thin line.
 }
 \commits{07df258c1fa618808ba9493384550021a03c83e1}
-\paper{Fig. 4}
+\paper{Fig.~4}
 {
 [See \cref{legend} here.]
 }
@@ -1025,12 +1025,12 @@ The arrow is now a double thin line.
 
 
 \Que{
-What are the differences between the distributed and the inward scheme in Fig. 16d and 16e? Are they the same? 
+What are the differences between the distributed and the inward scheme in Fig.~16d and 16e? Are they the same? 
 }
 \Ans{
-We have adjusted the range of the inward distributed scheme to $N=2$ in order to generate a bigger difference between these images (Now Fig. 17d and 17e).
+We have adjusted the range of the inward distributed scheme to $N=2$ in order to generate a bigger difference between these images (Now Fig.~17d and 17e, here \cref{TEST_Distributed_accuracy,TEST_InwardDistributed_accuracy}).
 The difference between inward and evenly distributed is now deemed to be so clear that the statistics graphs on the widths of the outer paths can be omitted;
-Fig. 17c of the first submission is omitted from the revised manuscript.
+Fig.~17c of the first submission is omitted from the revised manuscript.
 }
 \commits{735762b1e7daf31ae4465bf288ef867ded7da095 93352058a46fb391e323df16f45466adb8cad508
 87b1b779b759a9ad115f3ea61243568bfa2e0cb6 % lil change in Fig 20 caption
@@ -1065,11 +1065,11 @@ Colors represent bead widths.
 }
 \label{distributed_comparison}
 \end{figure}
-\paper{Caption of Fig. 17}
+\paper{Caption of now Fig.~17}
 {
 \revise{}{In order to distinguish clearly from the Distributed scheme the Inward is limited to $N=2$.}
 }
-\paper{Caption of Fig. 19}
+\paper{Caption of now Fig.~19}
 {
 Visualization of the widths for the output toolpaths of the inward distributed beading scheme \revise{}{($N=3$) }applied to various example application objects.
 }
@@ -1089,11 +1089,11 @@ The outer beads of the inward distributed scheme deviate less from the preferred
 
 
 \Que{
-In Fig. 17b, where is the curve for the ”uniform” case?
+In Fig.~17b, where is the curve for the ”uniform” case?
 }
 \Ans{
 We've added it back in.
-The graph is now displayed in Fig. 18d.
+The graph is now displayed in Fig.~18d (\cref{widthHistogram} here).
 Note that the width of the uniform case is \SI{0.4}{\milli\meter} \emph{everywhere}, so the curve is not really informative.
 }
 \commits{e5f3649455c73c8146e8d07cce13bc1e89d84cbb}
@@ -1134,7 +1134,7 @@ Thank you.
 
 
 \Que{
-There are occasional omissions, perhaps unintentional, such as the definition of a skeleton - see section 3.1, second paragraph. 
+There are occasional omissions, perhaps unintentional, such as the definition of a skeleton - see section~3.1, second paragraph. 
 }
 \Ans{
 Early in the overview section we don't have a mathematical definition of the term `skeleton' yet.
@@ -1157,17 +1157,17 @@ Our skeleton is} based on the medial axis transform (MAT), a strategy that has b
 
 \stepcounter{question}
 \subQue{
-The authors seem to use linear approximations of the medial axis - see Fig. 2b, which is understandable given the fact that they compute the MA with the Boost library. If this is so, can the authors comment on the implications of this approximation?
+The authors seem to use linear approximations of the medial axis - see Fig.~2b, which is understandable given the fact that they compute the MA with the Boost library. If this is so, can the authors comment on the implications of this approximation?
 }
 \Ans{
 We chose for linear approximations because they simplify the algorithms,
 whereas we chose for Boost because it seemed more stable than alternative libraries.
 
-The discretization is handled in section 3.2. Skeletal trapezoidation, second paragraph.
+The discretization is handled in section~3.2~Skeletal trapezoidation, second paragraph.
 The discretization simplifies the algorithm, potentially at a slight computational cost.
 Because we used $d^\text{discretization} = \SI{0.2}{\milli\meter}$, we can expect the discretized skeleton to deviate from the real skeleton by approximately \SI{0.013}{\milli\meter}, which is within the range of accuracy of the hardware system used.
 The computation of this value is complicated by the fact that the discretization always introduces a sample point at the apex and at the boundaries of significant portions of the parabola.
-(See section 3.3 Significance measure, last paragraph.)
+(See section~3.3~Significance measure, last paragraph.)
 See \cref{response_parabola_discretization} here.
 }
 \commits{
@@ -1193,7 +1193,7 @@ Red is significant skeleton, violet is non-significant skeleton.
 
 
 \subQue{
-For example, what happens if the obtuse outside angle in Fig. 2 goes to 0? 
+For example, what happens if the obtuse outside angle in Fig.~2 goes to 0? 
 }
 \Ans{
 That figure is reproduced here in \cref{overview_outline}.
@@ -1252,7 +1252,7 @@ Moreover, the proposed technique seems to rely on rather accurate control of the
 }\label{s5_prints}
 \Ans{
 The proposed technique relies \emph{less} on the accuracy of the control than existing techniques, seeing as the extrusion widths of the inward and evely distributed schemes exhibit less variation than the state-of-the-art centered technique.
-See Fig. 18d (old Fig. 17b).
+See Fig.~18d (old Fig.~17b, \cref{widthHistogram} here).
 
 The photos of our print results already showed that adaptive width control is possible up to an admittedly insufficient extent.
 We have developed a new method for actualizing adaptive width control which can readily be applied to unmodified FDM systems such as the Ultimaker S5: \emph{back pressure compensation}.
@@ -1510,7 +1510,7 @@ At the same time, the scheme can potentially result in trajectories with many in
 }
 \Ans{
 We have added statistics on fabrication time and discussed our findings.
-See our response to 1.3.
+See our response to question~\ref{printtime_question}.
 }
 
 
@@ -1521,7 +1521,7 @@ See our response to 1.3.
 Finally, the examples provided depict the results obtained by the authors by "emulating" other techniques, but not with the actual results produced by the other techniques. While the reason behind this choice is easy to guess, it weakens the effectiveness of the claims. Adding careful discussions/extensions to support these questions would make the paper stronger.
 }
 \Ans{
-We've added a paragraph to section 5.3. Limitations, which discusses these emulation limitations.
+We've added a paragraph to section~5.4~Limitations, which discusses these emulation limitations.
 }
 \commits{
 639dccad8e97fa1f0bdbb28e16b64f587572792d % paragraph in limitations
@@ -1616,13 +1616,13 @@ Related work acknowledges the previous work sufficiently. However, the differenc
 We have tried to address this in response to several other reviewers' comments.
 See our response to question~\ref{difference_to_jin} and question~\ref{contributions}.
 We now clearly claim that our method produces a lower range of bead widths than the state-of-the-art.
-See also our response to question~\ref{widening_question} for clarification in the difference between Figs. 1b and 1c.
+See also our response to question~\ref{widening_question} for clarification in the difference between Figs.~1b and 1c.
 }
 \commits{
 004894210fbc961f82b792fc702d1b67a1a8e8e8 lil lang improvement (reviewer 3.3)
-9ac2c005c2eb1c0696e2582963353b038fa71072 use limited distributed strategy in Fig. 1 (reviewer 1.6, 3.3)
+9ac2c005c2eb1c0696e2582963353b038fa71072 use limited distributed strategy in Fig.~1 (reviewer 1.6, 3.3)
 }
-\paper{Fig. 1}{
+\paper{Fig.~1}{
 \subref{intro_wedge_distributed} Our approach minimizes over- and underfill with \revise{beads close to the nozzle size}{less extreme widths}.
 }
 
@@ -1635,7 +1635,7 @@ See also our response to question~\ref{widening_question} for clarification in t
 Isn’t it possible to put bounds on the width in the existing methods, such as the approach described in [9]? More discussion on that would be helpful. 
 }
 \Ans{
-The bead width in Jin et al. is limited to $0.5 w^*$ to $1.8 w^*$ , which means the variation is a factor of $3.6$;
+The bead width in \citeauthor{Jin2017JMS} is limited to $0.5 w^*$ to $1.8 w^*$ , which means the variation is a factor of $3.6$;
 this was already described in the related work section, but the factor was wrongly said to be $2$ instead of $3.6$.
 We emphasized that our method results in a bead width variation of $2$, rather than $3.6$ in the related work section and in the discussion section.
 This factor comes from the transition from a single bead to two beads.
@@ -1670,10 +1670,10 @@ We therefore conclude that the distributed schemes \revise{result in bead widths
 
 
 \Que{
-Fig. 4 and corresponding explanation in Section 3.2 are confusing. Why such decomposition is needed is not clear to me. 
+Fig.~4 and corresponding explanation in Section~3.2 are confusing. Why such decomposition is needed is not clear to me. 
 }
 \Ans{
-Fig. 4 shows a legend of terms and color coding scheme used throughout the paper;
+Fig.~4 shows a legend of terms and color coding scheme used throughout the paper;
 it doesn't show a decomposition.
 It is unclear to us what this review comment is asking for.
 }
@@ -1685,10 +1685,10 @@ It is unclear to us what this review comment is asking for.
 
 
 \Que{
-In Fig. 3, why some of the edges in (c) (the ones in the center area) disappear in (d)?
+In Fig.~3, why some of the edges in (c) (the ones in the center area) disappear in (d)?
 }
 \Ans{
-Fixed. Fig. 3c and 3d now have the same discretization.
+Fixed. Fig.~3c and 3d now have the same discretization.
 }
 \commits{43cadb352a6a276bbaaab53f9b5b217bec4b3a2e}
 
@@ -1702,7 +1702,7 @@ It is unclear how some of the parameters are adjusted, such as $\alpha_\text{max
 \Ans{
 We feel that some of the confusion was due to the fact that the chosen values for these variables is stated in a location in the paper far away from where they were introduced.
 We now mention their value where they are introduced and explain their value further where needed.
-Making these framework parameters independent of the beading schemes simplifies the definition of a beading scheme and greatly simplifies section 4. Beading schemes.
+Making these framework parameters independent of the beading schemes simplifies the definition of a beading scheme and greatly simplifies section~4~Beading schemes.
 }
 \commits{
 64029a6ef57cf8044c521075ebc70cddfb52156b % d^discretization
@@ -1806,7 +1806,7 @@ The beading function $B(n,r)$ consists of $\left( W(n,r), L(n,r) \right)$,
 which provides sequences of $n$ bead widths and of $n$ distances from the outline to fill up a radial distance $r$.
 \end{definition}
 }
-% the condition that transitions don't overlap is already caught by the way in which we defined $t_0$ in section 3.4 Smooth transitions
+% the condition that transitions don't overlap is already caught by the way in which we defined $t_0$ in section~3.4~Smooth transitions
 
 \revisepar{}{
 For the smoothness and continuity of toolpaths we require that $W_n$ is monotonic and continuous at each bead index $n$ for constant bead count $c$: $0 \leq \frac{\partial W(c, r)_n}{\partial r} \leq 1$.
@@ -1921,7 +1921,7 @@ Is this approach generalizable to sparse infill? It is very common in FDM to use
 \Ans{
 The goal of sparse infill is to generate intentional spacing between lines; this is not reconcilable with the goal of preventing underfill.
 However, we did show that the contour-parallel toolpaths can be combined with sparse infill.
-See our response to 3.2.
+See our response to question~\ref{outline_question}.
 }
 
 
@@ -1947,7 +1947,7 @@ See our response to question~\ref{s5_prints}.
 
 
 \Que{
-I think Fig. 13 should be replaced with a table. 
+I think Fig.~13 should be replaced with a table. 
 }
 \Ans{
 Indeed. Done.
@@ -1959,7 +1959,7 @@ Indeed. Done.
 
 
 \Que{
-In text, some references are missing, such as first sentence of “Outer bead” paragraph in Section 4 (Moesen et al [?]), first sentence of “Constant bead count” (Ding et al [?]) paragraph in Section 4 etc. 
+In text, some references are missing, such as first sentence of “Outer bead” paragraph in Section~4 (Moesen et al [?]), first sentence of “Constant bead count” (Ding et al [?]) paragraph in Section~4 etc. 
 }
 \Ans{
 We cannot reproduce this typesetting bug. Please inform the proofing department to take extra care of these references when preparing this manuscript for publication.
@@ -2033,7 +2033,7 @@ However, this inflated bead width variation is expected to have an insignificant
 
 \section{Other changes}
 We have fixed some issues with positions and colors being swapped in the statistical analysis subfigures.
-Fig. 17 colors are adjusted.
+Fig.~18 colors are adjusted.
 \commits{43cadb352a6a276bbaaab53f9b5b217bec4b3a2e}
 
 Improvements to abstract.
@@ -2048,7 +2048,7 @@ We validate the effectiveness of our framework and this novel scheme on a data s
 }
 
 
-Remove Fig. 17e.
+Remove Fig.~17e.
 The effect that transitioning reduces sharp angles in the toolpath is apparent and doesn't require empirical proof.
 
 
@@ -2095,7 +2095,7 @@ Removed confusing red parts from beading figure:
 1196bad1c2bf4fb41e7d28985938cfe678384e5a
 }
 
-We fixed a mistake when performing the statistical analysis. In the first submitted version we used a minimum bead width half of what it should have been for the centered scheme. The extrusion width statistics figure (now Fig. 18d, old Fig. 17b) now shows little beads below \SI{0.2}{\milli\meter} instead of below \SI{0.1}{\milli\meter}.
+We fixed a mistake when performing the statistical analysis. In the first submitted version we used a minimum bead width half of what it should have been for the centered scheme. The extrusion width statistics figure (now Fig.~18d, old Fig.~17b, \cref{widthHistogram} here) now shows little beads below \SI{0.2}{\milli\meter} instead of below \SI{0.1}{\milli\meter}.
 
 Explain why and how statistics are gathered over the whole data set:
 \commits{17135b010f5ac51fda77357136a19f67a80dbc33}
