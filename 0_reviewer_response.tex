@@ -10,6 +10,42 @@
 \bibliographystyle{elsarticle-num-names}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+\newif\ifIncludeTextChanges
+
+
+\IncludeTextChangesfalse
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 % ACM template
 %
 %\documentclass[acmtog,anonymous,timestamp,review]{acmart}
@@ -184,8 +220,9 @@
 \par
 changes to \emph{#1} --- ``#2'' 
 }
-%\renewcommand\paper[2]{\par changes to \emph{#1} --- ``\dots'' }
-
+\ifIncludeTextChanges\else
+\renewcommand\paper[2]{\par changes to \emph{#1} --- ``\dots'' }
+\fi
 
 
 
@@ -231,13 +268,13 @@ changes to \emph{#1} --- ``#2''
 \counterwithin{subquestion}{question}
 
 
-\newcommand\Ans[2][]{%
-	\begin{tcolorbox}[colback=white, arc=0mm]
-    \leavevmode\par\noindent
-   {%\leftskip37pt
-    %{\it Response:} 
-    \textbf{#1}#2\medskip\par}
+\newlength\oldparindent
+
+\newcommand\Ans[1]{%
+	\begin{tcolorbox}[colback=white, arc=0mm,before upper={\parindent15pt\noindent}]
+   #1
     \end{tcolorbox}
+    \medskip\par
     }
 
 
