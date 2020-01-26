@@ -691,7 +691,7 @@ While the idealized print time is predominantly determined by the total toolpath
 Because of acceleration constraints imposed by the hardware the maximum movement speed is not reached near sharp corners.
 We therefore also report on the angles of the bends in the toolpaths in \cref{smoothness}.
 Furthermore, the print time is negatively affected by discontinuities in the extrusion process.
-Between extrusions the printer needs to stop extrusion, travel to the next extrusion path and restart the extrusion process, which all take time.
+Between extrusions the printer needs to stop extrusion, travel to the next extrusion path and restart the extrusion process, which may introduce defects and incurs extra print time.
 For closed polygonal toolpaths we can start anywhere within the path, so we can optimize the starting location so as to minimize the travel time.
 We therefore report both on the open and closed path count in \cref{pathcounts}.
 }
@@ -861,22 +861,36 @@ Note the use of a logarithmic scale \revise{}{in the bottom graphs }on the Y-axe
 While the proposed approach can use adaptive bead width to minimize underfill and overfill areas, the generated toolpaths are disconnected compared to the traditional approaches. From my experience, a small overfill area does not have to lead to serious defects. But the disconnected filaments definitely have worse mechanical performances compared to the continuous ones. 
 }
 \Ans{
-That is a difficult question.
-It might very well be true that discontinuous extrusion lines form a bigger problem than some over- or underfill areas - at least certainly for flexible filaments on a Bowden printer.
-However, it is quite hard to find a mathematical approach to balance discontinuity with the size of over-/underfill areas.
+Indeed the discontinuities are both relevant to print time and introduce defects.
+We now address these facts in text and show statistics on the number of discontinuities in Fig. 18c.
+The evenly and inward distributed schemes cause approximately \SI{20}{\percent} more discontinuities compared to the uniform method, but the print time is not significantly increased.
 
-%It should be noted that even small underfill areas can be unfillable using an overextrusion approach.
-%For example the microgaps at 3-way intersections.
-%The viscocity of molten filament is too high to reach into those small crevices.
-}
-\todo{
-count number of extrusion toolpaths?
+We have not performed a physical tests which informs on the influence of discontinuities or of overfill on the mechanical performance of any 3D printer.
+Disconnected filaments will have worse mechanical performance compared to continuous ones, but we don't know how they compare against overfilling ones.
+Altering the beading strategy locally depending on the size of the overfill area is in interesting idea for future research.
 
-That might be true, but the microgaps near 3-way intersections are not fillable using overfilling; the plastic cannot creap into those cravices.
+Without such a method we can only compare the total impact of our method compared to existing methods.
+While the evenly and inward distributed schemes cost \SI{20}{\percent} more discontinuities than the uniform method, the uniform method costs approx. \SI{400}{\percent} more over- and underfill.
+The cost of the discontinuities is negligible compared to the benefit of reduced over- and underfill.
+
+Compared against the state-of-the-art centered method, our schemes only reduce the number of discontinuities.
 }
 \commits{
+272fbca357c379ebe291735e3084cf86db4bdee1 % more emphasis on defects introduced by discontinuities
 f2132c1c0cbce6daa29f64890be5f9e20c79c630 % future work notice
 }
+\paper{5.2.3 Print time}
+{
+\revise{}{
+Between extrusions the printer needs to stop extrusion, travel to the next extrusion path and restart the extrusion process, which may introduce defects and incurs extra print time.
+}
+}
+\paper{6.1 Future work}
+{
+An accurate model of manufacturability, \revise{}{which relates }print speed, \revise{}{ layer thickness }and dimensional accuracy would be valuable to fine-tune the beading scheme.
+\revise{}{The work could also be extended in a way which reduces the number of starts and stops of extrusion.}
+}
+
 
 
 
