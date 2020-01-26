@@ -183,7 +183,7 @@ While the idealized print time is predominantly determined by the total toolpath
 Because of acceleration constraints imposed by the hardware the maximum movement speed is not reached near sharp corners.
 We therefore also report on the angles of the bends in the toolpaths in \cref{smoothness}.
 Furthermore, the print time is negatively affected by discontinuities in the extrusion process.
-Between extrusions the printer needs to stop extrusion, travel to the next extrusion path and restart the extrusion process, which all take time.
+Between extrusions the printer needs to stop extrusion, travel to the next extrusion path and restart the extrusion process, which may introduce defects and incurs extra print time.
 For closed polygonal toolpaths we can start anywhere within the path, so we can optimize the starting location so as to minimize the travel time.
 We therefore report both on the open and closed path count in \cref{pathcounts}.
 }
