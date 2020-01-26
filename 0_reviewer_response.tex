@@ -435,7 +435,7 @@ See also our response to question~\ref{difference_to_jin}.
 e806d40e5e6d2bbe450c6792b802f0fcce4df645 % lil typo
 86c5aa8fab91e326e658f79a0746462fb99ea2b0 % changes to conclusion
 }
-\paper{Intro}
+\paper{1. Introduction}
 {
 In this paper we propose a framework for planning toolpaths with control over the adaptive width for minimizing over- and underfill
 \revise{}{and introduce a beading scheme which reduces the bead width variation compared to the state of the art.} 
@@ -459,7 +459,7 @@ Our contributions are as follows:
 }
 \end{itemize}
 }
-\paper{Conclusion}{
+\paper{6. Conclusion and future work}{
 In this paper we have introduced a framework for computing contour-parallel toolpaths employing adaptive bead width in order to minimize \revise{underfilland}{underfill and} overfill areas\revise{.}{,
 we introduced beading schemes which improve on the state of the art
 and we have introduced a backpressure compensation method for accurate fabrication of adaptive width.
@@ -904,7 +904,7 @@ It is also shown in Figs. 17c and 17e (old Figs. 16c and 16e).
 In order to clearly address the difference early on we mention the difference in the description of Jin in the introduction.
 }
 \commits{b7c4d299a76e9fab6c233d572f3248c1350a2e8c}
-\paper{Intro}{
+\paper{1. Introduction}{
 \revise{
 Therefore, a narrower range of widths is desirable.
 }
@@ -928,7 +928,7 @@ We decided on this wedge shape because it shows how the techniques deal with a w
 the wedge shape can be read as a graph where we can read out the resulting beading for any local feature size.
 }
 \commits{45853e8b30d93f60e9465cbb649e347f9cfc23b1 53224c04ceff6c1b18a9eea6de8e7e33957b7797}
-\paper{Intro}{
+\paper{1. Introduction}{
 [See caption of \cref{intro_wedge} here.]
 }
 
@@ -941,10 +941,10 @@ Please double check the following sentences. ”Third, the extruded path should 
 Okay. Thanks.
 }
 \commits{eb2a5207c83dfe069d3ab3fc37bf2149b8a51964}
-\paper{Related work}{
+\paper{2. Related work}{
 Third, the extruded path should cover \revise{a }{}the region of the contour without gaps.
 }
-\paper{Related work}{
+\paper{3.5 Beading, Beading propagation}{
 \revise{This the}{The} downward phase makes sure that all nodes have a beading associated with it, so that the slicing algorithm can efficiently slice the edges leading up to a marked or unmarked node.  
 }
 
@@ -987,7 +987,7 @@ Fig. 17c of the first submission is omitted from the revised manuscript.
 ca322806c80ddc82c6f0c01d9ea5096b37ffcf8e % use smae rmin and N=2 in statistics
 b4d03f0d8ea92ac9800794e154dc5b53e4448cab % don't compute graph for widths of outer bead
 }
-\paper{Beading schemes}
+\paper{4. Beading schemes}
 {
 [See \cref{distributed_comparison} here.]
 }
@@ -1096,7 +1096,7 @@ We have added a clarification in the overview section for the readers who don't 
 5356492b5a9a690228ffdb6a6a26cf10d099a7d4 % make clear that a skeleton is an undefined term (reviewer 2.1)
 74227189eba03d13e18249f3235680691c6ebea9 % clarify skeleton more
 }
-\paper{3.1 Method overview}{
+\paper{3.1 Overview}{
 Our method starts with computing \revise{the skeleton of the input polygon}{a graph which represents the topology of the input polygon: its \emph{skeleton}. 
 Our skeleton is} based on the medial axis transform (MAT), a strategy that has been commonly used for generating contour-parallel toolpaths~\cite{eiamsa2003toward}
 }
@@ -1172,7 +1172,7 @@ Indeed the statement was meant generically, but we agree it lacked substance.
 The wording is now changed to better describe the general role of the medial axis in research.
 }
 \commits{d3f19c04e3bb0d80c0b162531dbf576fc705d77c}
-\paper{Medial axis transform}{
+\paper{3.2 Union of cones, Medial axis transform}{
 The medial axis is a \revise{compact and complete representation of}{representation commonly used to analyse} a shape.
 }
 
@@ -1222,7 +1222,7 @@ d375878a8a6d01c53436aeb9c473dbedd8f3edcf % prints discussion
 34e923fbf4c2ad45bf2dd0a03ef70d4a714b4b0b % lil comma (x2)
 1b7bb61648b97b8084ca8817aa457bde2c91e1b3 % lil: explain unexplained math symbol 
 }
-\paper{5.2 Printing results}
+\paper{5.1.2 Printing results}
 {
 \revisepar{
 Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle and a filament extrusion drive directly mounted on the print head.
@@ -1476,7 +1476,7 @@ We've added a paragraph to section 5.3. Limitations, which discusses these emula
 \commits{
 639dccad8e97fa1f0bdbb28e16b64f587572792d % paragraph in limitations
 }
-\paper{5.3 Limitations}
+\paper{5.4 Limitations}
 {
 \revise{}{
 Finally it should be noted that although our framework can accurately emulate the constant bead count approach by \citeauthor{Ding2016a}, its emulation of the centered approach by \citeauthor{Jin2017JMS} is imperfect.
@@ -1518,7 +1518,7 @@ The title has changed.
 \paper{Title}{
 A framework for adaptive width control of dense contour-parallel toolpaths in \revise{additive manufacturing}{fused deposition modeling}
 }
-\paper{Introduction, bulletlist}{
+\paper{1. Introduction, bulletlist}{
 A specific beading scheme \revise{for FDM printing}{} which [\dots]
 }
 
@@ -1548,7 +1548,7 @@ a88ccd3309aef1233ed00ce9f22b244fe64668f4 % introduce shell meta-scheme and repla
 {High stiffness parts are produced by filling the 2D polygons of consecutive layers (partly) with contour-parallel extrusion toolpaths.}
 }
 
-\paper{Intro}{
+\paper{1. Introduction}{
 \revise{
 Contour-parallel extrusion therefore leads to a less bumpy outline shape than direction-parallel extrusion does.
 }{
@@ -1597,14 +1597,14 @@ This factor comes from the transition from a single bead to two beads.
 2f230ea9f26f9870027e80db89eae8774f19d339 fix bounds of width variation in Jin (reviewer 3.4)
 acf8bbed0e530a3038d6fea064c33e7df6f0f933 % deviation > variation
 }
-\paper{Intro}{
+\paper{1. Introduction}{
 The current \revise{state-of-the-art}{state of the art} for FDM printing developed by \citeauthor{Jin2017JMS} employs a strategy which alters the widths of the centermost beads \revise{at most by a factor of $2$}{within a range of widths with a factor of $3.6$}~\cite{Jin2017JMS},
 }
 \paper{3.4. Central height adjustment, Transition anchors, filtering paragraph}
 {
 \revise{}{This means that for some small regions we generate toolpaths with bead widths outside the typical range.}
 }
-\paper{5.2 Comparison of beading schemes, paragraph 3, 4}{
+\paper{5.3 Comparison of beading schemes, paragraph 3, 4}{
 In \cref{TEST_Center_accuracy} we can see that
 the centered beading scheme \revise{effectively }{}deals with both overfill and underfill and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.5 w^*$ and $1.8w^*$, i.e. the variation is within a factor of $3.6$.}
 
@@ -1841,7 +1841,7 @@ Additionally in order to emulate their definition of ``branches'' we mark all ST
 Conversely, they place an extra bead when the radius \revise{between the center and either of the innermost beads }{}exceeds $r_\text{max} = 1.25 w^*$~\cite{Jin2017JMS}\revise{}{, which gives us $w_\text{min}=0.5 w^*$}.
 We emulate the rounded polygonal path rerouting they define by supplying a transition length \revise{}{$t(n) = \frac12 w^*$} which results in a discretized version of their rounded polygon segment.
 }
-\paper{5.3 Limitations, second paragraph}
+\paper{5.4 Limitations, second paragraph}
 {
 \revisepar{}{
 The default limit bisector angle $\alpha_\text{max} = \SI{135}{\degree}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths;
@@ -1938,7 +1938,7 @@ dd293c060baae147ad1a217cf6ab68d8c4cb00c8 lil reformulation in conclusion (review
 \revise{}{Compared to the naive approach of constant width toolpaths our beading scheme is expected to improve the stiffness, dimensional accuracy and visual qualities of the manufactured model.}
 \revise{}{It is expected that as distributed beading schemes are implemented in commercial software packages and bead width variation control become commonplace, the practice of design for additive manufacturing can disregards some of the nozzle size considerations.}
 }
-\paper{5.4.1 Back pressure compensation}
+\paper{5.1.1 Back pressure compensation}
 {
 \revise{}{Furthermore, the shape and filling of the previous layer might influence the amount of back pressure.}
 }
@@ -1956,7 +1956,7 @@ The limitations are now handled in a new section, together with an analysis of t
 5b8c5971d606089754ba118560e51ec6d7dfda0b % extrusion width range considerations
 ecf99f47dadf9973f527c1d471d662d87f6a5f51 move Theoretical considerations to 5.3 and discuss limitations (reviewer 3.13)
 }
-\paper{5.3 Limitations}
+\paper{5.4 Limitations}
 {
 \revise{}{
 Another limitation of our method is that in a location $v$ with locally maximal $R(v) \approx (i + \nicefrac12) w^*$ the odd bead count will result in a single polyline extrusion segment consisting of only a single point.
@@ -2009,7 +2009,7 @@ Added patent notice and url to open source implementation.
 \commits{
 ff3c09037f05eba5028cb51bf8cd6c0bb77a0b0a
 }
-\paper{Intro}{
+\paper{1. Introduction}{
 \revise{}{The presented framework is patented by Ultimaker and open source available at \url{github.com/Ultimaker/libArachne}.}
 }
 
