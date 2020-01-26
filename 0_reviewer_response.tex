@@ -420,7 +420,7 @@ The relationship between under-/overfill and bead widths can be split into sever
 \item depending on the topology
 \end{enumerate*}
 .
-In the first case we consider a part with a constant feature size, in the second we consider the rate of change of feature size and in the thirs we consider the influence of 3-way intersections.
+In the first case we consider a part with a constant feature size, in the second we consider the rate of change of feature size and in the third we consider the influence of 3-way intersections.
 
 1. When considering a part with constant feature diameter $d$ we note that the beading only depends on the feature diameter: $B(n, r) = B(q(2r), r)$.
 From the beading function we can easily derive the under-/overfill by summing over the bead widths $W$.
@@ -536,7 +536,7 @@ From Figs.~1b and 1c, we can see that the approach in Jin et al (2017) can fill 
 \Ans{
 Note that this is not a limitation of the approach, but a consequence of the default parameters which had been chosen.
 
-We have now introduced a new parameter in the widening meta-scheme which can be used specificly to tune the minimal diameter starting from which we generate a toolpath.
+We have now introduced a new parameter in the widening meta-scheme which can be used specifically to tune the minimal diameter starting from which we generate a toolpath.
 This minimum feature size is now used in the new computational test results and in Fig.~1.
 
 We have also changed the example shape of Fig.~17 (old Fig.~16, reproduced here in \cref{visualized_accuracy}) to include a pointy wedge shape similar to Fig.~1.
@@ -570,7 +570,7 @@ ca322806c80ddc82c6f0c01d9ea5096b37ffcf8e % use smae rmin and N=2 in statistics
 Illustration of different toolpath\revise{}{s} for a \revise{wedge }{}shape \revise{}{showcasing a range of shape radii }\revise{}{(black)}.
 \revise{}{These results can be read as a graph with feature size on the horizontal axis and its corresponding beading along the vertical axis.}
 \subref{intro_wedge_uniform} Toolpath using uniform offsetting results in large overfill (orange) and underfill (azure).
-\subref{intro_wedge_centered} Toolpath with adaptive width~\cite{Jin2017JMS} where beads that are wider or narrower than the nozzle size are indicatd in red and blue, respectively.
+\subref{intro_wedge_centered} Toolpath with adaptive width~\cite{Jin2017JMS} where beads that are wider or narrower than the nozzle size are indicated in red and blue, respectively.
 \subref{intro_wedge_distributed} Our approach minimizes over- and underfill with \revise{beads close to the nozzle size}{less extreme widths}.
 }
 \label{intro_wedge}
@@ -777,7 +777,7 @@ We therefore conclude that the distributed schemes \revise{result in bead widths
 %This is desirable for the manufacturability of the beads and can therefore have a positive effect on the mechanical properties and surface quality of the 3D prints. 
 
 \revise{It is hard to visually identify the difference between the evenly and the inward distributed scheme in \cref{visualized_accuracy}, because that particular example shape does not have wide features.}
-{\Cref{distributed_comparison,TEST_Distributed_accuracy,TEST_InwardDistributed_accuracy} show that in the inward distributed scheme the outer toolpaths have the preferred width more often than in the evenly distributed scheme, which means that the outline acuracy of the inward distributed beading is less affected by inaccuracies in the adaptive width control system.}
+{\Cref{distributed_comparison,TEST_Distributed_accuracy,TEST_InwardDistributed_accuracy} show that in the inward distributed scheme the outer toolpaths have the preferred width more often than in the evenly distributed scheme, which means that the outline accuracy of the inward distributed beading is less affected by inaccuracies in the adaptive width control system.}
 %{\Cref{TEST_InwardDistributed_accuracy} shows that in the inward distributed scheme the outer beads are more often equal to the preferred width compared to the evenly distributed scheme in \cref{TEST_Distributed_accuracy}, but that effect is more pronounced for wider geometry such as in \cref{distributed_comparison}.}
 %While the difference between the evenly and inward distributed scheme in \cref{visualized_accuracy} results only in the outer bead being the preferred width in some locations, the effect of the inward distributed scheme is more pronounced in larger geometry, as can be seen in \cref{distributed_comparison}.}
 \revise{However, \cref{distributed_comparison} and  \cref{widthIndexedHistogram} confirm that the outer toolpaths have the preferred bead width more often.}{} % _
@@ -1256,7 +1256,7 @@ Moreover, the proposed technique seems to rely on rather accurate control of the
 }\label{s5_prints}
 \Ans{
 On the contrary,
-the proposed technique relies \emph{less} on the accuracy of the control than existing techniques, seeing as the extrusion widths of the inward and evely distributed schemes exhibit less variation than the state-of-the-art centered technique.
+the proposed technique relies \emph{less} on the accuracy of the control than existing techniques, seeing as the extrusion widths of the inward and evenly distributed schemes exhibit less variation than the state-of-the-art centered technique.
 See Fig.~18d (old Fig.~17b, \cref{widthHistogram} here).
 
 The old photos (old Fig. 18, here \cref{prints_old}) of our print results already showed that adaptive width control is possible up to an admittedly insufficient extent.
@@ -1575,7 +1575,7 @@ The title has changed.
 \paper{Title}{
 A framework for adaptive width control of dense contour-parallel toolpaths in \revise{additive manufacturing}{fused deposition modeling}
 }
-\paper{1. Introduction, bulletlist}{
+\paper{1. Introduction, bullet list}{
 A specific beading scheme \revise{for FDM printing}{} which [\dots]
 }
 
