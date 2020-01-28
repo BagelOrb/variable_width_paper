@@ -103,6 +103,10 @@ As depicted in \cref{3d_surface_overview_center}, our method first identifies ed
 The heights $\tilde{b}$ at these elements are then quantized to an integer number of beads $\bar{b}$.
 To ensure a smooth toolpath between regions with quantized integer heights that differ, we add new nodes in the skeleton with quantized heights and interpolate the heights $\hat{b}$ in between (\cref{sec_central_height_adjustment}).
 The union of cones corresponding to the smoothed skeleton is then sliced at regular intervals to obtain toolpaths with varying spacing, which translates into varying width (\cref{sec_toolpath_extraction}).
+\revise{}{%afs
+The video in the supplementary material provides an example animation of this approach.
+}
+
 
 % We describe how to construct the mesh of the UoC in \cref{sec_surface_construction} and
 % explain how to identify central regions in \cref{sec_center_classification}.
@@ -112,6 +116,7 @@ The union of cones corresponding to the smoothed skeleton is then sliced at regu
 
 This section explains how we generate toolpaths using our framework with uniform bead widths and evenly distributed locations between the center of the polygon and the outline.
 In \cref{sec_generalization} we describe how to apply the framework to different beading schemes and we show several such beading schemes.
+
 
 
 % The simple technique consists of consecutive inward offsets from the outline using a uniform bead width.
