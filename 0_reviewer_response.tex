@@ -44,7 +44,14 @@
 
 
 
-
+    \makeatletter
+    \def\ps@pprintTitle{%
+       \let\@oddhead\@empty
+       \let\@evenhead\@empty
+       \def\@oddfoot{\reset@font\hfil\thepage\hfil}
+       \let\@evenfoot\@oddfoot
+    }
+    \makeatother
 
 % ACM template
 %
