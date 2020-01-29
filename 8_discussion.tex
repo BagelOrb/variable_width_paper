@@ -17,12 +17,12 @@ Moreover the centrality marking is not robust against small perturbations in the
 In \cref{TEST_Center_accuracy} we can see that
 the centered beading scheme effectively deals with \revise{both }{}overfill \revise{and underfill }{}and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.25 w^*$ and $1.8w^*$.}
 \revise{}{However, it does produce some narrow underfill regions.}
-\revise{
+\revise{%gs
 According to \cref{over_underfill} the overfill and underfill for the centered, the evenly distributed and the inward distributed scheme are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the uniform technique.
-}{
+}{%sg
 Compared to the uniform technique the centered technique increases the (open) path count, but considerably reduces over- and underfill and decimates the number of toolpath angles below \SI{45}{\degree}.
-See \cref{statisticsfig}.
-}
+See \cref{statisticsfig}.%afs
+}%zgds
 
 However, according to \cref{widthHistogram} the centered scheme exhibits a wider range of bead widths than the distributed schemes:
 the standard deviation of the bead widths in the centered scheme is approximately \SI{39}{\micro\meter}, while that of the distributed schemes is approximately \SI{14}{\micro\meter}.%_
@@ -35,7 +35,7 @@ We therefore conclude that the distributed schemes \revise{result in bead widths
 {\Cref{distributed_comparison,TEST_Distributed_accuracy,TEST_InwardDistributed_accuracy} show that in the inward distributed scheme the outer toolpaths have the preferred width more often than in the evenly distributed scheme, which means that the outline accuracy of the inward distributed beading is less affected by inaccuracies in the adaptive width control system.}
 %{\Cref{TEST_InwardDistributed_accuracy} shows that in the inward distributed scheme the outer beads are more often equal to the preferred width compared to the evenly distributed scheme in \cref{TEST_Distributed_accuracy}, but that effect is more pronounced for wider geometry such as in \cref{distributed_comparison}.}
 %While the difference between the evenly and inward distributed scheme in \cref{visualized_accuracy} results only in the outer bead being the preferred width in some locations, the effect of the inward distributed scheme is more pronounced in larger geometry, as can be seen in \cref{distributed_comparison}.}
-\revise{However, \cref{distributed_comparison} and  \cref{widthIndexedHistogram} confirm that the outer toolpaths have the preferred bead width more often.}{} % _
+\revise{However, \cref{distributed_comparison} and  \cref{widthIndexedHistogram} confirm that the outer toolpaths have the preferred bead width more often.}{}% _
 Furthermore, \revise{from \cref{smoothness} }{}we find that compared to evenly distributed, the inward distributed scheme produces \revise{smoother toolpaths overall}{less corners with angles above \SI{130}{\degree} and less overfill, because the area of influence that bead count transitions have is limited in the inward distributed scheme}.
 Thus the inward distributed scheme prevents over- and underfill, generates smooth toolpaths with more homogeneous width and affects smaller more centered parts of the print than the other schemes\revise{}{, while incurring little to no extra print time}. 
 
