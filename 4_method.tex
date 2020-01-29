@@ -273,7 +273,7 @@ the use of the bead count as a height value is only a visualization aid.
 
 \paragraph{Implementation}
 The medial axis of a polygonal shape is a subset of the Voronoi Diagram generated from the line segments and vertices of the shape~\cite{lee1982medial}. 
-The edges of the Voronoi diagram that fall outside of the outline shape are irrelevant for our purpose and thus discarded.
+The edges of the Voronoi diagram that fall outside of the outline shape are irrelevant for our purpose and \revise{}{are }thus discarded.
 Note that besides the full medial axis, the Voronoi diagram also contains edges connecting to concave vertices in the outline shape (see \cref{shape_decomposition_vd}). 
 These extra edges are a subset of the edges connecting a node to its support, so we keep them in.
 From the Voronoi diagram we add nodes to discretize parabolic edges and edges formed by two concave outline vertices, and then connect all nodes to their supports, forming a skeletal trapezoidation. 
@@ -363,10 +363,10 @@ The significance of all edges can then accurately be evaluated using \cref{simpl
 %\subsubsection{Marking filtering}
 \paragraph{Marking filtering}
 After initializing the marking at all edges and nodes, we filter out high frequency changes in the marking in order to ensure that the generated toolpath is smooth. 
-The filtering is performed by additionally marking some unmarked elements, rather than the opposite since unmarking central regions reintroduce large over- and underfill areas.
+The filtering is performed by additionally marking some unmarked elements, rather than the opposite since unmarking central regions reintroduce\revise{}{s} large over- and underfill areas.
 From each marked node $v_0$ with an upward unmarked edge attached we walk along the upward edges;
 if the total length traversed until we reach another marked node $v_1$ is shorter than some filter distance $d_\text{max}^\text{unmarked}$, we mark all edges encountered as being central.
-\revise{}{We use $d_\text{max}^\text{unmarked} = w^*$ in order to filter out high frequency oscillations in the order of magnitude of the nozzle size, while keeping close to significance measure.}
+\revise{}{We use $d_\text{max}^\text{unmarked} = w^*$ in order to filter out high frequency oscillations in the order of magnitude of the nozzle size, while keeping close to the significance measure.}
 
 
 
@@ -382,7 +382,7 @@ if the total length traversed until we reach another marked node $v_1$ is shorte
 
 
 \subsection{Central height adjustment}\label{sec_central_height_adjustment}
-Now that we have identified and marked the central regions we quantize their heights.
+Now that we have identified and marked the central regions\revise{}{,} we quantize their heights.
 We first quantize the initial bead count $\tilde{b}$ into an integer bead count $\bar{b}$ at the marked nodes using a quantization operator $q$,
 then find the locations along the edges where $q$ makes a jump from one bead count $n$ to another $n+1$
 and then introduce ramps to smoothly transition from $n$ to $n+1$ using fractional bead counts $\hat{b}$ along the smooth transition.
@@ -543,7 +543,7 @@ Determining bead count values for the unmarked nodes and interpolating linearly 
 while that would suffice for the evenly distributed beading scheme, it wouldn't allow for more sophisticated, non-linear schemes.
 Instead we determine the radial distance to the boundary at which each bead should occur from the boundary to the center.
 Each central node is associated with a sequence of radial distances $L$ which control the locations of the beads, starting from the outer bead and ending in the center.
-Together with a sequence of bead widths $W$ these form what we call a \emph{beading} $B$.
+Together with a sequence of bead widths $W$\revise{}{,} these form what we call a \emph{beading} $B$.
 For our distributed beading scheme we compute the beading for a central node $v$ with $n = \lfloor \hat{b}_v \rfloor$ beads and a diameter $r = R(v)$  as:
 \begin{align*}
     B(n,r) &= \left( W(n,r), L(n,r) \right)   &=   \left( \left\{  w_0  \dots w_{\lceil n/2 \rceil-1} \right\}, \left\{ l_0 \dots l_{\lceil n/2 \rceil-1} \right\} \right) \\
@@ -675,7 +675,7 @@ In that case we should prevent the algorithm from generating the center extrusio
 We therefore use some arbitrary condition to decide which one of the two to include based on the ordering of the coordinates of $v_0$ and $v_1$: $x_0 < x_1 \lor (x_0 = x_1 \land y_0 < y_1)$.
 
 All trapezoids in the ST are assigned to separate domains, corresponding to which boundary polygon they are connected to (see \cref{shape_decomposition_domains})~\cite{Ding2016a}.
-By traversing the trapezoids in per domain in order we can efficiently connect all segments into polylines.
+By traversing the trapezoids \revise{in }{}per domain in order we can efficiently connect all segments into polylines.
 See \cref{segment_generation}.
 In a final step we connect the ends of polylines together, so that the final toolpaths contain both polygons and polylines.
 
@@ -703,7 +703,7 @@ the extrusion segments can efficiently be connected into existing polyline toolp
 Around the transition locations and around nodes with odd bead count and more than two marked edges attached there will be intersections in the toolpaths.
 Such intersections cause overfill because the nozzle passes the location multiple times.
 We deal with this special case by forcing a new polyline when traversing the trapezoids, and in the final polyline connection step we greedily connect the first two polylines ending in the same location and retreat all other polylines ending in that same location in order to prevent the overfill.
-In order to retreat a polyline which ends in a site $S$ we remove part of the polyline paths up to the intersection by a distance of $w^S d_\text{max}^\text{intersection}$\revise{, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.}{.
+In order to retreat a polyline which ends in a site $S$\revise{}{,} we remove part of the polyline paths up to the intersection by a distance of $w^S d_\text{max}^\text{intersection}$\revise{, where $d_\text{max}^\text{intersection}$ is some ration between $0$ and $1$.}{.
 We set $d_\text{max}^\text{intersection} = \SI{75}{\percent}$ in order to slightly favor overfilling over underfilling.}
 This ratio effectively deals with the balance between overfill and underfill generated at that location after the retreat has been applied.
 See \cref{polyline_reduction}.

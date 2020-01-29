@@ -17,19 +17,19 @@ The toolpath has a direct influence on the printing time, material cost, and mec
 FDM calls for toolpaths with several desirable properties.
 First, the extrusion path should be as continuous as possible.
 A discontinuous path requires to stop and restart material extrusion.
-For certain materials such as TPU, this could lead to printing defects or even print failure~\cite{KUIPERS2019CAD}.
+For certain materials\revise{}{,} such as TPU, this could lead to printing defects or even print failure~\cite{KUIPERS2019CAD}.
 Second, the toolpath is preferred to be smooth.
 Sharp turns require to reduce the movement speed of the nozzle, and so this prolongs the printing process.
-Third, the extruded path should cover \revise{a }{}the region of the contour without gaps.
+Third, the extruded path should cover \revise{a }{}the region of the contour without \revise{gaps}{underfilling}.
 Such underfill negatively influences the mechanical performance of the parts.
 Fourth, the extrusion paths should not overlap with one another.
-Such overfill causes a pressure build up in the mechanical system, which leads to overextrusion in further paths and in extreme cases cause print failure~\cite{KUIPERS2019CAD}.
+Such overfill causes a pressure build up in the mechanical system, which leads to overextrusion in \revise{further}{later} paths and in extreme cases cause print failure~\cite{KUIPERS2019CAD}.
 An analysis of under- and overfill from a vertical cross-section was presented in~\cite{Han2002JMSE}. 
 Our method is primarily concerned with minimizing under- and overfill within horizontal cross-sections.
 
 
 % basic toolpath strategies and their variations
-Two basic strategies for dense toolpath generation are direction-parallel and contour-parallel.
+Two basic strategies for dense toolpath generation are \revise{}{the }direction-parallel\revise{}{ strategy} and \revise{}{the }contour-parallel\revise{}{ strategy}.
 Direction-parallel (or zig-zag) toolpaths fill an arbitrarily shaped contour with a set of parallel, equally spaced line segments.
 These parallel segments are linked together at one of their extremities, to avoid discontinuous extrusion.
 Contour-parallel toolpaths typically consists of a set of equally spaced offsets from the slice boundary outline polygons.
@@ -40,12 +40,12 @@ Spiral toolpaths have also been applied to (CNC) machining~\cite{Held2009,Huang2
 One of the problems with contour-parallel toolpath is that it tends to leave gaps between the toolpaths (see \cref{intro_wedge_uniform}).
 This is due to the fact that the diameter of the part is not exact multiple of the (constant) deposition width in those regions.
 To avoid problems with such gaps, hybrid approaches that combine direction and contour-parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}.
-Close to the slice boundary, there are several contour-parallel curves, while in the interior is filled using a zig-zag pattern.
+Close to the slice boundary, there are several contour-parallel curves, while \revise{in }{}the interior is filled using a zig-zag pattern.
 For complex shapes, the entire cross-section could be decomposed into a set of patches, and for each of them the basic strategies can be applied~\cite{Ding2014,Jin2017RCIM}.
 Alternative toolpath patterns, seen also in CNC machining, include space-filling curves~\cite{Cox1994CAD,Griffiths1994,Shaikh2016}.
 
 % the idea, and (some of) the most related work
-Reducing under- and over-filling can be accurately achieved by making use over adaptive \revise{depisition}{deposition} width.
+Reducing under- and over-filling can be accurately achieved by making use \revise{over}{of} adaptive \revise{depisition}{deposition} width.
 Adaptive width can be used to locally match the nonuniform space between adjacent paths, and thus to ensure a better filling of the area.
 %Material extrusion with a varying width can be realized by changing the extrusion rate or the nozzle travel velocity~\cite{Ertay2018,Kuipers2018}.
 \citeauthor{kao1998optimal} propose smooth adaptive toolpaths based on the medial axis skeleton of the boundary contour~\cite{kao1998optimal}.

@@ -8,12 +8,13 @@ Because Bowden style 3D printing systems have the filament feeder relatively far
 \subsubsection{Back pressure compensation}
 We therefore keep the internal pressure constant, and vary the movement speed instead.
 %In order to accurately realize a varying bead width we vary the movement speed, while keeping the internal pressure in the system constant.
-One approach would be keep the filament inflow $f$ (in \si{\milli\meter\cubed\per\second}) constant by varying movement speed accordingly \cite{Kuipers2018}.
+One approach would be\revise{}{ to} keep the filament inflow $f$ (in \si{\milli\meter\cubed\per\second}) constant by varying movement speed accordingly \cite{Kuipers2018}.
 However, that doesn't result in the intended filament outflow variation - see \cref{zero_back_pressure}.
 We conjecture that the filament outflow is related to the total pressure in the system,
 which depends not only on the amount of filament in between the feeder wheel and the nozzle (which we keep constant), 
 but also depends on the back pressure that the previous layer exerts on the filament protruding from the nozzle.
-We conjecture that the amount of back pressure is monotonically related to the requested line width and compensate for the back pressure using a simple linear model:
+The amount of back pressure is most likely monotonically related to the requested line width.
+We compensate for the back pressure using a simple linear model:
 
 \begin{align}
  v(w) &= \frac{f(w)}{h w} \\ 
@@ -64,7 +65,7 @@ and PLA filament.
 The printing order is determined greedily by choosing the closest point of a polygonal extrusion path, or the closest of either end point in case of an open polyline extrusion path.
 Because the machine instructions file format \emph{G-code} doesn't natively support adaptive width beads,
 we discretize adaptive width extrusions into \SI{0.2}{\milli\meter} long segments of the average width.
-The results can be viewed in \cref{prints}.
+The print results can be viewed in \cref{prints}.
 
 
 \begin{figure}
@@ -94,7 +95,7 @@ Target widths in green.
 
 % discussion of print results
 In \cref{print_naive} the underfill problem of the naive uniform offset approach is most prevalent for \xblackout{the Ultimaker word mark}, which negatively impacts the visual quality and the stiffness of the part.
-Moreover, in the case of the spatially graded honeycomb there are several fully disconnected hexagons, which means the object falls apart when picked up.
+Moreover, in the case of the spatially graded honeycomb\revise{}{,} there are several fully disconnected hexagons, which means the object falls apart when picked up.
 The honeycomb print is also missing all parts which are slightly more thin than the preferred bead width $w^*$.
 \Cref{print_center} still shows some underfill, but considerably less than the uniform approach.
 These prints also exhibit dark regions where the translucency of the layer is less because the bead is higher.
