@@ -1,11 +1,11 @@
 \revise{}{
-\subsection{Fabrication}
+\section{Fabrication}
 In order to accurately manufacture adaptive width toolpaths using an off-the-shelf 3D printing system,
 we need a model which relates the required width to process parameters such as movement speed and filament extrusion speed.
 A different approach might be appropriate depending on whether the filament feeder is mounted directly on the print head (a.k.a. \emph{direct drive}) or the filament fed from the back of the printer to the print head via a \emph{Bowden tube}.
 Because Bowden style 3D printing systems have the filament feeder relatively far away from the nozzle, changing the internal pressure in the system requires a large amount of filament movement, which requires a prohibitive amount of time.
 
-\subsubsection{Back pressure compensation}
+\subsection{Back pressure compensation}
 Because changing the internal pressure is difficult in our setup,
 we keep the internal pressure constant, and vary the movement speed instead.
 %In order to accurately realize a varying bead width we vary the movement speed, while keeping the internal pressure in the system constant.
@@ -49,7 +49,7 @@ Furthermore, the shape and filling of the previous layer might influence the amo
 Accurate flow control can be further enhanced by using a direct drive hardware system and by employing \emph{pressure advance algorithms} which dynamically change the internal pressure \cite{tronvoll2019investigating}.
 Conversely such a setup might benefit from some form of back pressure compensation as well.
 
-\subsubsection{Print results}\label{print_results_section}
+\subsection{Print results}\label{print_results_section}
 Using increments of $0.1$ we established that using a factor of $k=1.1$ yields satisfactory bead width variation for our setup where we use
 $f_0 = v_0 w_0 h $
 with

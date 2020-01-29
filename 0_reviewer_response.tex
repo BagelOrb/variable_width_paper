@@ -460,7 +460,7 @@ See the answer to question 3.4.
 \paper{3.3 Method, Significance measure}{
 This corresponds to overfill areas and underfill areas the size of \\ \revise{$\nicefrac12 (w^*)^2 \left( \nicefrac14 \tan ( \alpha / 2) - \alpha / 2 \right)$}{$\nicefrac14 (w^*)^2 \left( \tan ( \alpha / 2) - \alpha / 2 \right)$} when filled using the simple technique of uniform bead width $w^*$
 }
-\paper{5.3 Limitations, first paragraph}{
+\paper{6.3 Limitations, first paragraph}{
 \revise{}{
 Because the performance of the various toolpathing techniques depends on the geometry of a model, they have ramifications for the practice of design for additive manufacturing.
 Because the naive method produces under- or overfill for parts of an outline with a constant diameter $d \neq 2 i w^*$ it is best practice to design a model such that horizontal cross-sections have a feature diameter of an even integer multiple $i$ of the bead width.
@@ -470,7 +470,7 @@ The design consideration therefore reduces to limiting the diameter of your part
 where $w_\text{min}$ is a configurable parameter when using the widening meta-scheme.
 }
 }
-\paper{6. Conclusion, last paragraph}{
+\paper{7. Conclusion, last paragraph}{
 \revise{}{It is expected that as distributed beading schemes are implemented in commercial software packages and bead width variation control become commonplace, the practice of design for additive manufacturing can disregards some of the nozzle size considerations.}
 }
 
@@ -505,7 +505,7 @@ reduces the \revise{amount of deviation}{variation} in the extrusion widths \rev
 }
 \end{itemize}
 }
-\paper{6. Conclusion and future work}{
+\paper{7. Conclusion and future work}{
 In this paper we have introduced a framework for computing contour-parallel toolpaths employing adaptive bead width in order to minimize \revise{underfilland}{underfill and} overfill areas\revise{.}{,
 we introduced beading schemes which improve on the state of the art
 and we have introduced a backpressure compensation method for accurate fabrication of adaptive width.
@@ -655,7 +655,7 @@ The azure area is to be filled using some direction-parallel toolpaths.
 \label{widening_shell}
 \end{figure}
 }
-\paper{5.2 Computational results}
+\paper{6 Results and discussion}
 {
 Toolpaths of these 300 outline shapes are generated using the uniform technique as implemented by Clipper~\cite{johnson2014clipper} -- a state-of-the-art polygon offset library,
 and by our framework using four beading schemes, i.e. the constant bead count scheme with a bead count of $C=4$, the centered, the evenly distributed, and the inward distributed beading scheme using \revise{$N=3$}{$N=2$}, all with a preferred bead width\revise{s}{} of \revise{$w^* = \SI{0.4}{\milli\meter}$}{$w^* = \SI{0.5}{\milli\meter}$ and using the widening meta-scheme to enforce a minimum printed feature size of $w_\text{min}=2r_\text{min}=\SI{0.3}{\milli\meter}$}.
@@ -714,8 +714,8 @@ e2c940f2362556ae8d017cff63c81b4bbcb77286 % print time, path count statistics
 bf403fe797193e40b004c2cae806935f699271e5 % move print results to before statistics 
 b106dd1e0067114756bf96a7dc10458202380f2e % new print time pdf graph
 }
-\paper{5.1.2 Print results}{\revise{}{The printing order is determined greedily by choosing the closest point of a polygonal extrusion path, or the closest of either end point in case of an open polyline extrusion path.}} 
-\paper{5.2.3 Print time}
+\paper{5.2 Print results}{\revise{}{The printing order is determined greedily by choosing the closest point of a polygonal extrusion path, or the closest of either end point in case of an open polyline extrusion path.}} 
+\paper{6.1.3 Print time}
 {
 \revisepar{
 \subsubsection{Smoothness of toolpaths}
@@ -741,7 +741,7 @@ For closed polygonal toolpaths we can start anywhere within the path, so we can 
 We therefore report both on the open and closed path count in \cref{pathcounts}.
 }
 }
-\paper{5.3 Comparison of beading schemes}
+\paper{6.2 Comparison of beading schemes}
 {
 We can see from \cref{TEST_naive_accuracy}(top) and~\ref{over_underfill} that the uniform technique causes a lot of overfills and underfills: on average \revise{approximately}{} \revise{\SI{1}{\percent}}{\SI{1.6}{\percent}} of the total target area is covered by underfill and likewise for overfill.
 To our knowledge, the uniform beading scheme, as well as the outer beading scheme, is of little use to FDM printers.
@@ -924,13 +924,13 @@ Compared against the state-of-the-art centered method, our schemes only reduce t
 272fbca357c379ebe291735e3084cf86db4bdee1 % more emphasis on defects introduced by discontinuities
 f2132c1c0cbce6daa29f64890be5f9e20c79c630 % future work notice
 }
-\paper{5.2.3 Print time}
+\paper{6.1.3 Print time}
 {
 \revise{}{
 Between extrusions the printer needs to stop extrusion, travel to the next extrusion path and restart the extrusion process, which may introduce defects and incurs extra print time.
 }
 }
-\paper{6.1 Future work}
+\paper{7.1 Future work}
 {
 An accurate model of manufacturability, \revise{}{which relates }print speed, \revise{}{ layer thickness }and dimensional accuracy would be valuable to fine-tune the beading scheme.
 \revise{}{The work could also be extended in a way which reduces the number of starts and stops of extrusion.}
@@ -1073,12 +1073,12 @@ Colors represent bead widths.
 {
 Visualization of the widths for the output toolpaths of the inward distributed beading scheme \revise{}{($N=3$) }applied to various example application objects.
 }
-\paper{5.2 Computational results}
+\paper{6 Results and discussion}
 {
 Toolpaths of these 300 outline shapes are generated using the uniform technique as implemented by Clipper~\cite{johnson2014clipper} -- a state-of-the-art polygon offset library,
 and by our framework using four beading schemes, i.e. the constant bead count scheme with a bead count of $C=4$, the centered, the evenly distributed, and the inward distributed beading scheme using \revise{$N=3$}{$N=2$}, all with a preferred bead width\revise{s}{} of \revise{$w^* = \SI{0.4}{\milli\meter}$}{$w^* = \SI{0.5}{\milli\meter}$ and using the widening meta-scheme to enforce a minimum printed feature size of $w_\text{min}=2r_\text{min}=\SI{0.3}{\milli\meter}$}.
 }
-\paper{5.2.2 Uniformity}
+\paper{6.1.2 Uniformity}
 {
 \revise{
 We compared the width uniformity of the 6 outer beads for the inward and evenly distributed schemes, the distribution of these extrusion widths is shown in \cref{widthIndexedHistogram}. 
@@ -1281,7 +1281,7 @@ d375878a8a6d01c53436aeb9c473dbedd8f3edcf % prints discussion
 We \revise{}{statistically }validate the effectiveness of our framework and this novel scheme on a data set of \revise{300 slices.}{representative 3D models, }%sgd
 \revise{}{and physically validate it by developing a technique, called \emph{back pressure compensation}, for off-the-shelf FDM systems to effectively realize adaptive width.}
 }
-\paper{5.1.2 Printing results}
+\paper{5.2 Printing results}
 {
 \revisepar{
 Test prints were performed on a custom FDM hardware setup, with a standard \SI{0.4}{\milli\meter} nozzle and a filament extrusion drive directly mounted on the print head.
@@ -1535,7 +1535,7 @@ We've added a paragraph to section~5.4~Limitations, which discusses these emulat
 \commits{
 639dccad8e97fa1f0bdbb28e16b64f587572792d % paragraph in limitations
 }
-\paper{5.4 Limitations}
+\paper{6.3 Limitations}
 {
 \revise{}{
 Finally it should be noted that although our framework can accurately emulate the constant bead count approach by \citeauthor{Ding2016a}, its emulation of the centered approach by \citeauthor{Jin2017JMS} is imperfect.
@@ -1680,7 +1680,7 @@ employs a strategy which alters the widths of the centermost beads \revise{at mo
 {
 \revise{}{This means that for some small regions we generate toolpaths with bead widths outside the typical range.}
 }
-\paper{5.3 Comparison of beading schemes, paragraph 3, 4}{
+\paper{6.2 Comparison of beading schemes, paragraph 3, 4}{
 In \cref{TEST_Center_accuracy} we can see that
 the centered beading scheme effectively deals with \revise{both }{}overfill \revise{and underfill }{}and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.25 w^*$ and $1.8w^*$.}
 
@@ -1918,7 +1918,7 @@ Additionally in order to emulate their definition of ``branches'' we mark all ST
 Conversely, they place an extra bead when the \revise{radius between the center and either of the innermost beads}{distance} exceeds \revise{$r_\text{max} = 1.25 w^*$}{$d_\text{max} = 1.25 w^*$}~\cite{Jin2017JMS}\revise{}{, which gives us $w_\text{min}= d_\text{max} - 2 \cdot \frac12 w^* = 0.25 w^*$}~\cite[p.~72]{Jin2017JMS}.
 We emulate the rounded polygonal path rerouting they define by supplying a transition length \revise{}{$t(n) = \frac12 w^*$} which results in a discretized version of their rounded polygon segment.
 }
-\paper{5.4 Limitations, second paragraph}
+\paper{6.3 Limitations, second paragraph}
 {
 \revisepar{}{
 The default limit bisector angle $\alpha_\text{max} = \SI{135}{\degree}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths;
@@ -2005,12 +2005,12 @@ We hope that these suffice.
 dd293c060baae147ad1a217cf6ab68d8c4cb00c8 lil reformulation in conclusion (reviewer 3.12)
 2f83d078036e267195431a7b077201eef0352e19 % influence of layers on back pressure
 }
-\paper{5.1.1 Back pressure compensation}
+\paper{5.1 Back pressure compensation}
 {
 \revise{}{Furthermore, the shape and filling of the previous layer might influence the amount of back pressure.}
 }
 
-\paper{6. Conclusion and future work, last paragraph}{
+\paper{7. Conclusion and future work, last paragraph}{
 \revise{}{Compared to the naive approach of constant width toolpaths our beading scheme is expected to improve the stiffness, dimensional accuracy and visual qualities of the manufactured model.}
 \revise{}{It is expected that as distributed beading schemes are implemented in commercial software packages and bead width variation control become commonplace, the practice of design for additive manufacturing can disregards some of the nozzle size considerations.}
 }
@@ -2070,7 +2070,7 @@ We fixed a mistake when performing the statistical analysis. In the first submit
 
 We changed the width histogram calculation so that we use accurate statistics instead of sampling the width along the path.
 \commits{d402ba3a47d35bc9a040b6ed4ccdfb85e911bedf}
-\paper{5.2.2 Uniformity}
+\paper{6.1.2 Uniformity}
 {
 \revise{
 We calculated the mean and standard deviation of the bead width, sampled at \SI{1}{\micro\meter} along the toolpaths.
@@ -2100,7 +2100,7 @@ We added an url to the open source implementation.
 \commits{
 ff3c09037f05eba5028cb51bf8cd6c0bb77a0b0a
 }
-\paper{6. Conclusion}{
+\paper{7. Conclusion}{
 \revise{}{The presented framework is open source available at \\ \url{github.com/Ultimaker/libArachne}}
 }
 
@@ -2121,7 +2121,7 @@ Now that we have determined the bead counts in the \revise{}{marked }central reg
 
 Explain why and how statistics are gathered over the whole data set.
 \commits{17135b010f5ac51fda77357136a19f67a80dbc33}
-\paper{5.2 Computational results}
+\paper{6 Results and discussion}
 {
 \revise{}{We report on the total statistics summed over the whole data set, because averaging would be biased.}
 }
