@@ -44,6 +44,7 @@ Thus the inward distributed scheme prevents over- and underfill, generates smoot
 \revise{}
 {
 \subsection{Limitations}
+% design considerations
 Because the performance of the various toolpathing techniques depends on the geometry of a model, they have ramifications for the practice of design for additive manufacturing.
 Because the naive method produces under- or overfill for parts of an outline with a constant diameter $d \neq 2 i w^*$ it is best practice to design a model such that horizontal cross-sections have a feature diameter of an even integer multiple $i$ of the bead width.
 For the center\revise{ed} scheme and for the current state of the art one should only avoid parts for which $(2i + 1.8) w^* < d < (2i + 0.25) w^*$ in order to avoid underfill.
@@ -52,17 +53,20 @@ The design consideration therefore reduces to limiting the diameter of your part
 where $w_\text{min}$ is a configurable parameter when using the widening meta-scheme.
 
 
+% single line segments & continuity
 The default limit bisector angle $\alpha_\text{max} = \SI{135}{\degree}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths;
 $\alpha_\text{max} = \SI{135}{\degree}$ corresponds to $w^* / \cos \nicefrac12 \alpha_\text{max} \approx \SI{0.4}{\milli\meter}$ long segments
 and under-/overfill areas of $\nicefrac14 (w^*)^2 \left( \tan ( \alpha / 2) - \alpha / 2 \right) \approx \SI{0.05}{\milli\meter\squared}$.
 However, future work might be aimed at reducing under-/overfill in regions with a low bisector angle without the introduction of short single polyline extrusion segments.
 If the over-/underfill problem is also solved for non-significant regions we might be able to increase $\alpha_\text{max}$ and reduce the discontinuity introduced by short extrusion segments.
 
+% single beads
 Another limitation of our method is that in a location $v$ with locally maximal $R(v) \approx (i + \nicefrac12) w^*$ the odd bead count will result in a single polyline extrusion segment consisting of only a single point.
 This can be viewed in the bottom right of \cref{TEST_InwardDistributed_accuracy} for example.
 In order to print such a dot, we make it into a \SI{10}{\micro\meter} long extrusion segment, with an altered width such that the total volume remains correct.
 A more principled way of dealing with such a situation remains future work.
 
+% emulation troubles
 Finally it should be noted that although our framework can accurately emulate the constant bead count approach by \citeauthor{Ding2016a}, its emulation of the centered approach by \citeauthor{Jin2017JMS} is imperfect.
 The transitions resulting from out framework introduce sharper corners and there is more width variation in those corners.
 Whereas the width of the connecting segment in the approach by \citeauthor{Jin2017JMS} is the preferred width $w^*$, the bead widths closer to the center resulting from our framework will be twice the local radius, which is larger than $w^*$.

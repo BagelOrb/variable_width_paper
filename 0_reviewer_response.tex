@@ -505,7 +505,7 @@ reduces the \revise{amount of deviation}{variation} in the extrusion widths \rev
 }
 \end{itemize}
 }
-\paper{7. Conclusion and future work}{
+\paper{7. Conclusion}{
 In this paper we have introduced a framework for computing contour-parallel toolpaths employing adaptive bead width in order to minimize \revise{underfilland}{underfill and} overfill areas\revise{.}{,
 we introduced beading schemes which improve on the state of the art
 and we have introduced a backpressure compensation method for accurate fabrication of adaptive width.
@@ -930,13 +930,16 @@ f2132c1c0cbce6daa29f64890be5f9e20c79c630 % future work notice
 Between extrusions the printer needs to stop extrusion, travel to the next extrusion path and restart the extrusion process, which may introduce defects and incurs extra print time.
 }
 }
-\paper{7.1 Future work}
+\paper{6.3 Limitations}
 {
-An accurate model of manufacturability, \revise{}{which relates }print speed, \revise{}{ layer thickness }and dimensional accuracy would be valuable to fine-tune the beading scheme.
-\revise{}{The work could also be extended in a way which reduces the number of starts and stops of extrusion.}
+\revise{}{
+The default limit bisector angle $\alpha_\text{max} = \SI{135}{\degree}$ ensures that we don't employ transitioning in shallow wedge regions, which would result in a lot of short odd single bead polylines, which would break up the semi-continuous nature of polygonal extrusion paths;
+$\alpha_\text{max} = \SI{135}{\degree}$ corresponds to $w^* / \cos \nicefrac12 \alpha_\text{max} \approx \SI{0.4}{\milli\meter}$ long segments
+and under-/overfill areas of $\nicefrac14 (w^*)^2 \left( \tan ( \alpha / 2) - \alpha / 2 \right) \approx \SI{0.05}{\milli\meter\squared}$.
+However, future work might be aimed at reducing under-/overfill in regions with a low bisector angle without the introduction of short single polyline extrusion segments.
+If the over-/underfill problem is also solved for non-significant regions we might be able to increase $\alpha_\text{max}$ and reduce the discontinuity introduced by short extrusion segments.
 }
-
-
+}
 
 
 
@@ -2010,7 +2013,7 @@ dd293c060baae147ad1a217cf6ab68d8c4cb00c8 lil reformulation in conclusion (review
 \revise{}{Furthermore, the shape and filling of the previous layer might influence the amount of back pressure.}
 }
 
-\paper{7. Conclusion and future work, last paragraph}{
+\paper{7. Conclusion, last paragraph}{
 \revise{}{Compared to the naive approach of constant width toolpaths our beading scheme is expected to improve the stiffness, dimensional accuracy and visual qualities of the manufactured model.}
 \revise{}{It is expected that as distributed beading schemes are implemented in commercial software packages and bead width variation control become commonplace, the practice of design for additive manufacturing can disregards some of the nozzle size considerations.}
 }
@@ -2131,7 +2134,9 @@ Explain why and how statistics are gathered over the whole data set.
 Furthermore:
 \begin{itemize*}
 \item Removed paragraph before bullet list of contributions, because it contained the same information as the bullet list.
-\commit{}
+\commits{0ed48668c93047be8423be054d98a81dfabce305}
+\item Removed Future work section because the limitations are now handled in 6.3 Limitations.
+\commits{}
 \item Removed wrapfigure explaining the area covered by a single extrusion move (in section~5.2.1~Accuracy), since that is already explained in the appendix.
 \commits{d402ba3a47d35bc9a040b6ed4ccdfb85e911bedf}
 \item Fig.~10 and Fig.~18 colors are adjusted.
