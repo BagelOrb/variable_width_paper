@@ -6,7 +6,8 @@ A different approach might be appropriate depending on whether the filament feed
 Because Bowden style 3D printing systems have the filament feeder relatively far away from the nozzle, changing the internal pressure in the system requires a large amount of filament movement, which requires a prohibitive amount of time.
 
 \subsubsection{Back pressure compensation}
-We therefore keep the internal pressure constant, and vary the movement speed instead.
+Because changing the internal pressure is difficult in our setup,
+we keep the internal pressure constant, and vary the movement speed instead.
 %In order to accurately realize a varying bead width we vary the movement speed, while keeping the internal pressure in the system constant.
 One approach would be\revise{}{ to} keep the filament inflow $f$ (in \si{\milli\meter\cubed\per\second}) constant by varying movement speed accordingly \cite{Kuipers2018}.
 However, that doesn't result in the intended filament outflow variation - see \cref{zero_back_pressure}.
