@@ -494,17 +494,6 @@ e806d40e5e6d2bbe450c6792b802f0fcce4df645 % lil typo
 }
 \paper{1. Introduction}
 {
-In this paper we propose a framework for planning toolpaths with control over the adaptive width for minimizing over- and underfill
-\revise{}{and introduce a beading scheme which reduces the bead width variation compared to the state of the art.} 
-We show that this framework supports various control schemes for determining the bead spacing and extrusion widths. 
-\revise{
-For FDM printing in particular we propose a novel scheme which reduces the amount of over- and underfill while ensuring the extrusion beads deviate little from the nozzle size.
-}{Furthermore we present an approach to accurately realize adaptive bead width.
-}
-See \cref{intro_wedge_distributed}. 
-% In order to avoid over- and underfills in regions which are not as wide as an exact multiple of the nozzle size we need algorithms which produce toolpaths which employ adaptive bead width.
-% Some such toolpath generation techniques have already been developed.
-
 Our contributions are as follows:
 \begin{itemize}
 \item A geometric framework \revise{for generating densely filling contour-parallel toolpaths employing adaptive width, according to any beading scheme which decides on the bead spacing and widths.}{allowing various adaptive bead width control schemes used to generate contour-parallel toolpaths which minimize under- and overfill.}
@@ -2141,6 +2130,8 @@ Explain why and how statistics are gathered over the whole data set.
 
 Furthermore:
 \begin{itemize*}
+\item Removed paragraph before bullet list of contributions, because it contained the same information as the bullet list.
+\commit{}
 \item Removed wrapfigure explaining the area covered by a single extrusion move (in section~5.2.1~Accuracy), since that is already explained in the appendix.
 \commits{d402ba3a47d35bc9a040b6ed4ccdfb85e911bedf}
 \item Fig.~10 and Fig.~18 colors are adjusted.
