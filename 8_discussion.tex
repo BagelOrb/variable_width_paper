@@ -46,7 +46,7 @@ Thus the inward distributed scheme prevents over- and underfill, generates smoot
 \subsection{Limitations}
 Because the performance of the various toolpathing techniques depends on the geometry of a model, they have ramifications for the practice of design for additive manufacturing.
 Because the naive method produces under- or overfill for parts of an outline with a constant diameter $d \neq 2 i w^*$ it is best practice to design a model such that horizontal cross-sections have a feature diameter of an even integer multiple $i$ of the bead width.
-For the center scheme and for the current state of the art one should only avoid parts for which $(2i + 1.8) w^* < d < (2i + 0.5) w^*$ in order to avoid underfill.
+For the center\revise{ed} scheme and for the current state of the art one should only avoid parts for which $(2i + 1.8) w^* < d < (2i + 0.25) w^*$ in order to avoid underfill.
 For the distributed schemes however, there is no diameter at which the framework produces under- or overfill for a part with a constant diameter $d$.
 The design consideration therefore reduces to limiting the diameter of your parts to be within the range $[w_\text{min}, \infty)$,
 where $w_\text{min}$ is a configurable parameter when using the widening meta-scheme.

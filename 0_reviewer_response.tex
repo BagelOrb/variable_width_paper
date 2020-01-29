@@ -431,7 +431,7 @@ In the first case we consider a part with a constant feature size, in the second
 
 1. When considering a part with constant feature diameter $d$ we note that the beading only depends on the feature diameter: $B(n, r) = B(q(2r), r)$.
 From the beading function we can easily derive the under-/overfill by summing over the bead widths $W$.
-We can then derive that the naive scheme produces over-/underfill at all diameters except $d=2i w^*$, the center scheme for $(i + 0.8) w^* < d < (i+ 1.25) w^*$ and the constant and distributed schemes nowhere (except for features smaller than $w^*$).
+We can then derive that the naive scheme produces over-/underfill at all diameters except $d=2i w^*$, the centered scheme for $(i + 0.8) w^* < d < (i+ 1.25) w^*$ and the constant and distributed schemes nowhere (except for features smaller than $w^*$).
 We have added a paragraph to the new section~5.1~Theoretical consideration to explain this and the implications for design for additive manufacturing.
 
 2. When the feature size changes the amount of over-/underfill is related to a bisector angle $\alpha < \alpha_\text{max}$ according to the formula already given in section~3.3, paragraph `Significance measure': 
@@ -464,7 +464,7 @@ This corresponds to overfill areas and underfill areas the size of \\ \revise{$\
 \revise{}{
 Because the performance of the various toolpathing techniques depends on the geometry of a model, they have ramifications for the practice of design for additive manufacturing.
 Because the naive method produces under- or overfill for parts of an outline with a constant diameter $d \neq 2 i w^*$ it is best practice to design a model such that horizontal cross-sections have a feature diameter of an even integer multiple $i$ of the bead width.
-For the center scheme and for the current state of the art one should only avoid parts for which $(2i + 1.8) w^* < d < (2i + 0.5) w^*$ in order to avoid underfill.
+For the center\revise{ed} scheme and for the current state of the art one should only avoid parts for which $(2i + 1.8) w^* < d < (2i + 0.5) w^*$ in order to avoid underfill.
 For the distributed schemes however, there is no diameter at which the framework produces under- or overfill for a part with a constant diameter $d$.
 The design consideration therefore reduces to limiting the diameter of your parts to be within the range $[w_\text{min}, \infty)$,
 where $w_\text{min}$ is a configurable parameter when using the widening meta-scheme.
