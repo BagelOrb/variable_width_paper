@@ -53,9 +53,13 @@ Their approach handles simple geometry where there are no branches in the medial
 An extension was proposed by \citeauthor{Ding2016a} to handle complex shapes~\cite{Ding2016a}.
 However, this extension inherits a problem in the original method:
 from any point in the skeleton to the boundary, the number of toolpaths is constant.
+\revise{%sdg
 Since the distance may vary considerably for shapes with both large and small features, this strategy leads to a toolpath with widths that may differ by a factor beyond $3$, which is impossible for some FDM systems.
+}{%f
+Depending on the size of small and large features in the layer outlines, this strategy can require a range of bead widths beyond the capabilities of the manufacturing system.
+}%sagd
 \citeauthor{Jin2017JMS} proposed a strategy of adding a toolpath with varying width along the center edges of the skeleton, while leaving other paths unchanged~\cite{Jin2017JMS}.
-The resulting variation of width in the center is still up to a factor of \revise{$2$}{$3.6$} (see \cref{intro_wedge_centered}).
+The resulting \revise{variation of width in the center is still up to a factor of $2$}{beads have widths within the wide range of $[0.25w,1.8w]$} (see \cref{intro_wedge_centered}).
 In this paper we propose a novel scheme to distribute the width alterations throughout a region around the center, and thus limit the occurrence of extreme \revise{deviations}{variation} in width (see \cref{intro_wedge_distributed}).
 
 % the context where our method can be positioned, and some related problems in that context

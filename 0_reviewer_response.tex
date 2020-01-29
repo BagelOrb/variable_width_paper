@@ -464,7 +464,7 @@ This corresponds to overfill areas and underfill areas the size of \\ \revise{$\
 \revise{}{
 Because the performance of the various toolpathing techniques depends on the geometry of a model, they have ramifications for the practice of design for additive manufacturing.
 Because the naive method produces under- or overfill for parts of an outline with a constant diameter $d \neq 2 i w^*$ it is best practice to design a model such that horizontal cross-sections have a feature diameter of an even integer multiple $i$ of the bead width.
-For the center\revise{ed} scheme and for the current state of the art one should only avoid parts for which $(2i + 1.8) w^* < d < (2i + 0.5) w^*$ in order to avoid underfill.
+For the center\revise{ed} scheme and for the current state of the art one should only avoid parts for which $(2i + 1.8) w^* < d < (2i + 0.25) w^*$ in order to avoid underfill.
 For the distributed schemes however, there is no diameter at which the framework produces under- or overfill for a part with a constant diameter $d$.
 The design consideration therefore reduces to limiting the diameter of your parts to be within the range $[w_\text{min}, \infty)$,
 where $w_\text{min}$ is a configurable parameter when using the widening meta-scheme.
@@ -508,8 +508,8 @@ See \cref{intro_wedge_distributed}.
 Our contributions are as follows:
 \begin{itemize}
 \item A geometric framework \revise{for generating densely filling contour-parallel toolpaths employing adaptive width, according to any beading scheme which decides on the bead spacing and widths.}{allowing various adaptive bead width control schemes used to generate contour-parallel toolpaths which minimize under- and overfill.}
-\item A specific beading scheme for FDM printing which
-\revise{}{furthermore} reduces the amount of \revise{deviation}{variation} in the extrusion widths compared to \revise{existing literature, }{the state of the art to be below a factor of 2.}
+\item A specific beading scheme\revise{ for FDM printing}{,} which
+reduces the \revise{amount of deviation}{variation} in the extrusion widths \revise{compared to existing literature, }{to within $[0.75w,1.5w]$.}
 \revise{and which promotes smooth toolpaths that are equal to the preferred width toward the outline of the shape.}{}
 \revise{}{
 \item A back pressure compensation approach to accurately realize adaptive bead width on Bowden style hardware systems.
@@ -680,7 +680,7 @@ If there is no sharp corners exist, then the existing approaches such as Jin et 
 }
 \Ans{
 The wedge shape of Fig.~1 was chosen because it contains a wide range of feature sizes and is therefore representative for a wide range of models.
-Nearly every model induces the full range of $[0.5w^*,1.8w^*]$ using the centered approach by \citeauthor{Jin2017JMS},
+Nearly every model induces the full range of $[0.25w^*,1.8w^*]$ using the centered approach by \citeauthor{Jin2017JMS},
 because nearly all models have feature sizes which span any range $[iw^*,(i+1)w^*]$ for $i\in\mathcal{N}$.
 The shape of Fig.~17 from the paper of \citeauthor{Jin2017JMS} itself already shows this.
 Only shapes without central regions (a circle) or shapes with central regions with an exact multiple of $w^*$ everywhere (a rectangle) don't require any variation in bead width, but that holds for any of the beading schemes.
@@ -767,7 +767,7 @@ Moreover the centrality marking is not robust against small perturbations in the
 \revise{}{See top right of \cref{TEST_Constant_accuracy}.}
 
 In \cref{TEST_Center_accuracy} we can see that
-the centered beading scheme effectively deals with \revise{both }{}overfill \revise{and underfill }{}and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.5 w^*$ and $1.8w^*$, i.e. the variation is within a factor of $3.6$.}
+the centered beading scheme effectively deals with \revise{both }{}overfill \revise{and underfill }{}and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.25 w^*$ and $1.8w^*$.}
 \revise{}{However, it does produce some narrow underfill regions.}
 \revise{
 According to \cref{over_underfill} the overfill and underfill for the centered, the evenly distributed and the inward distributed scheme are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the uniform technique.
@@ -778,8 +778,8 @@ See \cref{statisticsfig}.
 
 However, according to \cref{widthHistogram} the centered scheme exhibits a wider range of bead widths than the distributed schemes:
 the standard deviation of the bead widths in the centered scheme is approximately \SI{39}{\micro\meter}, while that of the distributed schemes is approximately \SI{14}{\micro\meter}.%_
-\revise{}{\footnote{\revise{}{Although the standard deviation $\sigma$ of the inward distributed scheme is slightly higher, the mean absolute deviation is lower than that of the evenly distributed scheme (i.e. \SI{9}{\micro\meter} versus \SI{11}{\micro\meter}), because its distribution is more peaked.}}}
-\revise{}{Moreover, because the quantization operator rounds to the nearest number of beads, in the worst case where we switch from a single to two beads the widths switch from $0.75w^*$ to $1.5w^*$, i.e. the variation is within a factor $2$, which is considerably lower the than factor of $3.6$ in the centered scheme.}
+\revise{}{{\revise{}{Although the standard deviation $\sigma$ of the inward distributed scheme is slightly higher, the mean absolute deviation is lower than that of the evenly distributed scheme (i.e. \SI{9}{\micro\meter} versus \SI{11}{\micro\meter}), because its distribution is more peaked.}}}
+\revise{}{Moreover, because the quantization operator rounds to the nearest number of beads, in the worst case where we switch from a single to two beads the widths switch from $0.75w^*$ to $1.5w^*$, which is a considerably smaller range than in the centered scheme.}
 We therefore conclude that the distributed schemes \revise{result in bead widths closer to the preferred widths}{exhibit a lower bead width variation and lower (open) path count} compared to the centered scheme.
 %This is desirable for the manufacturability of the beads and can therefore have a positive effect on the mechanical properties and surface quality of the 3D prints. 
 
@@ -1671,17 +1671,11 @@ See also our response to question~\ref{widening_question} for clarification in t
 Isn’t it possible to put bounds on the width in the existing methods, such as the approach described in [9]? More discussion on that would be helpful. 
 }
 \Ans{
-The bead width in \citeauthor{Jin2017JMS} is limited to the interval $[0.5 w^*,1.8 w^*]$ , which means the variation is a factor of $\text{max} / \text{min} = 1.8 / 0.5 = 3.6$. 
-\footnote{
-This new statistic replaces the old statistic of deviation from the preferred nozzle size: $\text{max} / w^*$.
-This old statistic is odd because it cannot take the min into account.
-Also the old statistic of $2.0$ had been computed using the hypothetical max of $2.0 w^*$ rather than the actually used $1.8w^*$.
-}
+The bead width in \citeauthor{Jin2017JMS} is limited to the interval $[0.25 w^*,1.8 w^*]$, whereas ours is limited to $[0.75 w^*, 1.5 w^*]$.
 
-We now emphasize that our method results in a bead width variation of $2$ (which is less than $3.6$) in the related work section and in the discussion section.
-This factor comes from the transition from a single bead to two beads.
-It is not possible to generate toolpaths with a lower interval of bead widths if you consider geometry with arbitrary feature radius.
-%(The transition from zero beads to one is disregarded; it is controlled separately by the Widening meta-scheme.)
+In the old manuscript we referred to the `deviation' from the preferred width as $1.8w^*/w^*=1.8$, wich was a confusing statistic.
+Moreover, instead of the actual $1.8$ used by \citeauthor{Jin2017JMS} we used the theoretically maximum value of $2.0$ to arrive at a `deviation factor' of $2$.
+We now don't refer to any such confusing statistic and instead just mention the range of widths itself.
 }
 \commits{
 661d8f6766548c287cb174070432097e396d198f 
@@ -1690,7 +1684,8 @@ It is not possible to generate toolpaths with a lower interval of bead widths if
 acf8bbed0e530a3038d6fea064c33e7df6f0f933 % deviation > variation
 }
 \paper{1. Introduction}{
-The current \revise{state-of-the-art}{state of the art} for FDM printing developed by \citeauthor{Jin2017JMS} employs a strategy which alters the widths of the centermost beads \revise{at most by a factor of $2$}{within a range of widths with a factor of $3.6$}~\cite{Jin2017JMS},
+The current \revise{state-of-the-art}{state of the art of contour-parallel toolpath generation} \revise{for FDM printing }{}developed by \citeauthor{Jin2017JMS}
+employs a strategy which alters the widths of the centermost beads \revise{at most by a factor of $2$}{within a range of widths $[0.25w,1.8w]$}~\cite{Jin2017JMS},
 }
 \paper{3.4. Central height adjustment, Transition anchors, filtering paragraph}
 {
@@ -1698,11 +1693,11 @@ The current \revise{state-of-the-art}{state of the art} for FDM printing develop
 }
 \paper{5.3 Comparison of beading schemes, paragraph 3, 4}{
 In \cref{TEST_Center_accuracy} we can see that
-the centered beading scheme \revise{effectively }{}deals with both overfill and underfill and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.5 w^*$ and $1.8w^*$, i.e. the variation is within a factor of $3.6$.}
+the centered beading scheme effectively deals with \revise{both }{}overfill \revise{and underfill }{}and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.25 w^*$ and $1.8w^*$.}
 
 [\dots]
 
-\revise{}{Moreover, because the quantization operator rounds to the nearest number of beads, in the worst case where we switch from a single to two beads the widths switch from $0.75w^*$ to $1.5w^*$, i.e. the variation is within a factor $2$, which is considerably lower the than factor of $3.6$ in the centered scheme.}
+\revise{}{Moreover, because the quantization operator rounds to the nearest number of beads, in the worst case where we switch from a single to two beads the widths switch from $0.75w^*$ to $1.5w^*$, which is a considerably smaller range than in the centered scheme.}
 We therefore conclude that the distributed schemes \revise{result in bead widths closer to the preferred widths}{exhibit a lower bead width variation} compared to the centered scheme.
 }
 
@@ -1930,8 +1925,8 @@ Additionally in order to emulate their definition of ``branches'' we mark all ST
 
 \paragraph{Centered}
 [\dots]
-\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w^*$\revise{}{, which gives us $w_\text{max}=1.8 w^*$}.
-Conversely, they place an extra bead when the radius \revise{between the center and either of the innermost beads }{}exceeds $r_\text{max} = 1.25 w^*$~\cite{Jin2017JMS}\revise{}{, which gives us $w_\text{min}=0.5 w^*$}.
+\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the \revise{radius}{distance} between the center \revise{and either }{}of those beads falls short of \revise{$r_\text{min} = 0.8 w^*$}{$d_\text{min} = 0.8 w^*$}\revise{}{, which gives us $w_\text{max}=d_\text{min} + 2 \cdot \frac12 w^* = 1.8 w^*$}.
+Conversely, they place an extra bead when the \revise{radius between the center and either of the innermost beads}{distance} exceeds \revise{$r_\text{max} = 1.25 w^*$}{$d_\text{max} = 1.25 w^*$}~\cite{Jin2017JMS}\revise{}{, which gives us $w_\text{min}= d_\text{max} - 2 \cdot \frac12 w^* = 0.25 w^*$}~\cite[p.~72]{Jin2017JMS}.
 We emulate the rounded polygonal path rerouting they define by supplying a transition length \revise{}{$t(n) = \frac12 w^*$} which results in a discretized version of their rounded polygon segment.
 }
 \paper{5.4 Limitations, second paragraph}

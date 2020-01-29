@@ -249,8 +249,8 @@ $\begin{aligned}
 %q^-(d) &= 2 \left\lfloor \frac{d}{ 2w^*} + \frac12 \right\rfloor \\
 q(d) &= q^-(d) +
 \begin{cases}
--1 & \text{ if } q^-(d) w^* - d > w^* - r_\text{max} \\
-1  & \text{ if }  q^-(d) w^* - d < w^* - r_\text{min} \\
+-1 & \text{ if } q^-(d) w^* - d > w^* - \revise{r}{d}_\text{max} \\
+1  & \text{ if }  q^-(d) w^* - d < w^* - \revise{r}{d}_\text{min} \\
 0 & \text{ otherwise}
 \end{cases}
 \\
@@ -318,8 +318,8 @@ See \cref{formula_constant_bead_count}.
 \paragraph{Centered}
 We can emulate the method from \citeauthor{Jin2017JMS} by transcribing how they deviate from the uniform width toolpaths.
 We therefore base the beading scheme on the bead count $q^-(d)$ defined by the uniform beading scheme.
-\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the radius between the center and either of those beads falls short of $r_\text{min} = 0.8 w^*$\revise{}{, which gives us $w_\text{max}=1.8 w^*$}.
-Conversely, they place an extra bead when the radius \revise{between the center and either of the innermost beads }{}exceeds $r_\text{max} = 1.25 w^*$~\cite{Jin2017JMS}\revise{}{, which gives us $w_\text{min}=0.5 w^*$}.
+\citeauthor{Jin2017JMS} replace two beads from the uniform toolpaths by a single one when the \revise{radius}{distance} between the center \revise{and either }{}of those beads falls short of \revise{$r_\text{min} = 0.8 w^*$}{$d_\text{min} = 0.8 w^*$}\revise{}{, which gives us $w_\text{max}=d_\text{min} + 2 \cdot \frac12 w^* = 1.8 w^*$}.
+Conversely, they place an extra bead when the \revise{radius between the center and either of the innermost beads}{distance} exceeds \revise{$r_\text{max} = 1.25 w^*$}{$d_\text{max} = 1.25 w^*$}~\cite{Jin2017JMS}\revise{}{, which gives us $w_\text{min}= d_\text{max} - 2 \cdot \frac12 w^* = 0.25 w^*$}~\cite[p.~72]{Jin2017JMS}.
 We emulate the rounded polygonal path rerouting they define by supplying a transition length \revise{}{$t(n) = \frac12 w^*$} which results in a discretized version of their rounded polygon segment.
 See \cref{formula_centered}.
 

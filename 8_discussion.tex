@@ -15,7 +15,7 @@ Moreover the centrality marking is not robust against small perturbations in the
 \revise{}{See top right of \cref{TEST_Constant_accuracy}.}
 
 In \cref{TEST_Center_accuracy} we can see that
-the centered beading scheme effectively deals with \revise{both }{}overfill \revise{and underfill }{}and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.5 w^*$ and $1.8w^*$, i.e. the variation is within a factor of $3.6$.}
+the centered beading scheme effectively deals with \revise{both }{}overfill \revise{and underfill }{}and produces desired bead widths in all locations, except for the extrusion paths in the center, where the bead widths \revise{are within a factor 2 off from the desired bead width.}{range between $0.25 w^*$ and $1.8w^*$.}
 \revise{}{However, it does produce some narrow underfill regions.}
 \revise{
 According to \cref{over_underfill} the overfill and underfill for the centered, the evenly distributed and the inward distributed scheme are all approximately \SI{0.2}{\percent}, which is a considerable improvement over the uniform technique.
@@ -27,7 +27,7 @@ See \cref{statisticsfig}.
 However, according to \cref{widthHistogram} the centered scheme exhibits a wider range of bead widths than the distributed schemes:
 the standard deviation of the bead widths in the centered scheme is approximately \SI{39}{\micro\meter}, while that of the distributed schemes is approximately \SI{14}{\micro\meter}.%_
 \revise{}{\footnote{\revise{}{Although the standard deviation $\sigma$ of the inward distributed scheme is slightly higher, the mean absolute deviation is lower than that of the evenly distributed scheme (i.e. \SI{9}{\micro\meter} versus \SI{11}{\micro\meter}), because its distribution is more peaked.}}}
-\revise{}{Moreover, because the quantization operator rounds to the nearest number of beads, in the worst case where we switch from a single to two beads the widths switch from $0.75w^*$ to $1.5w^*$, i.e. the variation is within a factor $2$, which is considerably lower the than factor of $3.6$ in the centered scheme.}
+\revise{}{Moreover, because the quantization operator rounds to the nearest number of beads, in the worst case where we switch from a single to two beads the widths switch from $0.75w^*$ to $1.5w^*$, which is a considerably smaller range than in the centered scheme.}
 We therefore conclude that the distributed schemes \revise{result in bead widths closer to the preferred widths}{exhibit a lower bead width variation and lower (open) path count} compared to the centered scheme.
 %This is desirable for the manufacturability of the beads and can therefore have a positive effect on the mechanical properties and surface quality of the 3D prints. 
 
