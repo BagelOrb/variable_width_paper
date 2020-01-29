@@ -5,7 +5,7 @@
 %Extrusion toolpaths are generated within the planar contour of a layer at the intersection of a horizontal plane and a 3D solid object.
 Toolpath generation consists in generating a path in the a planar contour, representing the intersection of a plane and a 3D solid object.
 The nozzle is then instructed to move along the path while extruding material.
-Sites along the toolpath are assigned several properties such as movement speed, but for this paper we will focus on the assigned width of the extruded bead.
+Sites along the toolpath\revise{}{s} are assigned several properties such as movement speed, but for this paper we will focus on the assigned width of the extruded bead.
 Toolpath generation is an integral part of process planning for 3D printing.
 For an overview of the processing pipeline, we refer to the survey by \citeauthor{Livesu2017CGF}~\cite{Livesu2017CGF}.
 For reducing printing time and material cost, sparse infill structures such as triangular and hexagonal patterns have been used to approximate the interior of 3D shapes.
@@ -37,7 +37,7 @@ Contour-parallel toolpaths typically consists of a set of equally spaced offsets
 In order to increase the continuity of contour-parallel toolpaths, a strategy to connect dense toolpaths into spirals was introduced by \citeauthor{Zhao2016}~\cite{Zhao2016} and later extended to also connect a mixture of dense and sparse toolpaths together~\cite{KUIPERS2019CAD}.
 \citeauthor{Jin2017RCIM} discusses several approaches for connecting direction-parallel and contour-parallel toolpaths into continuous paths~\cite{Jin2017RCIM}.
 Spiral toolpaths have also been applied to (CNC) machining~\cite{Held2009,Huang2017}.
-One of the problems with contour-parallel toolpath is that it tends to leave gaps between the toolpaths (see \cref{intro_wedge_uniform}).
+One of the problems with contour-parallel toolpath\revise{}{s} is that it tends to leave gaps between the toolpaths (see \cref{intro_wedge_uniform}).
 This is due to the fact that the diameter of the part is not exact multiple of the (constant) deposition width in those regions.
 To avoid problems with such gaps, hybrid approaches that combine direction and contour-parallel are often used~\cite{Mcmains2000DETC,Jin2013adaptive}.
 Close to the slice boundary, there are several contour-parallel curves, while \revise{in }{}the interior is filled using a zig-zag pattern.
@@ -58,7 +58,7 @@ Since the distance may vary considerably for shapes with both large and small fe
 }{%f
 Depending on the size of small and large features in the layer outlines, this strategy can require a range of bead widths beyond the capabilities of the manufacturing system.
 }%sagd
-\citeauthor{Jin2017JMS} proposed a strategy of adding a toolpath with varying width along the center edges of the skeleton, while leaving other paths unchanged~\cite{Jin2017JMS}.
+\citeauthor{Jin2017JMS} proposed a strategy of adding \revise{a }{}toolpath\revise{}{s} with varying width along the center edges of the skeleton, while leaving other paths unchanged~\cite{Jin2017JMS}.
 The resulting \revise{variation of width in the center is still up to a factor of $2$}{beads have widths within the wide range of $[0.25w,1.8w]$} (see \cref{intro_wedge_centered}).
 In this paper we propose a novel scheme to distribute the width alterations throughout a region around the center, and thus limit the occurrence of extreme \revise{deviations}{variation} in width (see \cref{intro_wedge_distributed}).
 
