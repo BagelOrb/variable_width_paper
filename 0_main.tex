@@ -22,26 +22,9 @@
 
 % My TK added packages and commands
 
-	\newif\ifcensor
 	\newif\ifcolorrevise
 	
-	\censorfalse
 	\colorrevisetrue
-
-    \usepackage{censor}
-	\def\censorcolor{black}
-	\let\svcensorrule\censorrule
-	\renewcommand\censorrule[1]{%
-	\textcolor{\censorcolor}{\svcensorrule{#1}}}
-	
-    \newcommand{\censoromit}[1]{}
-	\newcommand{\censornotice}{}
-	\ifcensor
-		\renewcommand{\censornotice}{\\Anonymized 2020 (under revision)}
-	\else
-		\renewcommand{\censoromit}[1]{#1}
-		\StopCensoring
-    \fi
 
 	% for for using hyperref and elsarticle-num-names together in order to get \citeauthor to work
 	\makeatletter
@@ -190,20 +173,20 @@
 
 \begin{frontmatter} 
 
-\title{A framework for adaptive width control of dense contour-parallel toolpaths in \revise{additive manufacturing}{fused deposition modeling}\censornotice}
+\title{A framework for adaptive width control of dense contour-parallel toolpaths in \revise{additive manufacturing}{fused deposition modeling}}
 
 %\author{Paper ID: xxx}
 
-\author[um,tud]{\censor{Tim Kuipers}}
-\author[tud]{\censor{Eugeni L. Doubrovski}}
-\author[tud]{\censor{Jun Wu}\corref{cor1}}
-\censoromit{\ead{j.wu-1@tudelft.nl}}
+\author[um,tud]{Tim Kuipers}
+\author[tud]{Eugeni L. Doubrovski}
+\author[tud]{Jun Wu\corref{cor1}}
+\ead{j.wu-1@tudelft.nl}
 \cortext[cor1]{Corresponding author}
-\author[cuhk]{\censor{Charlie C. L. Wang}}
+\author[cuhk]{Charlie C. L. Wang}
 % \ead{cwang@mae.cuhk.edu.hk}
-\address[um]{\censor{Ultimaker, Utrecht, The Netherlands}}
-\address[tud]{\censor{Department of Sustainable Design Engineering, Delft University of Technology, The Netherlands}}
-\address[cuhk]{\censor{Department of Mechanical and Automation Engineering, The Chinese University of Hong Kong, Hong Kong SAR, China}}
+\address[um]{Ultimaker, Utrecht, The Netherlands}
+\address[tud]{Department of Sustainable Design Engineering, Delft University of Technology, The Netherlands}
+\address[cuhk]{Department of Mechanical and Automation Engineering, The Chinese University of Hong Kong, Hong Kong SAR, China}
 
 
 \begin{abstract}
