@@ -538,7 +538,7 @@ Sharp turns around regions where the bead count changes are prevented by transit
 
 
 \subsection{Beading}\label{sec_peripheral_height_adjustment}
-Now that we have determined the bead counts in the \revise{}{marked }central regions we will describe how the \revise{peripheral}{unmarked} regions are handled.
+Now that we \revise{have determined}{know how to determine} the bead counts in the \revise{}{marked }central regions \revise{we will describe}{the question is} how the \revise{peripheral}{unmarked} regions are handled.
 Determining bead count values for the unmarked nodes and interpolating linearly along the unmarked edges would mean that toolpath sites would be distributed evenly along each unmarked bone;
 while that would suffice for the evenly distributed beading scheme, it wouldn't allow for more sophisticated, non-linear schemes.
 Instead we determine the radial distance to the boundary at which each bead should occur from the boundary to the center.
@@ -623,7 +623,7 @@ the toolpaths (dashed) resulting from the beading propagated from above doesn't 
 
 
 \subsection{Toolpath extraction}\label{sec_toolpath_extraction}
-Now that each node has been assigned a beading we proceed to generate the toolpath sites along the edges of the ST.
+\revise{Now that}{Once} each node has been assigned a beading\revise{}{,} we proceed to generate the toolpath sites along the edges of the ST.
 A site $S$ consists of a location $v$ a width $w$ and an index $i$, which are computed for an edge $v_0v_1$ from the beading $B$ of the upper node $v_1$:
 \begin{align*}
 S &= \{ v, w, i \} \\ 
