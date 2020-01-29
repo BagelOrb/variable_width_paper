@@ -9,14 +9,17 @@ Recent research developments have investigated manufacturing complex volumetric 
 Many of these applications involve 3D models with detailed features within the order of magnitude of the printing resolution, which restrains the field of the process planning algorithms.
 
 FDM printers extrude semi-continuous beads of molten plastic through a nozzle, which moves along a planned toolpath within each layer of a 3D object.
+\revise{
 A common strategy to accurately manufacture a given 3D model is to extrude along a contour-following path,
 because the position and shape of the toolpath can be controlled relatively accurately.
 Filling up a shape using parallel straight lines would expose defects of the size of the hole in the nozzle, which is generally an order of magnitude larger than the resolution of the positioning system.
-\revise{
 Contour-parallel extrusion therefore leads to a less bumpy outline shape than direction-parallel extrusion does.
-}{
-Because contour-parallel extrusion leads to a more accurate outline shape it is common practice to print either the whole layer or only a limited number of outer perimeters that way.
-This paper improves on those contour-parallel toolpaths and addresses several issues which commonly occur in 3D models with narrow geometry.
+}{%sgd
+A common strategy is to extrude along a number of parallel toolpaths which follow the shape of the contour of the layer and fill up the remaining area using parallel straight toolpaths.
+Contour-parallel toolpaths fit to the layer outlines more accurately, because the resolution of the positioning system is an order of magnitude smaller than the size of the hole in the nozzle.
+This paper is concerned with the generation of such contour-parallel toolpaths and addresses several issues which commonly occur in 3D models with narrow geometry.
+%Because contour-parallel extrusion leads to a more accurate outline shape it is common practice to print either the whole layer or only a limited number of outer perimeters that way.
+%This paper improves on those contour-parallel toolpaths and addresses several issues which commonly occur in 3D models with narrow geometry.
 }
 
 
