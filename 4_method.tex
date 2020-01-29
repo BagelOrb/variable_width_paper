@@ -296,13 +296,13 @@ A half-edge data-structure is used to represent the Voronoi diagram (\cref{shape
 %These central regions present themselves as upper ridges in the mountains of the UoC surface.
 %In order to prevent the over- and underfill we will change the bead counts in the central regions.
 %This sections covers what parts of the UoC will be marked as being central.
-In order to prevent over- and underfill \revise{to occur}{from occurring} in central\revise{}{ regions}, we mark parts of the ST as being central.
+In order to prevent over- and underfill \revise{to occur}{from occurring} in central\revise{}{ regions}, \revise{we mark }{}parts of the ST \revise{}{are marked }as being central.
 \revise{The remainder is called peripheral.}{}
 Our framework will decide on a beading at all the marked nodes in `the center' and apply the beading outward to the unmarked nodes (\cref{sec_peripheral_height_adjustment}).
 
-We mark a node in the ST as central if its feature radius is larger than that of all its neighboring nodes, i.e. a local maxima.
+\revise{We mark a}{A} node in the ST \revise{}{is marked as }as central if its feature radius is larger than that of all its neighboring nodes, i.e. a local maxima.
 %That is: we mark the local maxima, i.e. the mountain tops of the UoC as being central.
-We also mark an edge as being central if it is significant according to a significance measure.
+\revise{We also mark an}{An} edge \revise{}{and its two nodes are also marked }as being central if it is significant according to a significance measure.
 
 %\subsubsection{Significance measure}\label{sec:significance_measure}
 \paragraph{Significance measure}
@@ -382,10 +382,10 @@ if the total length traversed until we reach another marked node $v_1$ is shorte
 
 
 \subsection{Central height adjustment}\label{sec_central_height_adjustment}
-Now that we have identified and marked the central regions\revise{}{,} we quantize their heights.
-We first quantize the initial bead count $\tilde{b}$ into an integer bead count $\bar{b}$ at the marked nodes using a quantization operator $q$,
-then find the locations along the edges where $q$ makes a jump from one bead count $n$ to another $n+1$
-and then introduce ramps to smoothly transition from $n$ to $n+1$ using fractional bead counts $\hat{b}$ along the smooth transition.
+\revise{Now that we have identified and marked}{After }the central regions\revise{}{ have been identified,} \revise{we quantize }{}their heights\revise{}{ are quantized}.
+\revise{We first quantize}{First,} the initial bead count $\tilde{b}$ \revise{}{is quantized }into an integer bead count $\bar{b}$ at the marked nodes using a quantization operator $q$,
+then \revise{find }{}the locations along the edges where $q$ makes a jump from one bead count $n$ to another $n+1$\revise{}{ are identified}
+and then \revise{introduce }{}ramps \revise{}{are introduced }to smoothly transition from $n$ to $n+1$ using fractional bead counts $\hat{b}$ along the smooth transition.
 %\subsubsection{Initial bead count}\label{sec_initial_bead_count}
 
 
